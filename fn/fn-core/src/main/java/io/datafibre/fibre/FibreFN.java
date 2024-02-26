@@ -12,7 +12,6 @@ public class FibreFN {
 
     public static final String STARROCKS_HOME_DIR = System.getenv("STARROCKS_HOME");
 
-
     public static void main(String[] args) {
         System.out.println("Hello world!");
 
