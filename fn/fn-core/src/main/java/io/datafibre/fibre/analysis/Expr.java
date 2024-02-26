@@ -790,11 +790,11 @@ public abstract class Expr extends TreeNode<Expr> implements ParseNode, Cloneabl
     }
 
     // Convert this expr, including all children, to its Thrift representation.
-    public TExpr treeToThrift() {
-        TExpr result = new TExpr();
-        treeToThriftHelper(result, Expr::toThrift);
-        return result;
-    }
+//    public TExpr treeToThrift() {
+//        TExpr result = new TExpr();
+//        treeToThriftHelper(result, Expr::toThrift);
+//        return result;
+//    }
 
     public void toNormalForm(TExprNode tExprNode, FragmentNormalizer normalizer) {
         this.toThrift(tExprNode);

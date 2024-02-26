@@ -477,8 +477,7 @@ public class StmtExecutor {
                             uuid = UUID.randomUUID();
                             LOG.info("transfer QueryId: {} to {}", DebugUtil.printId(context.getQueryId()),
                                     DebugUtil.printId(uuid));
-                            context.setExecutionId(
-                                    new TUniqueId(uuid.getMostSignificantBits(), uuid.getLeastSignificantBits()));
+//                            context.setExecutionId(new TUniqueId(uuid.getMostSignificantBits(), uuid.getLeastSignificantBits()));
                         }
 
                         Preconditions.checkState(execPlanBuildByNewPlanner, "must use new planner");
@@ -1876,10 +1875,10 @@ public class StmtExecutor {
                     // When enable_collect_query_detail_info is set to true, the plan will be recorded in the query detail,
                     // and hence there is no need to log it here.
                     if (Config.log_plan_cancelled_by_crash_be && context.getQueryDetail() == null) {
-                        LOG.warn("Query cancelled by crash of backends [QueryId={}] [SQL={}] [Plan={}]",
-                                DebugUtil.printId(context.getExecutionId()),
-                                originStmt == null ? "" : originStmt.originStmt,
-                                execPlan.getExplainString(TExplainLevel.COSTS));
+//                        LOG.warn("Query cancelled by crash of backends [QueryId={}] [SQL={}] [Plan={}]",
+//                                DebugUtil.printId(context.getExecutionId()),
+//                                originStmt == null ? "" : originStmt.originStmt,
+//                                execPlan.getExplainString(TExplainLevel.COSTS));
                     }
 
                     coord.cancel(ErrorCode.ERR_QUERY_EXCEPTION.formatErrorMsg());

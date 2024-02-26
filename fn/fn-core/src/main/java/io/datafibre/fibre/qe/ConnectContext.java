@@ -104,7 +104,9 @@ public class ConnectContext {
 
     // A request will be executed multiple times because of retry or redirect.
     // This id is used to distinguish between different execution instances
-    protected TUniqueId executionId;
+    //由于重试或重定向，请求将被执行多次。
+    //此id用于区分不同的执行实例
+//    protected TUniqueId executionId;
 
     // id for this connection
     protected int connectionId;
@@ -414,6 +416,7 @@ public class ConnectContext {
     public Map<String, UserVariable> getUserVariables() {
         return userVariables;
     }
+
     public UserVariable getUserVariable(String variable) {
         return userVariables.get(variable);
     }
@@ -596,7 +599,7 @@ public class ConnectContext {
 
     public boolean needMergeProfile() {
         return isProfileEnabled() &&
-                sessionVariable.getPipelineProfileLevel() < TPipelineProfileLevel.DETAIL.getValue();
+               sessionVariable.getPipelineProfileLevel() < TPipelineProfileLevel.DETAIL.getValue();
     }
 
     public byte[] getAuthDataSalt() {

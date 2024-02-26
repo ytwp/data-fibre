@@ -41,7 +41,6 @@ import io.datafibre.fibre.analysis.RedirectStatus;
 import io.datafibre.fibre.common.profile.Tracers;
 import io.datafibre.fibre.qe.OriginStatement;
 import io.datafibre.fibre.sql.parser.NodePosition;
-import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
 
