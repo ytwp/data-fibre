@@ -59,8 +59,7 @@ public class QeService {
 
     public QeService(int port, boolean nioEnabled, ConnectScheduler scheduler) throws Exception {
         SSLContext sslContext = null;
-        if (!StringUtils.isEmpty(Config.ssl_keystore_location)
-            && SSLChannelImpClassLoader.loadSSLChannelImpClazz() != null) {
+        if (StringUtils.isNotEmpty(Config.ssl_keystore_location) && SSLChannelImpClassLoader.loadSSLChannelImpClazz() != null) {
             sslContext = createSSLContext();
         }
         if (nioEnabled) {
@@ -107,20 +106,15 @@ public class QeService {
     /**
      * Creates the trust managers required to initiate the {@link SSLContext}, using a JKS keystore as an input.
      *
-     * @param filepath - the path to the JKS keystore.
+     * @param filepath         - the path to the JKS keystore.
      * @param keystorePassword - the keystore's password.
      * @return {@link TrustManager} array, that will be used to initiate the {@link SSLContext}.
      * @throws Exception
      */
     private TrustManager[] createTrustManagers(String filepath, String keystorePassword) throws Exception {
         KeyStore trustStore = KeyStore.getInstance("JKS");
-        InputStream trustStoreIS = new FileInputStream(filepath);
-        try {
+        try (InputStream trustStoreIS = new FileInputStream(filepath)) {
             trustStore.load(trustStoreIS, keystorePassword.toCharArray());
-        } finally {
-            if (trustStoreIS != null) {
-                trustStoreIS.close();
-            }
         }
         TrustManagerFactory trustFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         trustFactory.init(trustStore);

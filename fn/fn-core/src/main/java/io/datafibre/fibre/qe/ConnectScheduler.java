@@ -36,14 +36,14 @@ package io.datafibre.fibre.qe;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import io.datafibre.fibre.common.Config;
 import io.datafibre.fibre.common.ThreadPoolManager;
 import io.datafibre.fibre.common.util.LogUtil;
 import io.datafibre.fibre.http.HttpConnectContext;
+import io.datafibre.fibre.mysql.nio.NConnectContext;
 import io.datafibre.fibre.privilege.AccessDeniedException;
 import io.datafibre.fibre.privilege.PrivilegeType;
 import io.datafibre.fibre.sql.analyzer.Authorizer;
-import io.datafibre.fibre.common.Config;
-import io.datafibre.fibre.mysql.nio.NConnectContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -117,10 +117,7 @@ public class ConnectScheduler {
         if (context instanceof NConnectContext || context instanceof HttpConnectContext) {
             return true;
         }
-        if (executor.submit(new LoopHandler(context)) == null) {
-            LOG.warn("Submit one thread failed.");
-            return false;
-        }
+        executor.submit(new LoopHandler(context));
         return true;
     }
 
@@ -130,9 +127,7 @@ public class ConnectScheduler {
             return false;
         }
         // Check user
-        if (connCountByUser.get(ctx.getQualifiedUser()) == null) {
-            connCountByUser.put(ctx.getQualifiedUser(), new AtomicInteger(0));
-        }
+        connCountByUser.computeIfAbsent(ctx.getQualifiedUser(), k -> new AtomicInteger(0));
         int currentConns = connCountByUser.get(ctx.getQualifiedUser()).get();
         long currentMaxConns = ctx.getGlobalStateMgr().getAuthenticationMgr().getMaxConn(ctx.getQualifiedUser());
         if (currentConns >= currentMaxConns) {
