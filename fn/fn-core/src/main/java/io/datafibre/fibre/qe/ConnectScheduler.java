@@ -40,6 +40,7 @@ import io.datafibre.fibre.common.Config;
 import io.datafibre.fibre.common.ThreadPoolManager;
 import io.datafibre.fibre.common.util.LogUtil;
 import io.datafibre.fibre.http.HttpConnectContext;
+import io.datafibre.fibre.mysql.MysqlProto;
 import io.datafibre.fibre.mysql.nio.NConnectContext;
 import io.datafibre.fibre.privilege.AccessDeniedException;
 import io.datafibre.fibre.privilege.PrivilegeType;
@@ -110,13 +111,14 @@ public class ConnectScheduler {
         if (context == null) {
             return false;
         }
-
+        // 生成查询ID
         context.setConnectionId(nextConnectionId.getAndAdd(1));
         context.resetConnectionStartTime();
         // no necessary for nio or Http.
         if (context instanceof NConnectContext || context instanceof HttpConnectContext) {
             return true;
         }
+        // 提交任务
         executor.submit(new LoopHandler(context));
         return true;
     }
@@ -202,12 +204,14 @@ public class ConnectScheduler {
                 // authenticate check failed.
                 MysqlProto.NegotiateResult result = null;
                 try {
+                    // 连接？
                     result = MysqlProto.negotiate(context);
                     if (!result.isSuccess()) {
                         return;
                     }
-
+                    // 使用连接id注册一个连接
                     if (registerConnection(context)) {
+                        // 返回【成功失败】结果
                         MysqlProto.sendResponsePacket(context);
                     } else {
                         context.getState().setError("Reach limit of connections");

@@ -118,6 +118,9 @@ public class MysqlServer {
         }
     }
 
+    /**
+     * mysql 监听 处理
+     */
     private class Listener implements Runnable {
         @Override
         public void run() {
@@ -132,6 +135,7 @@ public class MysqlServer {
                     ConnectContext context = new ConnectContext(clientChannel, sslContext);
                     // Set globalStateMgr here.
                     context.setGlobalStateMgr(GlobalStateMgr.getCurrentState());
+                    // 提交给调度程序
                     if (!scheduler.submit(context)) {
                         LOG.warn("Submit one connect request failed. Client=" + clientChannel.toString());
                         // clear up context
