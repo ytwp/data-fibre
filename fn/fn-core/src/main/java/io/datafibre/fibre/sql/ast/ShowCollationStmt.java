@@ -15,12 +15,12 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.analysis.Expr;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.qe.ShowResultSetMetaData;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.qe.ShowResultSetMetaData;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 /**
  * Show collation statement:

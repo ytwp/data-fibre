@@ -41,9 +41,9 @@ import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.starrocks.common.Pair;
-import com.starrocks.common.Reference;
-import com.starrocks.thrift.*;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.Reference;
+import io.datafibre.fibre.thrift.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.tuple.Triple;
 import org.apache.logging.log4j.LogManager;
@@ -55,7 +55,7 @@ import java.util.stream.Collectors;
 /**
  * It is accessed by two kinds of thread, one is to create this RuntimeProfile
  * , named 'query thread', the other is to call
- * {@link com.starrocks.common.proc.CurrentQueryInfoProvider}.
+ * {@link io.datafibre.fibre.common.proc.CurrentQueryInfoProvider}.
  */
 public class RuntimeProfile {
 

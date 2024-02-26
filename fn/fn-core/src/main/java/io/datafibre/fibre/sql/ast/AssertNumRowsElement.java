@@ -15,7 +15,7 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.thrift.TAssertion;
+import io.datafibre.fibre.thrift.TAssertion;
 
 public class AssertNumRowsElement {
     public enum Assertion {

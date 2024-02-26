@@ -15,15 +15,15 @@
 package io.datafibre.fibre.sql.parser;
 
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.Expr;
-import com.starrocks.common.Config;
-import com.starrocks.connector.parser.trino.TrinoParserUtils;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.OriginStatement;
-import com.starrocks.qe.SessionVariable;
-import com.starrocks.sql.ast.ImportColumnsStmt;
-import com.starrocks.sql.ast.PrepareStmt;
-import com.starrocks.sql.ast.StatementBase;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.connector.parser.trino.TrinoParserUtils;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.OriginStatement;
+import io.datafibre.fibre.qe.SessionVariable;
+import io.datafibre.fibre.sql.ast.ImportColumnsStmt;
+import io.datafibre.fibre.sql.ast.PrepareStmt;
+import io.datafibre.fibre.sql.ast.StatementBase;
 import io.trino.sql.parser.StatementSplitter;
 import org.antlr.v4.runtime.InputMismatchException;
 import org.antlr.v4.runtime.*;
@@ -37,7 +37,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.starrocks.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
+import static io.datafibre.fibre.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
 
 public class SqlParser {
     private static final Logger LOG = LogManager.getLogger(SqlParser.class);

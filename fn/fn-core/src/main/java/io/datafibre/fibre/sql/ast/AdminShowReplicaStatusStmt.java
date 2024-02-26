@@ -17,16 +17,16 @@ package io.datafibre.fibre.sql.ast;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.BinaryType;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.RedirectStatus;
-import com.starrocks.analysis.TableRef;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Replica.ReplicaStatus;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.ShowResultSetMetaData;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.BinaryType;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.RedirectStatus;
+import io.datafibre.fibre.analysis.TableRef;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Replica.ReplicaStatus;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.ShowResultSetMetaData;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.List;
 

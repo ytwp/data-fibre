@@ -18,8 +18,8 @@
 package io.datafibre.fibre.qe;
 
 import com.google.common.base.Strings;
-import com.starrocks.common.UserException;
-import com.starrocks.qe.QueryState.MysqlStateType;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.qe.QueryState.MysqlStateType;
 
 public class QueryStateException extends UserException {
     private QueryState queryState;

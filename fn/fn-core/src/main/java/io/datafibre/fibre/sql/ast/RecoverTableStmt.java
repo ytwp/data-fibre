@@ -15,8 +15,8 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.analysis.TableName;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 public class RecoverTableStmt extends DdlStmt {
     private final TableName dbTblName;

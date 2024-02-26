@@ -17,7 +17,7 @@
 
 package io.datafibre.fibre.common.util;
 
-import com.starrocks.common.Pair;
+import io.datafibre.fibre.common.Pair;
 
 import java.util.Formatter;
 

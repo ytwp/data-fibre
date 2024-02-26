@@ -14,9 +14,9 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.analysis.*;
-import com.starrocks.connector.parser.trino.PlaceholderExpr;
-import com.starrocks.sql.ast.pipe.*;
+import io.datafibre.fibre.analysis.*;
+import io.datafibre.fibre.connector.parser.trino.PlaceholderExpr;
+import io.datafibre.fibre.sql.ast.pipe.*;
 
 public abstract class AstVisitor<R, C> {
     public R visit(ParseNode node) {

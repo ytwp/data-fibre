@@ -60,8 +60,8 @@ public class Config extends ConfigBase {
      * sys_log_verbose_modules:
      * Verbose modules. VERBOSE level is implemented by log4j DEBUG level.
      * eg:
-     * sys_log_verbose_modules = com.starrocks.globalStateMgr
-     * This will only print debug log of files in package com.starrocks.globalStateMgr and all its sub packages.
+     * sys_log_verbose_modules = io.datafibre.fibre.globalStateMgr
+     * This will only print debug log of files in package io.datafibre.fibre.globalStateMgr and all its sub packages.
      * <p>
      * sys_log_roll_interval:
      * DAY:  log suffix is yyyyMMdd
@@ -1374,14 +1374,14 @@ public class Config extends ConfigBase {
      * on a pvc which is backed by a remote storage service, such as AWS EBS. And later,
      * k8s control place will schedule a new pod and attach the pvc to it which will
      * restore the replica to a {@link Replica.ReplicaState#NORMAL} state immediately. But normally
-     * the {@link com.starrocks.clone.TabletScheduler} of Starrocks will start to schedule
+     * the {@link io.datafibre.fibre.clone.TabletScheduler} of Starrocks will start to schedule
      * {@link LocalTablet.TabletHealthStatus#REPLICA_MISSING} tasks and create new replicas in a short time.
-     * After new pod scheduling is completed, {@link com.starrocks.clone.TabletScheduler} has
+     * After new pod scheduling is completed, {@link io.datafibre.fibre.clone.TabletScheduler} has
      * to delete the redundant healthy replica which cause resource waste and may also affect
      * the loading process.
      *
      * <p>When a backend is considered to be dead, this configuration specifies how long the
-     * {@link com.starrocks.clone.TabletScheduler} should wait before starting to schedule
+     * {@link io.datafibre.fibre.clone.TabletScheduler} should wait before starting to schedule
      * {@link LocalTablet.TabletHealthStatus#REPLICA_MISSING} tasks. It is intended to leave some time for
      * the external scheduler like k8s to handle the repair process before internal scheduler kicks in
      * or for the system administrator to restart and put the backend online in time.
@@ -1621,7 +1621,7 @@ public class Config extends ConfigBase {
      * its authentication info is stored in SR metadata.
      * <p>
      * For more information about security integration, you can refer to
-     * {@link com.starrocks.authentication.SecurityIntegration}
+     * {@link io.datafibre.fibre.authentication.SecurityIntegration}
      */
     @ConfField(mutable = true)
     public static String[] authentication_chain = {AUTHENTICATION_CHAIN_MECHANISM_NATIVE};

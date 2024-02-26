@@ -15,9 +15,9 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.analysis.RedirectStatus;
-import com.starrocks.catalog.Replica.ReplicaStatus;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.RedirectStatus;
+import io.datafibre.fibre.catalog.Replica.ReplicaStatus;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 /*
  *  admin set replicas status properties ("key" = "val", ..);

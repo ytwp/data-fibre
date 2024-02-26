@@ -16,9 +16,9 @@ package io.datafibre.fibre.sql.parser;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.FunctionCallExpr;
-import com.starrocks.catalog.FunctionSet;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.FunctionCallExpr;
+import io.datafibre.fibre.catalog.FunctionSet;
 
 import java.util.ArrayList;
 import java.util.List;

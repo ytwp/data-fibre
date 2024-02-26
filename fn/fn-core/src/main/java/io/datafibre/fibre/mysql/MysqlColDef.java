@@ -17,7 +17,7 @@
 
 package io.datafibre.fibre.mysql;
 
-import com.starrocks.analysis.Expr;
+import io.datafibre.fibre.analysis.Expr;
 
 // MySQL protocol field used to describe result field info
 public class MysqlColDef {

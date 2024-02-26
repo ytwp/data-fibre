@@ -14,8 +14,8 @@
 
 package io.datafibre.fibre.qe.scheduler.slot;
 
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.system.ComputeNode;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.system.ComputeNode;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

@@ -16,19 +16,19 @@
 package io.datafibre.fibre.sql.ast;
 
 import com.google.common.collect.ImmutableList;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.LimitElement;
-import com.starrocks.analysis.OrderByElement;
-import com.starrocks.analysis.RedirectStatus;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.common.proc.OptimizeProcDir;
-import com.starrocks.common.proc.ProcNodeInterface;
-import com.starrocks.common.proc.RollupProcDir;
-import com.starrocks.common.proc.SchemaChangeProcDir;
-import com.starrocks.common.util.OrderByPair;
-import com.starrocks.qe.ShowResultSetMetaData;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.LimitElement;
+import io.datafibre.fibre.analysis.OrderByElement;
+import io.datafibre.fibre.analysis.RedirectStatus;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.common.proc.OptimizeProcDir;
+import io.datafibre.fibre.common.proc.ProcNodeInterface;
+import io.datafibre.fibre.common.proc.RollupProcDir;
+import io.datafibre.fibre.common.proc.SchemaChangeProcDir;
+import io.datafibre.fibre.common.util.OrderByPair;
+import io.datafibre.fibre.qe.ShowResultSetMetaData;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.ArrayList;
 import java.util.HashMap;

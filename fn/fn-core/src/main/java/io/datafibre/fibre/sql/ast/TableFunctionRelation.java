@@ -14,12 +14,12 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.FunctionCallExpr;
-import com.starrocks.analysis.FunctionName;
-import com.starrocks.analysis.FunctionParams;
-import com.starrocks.catalog.TableFunction;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.FunctionCallExpr;
+import io.datafibre.fibre.analysis.FunctionName;
+import io.datafibre.fibre.analysis.FunctionParams;
+import io.datafibre.fibre.catalog.TableFunction;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.List;
 

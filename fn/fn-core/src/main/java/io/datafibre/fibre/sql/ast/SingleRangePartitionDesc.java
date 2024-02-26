@@ -14,11 +14,11 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.catalog.PartitionType;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.util.PrintableMap;
-import com.starrocks.sql.analyzer.FeNameFormat;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.catalog.PartitionType;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.util.PrintableMap;
+import io.datafibre.fibre.sql.analyzer.FeNameFormat;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.Map;
 

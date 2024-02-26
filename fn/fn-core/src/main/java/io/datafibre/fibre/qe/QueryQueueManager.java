@@ -14,16 +14,16 @@
 
 package io.datafibre.fibre.qe;
 
-import com.starrocks.common.Pair;
-import com.starrocks.common.UserException;
-import com.starrocks.metric.MetricRepo;
-import com.starrocks.metric.ResourceGroupMetricMgr;
-import com.starrocks.qe.scheduler.RecoverableException;
-import com.starrocks.qe.scheduler.dag.JobSpec;
-import com.starrocks.qe.scheduler.slot.LogicalSlot;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.system.Frontend;
-import com.starrocks.thrift.TWorkGroup;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.metric.MetricRepo;
+import io.datafibre.fibre.metric.ResourceGroupMetricMgr;
+import io.datafibre.fibre.qe.scheduler.RecoverableException;
+import io.datafibre.fibre.qe.scheduler.dag.JobSpec;
+import io.datafibre.fibre.qe.scheduler.slot.LogicalSlot;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.system.Frontend;
+import io.datafibre.fibre.thrift.TWorkGroup;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

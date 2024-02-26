@@ -17,9 +17,9 @@
 
 package io.datafibre.fibre.qe;
 
-import com.starrocks.common.UserException;
-import com.starrocks.qe.scheduler.Coordinator;
-import com.starrocks.thrift.*;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.qe.scheduler.Coordinator;
+import io.datafibre.fibre.thrift.*;
 
 import java.util.List;
 import java.util.Map;

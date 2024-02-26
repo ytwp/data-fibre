@@ -15,7 +15,7 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 // DROP RESOURCE resource_name
 public class DropResourceStmt extends DdlStmt {

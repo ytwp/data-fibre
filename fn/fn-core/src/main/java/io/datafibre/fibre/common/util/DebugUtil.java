@@ -34,9 +34,9 @@
 
 package io.datafibre.fibre.common.util;
 
-import com.starrocks.common.Pair;
-import com.starrocks.proto.PUniqueId;
-import com.starrocks.thrift.TUniqueId;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.proto.PUniqueId;
+import io.datafibre.fibre.thrift.TUniqueId;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

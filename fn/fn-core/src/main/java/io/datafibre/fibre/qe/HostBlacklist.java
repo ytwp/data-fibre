@@ -17,12 +17,12 @@ package io.datafibre.fibre.qe;
 import com.google.api.client.util.Sets;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.common.Config;
-import com.starrocks.common.util.FrontendDaemon;
-import com.starrocks.common.util.NetUtils;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.system.ComputeNode;
-import com.starrocks.system.SystemInfoService;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.util.FrontendDaemon;
+import io.datafibre.fibre.common.util.NetUtils;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.system.ComputeNode;
+import io.datafibre.fibre.system.SystemInfoService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

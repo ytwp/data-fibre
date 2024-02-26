@@ -16,16 +16,16 @@ package io.datafibre.fibre.qe.scheduler;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.planner.ExportSink;
-import com.starrocks.planner.MultiCastPlanFragment;
-import com.starrocks.planner.PlanFragment;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.SessionVariable;
-import com.starrocks.qe.scheduler.dag.ExecutionDAG;
-import com.starrocks.qe.scheduler.dag.ExecutionFragment;
-import com.starrocks.qe.scheduler.dag.FragmentInstance;
-import com.starrocks.qe.scheduler.dag.JobSpec;
-import com.starrocks.thrift.*;
+import io.datafibre.fibre.planner.ExportSink;
+import io.datafibre.fibre.planner.MultiCastPlanFragment;
+import io.datafibre.fibre.planner.PlanFragment;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.SessionVariable;
+import io.datafibre.fibre.qe.scheduler.dag.ExecutionDAG;
+import io.datafibre.fibre.qe.scheduler.dag.ExecutionFragment;
+import io.datafibre.fibre.qe.scheduler.dag.FragmentInstance;
+import io.datafibre.fibre.qe.scheduler.dag.JobSpec;
+import io.datafibre.fibre.thrift.*;
 
 import java.util.ArrayList;
 import java.util.Collections;

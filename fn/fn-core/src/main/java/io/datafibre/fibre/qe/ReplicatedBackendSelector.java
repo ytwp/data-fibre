@@ -15,9 +15,9 @@
 package io.datafibre.fibre.qe;
 
 import com.google.common.collect.Lists;
-import com.starrocks.planner.ScanNode;
-import com.starrocks.thrift.TScanRangeLocations;
-import com.starrocks.thrift.TScanRangeParams;
+import io.datafibre.fibre.planner.ScanNode;
+import io.datafibre.fibre.thrift.TScanRangeLocations;
+import io.datafibre.fibre.thrift.TScanRangeParams;
 import org.apache.commons.collections4.MapUtils;
 
 import java.util.List;

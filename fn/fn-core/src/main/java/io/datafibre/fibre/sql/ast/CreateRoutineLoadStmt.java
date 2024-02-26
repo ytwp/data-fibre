@@ -19,23 +19,23 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.analysis.LabelName;
-import com.starrocks.analysis.ParseNode;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.Config;
-import com.starrocks.common.Pair;
-import com.starrocks.common.UserException;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.common.util.Util;
-import com.starrocks.load.RoutineLoadDesc;
-import com.starrocks.load.routineload.KafkaProgress;
-import com.starrocks.load.routineload.LoadDataSourceType;
-import com.starrocks.load.routineload.PulsarRoutineLoadJob;
-import com.starrocks.load.routineload.RoutineLoadJob;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.OriginStatement;
-import com.starrocks.qe.SessionVariable;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.LabelName;
+import io.datafibre.fibre.analysis.ParseNode;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.common.util.Util;
+import io.datafibre.fibre.load.RoutineLoadDesc;
+import io.datafibre.fibre.load.routineload.KafkaProgress;
+import io.datafibre.fibre.load.routineload.LoadDataSourceType;
+import io.datafibre.fibre.load.routineload.PulsarRoutineLoadJob;
+import io.datafibre.fibre.load.routineload.RoutineLoadJob;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.OriginStatement;
+import io.datafibre.fibre.qe.SessionVariable;
+import io.datafibre.fibre.sql.parser.NodePosition;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -449,7 +449,7 @@ public class CreateRoutineLoadStmt extends DdlStmt {
 
         // parse the origin stmt to get routine load desc
         try {
-            List<StatementBase> stmts = com.starrocks.sql.parser.SqlParser.parse(
+            List<StatementBase> stmts = io.datafibre.fibre.sql.parser.SqlParser.parse(
                     origStmt.originStmt, buildSessionVariables(sessionVariables));
             StatementBase stmt = stmts.get(origStmt.idx);
             if (stmt instanceof CreateRoutineLoadStmt) {

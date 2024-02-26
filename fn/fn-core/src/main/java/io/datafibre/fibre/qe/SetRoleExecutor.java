@@ -15,13 +15,13 @@
 
 package io.datafibre.fibre.qe;
 
-import com.starrocks.common.UserException;
-import com.starrocks.privilege.AuthorizationMgr;
-import com.starrocks.privilege.PrivilegeException;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.SetRoleStmt;
-import com.starrocks.sql.ast.SetRoleType;
-import com.starrocks.sql.ast.UserIdentity;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.privilege.AuthorizationMgr;
+import io.datafibre.fibre.privilege.PrivilegeException;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.SetRoleStmt;
+import io.datafibre.fibre.sql.ast.SetRoleType;
+import io.datafibre.fibre.sql.ast.UserIdentity;
 
 import java.util.HashSet;
 import java.util.Set;

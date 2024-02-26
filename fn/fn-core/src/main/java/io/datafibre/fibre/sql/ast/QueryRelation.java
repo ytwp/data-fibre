@@ -15,12 +15,12 @@
 package io.datafibre.fibre.sql.ast;
 
 import com.google.common.collect.Maps;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.LimitElement;
-import com.starrocks.analysis.OrderByElement;
-import com.starrocks.sql.analyzer.Field;
-import com.starrocks.sql.analyzer.FieldId;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.LimitElement;
+import io.datafibre.fibre.analysis.OrderByElement;
+import io.datafibre.fibre.sql.analyzer.Field;
+import io.datafibre.fibre.sql.analyzer.FieldId;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.ArrayList;
 import java.util.List;

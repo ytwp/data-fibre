@@ -33,9 +33,9 @@
 // under the License.
 package io.datafibre.fibre.mysql.nio;
 
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.ConnectProcessor;
-import com.starrocks.rpc.RpcException;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.ConnectProcessor;
+import io.datafibre.fibre.rpc.RpcException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xnio.ChannelListener;

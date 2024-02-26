@@ -14,15 +14,15 @@
 
 package io.datafibre.fibre.qe.scheduler.slot;
 
-import com.starrocks.common.Config;
-import com.starrocks.common.Status;
-import com.starrocks.common.UserException;
-import com.starrocks.common.util.DebugUtil;
-import com.starrocks.ha.LeaderInfo;
-import com.starrocks.qe.scheduler.RecoverableException;
-import com.starrocks.rpc.FrontendServiceProxy;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.thrift.*;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.Status;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.util.DebugUtil;
+import io.datafibre.fibre.ha.LeaderInfo;
+import io.datafibre.fibre.qe.scheduler.RecoverableException;
+import io.datafibre.fibre.rpc.FrontendServiceProxy;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.thrift.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,7 +34,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
 /**
- * The slot manager view in the follower FEs. It receives the slot operations from {@link com.starrocks.qe.scheduler.Coordinator}
+ * The slot manager view in the follower FEs. It receives the slot operations from {@link io.datafibre.fibre.qe.scheduler.Coordinator}
  * and sends it to {@link SlotManager} via RPC.
  *
  * @see SlotManager

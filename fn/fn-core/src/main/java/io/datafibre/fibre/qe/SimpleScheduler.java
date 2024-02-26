@@ -37,11 +37,11 @@ package io.datafibre.fibre.qe;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.starrocks.common.Reference;
-import com.starrocks.server.RunMode;
-import com.starrocks.system.ComputeNode;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.thrift.TScanRangeLocation;
+import io.datafibre.fibre.common.Reference;
+import io.datafibre.fibre.server.RunMode;
+import io.datafibre.fibre.system.ComputeNode;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TScanRangeLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

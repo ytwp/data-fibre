@@ -15,8 +15,8 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.analysis.TaskName;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.TaskName;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.Map;
 

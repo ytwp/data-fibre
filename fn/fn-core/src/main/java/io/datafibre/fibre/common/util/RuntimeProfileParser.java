@@ -15,7 +15,7 @@ package io.datafibre.fibre.common.util;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.thrift.TUnit;
+import io.datafibre.fibre.thrift.TUnit;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;

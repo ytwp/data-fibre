@@ -16,8 +16,8 @@
 // under the License.
 package io.datafibre.fibre.mysql.nio;
 
-import com.starrocks.mysql.MysqlChannel;
-import com.starrocks.qe.ConnectProcessor;
+import io.datafibre.fibre.mysql.MysqlChannel;
+import io.datafibre.fibre.qe.ConnectProcessor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xnio.StreamConnection;

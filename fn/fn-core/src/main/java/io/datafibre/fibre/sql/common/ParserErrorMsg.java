@@ -14,7 +14,7 @@
 
 package io.datafibre.fibre.sql.common;
 
-import static com.starrocks.sql.common.ErrorMsgProxy.BaseMessage;
+import static io.datafibre.fibre.sql.common.ErrorMsgProxy.BaseMessage;
 
 public interface ParserErrorMsg {
 

@@ -34,7 +34,7 @@
 
 package io.datafibre.fibre.common.util;
 
-import com.starrocks.catalog.Table;
+import io.datafibre.fibre.catalog.Table;
 
 import java.security.SecureRandom;
 

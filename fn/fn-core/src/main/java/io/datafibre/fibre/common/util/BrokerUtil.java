@@ -36,12 +36,12 @@ package io.datafibre.fibre.common.util;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.BrokerDesc;
-import com.starrocks.catalog.FsBroker;
-import com.starrocks.common.*;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.service.FrontendOptions;
-import com.starrocks.thrift.*;
+import io.datafibre.fibre.analysis.BrokerDesc;
+import io.datafibre.fibre.catalog.FsBroker;
+import io.datafibre.fibre.common.*;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.service.FrontendOptions;
+import io.datafibre.fibre.thrift.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.thrift.TException;

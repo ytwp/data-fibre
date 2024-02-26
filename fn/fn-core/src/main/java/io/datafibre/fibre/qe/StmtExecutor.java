@@ -40,61 +40,61 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.starrocks.analysis.*;
-import com.starrocks.catalog.*;
-import com.starrocks.catalog.system.SystemTable;
-import com.starrocks.common.*;
-import com.starrocks.common.profile.Timer;
-import com.starrocks.common.profile.Tracers;
-import com.starrocks.common.util.*;
-import com.starrocks.common.util.concurrent.lock.LockType;
-import com.starrocks.common.util.concurrent.lock.Locker;
-import com.starrocks.http.HttpConnectContext;
-import com.starrocks.http.HttpResultSender;
-import com.starrocks.load.EtlJobType;
-import com.starrocks.load.ExportJob;
-import com.starrocks.load.InsertOverwriteJob;
-import com.starrocks.load.InsertOverwriteJobMgr;
-import com.starrocks.load.loadv2.LoadJob;
-import com.starrocks.meta.SqlBlackList;
-import com.starrocks.metric.MetricRepo;
-import com.starrocks.metric.TableMetricsEntity;
-import com.starrocks.metric.TableMetricsRegistry;
-import com.starrocks.mysql.MysqlChannel;
-import com.starrocks.mysql.MysqlCommand;
-import com.starrocks.mysql.MysqlEofPacket;
-import com.starrocks.mysql.MysqlSerializer;
-import com.starrocks.persist.CreateInsertOverwriteJobLog;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.planner.HiveTableSink;
-import com.starrocks.planner.OlapScanNode;
-import com.starrocks.planner.PlanFragment;
-import com.starrocks.planner.ScanNode;
-import com.starrocks.privilege.AccessDeniedException;
-import com.starrocks.privilege.ObjectType;
-import com.starrocks.privilege.PrivilegeException;
-import com.starrocks.privilege.PrivilegeType;
-import com.starrocks.proto.PQueryStatistics;
-import com.starrocks.proto.QueryStatisticsItemPB;
-import com.starrocks.qe.QueryState.MysqlStateType;
-import com.starrocks.qe.scheduler.Coordinator;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ExplainAnalyzer;
-import com.starrocks.sql.StatementPlanner;
-import com.starrocks.sql.analyzer.*;
-import com.starrocks.sql.ast.*;
-import com.starrocks.sql.common.DmlException;
-import com.starrocks.sql.common.ErrorType;
-import com.starrocks.sql.common.MetaUtils;
-import com.starrocks.sql.common.StarRocksPlannerException;
-import com.starrocks.sql.optimizer.dump.QueryDumpInfo;
-import com.starrocks.sql.parser.ParsingException;
-import com.starrocks.sql.plan.ExecPlan;
-import com.starrocks.statistic.*;
-import com.starrocks.system.SystemInfoService;
-import com.starrocks.task.LoadEtlTask;
-import com.starrocks.thrift.*;
-import com.starrocks.transaction.*;
+import io.datafibre.fibre.analysis.*;
+import io.datafibre.fibre.catalog.*;
+import io.datafibre.fibre.catalog.system.SystemTable;
+import io.datafibre.fibre.common.*;
+import io.datafibre.fibre.common.profile.Timer;
+import io.datafibre.fibre.common.profile.Tracers;
+import io.datafibre.fibre.common.util.*;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.http.HttpConnectContext;
+import io.datafibre.fibre.http.HttpResultSender;
+import io.datafibre.fibre.load.EtlJobType;
+import io.datafibre.fibre.load.ExportJob;
+import io.datafibre.fibre.load.InsertOverwriteJob;
+import io.datafibre.fibre.load.InsertOverwriteJobMgr;
+import io.datafibre.fibre.load.loadv2.LoadJob;
+import io.datafibre.fibre.meta.SqlBlackList;
+import io.datafibre.fibre.metric.MetricRepo;
+import io.datafibre.fibre.metric.TableMetricsEntity;
+import io.datafibre.fibre.metric.TableMetricsRegistry;
+import io.datafibre.fibre.mysql.MysqlChannel;
+import io.datafibre.fibre.mysql.MysqlCommand;
+import io.datafibre.fibre.mysql.MysqlEofPacket;
+import io.datafibre.fibre.mysql.MysqlSerializer;
+import io.datafibre.fibre.persist.CreateInsertOverwriteJobLog;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.planner.HiveTableSink;
+import io.datafibre.fibre.planner.OlapScanNode;
+import io.datafibre.fibre.planner.PlanFragment;
+import io.datafibre.fibre.planner.ScanNode;
+import io.datafibre.fibre.privilege.AccessDeniedException;
+import io.datafibre.fibre.privilege.ObjectType;
+import io.datafibre.fibre.privilege.PrivilegeException;
+import io.datafibre.fibre.privilege.PrivilegeType;
+import io.datafibre.fibre.proto.PQueryStatistics;
+import io.datafibre.fibre.proto.QueryStatisticsItemPB;
+import io.datafibre.fibre.qe.QueryState.MysqlStateType;
+import io.datafibre.fibre.qe.scheduler.Coordinator;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ExplainAnalyzer;
+import io.datafibre.fibre.sql.StatementPlanner;
+import io.datafibre.fibre.sql.analyzer.*;
+import io.datafibre.fibre.sql.ast.*;
+import io.datafibre.fibre.sql.common.DmlException;
+import io.datafibre.fibre.sql.common.ErrorType;
+import io.datafibre.fibre.sql.common.MetaUtils;
+import io.datafibre.fibre.sql.common.StarRocksPlannerException;
+import io.datafibre.fibre.sql.optimizer.dump.QueryDumpInfo;
+import io.datafibre.fibre.sql.parser.ParsingException;
+import io.datafibre.fibre.sql.plan.ExecPlan;
+import io.datafibre.fibre.statistic.*;
+import io.datafibre.fibre.system.SystemInfoService;
+import io.datafibre.fibre.task.LoadEtlTask;
+import io.datafibre.fibre.thrift.*;
+import io.datafibre.fibre.transaction.*;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -112,7 +112,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import static com.starrocks.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
+import static io.datafibre.fibre.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
 
 // Do one COM_QUERY process.
 // first: Parse receive byte array to statement struct.
@@ -381,7 +381,7 @@ public class StmtExecutor {
                         context.getDumpInfo().setStatement(parsedStmt);
                     }
                     if (parsedStmt instanceof ShowStmt) {
-                        com.starrocks.sql.analyzer.Analyzer.analyze(parsedStmt, context);
+                        io.datafibre.fibre.sql.analyzer.Analyzer.analyze(parsedStmt, context);
                         Authorizer.check(parsedStmt, context);
 
                         QueryStatement selectStmt = ((ShowStmt) parsedStmt).toSelectStmt();
@@ -391,7 +391,7 @@ public class StmtExecutor {
                         }
                     } else if (parsedStmt instanceof ExecuteStmt) {
                         ExecuteStmt executeStmt = (ExecuteStmt) parsedStmt;
-                        com.starrocks.sql.analyzer.Analyzer.analyze(executeStmt, context);
+                        io.datafibre.fibre.sql.analyzer.Analyzer.analyze(executeStmt, context);
                         prepareStmtContext = context.getPreparedStmt(executeStmt.getStmtName());
                         if (null == prepareStmtContext) {
                             throw new StarRocksPlannerException(ErrorType.INTERNAL_ERROR,
@@ -713,7 +713,7 @@ public class StmtExecutor {
         if (parsedStmt == null) {
             List<StatementBase> stmts;
             try {
-                stmts = com.starrocks.sql.parser.SqlParser.parse(originStmt.originStmt,
+                stmts = io.datafibre.fibre.sql.parser.SqlParser.parse(originStmt.originStmt,
                         context.getSessionVariable());
                 parsedStmt = stmts.get(originStmt.idx);
                 parsedStmt.setOrigStmt(originStmt);
@@ -1553,7 +1553,7 @@ public class StmtExecutor {
         String db = exportStmt.getTblName().getDb();
         String showStmt = String.format("SHOW EXPORT FROM %s WHERE QueryId = \"%s\";", db, queryId);
         StatementBase statementBase =
-                com.starrocks.sql.parser.SqlParser.parse(showStmt, context.getSessionVariable()).get(0);
+                io.datafibre.fibre.sql.parser.SqlParser.parse(showStmt, context.getSessionVariable()).get(0);
         ShowExportStmt showExportStmt = (ShowExportStmt) statementBase;
         showExportStmt.setQueryId(queryId);
         ShowExecutor executor = new ShowExecutor(context, showExportStmt);

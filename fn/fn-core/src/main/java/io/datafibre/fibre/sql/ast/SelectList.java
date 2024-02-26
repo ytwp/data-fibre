@@ -16,7 +16,7 @@
 package io.datafibre.fibre.sql.ast;
 
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.HintNode;
+import io.datafibre.fibre.analysis.HintNode;
 
 import java.util.List;
 

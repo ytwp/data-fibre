@@ -34,7 +34,7 @@
 
 package io.datafibre.fibre.common.util;
 
-import com.starrocks.thrift.*;
+import io.datafibre.fibre.thrift.*;
 
 import java.util.List;
 import java.util.Objects;

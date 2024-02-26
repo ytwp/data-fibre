@@ -15,9 +15,9 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.analysis.Delimiter;
-import com.starrocks.analysis.ParseNode;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.Delimiter;
+import io.datafibre.fibre.analysis.ParseNode;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 public class RowDelimiter implements ParseNode {
     private final String oriDelimiter;

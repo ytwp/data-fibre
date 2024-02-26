@@ -16,14 +16,14 @@ package io.datafibre.fibre.sql.common;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.BinaryPredicate;
-import com.starrocks.analysis.BinaryType;
-import com.starrocks.analysis.Expr;
-import com.starrocks.catalog.*;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.SessionVariableConstants;
-import com.starrocks.sql.analyzer.SemanticException;
+import io.datafibre.fibre.analysis.BinaryPredicate;
+import io.datafibre.fibre.analysis.BinaryType;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.catalog.*;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.SessionVariableConstants;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
 
 import java.util.ArrayList;
 import java.util.List;

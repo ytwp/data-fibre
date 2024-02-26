@@ -36,11 +36,11 @@ package io.datafibre.fibre.common.util;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.*;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.VariableMgr;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.*;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.VariableMgr;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.threeten.extra.PeriodDuration;

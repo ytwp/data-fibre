@@ -15,10 +15,10 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.analysis.FunctionName;
-import com.starrocks.analysis.RedirectStatus;
-import com.starrocks.catalog.FunctionSearchDesc;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.FunctionName;
+import io.datafibre.fibre.analysis.RedirectStatus;
+import io.datafibre.fibre.catalog.FunctionSearchDesc;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 public class DropFunctionStmt extends DdlStmt {
     private final FunctionName functionName;

@@ -14,7 +14,7 @@
 
 package io.datafibre.fibre.common.util;
 
-import com.starrocks.common.proc.BaseProcResult;
+import io.datafibre.fibre.common.proc.BaseProcResult;
 
 import java.util.ArrayList;
 import java.util.Collections;

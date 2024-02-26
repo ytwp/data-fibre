@@ -16,18 +16,18 @@ package io.datafibre.fibre.sql.parser;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.analysis.*;
-import com.starrocks.qe.SessionVariable;
-import com.starrocks.sql.ast.UserVariable;
+import io.datafibre.fibre.analysis.*;
+import io.datafibre.fibre.qe.SessionVariable;
+import io.datafibre.fibre.sql.ast.UserVariable;
 import org.antlr.v4.runtime.Token;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import static com.starrocks.analysis.SetVarHint.SET_VAR;
-import static com.starrocks.analysis.UserVariableHint.SET_USER_VARIABLE;
-import static com.starrocks.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
+import static io.datafibre.fibre.analysis.SetVarHint.SET_VAR;
+import static io.datafibre.fibre.analysis.UserVariableHint.SET_USER_VARIABLE;
+import static io.datafibre.fibre.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
 
 public class HintFactory {
 

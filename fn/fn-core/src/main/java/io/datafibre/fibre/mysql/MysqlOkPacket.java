@@ -18,7 +18,7 @@
 package io.datafibre.fibre.mysql;
 
 import com.google.common.base.Strings;
-import com.starrocks.qe.QueryState;
+import io.datafibre.fibre.qe.QueryState;
 
 // MySQL protocol OK packet
 public class MysqlOkPacket extends MysqlPacket {

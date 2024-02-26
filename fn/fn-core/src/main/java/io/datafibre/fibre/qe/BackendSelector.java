@@ -14,7 +14,7 @@
 
 package io.datafibre.fibre.qe;
 
-import com.starrocks.common.UserException;
+import io.datafibre.fibre.common.UserException;
 
 public interface BackendSelector {
     void computeScanRangeAssignment() throws UserException;

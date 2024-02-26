@@ -14,13 +14,13 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.analysis.Analyzer;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.TableName;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.sql.common.ErrorType;
-import com.starrocks.sql.common.StarRocksPlannerException;
-import com.starrocks.thrift.TExprNode;
+import io.datafibre.fibre.analysis.Analyzer;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.sql.common.ErrorType;
+import io.datafibre.fibre.sql.common.StarRocksPlannerException;
+import io.datafibre.fibre.thrift.TExprNode;
 
 import java.util.Objects;
 

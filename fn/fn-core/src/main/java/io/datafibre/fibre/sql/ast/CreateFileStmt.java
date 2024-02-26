@@ -17,9 +17,9 @@ package io.datafibre.fibre.sql.ast;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
-import com.starrocks.analysis.RedirectStatus;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.RedirectStatus;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.Map;
 import java.util.Optional;

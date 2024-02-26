@@ -19,14 +19,14 @@ package io.datafibre.fibre.qe;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import com.starrocks.common.util.RuntimeProfile;
-import com.starrocks.planner.OlapScanNode;
-import com.starrocks.planner.PlanFragment;
-import com.starrocks.planner.ScanNode;
-import com.starrocks.sql.common.ErrorType;
-import com.starrocks.sql.common.StarRocksPlannerException;
-import com.starrocks.thrift.TDescriptorTable;
-import com.starrocks.thrift.TScanRangeLocations;
+import io.datafibre.fibre.common.util.RuntimeProfile;
+import io.datafibre.fibre.planner.OlapScanNode;
+import io.datafibre.fibre.planner.PlanFragment;
+import io.datafibre.fibre.planner.ScanNode;
+import io.datafibre.fibre.sql.common.ErrorType;
+import io.datafibre.fibre.sql.common.StarRocksPlannerException;
+import io.datafibre.fibre.thrift.TDescriptorTable;
+import io.datafibre.fibre.thrift.TScanRangeLocations;
 
 import java.util.List;
 import java.util.Optional;

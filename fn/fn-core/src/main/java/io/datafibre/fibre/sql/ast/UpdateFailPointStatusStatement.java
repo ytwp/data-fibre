@@ -15,10 +15,10 @@
 package io.datafibre.fibre.sql.ast;
 
 import com.google.common.base.Joiner;
-import com.starrocks.analysis.RedirectStatus;
-import com.starrocks.proto.FailPointTriggerModeType;
-import com.starrocks.proto.PFailPointTriggerMode;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.RedirectStatus;
+import io.datafibre.fibre.proto.FailPointTriggerModeType;
+import io.datafibre.fibre.proto.PFailPointTriggerMode;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.List;
 

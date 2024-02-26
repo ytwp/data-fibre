@@ -13,7 +13,7 @@
 // limitations under the License.
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 public class AlterCatalogStmt extends DdlStmt {
     private final String catalogName;

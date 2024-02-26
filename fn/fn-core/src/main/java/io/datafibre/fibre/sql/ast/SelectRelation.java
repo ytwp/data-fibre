@@ -14,17 +14,17 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.analysis.AnalyticExpr;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.FunctionCallExpr;
-import com.starrocks.analysis.GroupByClause;
-import com.starrocks.analysis.LimitElement;
-import com.starrocks.analysis.OrderByElement;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.sql.analyzer.AnalyzeState;
-import com.starrocks.sql.analyzer.FieldId;
-import com.starrocks.sql.analyzer.Scope;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.AnalyticExpr;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.FunctionCallExpr;
+import io.datafibre.fibre.analysis.GroupByClause;
+import io.datafibre.fibre.analysis.LimitElement;
+import io.datafibre.fibre.analysis.OrderByElement;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.sql.analyzer.AnalyzeState;
+import io.datafibre.fibre.sql.analyzer.FieldId;
+import io.datafibre.fibre.sql.analyzer.Scope;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.HashMap;
 import java.util.List;

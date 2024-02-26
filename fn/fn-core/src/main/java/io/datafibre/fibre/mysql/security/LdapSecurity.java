@@ -15,7 +15,7 @@
 
 package io.datafibre.fibre.mysql.security;
 
-import com.starrocks.common.Config;
+import io.datafibre.fibre.common.Config;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

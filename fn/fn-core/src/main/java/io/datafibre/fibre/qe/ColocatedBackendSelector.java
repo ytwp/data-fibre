@@ -18,12 +18,12 @@ import com.google.api.client.util.Sets;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.common.UserException;
-import com.starrocks.planner.OlapScanNode;
-import com.starrocks.qe.scheduler.WorkerProvider;
-import com.starrocks.thrift.TScanRangeLocation;
-import com.starrocks.thrift.TScanRangeLocations;
-import com.starrocks.thrift.TScanRangeParams;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.planner.OlapScanNode;
+import io.datafibre.fibre.qe.scheduler.WorkerProvider;
+import io.datafibre.fibre.thrift.TScanRangeLocation;
+import io.datafibre.fibre.thrift.TScanRangeLocations;
+import io.datafibre.fibre.thrift.TScanRangeParams;
 
 import java.util.*;
 import java.util.function.Function;

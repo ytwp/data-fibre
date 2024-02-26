@@ -17,21 +17,21 @@ package io.datafibre.fibre.qe.scheduler;
 import com.google.api.client.util.Sets;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import com.starrocks.common.Status;
-import com.starrocks.common.UserException;
-import com.starrocks.common.profile.Timer;
-import com.starrocks.common.profile.Tracers;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.scheduler.dag.*;
-import com.starrocks.rpc.RpcException;
-import com.starrocks.thrift.*;
+import io.datafibre.fibre.common.Status;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.profile.Timer;
+import io.datafibre.fibre.common.profile.Tracers;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.scheduler.dag.*;
+import io.datafibre.fibre.rpc.RpcException;
+import io.datafibre.fibre.thrift.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.starrocks.qe.scheduler.dag.FragmentInstanceExecState.DeploymentResult;
+import static io.datafibre.fibre.qe.scheduler.dag.FragmentInstanceExecState.DeploymentResult;
 
 /**
  * The utility class to deploy fragment instances to workers.

@@ -14,9 +14,9 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.alter.AlterOpType;
-import com.starrocks.catalog.Column;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.alter.AlterOpType;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.ArrayList;
 import java.util.List;

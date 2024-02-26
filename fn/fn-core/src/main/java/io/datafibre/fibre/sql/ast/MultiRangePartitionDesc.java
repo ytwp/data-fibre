@@ -17,16 +17,16 @@ package io.datafibre.fibre.sql.ast;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.TimestampArithmeticExpr;
-import com.starrocks.catalog.DynamicPartitionProperty;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.Config;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.util.DateUtils;
-import com.starrocks.common.util.DynamicPartitionUtil;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.TimestampArithmeticExpr;
+import io.datafibre.fibre.catalog.DynamicPartitionProperty;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.util.DateUtils;
+import io.datafibre.fibre.common.util.DynamicPartitionUtil;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

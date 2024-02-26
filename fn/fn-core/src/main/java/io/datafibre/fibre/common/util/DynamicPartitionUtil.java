@@ -36,15 +36,15 @@ package io.datafibre.fibre.common.util;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.TimestampArithmeticExpr;
-import com.starrocks.analysis.TimestampArithmeticExpr.TimeUnit;
-import com.starrocks.catalog.*;
-import com.starrocks.clone.DynamicPartitionScheduler;
-import com.starrocks.common.*;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.analyzer.FeNameFormat;
-import com.starrocks.sql.analyzer.SemanticException;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.TimestampArithmeticExpr;
+import io.datafibre.fibre.analysis.TimestampArithmeticExpr.TimeUnit;
+import io.datafibre.fibre.catalog.*;
+import io.datafibre.fibre.clone.DynamicPartitionScheduler;
+import io.datafibre.fibre.common.*;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.analyzer.FeNameFormat;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
 import org.apache.commons.collections4.map.CaseInsensitiveMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -58,8 +58,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 
-import static com.starrocks.common.util.PropertyAnalyzer.PROPERTIES_PARTITION_LIVE_NUMBER;
-import static com.starrocks.common.util.PropertyAnalyzer.PROPERTIES_PARTITION_TTL_NUMBER;
+import static io.datafibre.fibre.common.util.PropertyAnalyzer.PROPERTIES_PARTITION_LIVE_NUMBER;
+import static io.datafibre.fibre.common.util.PropertyAnalyzer.PROPERTIES_PARTITION_TTL_NUMBER;
 
 public class DynamicPartitionUtil {
     private static final Logger LOG = LogManager.getLogger(DynamicPartitionUtil.class);

@@ -35,8 +35,8 @@
 package io.datafibre.fibre.mysql;
 
 import com.google.common.base.Strings;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Type;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Type;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;

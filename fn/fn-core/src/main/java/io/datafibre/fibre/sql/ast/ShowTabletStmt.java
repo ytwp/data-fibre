@@ -17,17 +17,17 @@ package io.datafibre.fibre.sql.ast;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
-import com.starrocks.analysis.*;
-import com.starrocks.catalog.*;
-import com.starrocks.common.proc.LakeTabletsProcDir;
-import com.starrocks.common.proc.LocalTabletsProcDir;
-import com.starrocks.common.util.OrderByPair;
-import com.starrocks.common.util.concurrent.lock.LockType;
-import com.starrocks.common.util.concurrent.lock.Locker;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.ShowResultSetMetaData;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.*;
+import io.datafibre.fibre.catalog.*;
+import io.datafibre.fibre.common.proc.LakeTabletsProcDir;
+import io.datafibre.fibre.common.proc.LocalTabletsProcDir;
+import io.datafibre.fibre.common.util.OrderByPair;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.ShowResultSetMetaData;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -16,10 +16,10 @@ package io.datafibre.fibre.sql.ast;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.Parameter;
-import com.starrocks.analysis.RedirectStatus;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.Parameter;
+import io.datafibre.fibre.analysis.RedirectStatus;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.ArrayList;
 import java.util.List;

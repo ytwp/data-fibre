@@ -14,9 +14,9 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.JoinOperator;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.JoinOperator;
+import io.datafibre.fibre.sql.parser.NodePosition;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;

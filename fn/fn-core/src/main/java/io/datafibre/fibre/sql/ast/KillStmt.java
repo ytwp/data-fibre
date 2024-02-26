@@ -15,8 +15,8 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.analysis.RedirectStatus;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.RedirectStatus;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 /**
  * Representation of a Kill statement.

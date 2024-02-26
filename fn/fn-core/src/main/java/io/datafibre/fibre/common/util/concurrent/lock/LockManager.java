@@ -13,7 +13,7 @@
 // limitations under the License.
 package io.datafibre.fibre.common.util.concurrent.lock;
 
-import com.starrocks.common.Config;
+import io.datafibre.fibre.common.Config;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

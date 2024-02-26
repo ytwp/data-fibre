@@ -14,7 +14,7 @@
 
 package io.datafibre.fibre.sql.ast.pipe;
 
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 public class AlterPipePauseResume extends AlterPipeClause {
 

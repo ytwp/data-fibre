@@ -15,20 +15,20 @@
 package io.datafibre.fibre.qe.scheduler.dag;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.analysis.DescriptorTable;
-import com.starrocks.catalog.ResourceGroupClassifier;
-import com.starrocks.common.util.CompressionUtils;
-import com.starrocks.common.util.DebugUtil;
-import com.starrocks.load.loadv2.BulkLoadJob;
-import com.starrocks.planner.PlanFragment;
-import com.starrocks.planner.ScanNode;
-import com.starrocks.planner.SchemaScanNode;
-import com.starrocks.planner.StreamLoadPlanner;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.GlobalVariable;
-import com.starrocks.qe.SessionVariable;
-import com.starrocks.sql.LoadPlanner;
-import com.starrocks.thrift.*;
+import io.datafibre.fibre.analysis.DescriptorTable;
+import io.datafibre.fibre.catalog.ResourceGroupClassifier;
+import io.datafibre.fibre.common.util.CompressionUtils;
+import io.datafibre.fibre.common.util.DebugUtil;
+import io.datafibre.fibre.load.loadv2.BulkLoadJob;
+import io.datafibre.fibre.planner.PlanFragment;
+import io.datafibre.fibre.planner.ScanNode;
+import io.datafibre.fibre.planner.SchemaScanNode;
+import io.datafibre.fibre.planner.StreamLoadPlanner;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.GlobalVariable;
+import io.datafibre.fibre.qe.SessionVariable;
+import io.datafibre.fibre.sql.LoadPlanner;
+import io.datafibre.fibre.thrift.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.Instant;
@@ -36,8 +36,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static com.starrocks.qe.CoordinatorPreprocessor.genQueryGlobals;
-import static com.starrocks.qe.CoordinatorPreprocessor.prepareResourceGroup;
+import static io.datafibre.fibre.qe.CoordinatorPreprocessor.genQueryGlobals;
+import static io.datafibre.fibre.qe.CoordinatorPreprocessor.prepareResourceGroup;
 
 public class JobSpec {
 

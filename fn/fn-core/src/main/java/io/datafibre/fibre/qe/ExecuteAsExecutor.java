@@ -16,7 +16,7 @@
 package io.datafibre.fibre.qe;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.sql.ast.ExecuteAsStmt;
+import io.datafibre.fibre.sql.ast.ExecuteAsStmt;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

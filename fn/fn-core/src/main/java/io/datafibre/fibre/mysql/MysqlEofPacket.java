@@ -17,7 +17,7 @@
 
 package io.datafibre.fibre.mysql;
 
-import com.starrocks.qe.QueryState;
+import io.datafibre.fibre.qe.QueryState;
 
 // MySQL protocol EOF packet
 public class MysqlEofPacket extends MysqlPacket {

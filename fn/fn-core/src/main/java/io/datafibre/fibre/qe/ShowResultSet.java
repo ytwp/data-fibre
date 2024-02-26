@@ -35,12 +35,12 @@
 package io.datafibre.fibre.qe;
 
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.thrift.TColumnDefinition;
-import com.starrocks.thrift.TShowResultSet;
-import com.starrocks.thrift.TShowResultSetMetaData;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.thrift.TColumnDefinition;
+import io.datafibre.fibre.thrift.TShowResultSet;
+import io.datafibre.fibre.thrift.TShowResultSetMetaData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

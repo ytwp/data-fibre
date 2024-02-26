@@ -33,12 +33,12 @@
 // under the License.
 package io.datafibre.fibre.mysql.nio;
 
-import com.starrocks.common.util.LogUtil;
-import com.starrocks.mysql.MysqlProto;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.ConnectProcessor;
-import com.starrocks.qe.ConnectScheduler;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.common.util.LogUtil;
+import io.datafibre.fibre.mysql.MysqlProto;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.ConnectProcessor;
+import io.datafibre.fibre.qe.ConnectScheduler;
+import io.datafibre.fibre.server.GlobalStateMgr;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xnio.ChannelListener;

@@ -18,8 +18,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializer;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.persist.gson.GsonUtils;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.persist.gson.GsonUtils;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;

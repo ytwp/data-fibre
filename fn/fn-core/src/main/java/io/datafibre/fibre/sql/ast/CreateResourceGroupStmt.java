@@ -15,13 +15,13 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.analysis.Predicate;
-import com.starrocks.catalog.ResourceGroup;
-import com.starrocks.catalog.ResourceGroupClassifier;
-import com.starrocks.sql.analyzer.ResourceGroupAnalyzer;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.parser.NodePosition;
-import com.starrocks.thrift.TWorkGroupType;
+import io.datafibre.fibre.analysis.Predicate;
+import io.datafibre.fibre.catalog.ResourceGroup;
+import io.datafibre.fibre.catalog.ResourceGroupClassifier;
+import io.datafibre.fibre.sql.analyzer.ResourceGroupAnalyzer;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.parser.NodePosition;
+import io.datafibre.fibre.thrift.TWorkGroupType;
 
 import java.util.ArrayList;
 import java.util.List;

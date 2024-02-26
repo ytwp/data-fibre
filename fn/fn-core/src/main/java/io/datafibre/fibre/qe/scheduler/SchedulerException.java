@@ -14,7 +14,7 @@
 
 package io.datafibre.fibre.qe.scheduler;
 
-import com.starrocks.common.UserException;
+import io.datafibre.fibre.common.UserException;
 
 public class SchedulerException extends UserException {
     public SchedulerException(String msg) {

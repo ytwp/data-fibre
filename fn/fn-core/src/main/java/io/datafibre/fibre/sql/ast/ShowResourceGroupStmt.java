@@ -15,9 +15,9 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.catalog.ResourceGroup;
-import com.starrocks.qe.ShowResultSetMetaData;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.catalog.ResourceGroup;
+import io.datafibre.fibre.qe.ShowResultSetMetaData;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 // Show ResourceGroups
 // 1. Show ResourceGroup specified by name

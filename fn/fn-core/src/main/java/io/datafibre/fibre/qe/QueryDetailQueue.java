@@ -35,7 +35,7 @@
 package io.datafibre.fibre.qe;
 
 import com.google.common.collect.Lists;
-import com.starrocks.common.Config;
+import io.datafibre.fibre.common.Config;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;

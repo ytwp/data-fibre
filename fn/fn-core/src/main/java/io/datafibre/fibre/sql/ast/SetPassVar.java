@@ -14,7 +14,7 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 public class SetPassVar extends SetListItem {
     private UserIdentity userIdent;

@@ -15,11 +15,11 @@
 package io.datafibre.fibre.sql.ast;
 
 import com.google.common.collect.Sets;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.Parameter;
-import com.starrocks.analysis.TableName;
-import com.starrocks.catalog.Table;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.Parameter;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.List;
 import java.util.Set;

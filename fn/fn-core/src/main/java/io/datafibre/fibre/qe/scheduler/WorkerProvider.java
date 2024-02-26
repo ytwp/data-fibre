@@ -14,8 +14,8 @@
 
 package io.datafibre.fibre.qe.scheduler;
 
-import com.starrocks.system.ComputeNode;
-import com.starrocks.system.SystemInfoService;
+import io.datafibre.fibre.system.ComputeNode;
+import io.datafibre.fibre.system.SystemInfoService;
 
 import java.util.Collection;
 import java.util.List;

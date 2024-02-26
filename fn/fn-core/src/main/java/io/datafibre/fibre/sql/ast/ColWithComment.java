@@ -15,9 +15,9 @@
 package io.datafibre.fibre.sql.ast;
 
 import com.google.common.base.Strings;
-import com.starrocks.analysis.ParseNode;
-import com.starrocks.sql.analyzer.FeNameFormat;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.ParseNode;
+import io.datafibre.fibre.sql.analyzer.FeNameFormat;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 public class ColWithComment implements ParseNode {
     private final String colName;

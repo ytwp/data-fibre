@@ -19,7 +19,7 @@ package io.datafibre.fibre.common.util;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
-import com.starrocks.common.AnalysisException;
+import io.datafibre.fibre.common.AnalysisException;
 import org.apache.commons.lang3.StringUtils;
 
 import java.nio.charset.StandardCharsets;

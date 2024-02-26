@@ -17,15 +17,15 @@ package io.datafibre.fibre.sql.ast;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
-import com.starrocks.analysis.LabelName;
-import com.starrocks.analysis.ParseNode;
-import com.starrocks.analysis.RoutineLoadDataSourceProperties;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.UserException;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.common.util.Util;
-import com.starrocks.load.RoutineLoadDesc;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.LabelName;
+import io.datafibre.fibre.analysis.ParseNode;
+import io.datafibre.fibre.analysis.RoutineLoadDataSourceProperties;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.common.util.Util;
+import io.datafibre.fibre.load.RoutineLoadDesc;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.List;
 import java.util.Map;

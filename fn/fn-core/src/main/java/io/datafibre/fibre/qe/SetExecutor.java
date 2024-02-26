@@ -34,10 +34,10 @@
 
 package io.datafibre.fibre.qe;
 
-import com.starrocks.authentication.UserAuthenticationInfo;
-import com.starrocks.common.DdlException;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.*;
+import io.datafibre.fibre.authentication.UserAuthenticationInfo;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.*;
 
 // Set executor
 public class SetExecutor {

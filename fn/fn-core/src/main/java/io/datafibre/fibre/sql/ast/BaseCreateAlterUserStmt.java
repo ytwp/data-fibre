@@ -14,9 +14,9 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.analysis.UserDesc;
-import com.starrocks.authentication.UserAuthenticationInfo;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.UserDesc;
+import io.datafibre.fibre.authentication.UserAuthenticationInfo;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.List;
 

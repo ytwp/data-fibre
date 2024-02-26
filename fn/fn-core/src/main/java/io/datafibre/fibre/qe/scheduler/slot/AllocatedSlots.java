@@ -14,7 +14,7 @@
 
 package io.datafibre.fibre.qe.scheduler.slot;
 
-import com.starrocks.thrift.TUniqueId;
+import io.datafibre.fibre.thrift.TUniqueId;
 
 import java.util.*;
 

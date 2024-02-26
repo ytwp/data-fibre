@@ -19,7 +19,7 @@ package io.datafibre.fibre.qe;
 
 import com.google.common.collect.Multiset;
 import com.google.common.collect.TreeMultiset;
-import com.starrocks.common.DdlException;
+import io.datafibre.fibre.common.DdlException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

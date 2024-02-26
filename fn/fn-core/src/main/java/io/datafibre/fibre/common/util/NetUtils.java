@@ -35,7 +35,7 @@
 package io.datafibre.fibre.common.util;
 
 import com.google.common.base.Strings;
-import com.starrocks.common.Pair;
+import io.datafibre.fibre.common.Pair;
 import org.apache.commons.validator.routines.InetAddressValidator;
 
 import java.io.IOException;

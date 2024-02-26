@@ -14,7 +14,7 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.catalog.Type;
+import io.datafibre.fibre.catalog.Type;
 
 import java.util.Map;
 

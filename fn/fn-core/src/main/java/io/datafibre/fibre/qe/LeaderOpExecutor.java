@@ -35,21 +35,21 @@
 package io.datafibre.fibre.qe;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.analysis.RedirectStatus;
-import com.starrocks.common.*;
-import com.starrocks.common.util.AuditStatisticsUtil;
-import com.starrocks.common.util.UUIDUtil;
-import com.starrocks.mysql.MysqlChannel;
-import com.starrocks.qe.QueryState.MysqlStateType;
-import com.starrocks.rpc.FrontendServiceProxy;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.analyzer.AstToSQLBuilder;
-import com.starrocks.sql.ast.SetListItem;
-import com.starrocks.sql.ast.SetStmt;
-import com.starrocks.sql.ast.StatementBase;
-import com.starrocks.sql.ast.SystemVariable;
-import com.starrocks.system.SystemInfoService;
-import com.starrocks.thrift.*;
+import io.datafibre.fibre.analysis.RedirectStatus;
+import io.datafibre.fibre.common.*;
+import io.datafibre.fibre.common.util.AuditStatisticsUtil;
+import io.datafibre.fibre.common.util.UUIDUtil;
+import io.datafibre.fibre.mysql.MysqlChannel;
+import io.datafibre.fibre.qe.QueryState.MysqlStateType;
+import io.datafibre.fibre.rpc.FrontendServiceProxy;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.analyzer.AstToSQLBuilder;
+import io.datafibre.fibre.sql.ast.SetListItem;
+import io.datafibre.fibre.sql.ast.SetStmt;
+import io.datafibre.fibre.sql.ast.StatementBase;
+import io.datafibre.fibre.sql.ast.SystemVariable;
+import io.datafibre.fibre.system.SystemInfoService;
+import io.datafibre.fibre.thrift.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

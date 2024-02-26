@@ -15,8 +15,8 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.analysis.LabelName;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.LabelName;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 /*
   Pause routine load by name

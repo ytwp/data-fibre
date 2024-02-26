@@ -15,10 +15,10 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.analysis.FunctionName;
-import com.starrocks.analysis.ParseNode;
-import com.starrocks.common.Pair;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.FunctionName;
+import io.datafibre.fibre.analysis.ParseNode;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.List;
 

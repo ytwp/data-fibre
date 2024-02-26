@@ -17,7 +17,7 @@ package io.datafibre.fibre.sql.common;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
-import com.starrocks.catalog.PartitionKey;
+import io.datafibre.fibre.catalog.PartitionKey;
 
 import java.util.Map;
 import java.util.Set;

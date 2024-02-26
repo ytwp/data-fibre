@@ -14,10 +14,10 @@
 
 package io.datafibre.fibre.common.util;
 
-import com.starrocks.common.NoAliveBackendException;
-import com.starrocks.common.UserException;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.server.RunMode;
+import io.datafibre.fibre.common.NoAliveBackendException;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.server.RunMode;
 
 public class AutoInferUtil {
     public static int calDefaultReplicationNum() throws UserException {

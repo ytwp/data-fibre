@@ -14,8 +14,8 @@
 
 package io.datafibre.fibre.sql.common;
 
-import com.starrocks.analysis.ParseNode;
-import com.starrocks.sql.ast.*;
+import io.datafibre.fibre.analysis.ParseNode;
+import io.datafibre.fibre.sql.ast.*;
 
 public class DebugRelationTracer extends AstVisitor<String, String> {
     @Override

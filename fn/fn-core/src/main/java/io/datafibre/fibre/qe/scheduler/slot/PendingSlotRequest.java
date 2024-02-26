@@ -14,8 +14,8 @@
 
 package io.datafibre.fibre.qe.scheduler.slot;
 
-import com.starrocks.qe.scheduler.RecoverableException;
-import com.starrocks.thrift.TNetworkAddress;
+import io.datafibre.fibre.qe.scheduler.RecoverableException;
+import io.datafibre.fibre.thrift.TNetworkAddress;
 
 import java.util.concurrent.CompletableFuture;
 

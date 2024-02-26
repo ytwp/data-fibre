@@ -14,10 +14,10 @@
 package io.datafibre.fibre.common.util;
 
 import com.google.common.collect.Lists;
-import com.starrocks.proto.PQueryStatistics;
-import com.starrocks.proto.QueryStatisticsItemPB;
-import com.starrocks.thrift.TAuditStatistics;
-import com.starrocks.thrift.TAuditStatisticsItem;
+import io.datafibre.fibre.proto.PQueryStatistics;
+import io.datafibre.fibre.proto.QueryStatisticsItemPB;
+import io.datafibre.fibre.thrift.TAuditStatistics;
+import io.datafibre.fibre.thrift.TAuditStatisticsItem;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.Map;

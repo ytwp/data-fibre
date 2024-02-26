@@ -16,14 +16,14 @@ package io.datafibre.fibre.common.util.concurrent.lock;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.starrocks.catalog.Database;
-import com.starrocks.common.Config;
-import com.starrocks.common.ErrorCode;
-import com.starrocks.common.ErrorReportException;
-import com.starrocks.common.util.LogUtil;
-import com.starrocks.common.util.Util;
-import com.starrocks.common.util.concurrent.QueryableReentrantReadWriteLock;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.ErrorCode;
+import io.datafibre.fibre.common.ErrorReportException;
+import io.datafibre.fibre.common.util.LogUtil;
+import io.datafibre.fibre.common.util.Util;
+import io.datafibre.fibre.common.util.concurrent.QueryableReentrantReadWriteLock;
+import io.datafibre.fibre.server.GlobalStateMgr;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

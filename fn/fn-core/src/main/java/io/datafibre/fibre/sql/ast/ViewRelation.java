@@ -14,9 +14,9 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.analysis.TableName;
-import com.starrocks.catalog.View;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.catalog.View;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 public class ViewRelation extends Relation {
     private final TableName name;

@@ -17,18 +17,18 @@ package io.datafibre.fibre.qe.scheduler.dag;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.common.util.DebugUtil;
-import com.starrocks.planner.*;
-import com.starrocks.qe.ColocatedBackendSelector;
-import com.starrocks.qe.CoordinatorPreprocessor;
-import com.starrocks.qe.FragmentScanRangeAssignment;
-import com.starrocks.qe.scheduler.ExplainBuilder;
-import com.starrocks.thrift.*;
+import io.datafibre.fibre.common.util.DebugUtil;
+import io.datafibre.fibre.planner.*;
+import io.datafibre.fibre.qe.ColocatedBackendSelector;
+import io.datafibre.fibre.qe.CoordinatorPreprocessor;
+import io.datafibre.fibre.qe.FragmentScanRangeAssignment;
+import io.datafibre.fibre.qe.scheduler.ExplainBuilder;
+import io.datafibre.fibre.thrift.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.starrocks.qe.scheduler.dag.FragmentInstance.ABSENT_DRIVER_SEQUENCE;
+import static io.datafibre.fibre.qe.scheduler.dag.FragmentInstance.ABSENT_DRIVER_SEQUENCE;
 
 /**
  * An {@code ExecutionFragment} is a part of the {@link ExecutionDAG}, and it corresponds one-to-one with a {@link PlanFragment}.

@@ -36,13 +36,13 @@ package io.datafibre.fibre.qe;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.starrocks.catalog.MvId;
-import com.starrocks.common.Config;
-import com.starrocks.common.UserException;
-import com.starrocks.common.util.DebugUtil;
-import com.starrocks.memory.MemoryTrackable;
-import com.starrocks.qe.scheduler.Coordinator;
-import com.starrocks.thrift.*;
+import io.datafibre.fibre.catalog.MvId;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.util.DebugUtil;
+import io.datafibre.fibre.memory.MemoryTrackable;
+import io.datafibre.fibre.qe.scheduler.Coordinator;
+import io.datafibre.fibre.thrift.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.spark.util.SizeEstimator;
@@ -53,7 +53,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
-import static com.starrocks.mysql.MysqlCommand.COM_STMT_EXECUTE;
+import static io.datafibre.fibre.mysql.MysqlCommand.COM_STMT_EXECUTE;
 
 public final class QeProcessorImpl implements QeProcessor, MemoryTrackable {
 

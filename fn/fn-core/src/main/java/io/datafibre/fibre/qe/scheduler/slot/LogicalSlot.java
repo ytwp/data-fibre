@@ -14,12 +14,12 @@
 
 package io.datafibre.fibre.qe.scheduler.slot;
 
-import com.starrocks.catalog.ResourceGroup;
-import com.starrocks.common.util.DebugUtil;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.qe.GlobalVariable;
-import com.starrocks.thrift.TResourceLogicalSlot;
-import com.starrocks.thrift.TUniqueId;
+import io.datafibre.fibre.catalog.ResourceGroup;
+import io.datafibre.fibre.common.util.DebugUtil;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.qe.GlobalVariable;
+import io.datafibre.fibre.thrift.TResourceLogicalSlot;
+import io.datafibre.fibre.thrift.TUniqueId;
 
 /**
  * A logical slot represents resources which is required by a query from the {@link SlotManager}.

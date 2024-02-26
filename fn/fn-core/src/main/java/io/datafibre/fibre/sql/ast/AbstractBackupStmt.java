@@ -17,9 +17,9 @@ package io.datafibre.fibre.sql.ast;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.analysis.LabelName;
-import com.starrocks.analysis.TableRef;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.LabelName;
+import io.datafibre.fibre.analysis.TableRef;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.List;
 import java.util.Map;

@@ -14,12 +14,12 @@
 
 package io.datafibre.fibre.sql.common;
 
-import com.starrocks.catalog.*;
-import com.starrocks.sql.optimizer.operator.Operator;
-import com.starrocks.sql.optimizer.operator.OperatorVisitor;
-import com.starrocks.sql.optimizer.operator.logical.*;
-import com.starrocks.sql.optimizer.operator.physical.*;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.catalog.*;
+import io.datafibre.fibre.sql.optimizer.operator.Operator;
+import io.datafibre.fibre.sql.optimizer.operator.OperatorVisitor;
+import io.datafibre.fibre.sql.optimizer.operator.logical.*;
+import io.datafibre.fibre.sql.optimizer.operator.physical.*;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

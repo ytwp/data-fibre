@@ -15,8 +15,8 @@
 package io.datafibre.fibre.sql.common;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.common.FeConstants;
-import com.starrocks.persist.gson.GsonUtils;
+import io.datafibre.fibre.common.FeConstants;
+import io.datafibre.fibre.persist.gson.GsonUtils;
 
 public class QueryDebugOptions {
     private static QueryDebugOptions INSTANCE = new QueryDebugOptions();

@@ -15,8 +15,8 @@
 package io.datafibre.fibre.sql.parser;
 
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.HintNode;
-import com.starrocks.qe.SessionVariable;
+import io.datafibre.fibre.analysis.HintNode;
+import io.datafibre.fibre.qe.SessionVariable;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;

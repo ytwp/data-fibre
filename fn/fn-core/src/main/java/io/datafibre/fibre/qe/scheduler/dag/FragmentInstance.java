@@ -15,13 +15,13 @@
 package io.datafibre.fibre.qe.scheduler.dag;
 
 import com.google.common.collect.Maps;
-import com.starrocks.common.util.DebugUtil;
-import com.starrocks.planner.*;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.scheduler.ExplainBuilder;
-import com.starrocks.sql.optimizer.Utils;
-import com.starrocks.system.ComputeNode;
-import com.starrocks.thrift.*;
+import io.datafibre.fibre.common.util.DebugUtil;
+import io.datafibre.fibre.planner.*;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.scheduler.ExplainBuilder;
+import io.datafibre.fibre.sql.optimizer.Utils;
+import io.datafibre.fibre.system.ComputeNode;
+import io.datafibre.fibre.thrift.*;
 
 import java.util.*;
 import java.util.stream.Collectors;

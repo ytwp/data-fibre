@@ -18,9 +18,9 @@
 package io.datafibre.fibre.qe;
 
 import com.google.common.collect.Lists;
-import com.starrocks.common.util.RuntimeProfile;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.thrift.TUniqueId;
+import io.datafibre.fibre.common.util.RuntimeProfile;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TUniqueId;
 
 import java.util.List;
 

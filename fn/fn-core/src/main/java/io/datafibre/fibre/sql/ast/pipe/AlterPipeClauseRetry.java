@@ -15,7 +15,7 @@
 package io.datafibre.fibre.sql.ast.pipe;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 /**
  * ALTER PIPE <pipe>

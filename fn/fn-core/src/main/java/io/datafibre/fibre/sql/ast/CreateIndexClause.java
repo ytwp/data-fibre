@@ -15,10 +15,10 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.alter.AlterOpType;
-import com.starrocks.analysis.IndexDef;
-import com.starrocks.catalog.Index;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.alter.AlterOpType;
+import io.datafibre.fibre.analysis.IndexDef;
+import io.datafibre.fibre.catalog.Index;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 public class CreateIndexClause extends AlterTableClause {
     // index definition class

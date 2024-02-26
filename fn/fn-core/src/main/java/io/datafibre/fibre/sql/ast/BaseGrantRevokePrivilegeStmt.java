@@ -15,12 +15,12 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.analysis.FunctionName;
-import com.starrocks.common.Pair;
-import com.starrocks.privilege.ObjectType;
-import com.starrocks.privilege.PEntryObject;
-import com.starrocks.privilege.PrivilegeType;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.FunctionName;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.privilege.ObjectType;
+import io.datafibre.fibre.privilege.PEntryObject;
+import io.datafibre.fibre.privilege.PrivilegeType;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.List;
 

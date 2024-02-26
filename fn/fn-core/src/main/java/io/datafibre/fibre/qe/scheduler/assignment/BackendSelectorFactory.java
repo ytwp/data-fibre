@@ -14,11 +14,11 @@
 
 package io.datafibre.fibre.qe.scheduler.assignment;
 
-import com.starrocks.planner.*;
-import com.starrocks.qe.*;
-import com.starrocks.qe.scheduler.WorkerProvider;
-import com.starrocks.qe.scheduler.dag.ExecutionFragment;
-import com.starrocks.thrift.TScanRangeLocations;
+import io.datafibre.fibre.planner.*;
+import io.datafibre.fibre.qe.*;
+import io.datafibre.fibre.qe.scheduler.WorkerProvider;
+import io.datafibre.fibre.qe.scheduler.dag.ExecutionFragment;
+import io.datafibre.fibre.thrift.TScanRangeLocations;
 
 import java.util.List;
 import java.util.Set;

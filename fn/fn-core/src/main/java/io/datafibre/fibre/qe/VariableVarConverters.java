@@ -18,7 +18,7 @@
 package io.datafibre.fibre.qe;
 
 import com.google.common.collect.Maps;
-import com.starrocks.common.DdlException;
+import io.datafibre.fibre.common.DdlException;
 
 import java.util.Map;
 

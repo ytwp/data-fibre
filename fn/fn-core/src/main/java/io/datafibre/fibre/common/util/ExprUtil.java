@@ -13,9 +13,9 @@
 // limitations under the License.
 package io.datafibre.fibre.common.util;
 
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.IntLiteral;
-import com.starrocks.analysis.LargeIntLiteral;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.IntLiteral;
+import io.datafibre.fibre.analysis.LargeIntLiteral;
 
 public abstract class ExprUtil {
     public static boolean isPositiveConstantInteger(Expr expr) {

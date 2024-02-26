@@ -35,11 +35,11 @@
 package io.datafibre.fibre.qe;
 
 import com.google.common.collect.ImmutableMap;
-import com.starrocks.common.ErrorCode;
-import com.starrocks.mysql.MysqlEofPacket;
-import com.starrocks.mysql.MysqlErrPacket;
-import com.starrocks.mysql.MysqlOkPacket;
-import com.starrocks.mysql.MysqlPacket;
+import io.datafibre.fibre.common.ErrorCode;
+import io.datafibre.fibre.mysql.MysqlEofPacket;
+import io.datafibre.fibre.mysql.MysqlErrPacket;
+import io.datafibre.fibre.mysql.MysqlOkPacket;
+import io.datafibre.fibre.mysql.MysqlPacket;
 
 // query state used to record state of query, maybe query status is better
 public class QueryState {

@@ -14,9 +14,9 @@
 
 package io.datafibre.fibre.sql.ast.pipe;
 
-import com.starrocks.sql.ast.AstVisitor;
-import com.starrocks.sql.ast.DdlStmt;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.sql.ast.AstVisitor;
+import io.datafibre.fibre.sql.ast.DdlStmt;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 public class DropPipeStmt extends DdlStmt {
 

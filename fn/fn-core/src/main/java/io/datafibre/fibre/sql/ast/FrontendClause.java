@@ -15,9 +15,9 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.alter.AlterOpType;
-import com.starrocks.ha.FrontendNodeType;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.alter.AlterOpType;
+import io.datafibre.fibre.ha.FrontendNodeType;
+import io.datafibre.fibre.sql.parser.NodePosition;
 import org.apache.commons.lang.NotImplementedException;
 
 import java.util.Map;
