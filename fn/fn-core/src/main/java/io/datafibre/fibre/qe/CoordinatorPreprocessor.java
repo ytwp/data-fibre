@@ -299,7 +299,7 @@ public class CoordinatorPreprocessor {
 
         if (resourceGroup != null) {
             connect.getAuditEventBuilder().setResourceGroup(resourceGroup.getName());
-            connect.setResourceGroup(resourceGroup);
+//            connect.setResourceGroup(resourceGroup);
         } else {
             connect.getAuditEventBuilder().setResourceGroup(ResourceGroup.DEFAULT_RESOURCE_GROUP_NAME);
         }

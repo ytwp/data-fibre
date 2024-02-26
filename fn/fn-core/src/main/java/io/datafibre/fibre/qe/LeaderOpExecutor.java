@@ -94,28 +94,28 @@ public class LeaderOpExecutor {
 
     public void execute() throws Exception {
         forward();
-        LOG.info("forwarding to master get result max journal id: {}", result.maxJournalId);
-        ctx.getGlobalStateMgr().getJournalObservable().waitOn(result.maxJournalId, waitTimeoutMs);
-
-        if (result.state != null) {
-            MysqlStateType state = MysqlStateType.fromString(result.state);
-            if (state != null) {
-                ctx.getState().setStateType(state);
-                if (state == MysqlStateType.EOF || state == MysqlStateType.OK) {
-                    afterForward();
-                }
-            }
-        }
-
-        if (result.isSetResource_group_name()) {
-            ctx.getAuditEventBuilder().setResourceGroup(result.getResource_group_name());
-        }
-        if (result.isSetAudit_statistics()) {
-            TAuditStatistics tAuditStatistics = result.getAudit_statistics();
-            if (ctx.getExecutor() != null) {
-                ctx.getExecutor().setQueryStatistics(AuditStatisticsUtil.toProtobuf(tAuditStatistics));
-            }
-        }
+//        LOG.info("forwarding to master get result max journal id: {}", result.maxJournalId);
+//        ctx.getGlobalStateMgr().getJournalObservable().waitOn(result.maxJournalId, waitTimeoutMs);
+//
+//        if (result.state != null) {
+//            MysqlStateType state = MysqlStateType.fromString(result.state);
+//            if (state != null) {
+//                ctx.getState().setStateType(state);
+//                if (state == MysqlStateType.EOF || state == MysqlStateType.OK) {
+//                    afterForward();
+//                }
+//            }
+//        }
+//
+//        if (result.isSetResource_group_name()) {
+//            ctx.getAuditEventBuilder().setResourceGroup(result.getResource_group_name());
+//        }
+//        if (result.isSetAudit_statistics()) {
+//            TAuditStatistics tAuditStatistics = result.getAudit_statistics();
+//            if (ctx.getExecutor() != null) {
+//                ctx.getExecutor().setQueryStatistics(AuditStatisticsUtil.toProtobuf(tAuditStatistics));
+//            }
+//        }
     }
 
     private void afterForward() throws DdlException {

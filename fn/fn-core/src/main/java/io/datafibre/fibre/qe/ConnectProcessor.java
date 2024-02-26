@@ -282,7 +282,7 @@ public class ConnectProcessor {
         }
         queryDetail.setEndTime(endTime);
         queryDetail.setLatency(elapseMs);
-        queryDetail.setResourceGroupName(ctx.getResourceGroup() != null ? ctx.getResourceGroup().getName() : "");
+//        queryDetail.setResourceGroupName(ctx.getResourceGroup() != null ? ctx.getResourceGroup().getName() : "");
         // add execution statistics into queryDetail
         queryDetail.setReturnRows(ctx.getReturnRows());
         queryDetail.setDigest(ctx.getAuditEventBuilder().build().digest);
@@ -310,21 +310,21 @@ public class ConnectProcessor {
         }
 
         boolean isQuery = parsedStmt instanceof QueryStatement;
-        QueryDetail queryDetail = new QueryDetail(
-                DebugUtil.printId(ctx.getQueryId()),
-                isQuery,
-                ctx.connectionId,
-                ctx.getMysqlChannel() != null ?
-                        ctx.getMysqlChannel().getRemoteIp() : "System",
-                ctx.getStartTime(), -1, -1,
-                QueryDetail.QueryMemState.RUNNING,
-                ctx.getDatabase(),
-                sql,
-                ctx.getQualifiedUser(),
-                Optional.ofNullable(ctx.getResourceGroup()).map(TWorkGroup::getName).orElse(""));
-        ctx.setQueryDetail(queryDetail);
-        // copy queryDetail, cause some properties can be changed in future
-        QueryDetailQueue.addQueryDetail(queryDetail.copy());
+//        QueryDetail queryDetail = new QueryDetail(
+//                DebugUtil.printId(ctx.getQueryId()),
+//                isQuery,
+//                ctx.connectionId,
+//                ctx.getMysqlChannel() != null ?
+//                        ctx.getMysqlChannel().getRemoteIp() : "System",
+//                ctx.getStartTime(), -1, -1,
+//                QueryDetail.QueryMemState.RUNNING,
+//                ctx.getDatabase(),
+//                sql,
+//                ctx.getQualifiedUser(),
+//                Optional.ofNullable(ctx.getResourceGroup()).map(TWorkGroup::getName).orElse(""));
+//        ctx.setQueryDetail(queryDetail);
+//        // copy queryDetail, cause some properties can be changed in future
+//        QueryDetailQueue.addQueryDetail(queryDetail.copy());
     }
 
     // process COM_QUERY statement,
@@ -574,7 +574,7 @@ public class ConnectProcessor {
         }
         ctx.setCommand(command);
         ctx.setStartTime();
-        ctx.setResourceGroup(null);
+//        ctx.setResourceGroup(null);
         ctx.setErrorCode("");
 
         switch (command) {

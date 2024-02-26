@@ -16,14 +16,10 @@ package io.datafibre.fibre.qe;
 
 import io.datafibre.fibre.common.Pair;
 import io.datafibre.fibre.common.UserException;
-import io.datafibre.fibre.metric.MetricRepo;
-import io.datafibre.fibre.metric.ResourceGroupMetricMgr;
 import io.datafibre.fibre.qe.scheduler.RecoverableException;
 import io.datafibre.fibre.qe.scheduler.dag.JobSpec;
 import io.datafibre.fibre.qe.scheduler.slot.LogicalSlot;
 import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.system.Frontend;
-import io.datafibre.fibre.thrift.TWorkGroup;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -34,7 +30,7 @@ public class QueryQueueManager {
 
     private static final String PENDING_TIMEOUT_ERROR_MSG_FORMAT =
             "Failed to allocate resource to query: pending timeout [%d], " +
-                    "you could modify the session variable [%s] to pending more time";
+            "you could modify the session variable [%s] to pending more time";
 
     private static class SingletonHolder {
         private static final QueryQueueManager INSTANCE = new QueryQueueManager();
@@ -53,81 +49,81 @@ public class QueryQueueManager {
         long startMs = System.currentTimeMillis();
         boolean isPending = false;
         try {
-            LogicalSlot slotRequirement = createSlot(coord);
-            coord.setSlot(slotRequirement);
+//            LogicalSlot slotRequirement = createSlot(coord);
+//            coord.setSlot(slotRequirement);
 
             isPending = true;
             context.setPending(true);
-            MetricRepo.COUNTER_QUERY_QUEUE_PENDING.increase(1L);
-            MetricRepo.COUNTER_QUERY_QUEUE_TOTAL.increase(1L);
-            ResourceGroupMetricMgr.increaseQueuedQuery(context, 1L);
+//            MetricRepo.COUNTER_QUERY_QUEUE_PENDING.increase(1L);
+//            MetricRepo.COUNTER_QUERY_QUEUE_TOTAL.increase(1L);
+//            ResourceGroupMetricMgr.increaseQueuedQuery(context, 1L);
 
-            long timeoutMs = slotRequirement.getExpiredPendingTimeMs();
+//            long timeoutMs = slotRequirement.getExpiredPendingTimeMs();
             LogicalSlot allocatedSlot = null;
             while (allocatedSlot == null) {
                 // Check timeout.
                 long currentMs = System.currentTimeMillis();
-                if (currentMs >= timeoutMs) {
-                    MetricRepo.COUNTER_QUERY_QUEUE_TIMEOUT.increase(1L);
-                    GlobalStateMgr.getCurrentState().getSlotProvider().cancelSlotRequirement(slotRequirement);
-                    String errMsg = String.format(PENDING_TIMEOUT_ERROR_MSG_FORMAT,
-                            GlobalVariable.getQueryQueuePendingTimeoutSecond(),
-                            GlobalVariable.QUERY_QUEUE_PENDING_TIMEOUT_SECOND);
-                    ResourceGroupMetricMgr.increaseTimeoutQueuedQuery(context, 1L);
-                    throw new UserException(errMsg);
-                }
+//                if (currentMs >= timeoutMs) {
+//                    MetricRepo.COUNTER_QUERY_QUEUE_TIMEOUT.increase(1L);
+//                    GlobalStateMgr.getCurrentState().getSlotProvider().cancelSlotRequirement(slotRequirement);
+//                    String errMsg = String.format(PENDING_TIMEOUT_ERROR_MSG_FORMAT,
+//                            GlobalVariable.getQueryQueuePendingTimeoutSecond(),
+//                            GlobalVariable.QUERY_QUEUE_PENDING_TIMEOUT_SECOND);
+//                    ResourceGroupMetricMgr.increaseTimeoutQueuedQuery(context, 1L);
+//                    throw new UserException(errMsg);
+//                }
 
-                Future<LogicalSlot> slotFuture = GlobalStateMgr.getCurrentState().getSlotProvider().requireSlot(slotRequirement);
+//                Future<LogicalSlot> slotFuture = GlobalStateMgr.getCurrentState().getSlotProvider().requireSlot(slotRequirement);
 
                 // Wait for slot allocated.
                 try {
-                    allocatedSlot = slotFuture.get(timeoutMs - currentMs, TimeUnit.MILLISECONDS);
-                } catch (ExecutionException e) {
-                    LOG.warn("[Slot] failed to allocate resource to query [slot={}]", slotRequirement, e);
-                    if (e.getCause() instanceof RecoverableException) {
-                        continue;
-                    }
-                    throw new UserException("Failed to allocate resource to query: " + e.getMessage(), e);
-                } catch (TimeoutException e) {
+//                    allocatedSlot = slotFuture.get(timeoutMs - currentMs, TimeUnit.MILLISECONDS);
+//                } catch (ExecutionException e) {
+//                    LOG.warn("[Slot] failed to allocate resource to query [slot={}]", slotRequirement, e);
+//                    if (e.getCause() instanceof RecoverableException) {
+//                        continue;
+//                    }
+//                    throw new UserException("Failed to allocate resource to query: " + e.getMessage(), e);
+//                } catch (TimeoutException e) {
                     // Check timeout in the next loop.
                 } catch (CancellationException e) {
                     throw new UserException("Cancelled");
                 }
             }
         } finally {
-            if (isPending) {
-                context.auditEventBuilder.setPendingTimeMs(System.currentTimeMillis() - startMs);
-                MetricRepo.COUNTER_QUERY_QUEUE_PENDING.increase(-1L);
-                ResourceGroupMetricMgr.increaseQueuedQuery(context, -1L);
-                context.setPending(false);
-            }
+//            if (isPending) {
+//                context.auditEventBuilder.setPendingTimeMs(System.currentTimeMillis() - startMs);
+//                MetricRepo.COUNTER_QUERY_QUEUE_PENDING.increase(-1L);
+//                ResourceGroupMetricMgr.increaseQueuedQuery(context, -1L);
+//                context.setPending(false);
+//            }
         }
     }
 
-    private LogicalSlot createSlot(DefaultCoordinator coord) throws UserException {
-        Pair<String, Integer> selfIpAndPort = GlobalStateMgr.getCurrentState().getNodeMgr().getSelfIpAndRpcPort();
-        Frontend frontend = GlobalStateMgr.getCurrentState().getNodeMgr().getFeByHost(selfIpAndPort.first);
-        if (frontend == null) {
-            throw new UserException("cannot get frontend from the local host: " + selfIpAndPort.first);
-        }
-
-        TWorkGroup group = coord.getJobSpec().getResourceGroup();
-        long groupId = group == null ? LogicalSlot.ABSENT_GROUP_ID : group.getId();
-
-        long nowMs = System.currentTimeMillis();
-        long queryTimeoutSecond = coord.getJobSpec().getQueryOptions().getQuery_timeout();
-        long expiredPendingTimeMs =
-                nowMs + Math.min(GlobalVariable.getQueryQueuePendingTimeoutSecond(), queryTimeoutSecond) * 1000L;
-        long expiredAllocatedTimeMs = nowMs + queryTimeoutSecond * 1000L;
-
-        int numFragments = coord.getFragments().size();
-        int pipelineDop = coord.getJobSpec().getQueryOptions().getPipeline_dop();
-        if (!coord.getJobSpec().isStatisticsJob() && !coord.isLoadType()
-                && ConnectContext.get() != null && ConnectContext.get().getSessionVariable().isEnablePipelineAdaptiveDop()) {
-            pipelineDop = 0;
-        }
-
-        return new LogicalSlot(coord.getQueryId(), frontend.getNodeName(), groupId, 1, expiredPendingTimeMs,
-                expiredAllocatedTimeMs, frontend.getStartTime(), numFragments, pipelineDop);
-    }
+//    private LogicalSlot createSlot(DefaultCoordinator coord) throws UserException {
+//        Pair<String, Integer> selfIpAndPort = GlobalStateMgr.getCurrentState().getNodeMgr().getSelfIpAndRpcPort();
+//        Frontend frontend = GlobalStateMgr.getCurrentState().getNodeMgr().getFeByHost(selfIpAndPort.first);
+//        if (frontend == null) {
+//            throw new UserException("cannot get frontend from the local host: " + selfIpAndPort.first);
+//        }
+//
+//        TWorkGroup group = coord.getJobSpec().getResourceGroup();
+//        long groupId = group == null ? LogicalSlot.ABSENT_GROUP_ID : group.getId();
+//
+//        long nowMs = System.currentTimeMillis();
+//        long queryTimeoutSecond = coord.getJobSpec().getQueryOptions().getQuery_timeout();
+//        long expiredPendingTimeMs =
+//                nowMs + Math.min(GlobalVariable.getQueryQueuePendingTimeoutSecond(), queryTimeoutSecond) * 1000L;
+//        long expiredAllocatedTimeMs = nowMs + queryTimeoutSecond * 1000L;
+//
+//        int numFragments = coord.getFragments().size();
+//        int pipelineDop = coord.getJobSpec().getQueryOptions().getPipeline_dop();
+//        if (!coord.getJobSpec().isStatisticsJob() && !coord.isLoadType()
+//            && ConnectContext.get() != null && ConnectContext.get().getSessionVariable().isEnablePipelineAdaptiveDop()) {
+//            pipelineDop = 0;
+//        }
+//
+//        return new LogicalSlot(coord.getQueryId(), frontend.getNodeName(), groupId, 1, expiredPendingTimeMs,
+//                expiredAllocatedTimeMs, frontend.getStartTime(), numFragments, pipelineDop);
+//    }
 }

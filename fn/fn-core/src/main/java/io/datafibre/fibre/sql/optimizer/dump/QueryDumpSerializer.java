@@ -58,8 +58,8 @@ public class QueryDumpSerializer implements JsonSerializer<QueryDumpInfo> {
 
         // BE number
         ConnectContext ctx = ConnectContext.get();
-        long beNum = ctx.getAliveBackendNumber();
-        dumpJson.addProperty("be_number", beNum);
+//        long beNum = ctx.getAliveBackendNumber();
+//        dumpJson.addProperty("be_number", beNum);
         // backend core stat
         JsonObject backendCoreStat = new JsonObject();
         backendCoreStat.addProperty("numOfHardwareCoresPerBe",
