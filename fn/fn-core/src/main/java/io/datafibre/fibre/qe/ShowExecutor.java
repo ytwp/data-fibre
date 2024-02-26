@@ -109,7 +109,10 @@ import java.util.stream.Collectors;
 
 import static io.datafibre.fibre.catalog.Table.TableType.JDBC;
 
-// Execute one show statement.
+/**
+ * Execute one show statement.
+ * 执行 show statement
+ */
 public class ShowExecutor {
     private static final Logger LOG = LogManager.getLogger(ShowExecutor.class);
     private static final List<List<String>> EMPTY_SET = Lists.newArrayList();

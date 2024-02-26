@@ -329,6 +329,7 @@ public class StmtExecutor {
     }
 
     // Execute one statement.
+    // 执行SQL
     // Exception:
     //  IOException: talk with client failed.
     public void execute() throws Exception {
