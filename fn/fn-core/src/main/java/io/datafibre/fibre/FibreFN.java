@@ -1,10 +1,16 @@
 package io.datafibre.fibre;
 
+import io.datafibre.fibre.common.Config;
 import io.datafibre.fibre.qe.QeService;
+import io.datafibre.fibre.service.ExecuteEnv;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class FibreFN {
 
-//    private static final Logger LOG = LogManager.getLogger(FibreFN.class);
+    private static final Logger LOG = LogManager.getLogger(FibreFN.class);
+
+    public static final String STARROCKS_HOME_DIR = System.getenv("STARROCKS_HOME");
 
 
     public static void main(String[] args) {
@@ -17,7 +23,7 @@ public class FibreFN {
             qeService.start();
 
         } catch (Throwable e) {
-//            LOG.error("FibreFN start failed", e);
+            LOG.error("FibreFN start failed", e);
             System.exit(-1);
         }
 

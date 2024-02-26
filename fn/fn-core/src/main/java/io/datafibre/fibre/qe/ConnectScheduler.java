@@ -36,14 +36,14 @@ package io.datafibre.fibre.qe;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.common.ThreadPoolManager;
-import com.starrocks.common.util.LogUtil;
-import com.starrocks.http.HttpConnectContext;
-import com.starrocks.mysql.MysqlProto;
-import com.starrocks.mysql.nio.NConnectContext;
-import com.starrocks.privilege.AccessDeniedException;
-import com.starrocks.privilege.PrivilegeType;
-import com.starrocks.sql.analyzer.Authorizer;
+import io.datafibre.fibre.common.ThreadPoolManager;
+import io.datafibre.fibre.common.util.LogUtil;
+import io.datafibre.fibre.http.HttpConnectContext;
+import io.datafibre.fibre.privilege.AccessDeniedException;
+import io.datafibre.fibre.privilege.PrivilegeType;
+import io.datafibre.fibre.sql.analyzer.Authorizer;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.mysql.nio.NConnectContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

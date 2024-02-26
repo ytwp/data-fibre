@@ -34,9 +34,7 @@
 
 package io.datafibre.fibre.common;
 
-import com.starrocks.StarRocksFE;
-import com.starrocks.catalog.LocalTablet;
-import com.starrocks.catalog.Replica;
+import io.datafibre.fibre.FibreFN;
 
 public class Config extends ConfigBase {
 
@@ -78,7 +76,7 @@ public class Config extends ConfigBase {
      * 120s    120 seconds
      */
     @ConfField
-    public static String sys_log_dir = StarRocksFE.STARROCKS_HOME_DIR + "/log";
+    public static String sys_log_dir = FibreFN.STARROCKS_HOME_DIR + "/log";
     @ConfField
     public static String sys_log_level = "INFO";
     @ConfField
@@ -125,7 +123,7 @@ public class Config extends ConfigBase {
      * 120s    120 seconds
      */
     @ConfField
-    public static String audit_log_dir = StarRocksFE.STARROCKS_HOME_DIR + "/log";
+    public static String audit_log_dir = FibreFN.STARROCKS_HOME_DIR + "/log";
     @ConfField
     public static int audit_log_roll_num = 90;
     @ConfField
@@ -151,7 +149,7 @@ public class Config extends ConfigBase {
      * This specifies FE MV/Statistics log dir.
      */
     @ConfField
-    public static String internal_log_dir = StarRocksFE.STARROCKS_HOME_DIR + "/log";
+    public static String internal_log_dir = FibreFN.STARROCKS_HOME_DIR + "/log";
     @ConfField
     public static int internal_log_roll_num = 90;
     @ConfField
@@ -185,7 +183,7 @@ public class Config extends ConfigBase {
      * 120s    120 seconds
      */
     @ConfField
-    public static String dump_log_dir = StarRocksFE.STARROCKS_HOME_DIR + "/log";
+    public static String dump_log_dir = FibreFN.STARROCKS_HOME_DIR + "/log";
     @ConfField
     public static int dump_log_roll_num = 10;
     @ConfField
@@ -225,7 +223,7 @@ public class Config extends ConfigBase {
      * 120s    120 seconds
      */
     @ConfField
-    public static String big_query_log_dir = StarRocksFE.STARROCKS_HOME_DIR + "/log";
+    public static String big_query_log_dir = FibreFN.STARROCKS_HOME_DIR + "/log";
     @ConfField
     public static int big_query_log_roll_num = 10;
     @ConfField
@@ -353,14 +351,14 @@ public class Config extends ConfigBase {
      * 2. Safe (RAID)
      */
     @ConfField
-    public static String meta_dir = StarRocksFE.STARROCKS_HOME_DIR + "/meta";
+    public static String meta_dir = FibreFN.STARROCKS_HOME_DIR + "/meta";
 
     /**
      * temp dir is used to save intermediate results of some process, such as backup and restore process.
      * file in this dir will be cleaned after these process is finished.
      */
     @ConfField
-    public static String tmp_dir = StarRocksFE.STARROCKS_HOME_DIR + "/temp_dir";
+    public static String tmp_dir = FibreFN.STARROCKS_HOME_DIR + "/temp_dir";
 
     /**
      * Edit log type.
@@ -950,7 +948,7 @@ public class Config extends ConfigBase {
      * Default spark home dir
      */
     @ConfField
-    public static String spark_home_default_dir = StarRocksFE.STARROCKS_HOME_DIR + "/lib/spark2x";
+    public static String spark_home_default_dir = FibreFN.STARROCKS_HOME_DIR + "/lib/spark2x";
 
     /**
      * Default spark dependencies path
@@ -968,7 +966,7 @@ public class Config extends ConfigBase {
      * Default yarn client path
      */
     @ConfField
-    public static String yarn_client_path = StarRocksFE.STARROCKS_HOME_DIR + "/lib/yarn-client/hadoop/bin/yarn";
+    public static String yarn_client_path = FibreFN.STARROCKS_HOME_DIR + "/lib/yarn-client/hadoop/bin/yarn";
 
     /**
      * Default yarn config file directory
@@ -976,7 +974,7 @@ public class Config extends ConfigBase {
      * config file exists under this path, and if not, create them.
      */
     @ConfField
-    public static String yarn_config_dir = StarRocksFE.STARROCKS_HOME_DIR + "/lib/yarn-config";
+    public static String yarn_config_dir = FibreFN.STARROCKS_HOME_DIR + "/lib/yarn-config";
 
     /**
      * Default number of waiting jobs for routine load and version 2 of load
@@ -1250,7 +1248,7 @@ public class Config extends ConfigBase {
     public static int max_create_table_timeout_second = 600;
 
     @ConfField(mutable = true, comment = "The maximum number of replicas to create serially." +
-            "If actual replica count exceeds this, replicas will be created concurrently.")
+                                         "If actual replica count exceeds this, replicas will be created concurrently.")
     public static int create_table_max_serial_replicas = 128;
 
     // Configurations for backup and restore
@@ -1583,7 +1581,7 @@ public class Config extends ConfigBase {
      * Save small files
      */
     @ConfField
-    public static String small_file_dir = StarRocksFE.STARROCKS_HOME_DIR + "/small_files";
+    public static String small_file_dir = FibreFN.STARROCKS_HOME_DIR + "/small_files";
 
     /**
      * control rollup job concurrent limit
@@ -2115,7 +2113,7 @@ public class Config extends ConfigBase {
      * iceberg metadata cache dir
      */
     @ConfField(mutable = true)
-    public static String iceberg_metadata_cache_disk_path = StarRocksFE.STARROCKS_HOME_DIR + "/caches/iceberg";
+    public static String iceberg_metadata_cache_disk_path = FibreFN.STARROCKS_HOME_DIR + "/caches/iceberg";
 
     /**
      * iceberg metadata memory cache total size, default 512MB
@@ -2427,7 +2425,7 @@ public class Config extends ConfigBase {
     public static double lake_compaction_score_selector_min_score = 10.0;
 
     @ConfField(mutable = true, comment = "-1 means calculate the value in an adaptive way. set this value to 0 " +
-            "will disable compaction.")
+                                         "will disable compaction.")
     public static int lake_compaction_max_tasks = -1;
 
     @ConfField(mutable = true)
@@ -2459,42 +2457,42 @@ public class Config extends ConfigBase {
 
     @ConfField(mutable = true, comment =
             "History versions within this time range will not be deleted by auto vacuum.\n" +
-                    "REMINDER: Set this to a value longer than the maximum possible execution time of queries," +
-                    " to avoid deletion of versions still being accessed.\n" +
-                    "NOTE: Increasing this value may increase the space usage of the remote storage system.")
+            "REMINDER: Set this to a value longer than the maximum possible execution time of queries," +
+            " to avoid deletion of versions still being accessed.\n" +
+            "NOTE: Increasing this value may increase the space usage of the remote storage system.")
     public static long lake_autovacuum_grace_period_minutes = 5;
 
     @ConfField(mutable = true, comment =
             "time threshold in hours, if a partition has not been updated for longer than this " +
-                    "threshold, auto vacuum operations will no longer be triggered for that partition.\n" +
-                    "Only takes effect for tables in clusters with run_mode=shared_data.\n")
+            "threshold, auto vacuum operations will no longer be triggered for that partition.\n" +
+            "Only takes effect for tables in clusters with run_mode=shared_data.\n")
     public static long lake_autovacuum_stale_partition_threshold = 12;
 
     @ConfField(mutable = true, comment =
             "Whether enable throttling ingestion speed when compaction score exceeds the threshold.\n" +
-                    "Only takes effect for tables in clusters with run_mode=shared_data.")
+            "Only takes effect for tables in clusters with run_mode=shared_data.")
     public static boolean lake_enable_ingest_slowdown = false;
 
     @ConfField(mutable = true, comment =
             "Compaction score threshold above which ingestion speed slowdown is applied.\n" +
-                    "NOTE: The actual effective value is the max of the configured value and " +
-                    "'lake_compaction_score_selector_min_score'.")
+            "NOTE: The actual effective value is the max of the configured value and " +
+            "'lake_compaction_score_selector_min_score'.")
     public static long lake_ingest_slowdown_threshold = 100;
 
     @ConfField(mutable = true, comment =
             "Ratio to reduce ingestion speed for each point of compaction score over the threshold.\n" +
-                    "E.g. 0.05 ratio, 10min normal ingestion, exceed threshold by:\n" +
-                    " - 1 point -> Delay by 0.05 (30secs)\n" +
-                    " - 5 points -> Delay by 0.25 (2.5mins)")
+            "E.g. 0.05 ratio, 10min normal ingestion, exceed threshold by:\n" +
+            " - 1 point -> Delay by 0.05 (30secs)\n" +
+            " - 5 points -> Delay by 0.25 (2.5mins)")
     public static double lake_ingest_slowdown_ratio = 0.1;
 
     @ConfField(mutable = true, comment =
             "The upper limit for compaction score, only takes effect when lake_enable_ingest_slowdown=true.\n" +
-                    "When the compaction score exceeds this value, data ingestion transactions will be prevented from\n" +
-                    "committing. This is a soft limit, the actual compaction score may exceed the configured bound.\n" +
-                    "The effective value will be set to the higher of the configured value here and " +
-                    "lake_compaction_score_selector_min_score.\n" +
-                    "A value of 0 represents no limit.")
+            "When the compaction score exceeds this value, data ingestion transactions will be prevented from\n" +
+            "committing. This is a soft limit, the actual compaction score may exceed the configured bound.\n" +
+            "The effective value will be set to the higher of the configured value here and " +
+            "lake_compaction_score_selector_min_score.\n" +
+            "A value of 0 represents no limit.")
     public static long lake_compaction_score_upper_bound = 0;
 
     @ConfField(mutable = true)
@@ -2710,7 +2708,7 @@ public class Config extends ConfigBase {
 
     @ConfField(mutable = true,
             comment = "The default behavior of whether REFRESH IMMEDIATE or not, " +
-                    "which would refresh the materialized view after creating")
+                      "which would refresh the materialized view after creating")
     public static boolean default_mv_refresh_immediate = true;
 
     /**
@@ -2758,9 +2756,9 @@ public class Config extends ConfigBase {
     public static long mv_plan_cache_max_size = 1000;
 
     @ConfField(mutable = true, comment = "Max materialized view rewrite cache size during one query's lifecycle " +
-            "so can avoid repeating compute to reduce optimizer time in materialized view rewrite, " +
-            "but may occupy some extra FE's memory. It's well-done when there are many relative " +
-            "materialized views(>10) or query is complex(multi table joins).")
+                                         "so can avoid repeating compute to reduce optimizer time in materialized view rewrite, " +
+                                         "but may occupy some extra FE's memory. It's well-done when there are many relative " +
+                                         "materialized views(>10) or query is complex(multi table joins).")
     public static long mv_query_context_cache_max_size = 1000;
 
     /**
