@@ -60,10 +60,7 @@ import io.datafibre.fibre.common.util.concurrent.lock.Locker;
 import io.datafibre.fibre.connector.ConnectorMetadata;
 import io.datafibre.fibre.connector.ConnectorMgr;
 import io.datafibre.fibre.connector.ConnectorTblMetaInfoMgr;
-import io.datafibre.fibre.connector.elasticsearch.EsRepository;
 import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
-import io.datafibre.fibre.connector.hive.ConnectorTableMetadataProcessor;
-import io.datafibre.fibre.connector.hive.events.MetastoreEventsProcessor;
 import io.datafibre.fibre.consistency.ConsistencyChecker;
 import io.datafibre.fibre.consistency.LockChecker;
 import io.datafibre.fibre.ha.FrontendNodeType;
@@ -191,10 +188,6 @@ public class GlobalStateMgr {
     private JournalWriter journalWriter; // leader only: write journal log
     private Daemon replayer;
     private Daemon timePrinter;
-    private final EsRepository esRepository;  // it is a daemon, so add it here
-    private final MetastoreEventsProcessor metastoreEventsProcessor;
-    private final ConnectorTableMetadataProcessor connectorTableMetadataProcessor;
-
     // set to true after finished replay all meta and ready to serve
     // set to false when globalStateMgr is not ready.
     private final AtomicBoolean isReady = new AtomicBoolean(false);
@@ -509,10 +502,6 @@ public class GlobalStateMgr {
 
         this.resourceGroupMgr = new ResourceGroupMgr();
 
-        this.esRepository = new EsRepository();
-        this.metastoreEventsProcessor = new MetastoreEventsProcessor();
-        this.connectorTableMetadataProcessor = new ConnectorTableMetadataProcessor();
-
         this.metaContext = new MetaContext();
         this.metaContext.setThreadLocalInfo();
 
@@ -799,10 +788,6 @@ public class GlobalStateMgr {
         return connectorTblMetaInfoMgr;
     }
 
-    public ConnectorTableMetadataProcessor getConnectorTableMetadataProcessor() {
-        return connectorTableMetadataProcessor;
-    }
-
     public ReplicationMgr getReplicationMgr() {
         return replicationMgr;
     }
@@ -948,17 +933,17 @@ public class GlobalStateMgr {
             if (System.currentTimeMillis() - lastLoggingTimeMs > 60000L) {
                 lastLoggingTimeMs = System.currentTimeMillis();
                 LOG.warn("It took too much time for FE to transfer to a stable state(LEADER/FOLLOWER), " +
-                        "it maybe caused by one of the following reasons: " +
-                        "1. There are too many BDB logs to replay, because of previous failure of checkpoint" +
-                        "(you can check the create time of image file under meta/image dir). " +
-                        "2. Majority voting members(LEADER or FOLLOWER) of the FE cluster haven't started completely. " +
-                        "3. FE node has multiple IPs, you should configure the priority_networks in fe.conf " +
-                        "to match the ip record in meta/image/ROLE. And we don't support change the ip of FE node. " +
-                        "Ignore this reason if you are using FQDN. " +
-                        "4. The time deviation between FE nodes is greater than 5s, " +
-                        "please use ntp or other tools to keep clock synchronized. " +
-                        "5. The configuration of edit_log_port has changed, please reset to the original value. " +
-                        "6. The replayer thread may get stuck, please use jstack to find the details.");
+                         "it maybe caused by one of the following reasons: " +
+                         "1. There are too many BDB logs to replay, because of previous failure of checkpoint" +
+                         "(you can check the create time of image file under meta/image dir). " +
+                         "2. Majority voting members(LEADER or FOLLOWER) of the FE cluster haven't started completely. " +
+                         "3. FE node has multiple IPs, you should configure the priority_networks in fe.conf " +
+                         "to match the ip record in meta/image/ROLE. And we don't support change the ip of FE node. " +
+                         "Ignore this reason if you are using FQDN. " +
+                         "4. The time deviation between FE nodes is greater than 5s, " +
+                         "please use ntp or other tools to keep clock synchronized. " +
+                         "5. The configuration of edit_log_port has changed, please reset to the original value. " +
+                         "6. The replayer thread may get stuck, please use jstack to find the details.");
             }
         }
     }
@@ -1179,14 +1164,6 @@ public class GlobalStateMgr {
         tabletStatMgr.start();
         // load and export job label cleaner thread
         labelCleaner.start();
-        // ES state store
-        esRepository.start();
-
-        if (Config.enable_hms_events_incremental_sync) {
-            metastoreEventsProcessor.start();
-        }
-
-        connectorTableMetadataProcessor.start();
 
         // domain resolver
         domainResolver.start();
@@ -1300,7 +1277,7 @@ public class GlobalStateMgr {
                          *    the old version ignores the functions of the new version
                          */
                         LOG.warn(String.format("Ignore this invalid meta block, sr meta block id mismatch" +
-                                "(expect sr meta block id %s)", srMetaBlockID));
+                                               "(expect sr meta block id %s)", srMetaBlockID));
                         continue;
                     }
 
@@ -1320,8 +1297,8 @@ public class GlobalStateMgr {
         } catch (EOFException exception) {
             if (!metaMgrMustExists.isEmpty()) {
                 LOG.warn("Miss meta block [" + Joiner.on(",").join(new ArrayList<>(metaMgrMustExists)) + "], " +
-                        "This may not be a fatal error. It may be because there are new features in the version " +
-                        "you upgraded this time, but there is no relevant metadata.");
+                         "This may not be a fatal error. It may be because there are new features in the version " +
+                         "you upgraded this time, but there is no relevant metadata.");
             } else {
                 LOG.info("Load meta-image EOF, successful loading all requires meta module");
             }
@@ -1741,13 +1718,13 @@ public class GlobalStateMgr {
         }
 
         if (opCode != OperationType.OP_INVALID
-                && OperationType.IGNORABLE_OPERATIONS.contains(opCode)) {
+            && OperationType.IGNORABLE_OPERATIONS.contains(opCode)) {
             if (Config.metadata_journal_ignore_replay_failure) {
                 LOG.error("skip ignorable journal load failure, opCode: {}", opCode);
                 return true;
             } else {
                 LOG.error("the failure of opCode: {} is ignorable, " +
-                        "you can set metadata_journal_ignore_replay_failure to true to ignore this failure", opCode);
+                          "you can set metadata_journal_ignore_replay_failure to true to ignore this failure", opCode);
                 return false;
             }
         }
@@ -1882,14 +1859,6 @@ public class GlobalStateMgr {
         return feType;
     }
 
-    public EsRepository getEsRepository() {
-        return esRepository;
-    }
-
-    public MetastoreEventsProcessor getMetastoreEventsProcessor() {
-        return this.metastoreEventsProcessor;
-    }
-
     public void setLeader(LeaderInfo info) {
         nodeMgr.setLeader(info);
     }
@@ -1960,7 +1929,7 @@ public class GlobalStateMgr {
             }
             for (int pos = 0; pos < shortKeyColumnCount; pos++) {
                 if (indexColumns.get(sortKeyIdxes.get(pos)).getPrimitiveType() == PrimitiveType.VARCHAR &&
-                        pos != shortKeyColumnCount - 1) {
+                    pos != shortKeyColumnCount - 1) {
                     throw new DdlException("Varchar should not in the middle of short keys.");
                 }
             }
@@ -2134,7 +2103,7 @@ public class GlobalStateMgr {
         try {
             table = metadataMgr.getTable(catalogName, dbName, tblName);
             if (!(table instanceof HiveMetaStoreTable) && !(table instanceof HiveView)
-                    && !(table instanceof IcebergTable) && !(table instanceof JDBCTable)) {
+                && !(table instanceof IcebergTable) && !(table instanceof JDBCTable)) {
                 throw new StarRocksConnectorException(
                         "table : " + tableName + " not exists, or is not hive/hudi/iceberg/odps/jdbc external table/view");
             }
