@@ -36,7 +36,7 @@ package io.datafibre.fibre.qe;
 
 import io.datafibre.fibre.common.Config;
 import io.datafibre.fibre.mysql.MysqlServer;
-import io.datafibre.fibre.mysql.nio.NMysqlServer;
+//import io.datafibre.fibre.mysql.nio.NMysqlServer;
 import io.datafibre.fibre.mysql.ssl.SSLChannelImpClassLoader;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -63,7 +63,7 @@ public class QeService {
             sslContext = createSSLContext();
         }
         if (nioEnabled) {
-            mysqlServer = new NMysqlServer(port, scheduler, sslContext);
+//            mysqlServer = new NMysqlServer(port, scheduler, sslContext);
         } else {
             mysqlServer = new MysqlServer(port, scheduler, sslContext);
         }

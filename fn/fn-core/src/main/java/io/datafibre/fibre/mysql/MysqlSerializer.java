@@ -35,8 +35,6 @@
 package io.datafibre.fibre.mysql;
 
 import com.google.common.base.Strings;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.Type;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
@@ -165,71 +163,71 @@ public class MysqlSerializer {
         writeByte((byte) 0);
     }
 
-    public void writeField(String db, String table, Column column, boolean sendDefault) {
-        Type columnType = column.getType();
-        // GlobalStateMgr Name: length encoded string
-        writeLenEncodedString("def");
-        // Schema: length encoded string
-        writeLenEncodedString(db);
-        // Table: length encoded string
-        writeLenEncodedString(table);
-        // Origin Table: length encoded string
-        writeLenEncodedString(table);
-        // Name: length encoded string
-        writeLenEncodedString(column.getName());
-        // Original Name: length encoded string
-        writeLenEncodedString(column.getName());
-        // length of the following fields(always 0x0c)
-        writeVInt(0x0c);
-        // Character set: two byte integer
-        writeInt2(columnType.getMysqlResultSetFieldCharsetIndex());
-        // Column length: four byte integer
-        writeInt4(columnType.getMysqlResultSetFieldLength());
-        // Column type: one byte integer
-        writeInt1(column.getPrimitiveType().toMysqlType().getCode());
-        // Flags: two byte integer
-        writeInt2(0);
-        // Decimals: one byte integer
-        writeInt1(columnType.getMysqlResultSetFieldDecimals());
-        // filler: two byte integer
-        writeInt2(0);
-
-        if (sendDefault) {
-            // Sending default value.
-            writeLenEncodedString(Strings.nullToEmpty(column.getDefaultValue()));
-        }
-    }
+//    public void writeField(String db, String table, Column column, boolean sendDefault) {
+//        Type columnType = column.getType();
+//        // GlobalStateMgr Name: length encoded string
+//        writeLenEncodedString("def");
+//        // Schema: length encoded string
+//        writeLenEncodedString(db);
+//        // Table: length encoded string
+//        writeLenEncodedString(table);
+//        // Origin Table: length encoded string
+//        writeLenEncodedString(table);
+//        // Name: length encoded string
+//        writeLenEncodedString(column.getName());
+//        // Original Name: length encoded string
+//        writeLenEncodedString(column.getName());
+//        // length of the following fields(always 0x0c)
+//        writeVInt(0x0c);
+//        // Character set: two byte integer
+//        writeInt2(columnType.getMysqlResultSetFieldCharsetIndex());
+//        // Column length: four byte integer
+//        writeInt4(columnType.getMysqlResultSetFieldLength());
+//        // Column type: one byte integer
+//        writeInt1(column.getPrimitiveType().toMysqlType().getCode());
+//        // Flags: two byte integer
+//        writeInt2(0);
+//        // Decimals: one byte integer
+//        writeInt1(columnType.getMysqlResultSetFieldDecimals());
+//        // filler: two byte integer
+//        writeInt2(0);
+//
+//        if (sendDefault) {
+//            // Sending default value.
+//            writeLenEncodedString(Strings.nullToEmpty(column.getDefaultValue()));
+//        }
+//    }
 
     /**
      * Format field with name and type using Protocol::ColumnDefinition41
      * https://dev.mysql.com/doc/internals/en/com-query-response.html#column-definition
      */
-    public void writeField(String colName, Type type) {
-        // GlobalStateMgr Name: length encoded string
-        writeLenEncodedString("def");
-        // Schema: length encoded string
-        writeLenEncodedString("");
-        // Table: length encoded string
-        writeLenEncodedString("");
-        // Origin Table: length encoded string
-        writeLenEncodedString("");
-        // Name: length encoded string
-        writeLenEncodedString(colName);
-        // Original Name: length encoded string
-        writeLenEncodedString(colName);
-        // length of the following fields(always 0x0c)
-        writeVInt(0x0c);
-        // Character set: two byte integer
-        writeInt2(type.getMysqlResultSetFieldCharsetIndex());
-        // Column length: four byte integer
-        writeInt4(type.getMysqlResultSetFieldLength());
-        // Column type: one byte integer
-        writeInt1(type.getMysqlResultType().getCode());
-        // Flags: two byte integer
-        writeInt2(0);
-        // Decimals: one byte integer
-        writeInt1(type.getMysqlResultSetFieldDecimals());
-        // filler: two byte integer
-        writeInt2(0);
-    }
+//    public void writeField(String colName, Type type) {
+//        // GlobalStateMgr Name: length encoded string
+//        writeLenEncodedString("def");
+//        // Schema: length encoded string
+//        writeLenEncodedString("");
+//        // Table: length encoded string
+//        writeLenEncodedString("");
+//        // Origin Table: length encoded string
+//        writeLenEncodedString("");
+//        // Name: length encoded string
+//        writeLenEncodedString(colName);
+//        // Original Name: length encoded string
+//        writeLenEncodedString(colName);
+//        // length of the following fields(always 0x0c)
+//        writeVInt(0x0c);
+//        // Character set: two byte integer
+//        writeInt2(type.getMysqlResultSetFieldCharsetIndex());
+//        // Column length: four byte integer
+//        writeInt4(type.getMysqlResultSetFieldLength());
+//        // Column type: one byte integer
+//        writeInt1(type.getMysqlResultType().getCode());
+//        // Flags: two byte integer
+//        writeInt2(0);
+//        // Decimals: one byte integer
+//        writeInt1(type.getMysqlResultSetFieldDecimals());
+//        // filler: two byte integer
+//        writeInt2(0);
+//    }
 }

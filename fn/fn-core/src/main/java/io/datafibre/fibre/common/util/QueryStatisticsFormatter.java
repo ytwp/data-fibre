@@ -24,10 +24,11 @@ import java.util.Formatter;
 public class QueryStatisticsFormatter {
 
     public static String getBytes(long bytes) {
-        final Pair<Double, String> pair = DebugUtil.getByteUint(bytes);
-        try (final Formatter fmt = new Formatter()) {
-            return fmt.format("%.3f", pair.first) + " " + pair.second;
-        }
+//        final Pair<Double, String> pair = DebugUtil.getByteUint(bytes);
+//        try (final Formatter fmt = new Formatter()) {
+//            return fmt.format("%.3f", pair.first) + " " + pair.second;
+//        }
+        return "";
     }
 
     public static String getRowsReturned(long rowsReturned) {

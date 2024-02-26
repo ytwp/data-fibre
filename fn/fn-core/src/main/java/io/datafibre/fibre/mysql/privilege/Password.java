@@ -21,7 +21,7 @@ import io.datafibre.fibre.common.io.Text;
 import io.datafibre.fibre.common.io.Writable;
 import io.datafibre.fibre.mysql.MysqlPassword;
 import io.datafibre.fibre.mysql.security.LdapSecurity;
-import io.datafibre.fibre.persist.gson.GsonUtils;
+//import io.datafibre.fibre.persist.gson.GsonUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -64,14 +64,14 @@ public class Password implements Writable {
 
     @Override
     public void write(DataOutput out) throws IOException {
-        String jsonStr = GsonUtils.GSON.toJson(this);
-        Text.writeString(out, jsonStr);
+//        String jsonStr = GsonUtils.GSON.toJson(this);
+//        Text.writeString(out, jsonStr);
     }
 
-    public static Password read(DataInput in) throws IOException {
-        String jsonStr = Text.readString(in);
-        return GsonUtils.GSON.fromJson(jsonStr, Password.class);
-    }
+//    public static Password read(DataInput in) throws IOException {
+//        String jsonStr = Text.readString(in);
+//        return GsonUtils.GSON.fromJson(jsonStr, Password.class);
+//    }
 
     public boolean checkPlain(String remoteUser, String remotePassword) {
         if (remoteUser.contains(":")) {

@@ -35,10 +35,7 @@
 package io.datafibre.fibre.mysql;
 
 import com.google.common.collect.ImmutableMap;
-import io.datafibre.fibre.authentication.UserAuthenticationInfo;
 import io.datafibre.fibre.common.Config;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.sql.ast.UserIdentity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -139,17 +136,17 @@ public class MysqlHandshakePacket extends MysqlPacket {
 
     // If user use kerberos for authentication, fe need to resend the handshake request.
     public void buildKrb5AuthRequest(MysqlSerializer serializer, String remoteIp, String user) throws Exception {
-        Map.Entry<UserIdentity, UserAuthenticationInfo> authenticationInfo =
-                GlobalStateMgr.getCurrentState().getAuthenticationMgr().getBestMatchedUserIdentity(user, remoteIp);
-        if (authenticationInfo == null) {
-            String msg = String.format("Can not find kerberos authentication with [user: %s, remoteIp: %s].", user, remoteIp);
-            LOG.error(msg);
-            throw new Exception(msg);
-        }
-        String userRealm = authenticationInfo.getValue().getTextForAuthPlugin();
-        Class<?> authClazz = GlobalStateMgr.getCurrentState().getAuthenticationMgr().getAuthClazz();
-        Method method = authClazz.getMethod("buildKrb5HandshakeRequest", String.class, String.class);
-        byte[] packet = (byte[]) method.invoke(null, Config.authentication_kerberos_service_principal, userRealm);
-        serializer.writeBytes(packet);
+//        Map.Entry<UserIdentity, UserAuthenticationInfo> authenticationInfo =
+//                GlobalStateMgr.getCurrentState().getAuthenticationMgr().getBestMatchedUserIdentity(user, remoteIp);
+//        if (authenticationInfo == null) {
+//            String msg = String.format("Can not find kerberos authentication with [user: %s, remoteIp: %s].", user, remoteIp);
+//            LOG.error(msg);
+//            throw new Exception(msg);
+//        }
+//        String userRealm = authenticationInfo.getValue().getTextForAuthPlugin();
+//        Class<?> authClazz = GlobalStateMgr.getCurrentState().getAuthenticationMgr().getAuthClazz();
+//        Method method = authClazz.getMethod("buildKrb5HandshakeRequest", String.class, String.class);
+//        byte[] packet = (byte[]) method.invoke(null, Config.authentication_kerberos_service_principal, userRealm);
+//        serializer.writeBytes(packet);
     }
 }

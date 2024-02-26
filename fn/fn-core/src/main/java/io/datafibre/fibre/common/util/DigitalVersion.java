@@ -18,6 +18,7 @@
 package io.datafibre.fibre.common.util;
 
 import com.google.gson.annotations.SerializedName;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
 

@@ -304,76 +304,76 @@ public class ConfigBase {
         LOG.info("set config {} to {}", key, value);
     }
 
-    private static boolean isAliasesMatch(PatternMatcher matcher, String[] aliases) {
-        if (matcher == null) {
-            return true;
-        }
-
-        for (String aliasName : aliases) {
-            if (matcher.match(aliasName)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public static synchronized List<List<String>> getConfigInfo(PatternMatcher matcher) throws InvalidConfException {
-        List<List<String>> configs = new ArrayList<>();
-        Field[] fields = configFields;
-        for (Field f : fields) {
-            List<String> config = new ArrayList<>();
-            ConfField anno = f.getAnnotation(ConfField.class);
-            if (anno == null) {
-                continue;
-            }
-
-            String confKey = f.getName();
-            // If the alias match here, we also show the config
-            if (matcher != null && !matcher.match(confKey) && !isAliasesMatch(matcher, anno.aliases())) {
-                continue;
-            }
-            String confVal;
-            try {
-                if (f.getType().isArray()) {
-                    switch (f.getType().getSimpleName()) {
-                        case "short[]":
-                            confVal = Arrays.toString((short[]) f.get(null));
-                            break;
-                        case "int[]":
-                            confVal = Arrays.toString((int[]) f.get(null));
-                            break;
-                        case "long[]":
-                            confVal = Arrays.toString((long[]) f.get(null));
-                            break;
-                        case "double[]":
-                            confVal = Arrays.toString((double[]) f.get(null));
-                            break;
-                        case "boolean[]":
-                            confVal = Arrays.toString((boolean[]) f.get(null));
-                            break;
-                        case "String[]":
-                            confVal = Arrays.toString((String[]) f.get(null));
-                            break;
-                        default:
-                            throw new InvalidConfException("Unknown type: " + f.getType().getSimpleName());
-                    }
-                } else {
-                    confVal = String.valueOf(f.get(null));
-                }
-            } catch (IllegalArgumentException | IllegalAccessException e) {
-                throw new InvalidConfException("Failed to get config '" + confKey + "'. err: " + e.getMessage());
-            }
-
-            config.add(confKey);
-            config.add(Arrays.toString(anno.aliases()));
-            config.add(StringUtils.defaultString(confVal));
-            config.add(f.getType().getSimpleName());
-            config.add(String.valueOf(anno.mutable()));
-            config.add(anno.comment());
-            configs.add(config);
-        }
-
-        return configs;
-    }
+//    private static boolean isAliasesMatch(PatternMatcher matcher, String[] aliases) {
+//        if (matcher == null) {
+//            return true;
+//        }
+//
+//        for (String aliasName : aliases) {
+//            if (matcher.match(aliasName)) {
+//                return true;
+//            }
+//        }
+//
+//        return false;
+//    }
+//
+//    public static synchronized List<List<String>> getConfigInfo(PatternMatcher matcher) throws InvalidConfException {
+//        List<List<String>> configs = new ArrayList<>();
+//        Field[] fields = configFields;
+//        for (Field f : fields) {
+//            List<String> config = new ArrayList<>();
+//            ConfField anno = f.getAnnotation(ConfField.class);
+//            if (anno == null) {
+//                continue;
+//            }
+//
+//            String confKey = f.getName();
+//            // If the alias match here, we also show the config
+//            if (matcher != null && !matcher.match(confKey) && !isAliasesMatch(matcher, anno.aliases())) {
+//                continue;
+//            }
+//            String confVal;
+//            try {
+//                if (f.getType().isArray()) {
+//                    switch (f.getType().getSimpleName()) {
+//                        case "short[]":
+//                            confVal = Arrays.toString((short[]) f.get(null));
+//                            break;
+//                        case "int[]":
+//                            confVal = Arrays.toString((int[]) f.get(null));
+//                            break;
+//                        case "long[]":
+//                            confVal = Arrays.toString((long[]) f.get(null));
+//                            break;
+//                        case "double[]":
+//                            confVal = Arrays.toString((double[]) f.get(null));
+//                            break;
+//                        case "boolean[]":
+//                            confVal = Arrays.toString((boolean[]) f.get(null));
+//                            break;
+//                        case "String[]":
+//                            confVal = Arrays.toString((String[]) f.get(null));
+//                            break;
+//                        default:
+//                            throw new InvalidConfException("Unknown type: " + f.getType().getSimpleName());
+//                    }
+//                } else {
+//                    confVal = String.valueOf(f.get(null));
+//                }
+//            } catch (IllegalArgumentException | IllegalAccessException e) {
+//                throw new InvalidConfException("Failed to get config '" + confKey + "'. err: " + e.getMessage());
+//            }
+//
+//            config.add(confKey);
+//            config.add(Arrays.toString(anno.aliases()));
+//            config.add(StringUtils.defaultString(confVal));
+//            config.add(f.getType().getSimpleName());
+//            config.add(String.valueOf(anno.mutable()));
+//            config.add(anno.comment());
+//            configs.add(config);
+//        }
+//
+//        return configs;
+//    }
 }

@@ -35,9 +35,9 @@
 package io.datafibre.fibre.mysql;
 
 import io.datafibre.fibre.common.ThreadPoolManager;
-import io.datafibre.fibre.qe.ConnectContext;
+//import io.datafibre.fibre.qe.ConnectContext;
 import io.datafibre.fibre.qe.ConnectScheduler;
-import io.datafibre.fibre.server.GlobalStateMgr;
+//import io.datafibre.fibre.server.GlobalStateMgr;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -74,10 +74,10 @@ public class MysqlServer {
     // start MySQL protocol service
     // return true if success, otherwise false
     public boolean start() {
-        if (scheduler == null) {
-            LOG.warn("scheduler is NULL.");
-            return false;
-        }
+//        if (scheduler == null) {
+//            LOG.warn("scheduler is NULL.");
+//            return false;
+//        }
 
         // open server socket
         try {
@@ -132,15 +132,15 @@ public class MysqlServer {
                         continue;
                     }
                     // submit this context to scheduler
-                    ConnectContext context = new ConnectContext(clientChannel, sslContext);
-                    // Set globalStateMgr here.
-                    context.setGlobalStateMgr(GlobalStateMgr.getCurrentState());
-                    // 提交给调度程序
-                    if (!scheduler.submit(context)) {
-                        LOG.warn("Submit one connect request failed. Client=" + clientChannel.toString());
-                        // clear up context
-                        context.cleanup();
-                    }
+//                    ConnectContext context = new ConnectContext(clientChannel, sslContext);
+//                    // Set globalStateMgr here.
+//                    context.setGlobalStateMgr(GlobalStateMgr.getCurrentState());
+//                    // 提交给调度程序
+//                    if (!scheduler.submit(context)) {
+//                        LOG.warn("Submit one connect request failed. Client=" + clientChannel.toString());
+//                        // clear up context
+//                        context.cleanup();
+//                    }
                 } catch (IOException e) {
                     // ClosedChannelException
                     // AsynchronousCloseException

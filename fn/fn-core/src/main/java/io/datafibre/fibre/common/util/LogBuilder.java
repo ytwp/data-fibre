@@ -60,7 +60,8 @@ public class LogBuilder {
     }
 
     public LogBuilder(LogKey key, UUID identifier) {
-        sb = new StringBuilder().append(key.name()).append("=").append(DebugUtil.printId(identifier)).append(", ");
+//        sb = new StringBuilder().append(key.name()).append("=").append(DebugUtil.printId(identifier)).append(", ");
+        sb = new StringBuilder();
         entries = Lists.newLinkedList();
     }
 

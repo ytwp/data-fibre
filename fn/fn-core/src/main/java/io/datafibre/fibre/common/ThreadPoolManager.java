@@ -36,10 +36,10 @@ package io.datafibre.fibre.common;
 
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import io.datafibre.fibre.metric.GaugeMetric;
-import io.datafibre.fibre.metric.Metric.MetricUnit;
-import io.datafibre.fibre.metric.MetricLabel;
-import io.datafibre.fibre.metric.MetricRepo;
+//import io.datafibre.fibre.metric.GaugeMetric;
+//import io.datafibre.fibre.metric.Metric.MetricUnit;
+//import io.datafibre.fibre.metric.MetricLabel;
+//import io.datafibre.fibre.metric.MetricRepo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -83,26 +83,26 @@ public class ThreadPoolManager {
 
     public static void registerThreadPoolMetric(String poolName, ThreadPoolExecutor threadPool) {
         for (String poolMetricType : poolMerticTypes) {
-            GaugeMetric<Integer> gauge =
-                    new GaugeMetric<Integer>("thread_pool", MetricUnit.NOUNIT, "thread_pool statistics") {
-                        @Override
-                        public Integer getValue() {
-                            String metricType = this.getLabels().get(1).getValue();
-                            switch (metricType) {
-                                case "pool_size":
-                                    return threadPool.getPoolSize();
-                                case "active_thread_num":
-                                    return threadPool.getActiveCount();
-                                case "task_in_queue":
-                                    return threadPool.getQueue().size();
-                                default:
-                                    return 0;
-                            }
-                        }
-                    };
-            gauge.addLabel(new MetricLabel("name", poolName))
-                    .addLabel(new MetricLabel("type", poolMetricType));
-            MetricRepo.addMetric(gauge);
+//            GaugeMetric<Integer> gauge =
+//                    new GaugeMetric<Integer>("thread_pool", MetricUnit.NOUNIT, "thread_pool statistics") {
+//                        @Override
+//                        public Integer getValue() {
+//                            String metricType = this.getLabels().get(1).getValue();
+//                            switch (metricType) {
+//                                case "pool_size":
+//                                    return threadPool.getPoolSize();
+//                                case "active_thread_num":
+//                                    return threadPool.getActiveCount();
+//                                case "task_in_queue":
+//                                    return threadPool.getQueue().size();
+//                                default:
+//                                    return 0;
+//                            }
+//                        }
+//                    };
+//            gauge.addLabel(new MetricLabel("name", poolName))
+//                    .addLabel(new MetricLabel("type", poolMetricType));
+//            MetricRepo.addMetric(gauge);
         }
     }
 

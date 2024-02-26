@@ -23,6 +23,8 @@ public class FibreFN {
                     ExecuteEnv.getInstance().getScheduler()
             );
             qeService.start();
+
+            Thread.sleep(99999999);
         } catch (Throwable e) {
             LOG.error("FibreFN start failed", e);
             System.exit(-1);
