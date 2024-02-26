@@ -14,21 +14,19 @@
 
 package io.datafibre.fibre.sql.ast.pipe;
 
-import io.datafibre.fibre.analysis.*;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.LimitElement;
+import io.datafibre.fibre.analysis.OrderByElement;
+import io.datafibre.fibre.analysis.RedirectStatus;
 import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.Database;
 import io.datafibre.fibre.catalog.ScalarType;
-import io.datafibre.fibre.common.util.DateUtils;
 import io.datafibre.fibre.common.util.OrderByPair;
-import io.datafibre.fibre.load.pipe.Pipe;
 import io.datafibre.fibre.qe.ShowResultSetMetaData;
-import io.datafibre.fibre.server.GlobalStateMgr;
 import io.datafibre.fibre.sql.ast.AstVisitor;
 import io.datafibre.fibre.sql.ast.ShowStmt;
 import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.List;
-import java.util.Optional;
 
 public class ShowPipeStmt extends ShowStmt {
 
@@ -64,18 +62,17 @@ public class ShowPipeStmt extends ShowStmt {
     /**
      * NOTE: Must be consistent with the META_DATA
      */
-    public static void handleShow(List<Comparable> row, Pipe pipe) {
-        Optional<Database> db = GlobalStateMgr.getCurrentState().mayGetDb(pipe.getPipeId().getDbId());
-        row.add(db.map(Database::getFullName).orElse(""));
-        row.add(String.valueOf(pipe.getPipeId().getId()));
-        row.add(pipe.getName());
-        row.add(String.valueOf(pipe.getState()));
-        row.add(Optional.ofNullable(pipe.getTargetTable()).map(TableName::toString).orElse(""));
-        row.add(pipe.getLoadStatus().toJson());
-        row.add(pipe.getLastErrorInfo().toJson());
-        row.add(DateUtils.formatTimestampInSeconds(pipe.getCreatedTime()));
-    }
-
+//    public static void handleShow(List<Comparable> row, Pipe pipe) {
+//        Optional<Database> db = GlobalStateMgr.getCurrentState().mayGetDb(pipe.getPipeId().getDbId());
+//        row.add(db.map(Database::getFullName).orElse(""));
+//        row.add(String.valueOf(pipe.getPipeId().getId()));
+//        row.add(pipe.getName());
+//        row.add(String.valueOf(pipe.getState()));
+//        row.add(Optional.ofNullable(pipe.getTargetTable()).map(TableName::toString).orElse(""));
+//        row.add(pipe.getLoadStatus().toJson());
+//        row.add(pipe.getLastErrorInfo().toJson());
+//        row.add(DateUtils.formatTimestampInSeconds(pipe.getCreatedTime()));
+//    }
     public static int findSlotIndex(String name) {
         return META_DATA.getColumnIdx(name);
     }

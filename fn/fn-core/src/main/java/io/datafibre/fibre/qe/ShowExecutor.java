@@ -2664,7 +2664,7 @@ public class ShowExecutor {
                 .orElseThrow(() -> ErrorReport.buildSemanticException(ErrorCode.ERR_UNKNOWN_PIPE, descStmt.getName()));
 
         List<String> row = Lists.newArrayList();
-        DescPipeStmt.handleDesc(row, pipe);
+//        DescPipeStmt.handleDesc(row, pipe);
         rows.add(row);
         resultSet = new ShowResultSet(stmt.getMetaData(), rows);
     }

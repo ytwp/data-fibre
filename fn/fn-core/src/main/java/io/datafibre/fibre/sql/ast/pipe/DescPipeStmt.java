@@ -18,7 +18,7 @@ import io.datafibre.fibre.analysis.RedirectStatus;
 import io.datafibre.fibre.analysis.TableName;
 import io.datafibre.fibre.catalog.Column;
 import io.datafibre.fibre.catalog.ScalarType;
-import io.datafibre.fibre.load.pipe.Pipe;
+//import io.datafibre.fibre.load.pipe.Pipe;
 import io.datafibre.fibre.qe.ShowResultSetMetaData;
 import io.datafibre.fibre.sql.ast.AstVisitor;
 import io.datafibre.fibre.sql.ast.ShowStmt;
@@ -48,16 +48,16 @@ public class DescPipeStmt extends ShowStmt {
         this.name = name;
     }
 
-    public static void handleDesc(List<String> row, Pipe pipe) {
-        row.add(String.valueOf(pipe.getPipeId().getDbId()));
-        row.add(String.valueOf(pipe.getPipeId().getId()));
-        row.add(pipe.getName());
-        row.add(String.valueOf(pipe.getType()));
-        row.add(Optional.ofNullable(pipe.getTargetTable()).map(TableName::toString).orElse(""));
-        row.add(pipe.getPipeSource().toString());
-        row.add(pipe.getOriginSql());
-        row.add(pipe.getPropertiesJson());
-    }
+//    public static void handleDesc(List<String> row, Pipe pipe) {
+//        row.add(String.valueOf(pipe.getPipeId().getDbId()));
+//        row.add(String.valueOf(pipe.getPipeId().getId()));
+//        row.add(pipe.getName());
+//        row.add(String.valueOf(pipe.getType()));
+//        row.add(Optional.ofNullable(pipe.getTargetTable()).map(TableName::toString).orElse(""));
+//        row.add(pipe.getPipeSource().toString());
+//        row.add(pipe.getOriginSql());
+//        row.add(pipe.getPropertiesJson());
+//    }
 
     public PipeName getName() {
         return name;

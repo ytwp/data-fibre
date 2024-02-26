@@ -15,7 +15,6 @@
 package io.datafibre.fibre.sql.ast;
 
 import io.datafibre.fibre.analysis.*;
-import io.datafibre.fibre.connector.parser.trino.PlaceholderExpr;
 import io.datafibre.fibre.sql.ast.pipe.*;
 
 public abstract class AstVisitor<R, C> {
@@ -1167,9 +1166,9 @@ public abstract class AstVisitor<R, C> {
         return visitExpression(node, context);
     }
 
-    public R visitMultiInPredicate(MultiInPredicate node, C context) {
-        return visitExpression(node, context);
-    }
+//    public R visitMultiInPredicate(MultiInPredicate node, C context) {
+//        return visitExpression(node, context);
+//    }
 
     public R visitIsNullPredicate(IsNullPredicate node, C context) {
         return visitExpression(node, context);
@@ -1215,9 +1214,9 @@ public abstract class AstVisitor<R, C> {
         return visitExpression(node, context);
     }
 
-    public R visitPlaceholderExpr(PlaceholderExpr node, C context) {
-        return visitExpression(node, context);
-    }
+//    public R visitPlaceholderExpr(PlaceholderExpr node, C context) {
+//        return visitExpression(node, context);
+//    }
 
     public R visitParameterExpr(Parameter node, C context) {
         return visitExpression(node, context);
@@ -1253,11 +1252,11 @@ public abstract class AstVisitor<R, C> {
         return visitNode(node, context);
     }
 
-    public R visitSetVarHint(SetVarHint node, C context) {
-        return visitNode(node, context);
-    }
+//    public R visitSetVarHint(SetVarHint node, C context) {
+//        return visitNode(node, context);
+//    }
 
-    public R visitUserVariableHint(UserVariableHint node, C context) {
-        return visitNode(node, context);
-    }
+//    public R visitUserVariableHint(UserVariableHint node, C context) {
+//        return visitNode(node, context);
+//    }
 }
