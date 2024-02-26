@@ -38,7 +38,6 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.gson.annotations.SerializedName;
-import io.datafibre.fibre.cluster.ClusterNamespace;
 import io.datafibre.fibre.common.AnalysisException;
 import io.datafibre.fibre.common.ErrorCode;
 import io.datafibre.fibre.common.ErrorReport;
@@ -47,7 +46,6 @@ import io.datafibre.fibre.common.io.Writable;
 import io.datafibre.fibre.persist.gson.GsonPostProcessable;
 import io.datafibre.fibre.persist.gson.GsonPreProcessable;
 import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.server.CatalogMgr;
 import io.datafibre.fibre.sql.analyzer.SemanticException;
 import io.datafibre.fibre.sql.parser.NodePosition;
 import org.apache.commons.lang3.StringUtils;
@@ -205,9 +203,9 @@ public class TableName implements Writable, GsonPreProcessable, GsonPostProcessa
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        if (catalog != null && !CatalogMgr.isInternalCatalog(catalog)) {
-            stringBuilder.append(catalog).append(".");
-        }
+//        if (catalog != null && !CatalogMgr.isInternalCatalog(catalog)) {
+//            stringBuilder.append(catalog).append(".");
+//        }
         if (db != null) {
             stringBuilder.append(db).append(".");
         }
@@ -217,9 +215,9 @@ public class TableName implements Writable, GsonPreProcessable, GsonPostProcessa
 
     public String toSql() {
         StringBuilder stringBuilder = new StringBuilder();
-        if (catalog != null && !CatalogMgr.isInternalCatalog(catalog)) {
-            stringBuilder.append("`").append(catalog).append("`.");
-        }
+//        if (catalog != null && !CatalogMgr.isInternalCatalog(catalog)) {
+//            stringBuilder.append("`").append(catalog).append("`.");
+//        }
         if (db != null) {
             stringBuilder.append("`").append(db).append("`.");
         }
@@ -230,23 +228,23 @@ public class TableName implements Writable, GsonPreProcessable, GsonPostProcessa
     @Override
     public void write(DataOutput out) throws IOException {
         // compatible with old version
-        Text.writeString(out, ClusterNamespace.getFullName(db));
+//        Text.writeString(out, ClusterNamespace.getFullName(db));
         Text.writeString(out, tbl);
     }
 
     public void readFields(DataInput in) throws IOException {
-        db = ClusterNamespace.getNameFromFullName(Text.readString(in));
+//        db = ClusterNamespace.getNameFromFullName(Text.readString(in));
         tbl = Text.readString(in);
     }
 
     @Override
     public void gsonPostProcess() throws IOException {
-        db = ClusterNamespace.getNameFromFullName(fullDb);
+//        db = ClusterNamespace.getNameFromFullName(fullDb);
     }
 
     @Override
     public void gsonPreProcess() throws IOException {
-        fullDb = ClusterNamespace.getFullName(db);
+//        fullDb = ClusterNamespace.getFullName(db);
     }
 
     @Override
@@ -255,8 +253,8 @@ public class TableName implements Writable, GsonPreProcessable, GsonPostProcessa
         if (o == null || getClass() != o.getClass()) return false;
         TableName tableName = (TableName) o;
         return Objects.equals(catalog, tableName.catalog)
-                && Objects.equals(tbl, tableName.tbl)
-                && Objects.equals(db, tableName.db);
+               && Objects.equals(tbl, tableName.tbl)
+               && Objects.equals(db, tableName.db);
     }
 
     @Override

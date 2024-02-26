@@ -23,7 +23,6 @@ import io.datafibre.fibre.catalog.*;
 import io.datafibre.fibre.catalog.system.SystemTable;
 import io.datafibre.fibre.common.*;
 import io.datafibre.fibre.load.BrokerFileGroup;
-import io.datafibre.fibre.planner.*;
 import io.datafibre.fibre.planner.stream.StreamAggNode;
 import io.datafibre.fibre.planner.stream.StreamJoinNode;
 import io.datafibre.fibre.qe.ConnectContext;

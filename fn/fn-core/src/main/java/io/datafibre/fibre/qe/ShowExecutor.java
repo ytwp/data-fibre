@@ -1012,85 +1012,85 @@ public class ShowExecutor {
         return sb.toString();
     }
 
-    private void showCreateInternalCatalogTable(ShowCreateTableStmt showStmt) throws AnalysisException {
-        Database db = connectContext.getGlobalStateMgr().getDb(showStmt.getDb());
-        MetaUtils.checkDbNullAndReport(db, showStmt.getDb());
-        List<List<String>> rows = Lists.newArrayList();
-        Locker locker = new Locker();
-        locker.lockDatabase(db, LockType.READ);
-        try {
-            Table table = db.getTable(showStmt.getTable());
-            if (table == null) {
-                if (showStmt.getType() != ShowCreateTableStmt.CreateTableType.MATERIALIZED_VIEW) {
-                    ErrorReport.reportAnalysisException(ErrorCode.ERR_BAD_TABLE_ERROR, showStmt.getTable());
-                } else {
-                    // For Sync Materialized View, it is a mv index inside OLAP table,
-                    // so we can not get it from database.
-                    for (Table tbl : db.getTables()) {
-                        if (tbl.getType() == Table.TableType.OLAP) {
-                            OlapTable olapTable = (OlapTable) tbl;
-                            List<MaterializedIndexMeta> visibleMaterializedViews =
-                                    olapTable.getVisibleIndexMetas();
-                            for (MaterializedIndexMeta mvMeta : visibleMaterializedViews) {
-                                if (olapTable.getIndexNameById(mvMeta.getIndexId()).equals(showStmt.getTable())) {
-                                    if (mvMeta.getOriginStmt() == null) {
-                                        String mvName = olapTable.getIndexNameById(mvMeta.getIndexId());
-                                        rows.add(Lists.newArrayList(showStmt.getTable(), buildCreateMVSql(olapTable,
-                                                mvName, mvMeta), "utf8", "utf8_general_ci"));
-                                    } else {
-                                        rows.add(Lists.newArrayList(showStmt.getTable(), mvMeta.getOriginStmt(),
-                                                "utf8", "utf8_general_ci"));
-                                    }
-                                    resultSet =
-                                            new ShowResultSet(ShowCreateTableStmt.getMaterializedViewMetaData(), rows);
-                                    return;
-                                }
-                            }
-                        }
-                    }
-                    ErrorReport.reportAnalysisException(ErrorCode.ERR_BAD_TABLE_ERROR, showStmt.getTable());
-                }
-            }
-
-            List<String> createTableStmt = Lists.newArrayList();
-            AstToStringBuilder.getDdlStmt(table, createTableStmt, null, null, false, true /* hide password */);
-            if (createTableStmt.isEmpty()) {
-                resultSet = new ShowResultSet(showStmt.getMetaData(), rows);
-                return;
-            }
-
-            if (table instanceof View) {
-                if (showStmt.getType() == ShowCreateTableStmt.CreateTableType.MATERIALIZED_VIEW) {
-                    ErrorReport.reportAnalysisException(ErrorCode.ERR_WRONG_OBJECT, showStmt.getDb(),
-                            showStmt.getTable(), "MATERIALIZED VIEW");
-                }
-                rows.add(Lists.newArrayList(table.getName(), createTableStmt.get(0), "utf8", "utf8_general_ci"));
-                resultSet = new ShowResultSet(ShowCreateTableStmt.getViewMetaData(), rows);
-            } else if (table instanceof MaterializedView) {
-                // In order to be compatible with BI, we return the syntax supported by
-                // mysql according to the standard syntax.
-                if (showStmt.getType() == ShowCreateTableStmt.CreateTableType.VIEW) {
-                    MaterializedView mv = (MaterializedView) table;
-                    String sb = "CREATE VIEW `" + table.getName() + "` AS " + mv.getViewDefineSql();
-                    rows.add(Lists.newArrayList(table.getName(), sb, "utf8", "utf8_general_ci"));
-                    resultSet = new ShowResultSet(ShowCreateTableStmt.getViewMetaData(), rows);
-                } else {
-                    rows.add(Lists.newArrayList(table.getName(), createTableStmt.get(0)));
-                    resultSet = new ShowResultSet(ShowCreateTableStmt.getMaterializedViewMetaData(), rows);
-                }
-            } else {
-                if (showStmt.getType() != ShowCreateTableStmt.CreateTableType.TABLE) {
-                    ErrorReport.reportAnalysisException(ErrorCode.ERR_WRONG_OBJECT, showStmt.getDb(),
-                            showStmt.getTable(), showStmt.getType().getValue());
-                }
-                rows.add(Lists.newArrayList(table.getName(), createTableStmt.get(0)));
-                resultSet = new ShowResultSet(showStmt.getMetaData(), rows);
-            }
-        } finally {
-            locker.unLockDatabase(db, LockType.READ);
-        }
-    }
-
+//    private void showCreateInternalCatalogTable(ShowCreateTableStmt showStmt) throws AnalysisException {
+//        Database db = connectContext.getGlobalStateMgr().getDb(showStmt.getDb());
+//        MetaUtils.checkDbNullAndReport(db, showStmt.getDb());
+//        List<List<String>> rows = Lists.newArrayList();
+//        Locker locker = new Locker();
+//        locker.lockDatabase(db, LockType.READ);
+//        try {
+//            Table table = db.getTable(showStmt.getTable());
+//            if (table == null) {
+//                if (showStmt.getType() != ShowCreateTableStmt.CreateTableType.MATERIALIZED_VIEW) {
+//                    ErrorReport.reportAnalysisException(ErrorCode.ERR_BAD_TABLE_ERROR, showStmt.getTable());
+//                } else {
+//                    // For Sync Materialized View, it is a mv index inside OLAP table,
+//                    // so we can not get it from database.
+//                    for (Table tbl : db.getTables()) {
+//                        if (tbl.getType() == Table.TableType.OLAP) {
+//                            OlapTable olapTable = (OlapTable) tbl;
+//                            List<MaterializedIndexMeta> visibleMaterializedViews =
+//                                    olapTable.getVisibleIndexMetas();
+//                            for (MaterializedIndexMeta mvMeta : visibleMaterializedViews) {
+//                                if (olapTable.getIndexNameById(mvMeta.getIndexId()).equals(showStmt.getTable())) {
+//                                    if (mvMeta.getOriginStmt() == null) {
+//                                        String mvName = olapTable.getIndexNameById(mvMeta.getIndexId());
+//                                        rows.add(Lists.newArrayList(showStmt.getTable(), buildCreateMVSql(olapTable,
+//                                                mvName, mvMeta), "utf8", "utf8_general_ci"));
+//                                    } else {
+//                                        rows.add(Lists.newArrayList(showStmt.getTable(), mvMeta.getOriginStmt(),
+//                                                "utf8", "utf8_general_ci"));
+//                                    }
+//                                    resultSet =
+//                                            new ShowResultSet(ShowCreateTableStmt.getMaterializedViewMetaData(), rows);
+//                                    return;
+//                                }
+//                            }
+//                        }
+//                    }
+//                    ErrorReport.reportAnalysisException(ErrorCode.ERR_BAD_TABLE_ERROR, showStmt.getTable());
+//                }
+//            }
+//
+//            List<String> createTableStmt = Lists.newArrayList();
+//            AstToStringBuilder.getDdlStmt(table, createTableStmt, null, null, false, true /* hide password */);
+//            if (createTableStmt.isEmpty()) {
+//                resultSet = new ShowResultSet(showStmt.getMetaData(), rows);
+//                return;
+//            }
+//
+//            if (table instanceof View) {
+//                if (showStmt.getType() == ShowCreateTableStmt.CreateTableType.MATERIALIZED_VIEW) {
+//                    ErrorReport.reportAnalysisException(ErrorCode.ERR_WRONG_OBJECT, showStmt.getDb(),
+//                            showStmt.getTable(), "MATERIALIZED VIEW");
+//                }
+//                rows.add(Lists.newArrayList(table.getName(), createTableStmt.get(0), "utf8", "utf8_general_ci"));
+//                resultSet = new ShowResultSet(ShowCreateTableStmt.getViewMetaData(), rows);
+//            } else if (table instanceof MaterializedView) {
+//                // In order to be compatible with BI, we return the syntax supported by
+//                // mysql according to the standard syntax.
+//                if (showStmt.getType() == ShowCreateTableStmt.CreateTableType.VIEW) {
+//                    MaterializedView mv = (MaterializedView) table;
+//                    String sb = "CREATE VIEW `" + table.getName() + "` AS " + mv.getViewDefineSql();
+//                    rows.add(Lists.newArrayList(table.getName(), sb, "utf8", "utf8_general_ci"));
+//                    resultSet = new ShowResultSet(ShowCreateTableStmt.getViewMetaData(), rows);
+//                } else {
+//                    rows.add(Lists.newArrayList(table.getName(), createTableStmt.get(0)));
+//                    resultSet = new ShowResultSet(ShowCreateTableStmt.getMaterializedViewMetaData(), rows);
+//                }
+//            } else {
+//                if (showStmt.getType() != ShowCreateTableStmt.CreateTableType.TABLE) {
+//                    ErrorReport.reportAnalysisException(ErrorCode.ERR_WRONG_OBJECT, showStmt.getDb(),
+//                            showStmt.getTable(), showStmt.getType().getValue());
+//                }
+//                rows.add(Lists.newArrayList(table.getName(), createTableStmt.get(0)));
+//                resultSet = new ShowResultSet(showStmt.getMetaData(), rows);
+//            }
+//        } finally {
+//            locker.unLockDatabase(db, LockType.READ);
+//        }
+//    }
+//
     // Describe statement
     private void handleDescribe() throws AnalysisException {
         DescribeStmt describeStmt = (DescribeStmt) stmt;

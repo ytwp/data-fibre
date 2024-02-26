@@ -27,19 +27,12 @@ import io.datafibre.fibre.common.Pair;
 import io.datafibre.fibre.common.UserException;
 import io.datafibre.fibre.common.util.TimeUtils;
 import io.datafibre.fibre.common.util.Util;
-import io.datafibre.fibre.load.RoutineLoadDesc;
-import io.datafibre.fibre.load.routineload.KafkaProgress;
-import io.datafibre.fibre.load.routineload.LoadDataSourceType;
-import io.datafibre.fibre.load.routineload.PulsarRoutineLoadJob;
-import io.datafibre.fibre.load.routineload.RoutineLoadJob;
 import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.qe.OriginStatement;
 import io.datafibre.fibre.qe.SessionVariable;
 import io.datafibre.fibre.sql.parser.NodePosition;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -189,7 +182,7 @@ public class CreateRoutineLoadStmt extends DdlStmt {
     // -1 as unset, the default value will set in RoutineLoadJob
     private String name;
     private String dbName;
-    private RoutineLoadDesc routineLoadDesc;
+    //    private RoutineLoadDesc routineLoadDesc;
     private int desiredConcurrentNum = 1;
     private long maxErrorNum = -1;
     private double maxFilterRatio = 1;
@@ -325,13 +318,13 @@ public class CreateRoutineLoadStmt extends DdlStmt {
         return typeName;
     }
 
-    public RoutineLoadDesc getRoutineLoadDesc() {
-        return routineLoadDesc;
-    }
+//    public RoutineLoadDesc getRoutineLoadDesc() {
+//        return routineLoadDesc;
+//    }
 
-    public void setRoutineLoadDesc(RoutineLoadDesc routineLoadDesc) {
-        this.routineLoadDesc = routineLoadDesc;
-    }
+//    public void setRoutineLoadDesc(RoutineLoadDesc routineLoadDesc) {
+//        this.routineLoadDesc = routineLoadDesc;
+//    }
 
     public int getDesiredConcurrentNum() {
         return desiredConcurrentNum;
@@ -445,77 +438,77 @@ public class CreateRoutineLoadStmt extends DdlStmt {
         return dataSourceProperties;
     }
 
-    public static RoutineLoadDesc getLoadDesc(OriginStatement origStmt, Map<String, String> sessionVariables) {
+//    public static RoutineLoadDesc getLoadDesc(OriginStatement origStmt, Map<String, String> sessionVariables) {
+//
+//        // parse the origin stmt to get routine load desc
+//        try {
+//            List<StatementBase> stmts = io.datafibre.fibre.sql.parser.SqlParser.parse(
+//                    origStmt.originStmt, buildSessionVariables(sessionVariables));
+//            StatementBase stmt = stmts.get(origStmt.idx);
+//            if (stmt instanceof CreateRoutineLoadStmt) {
+//                return CreateRoutineLoadStmt.
+//                        buildLoadDesc(((CreateRoutineLoadStmt) stmt).getLoadPropertyList());
+//            } else if (stmt instanceof AlterRoutineLoadStmt) {
+//                return CreateRoutineLoadStmt.
+//                        buildLoadDesc(((AlterRoutineLoadStmt) stmt).getLoadPropertyList());
+//            } else {
+//                throw new IOException("stmt is neither CreateRoutineLoadStmt nor AlterRoutineLoadStmt");
+//            }
+//        } catch (Exception e) {
+//            LOG.error("error happens when parsing create/alter routine load stmt: " + origStmt.originStmt, e);
+//            return null;
+//        }
+//    }
 
-        // parse the origin stmt to get routine load desc
-        try {
-            List<StatementBase> stmts = io.datafibre.fibre.sql.parser.SqlParser.parse(
-                    origStmt.originStmt, buildSessionVariables(sessionVariables));
-            StatementBase stmt = stmts.get(origStmt.idx);
-            if (stmt instanceof CreateRoutineLoadStmt) {
-                return CreateRoutineLoadStmt.
-                        buildLoadDesc(((CreateRoutineLoadStmt) stmt).getLoadPropertyList());
-            } else if (stmt instanceof AlterRoutineLoadStmt) {
-                return CreateRoutineLoadStmt.
-                        buildLoadDesc(((AlterRoutineLoadStmt) stmt).getLoadPropertyList());
-            } else {
-                throw new IOException("stmt is neither CreateRoutineLoadStmt nor AlterRoutineLoadStmt");
-            }
-        } catch (Exception e) {
-            LOG.error("error happens when parsing create/alter routine load stmt: " + origStmt.originStmt, e);
-            return null;
-        }
-    }
-
-    public static RoutineLoadDesc buildLoadDesc(List<ParseNode> loadPropertyList) throws UserException {
-        if (loadPropertyList == null) {
-            return null;
-        }
-        ColumnSeparator columnSeparator = null;
-        RowDelimiter rowDelimiter = null;
-        ImportColumnsStmt importColumnsStmt = null;
-        ImportWhereStmt importWhereStmt = null;
-        PartitionNames partitionNames = null;
-        for (ParseNode parseNode : loadPropertyList) {
-            if (parseNode instanceof ColumnSeparator) {
-                // check column separator
-                if (columnSeparator != null) {
-                    throw new AnalysisException("repeat setting of column separator");
-                }
-                columnSeparator = (ColumnSeparator) parseNode;
-            } else if (parseNode instanceof RowDelimiter) {
-                // check row delimiter
-                if (rowDelimiter != null) {
-                    throw new AnalysisException("repeat setting of row delimiter");
-                }
-                rowDelimiter = (RowDelimiter) parseNode;
-            } else if (parseNode instanceof ImportColumnsStmt) {
-                // check columns info
-                if (importColumnsStmt != null) {
-                    throw new AnalysisException("repeat setting of columns info");
-                }
-                importColumnsStmt = (ImportColumnsStmt) parseNode;
-            } else if (parseNode instanceof ImportWhereStmt) {
-                // check where expr
-                if (importWhereStmt != null) {
-                    throw new AnalysisException("repeat setting of where predicate");
-                }
-                importWhereStmt = (ImportWhereStmt) parseNode;
-                if (importWhereStmt.isContainSubquery()) {
-                    throw new AnalysisException("the predicate cannot contain subqueries");
-                }
-            } else if (parseNode instanceof PartitionNames) {
-                // check partition names
-                if (partitionNames != null) {
-                    throw new AnalysisException("repeat setting of partition names");
-                }
-                partitionNames = (PartitionNames) parseNode;
-                partitionNames.analyze(null);
-            }
-        }
-        return new RoutineLoadDesc(columnSeparator, rowDelimiter, importColumnsStmt, importWhereStmt,
-                partitionNames);
-    }
+//    public static RoutineLoadDesc buildLoadDesc(List<ParseNode> loadPropertyList) throws UserException {
+//        if (loadPropertyList == null) {
+//            return null;
+//        }
+//        ColumnSeparator columnSeparator = null;
+//        RowDelimiter rowDelimiter = null;
+//        ImportColumnsStmt importColumnsStmt = null;
+//        ImportWhereStmt importWhereStmt = null;
+//        PartitionNames partitionNames = null;
+//        for (ParseNode parseNode : loadPropertyList) {
+//            if (parseNode instanceof ColumnSeparator) {
+//                // check column separator
+//                if (columnSeparator != null) {
+//                    throw new AnalysisException("repeat setting of column separator");
+//                }
+//                columnSeparator = (ColumnSeparator) parseNode;
+//            } else if (parseNode instanceof RowDelimiter) {
+//                // check row delimiter
+//                if (rowDelimiter != null) {
+//                    throw new AnalysisException("repeat setting of row delimiter");
+//                }
+//                rowDelimiter = (RowDelimiter) parseNode;
+//            } else if (parseNode instanceof ImportColumnsStmt) {
+//                // check columns info
+//                if (importColumnsStmt != null) {
+//                    throw new AnalysisException("repeat setting of columns info");
+//                }
+//                importColumnsStmt = (ImportColumnsStmt) parseNode;
+//            } else if (parseNode instanceof ImportWhereStmt) {
+//                // check where expr
+//                if (importWhereStmt != null) {
+//                    throw new AnalysisException("repeat setting of where predicate");
+//                }
+//                importWhereStmt = (ImportWhereStmt) parseNode;
+//                if (importWhereStmt.isContainSubquery()) {
+//                    throw new AnalysisException("the predicate cannot contain subqueries");
+//                }
+//            } else if (parseNode instanceof PartitionNames) {
+//                // check partition names
+//                if (partitionNames != null) {
+//                    throw new AnalysisException("repeat setting of partition names");
+//                }
+//                partitionNames = (PartitionNames) parseNode;
+//                partitionNames.analyze(null);
+//            }
+//        }
+//        return new RoutineLoadDesc(columnSeparator, rowDelimiter, importColumnsStmt, importWhereStmt,
+//                partitionNames);
+//    }
 
     public void checkJobProperties() throws UserException {
         Optional<String> optional = jobProperties.keySet().stream().filter(
@@ -530,9 +523,9 @@ public class CreateRoutineLoadStmt extends DdlStmt {
                         DESIRED_CONCURRENT_NUMBER_PRED,
                         DESIRED_CONCURRENT_NUMBER_PROPERTY + " should > 0")).intValue();
 
-        maxErrorNum = Util.getLongPropertyOrDefault(jobProperties.get(MAX_ERROR_NUMBER_PROPERTY),
-                RoutineLoadJob.DEFAULT_MAX_ERROR_NUM, MAX_ERROR_NUMBER_PRED,
-                MAX_ERROR_NUMBER_PROPERTY + " should >= 0");
+//        maxErrorNum = Util.getLongPropertyOrDefault(jobProperties.get(MAX_ERROR_NUMBER_PROPERTY),
+//                RoutineLoadJob.DEFAULT_MAX_ERROR_NUM, MAX_ERROR_NUMBER_PRED,
+//                MAX_ERROR_NUMBER_PROPERTY + " should >= 0");
 
         if (jobProperties.containsKey(MAX_FILTER_RATIO_PROPERTY)) {
             String maxFilterRatioStr = jobProperties.get(MAX_FILTER_RATIO_PROPERTY);
@@ -546,21 +539,21 @@ public class CreateRoutineLoadStmt extends DdlStmt {
             }
         }
 
-        maxBatchIntervalS = Util.getLongPropertyOrDefault(jobProperties.get(MAX_BATCH_INTERVAL_SEC_PROPERTY),
-                RoutineLoadJob.DEFAULT_TASK_SCHED_INTERVAL_SECOND, MAX_BATCH_INTERVAL_PRED,
-                MAX_BATCH_INTERVAL_SEC_PROPERTY + " should >= 5");
+//        maxBatchIntervalS = Util.getLongPropertyOrDefault(jobProperties.get(MAX_BATCH_INTERVAL_SEC_PROPERTY),
+//                RoutineLoadJob.DEFAULT_TASK_SCHED_INTERVAL_SECOND, MAX_BATCH_INTERVAL_PRED,
+//                MAX_BATCH_INTERVAL_SEC_PROPERTY + " should >= 5");
 
-        maxBatchRows = Util.getLongPropertyOrDefault(jobProperties.get(MAX_BATCH_ROWS_PROPERTY),
-                RoutineLoadJob.DEFAULT_MAX_BATCH_ROWS, MAX_BATCH_ROWS_PRED,
-                MAX_BATCH_ROWS_PROPERTY + " should >= 200000");
+//        maxBatchRows = Util./**/getLongPropertyOrDefault(jobProperties.get(MAX_BATCH_ROWS_PROPERTY),
+//                RoutineLoadJob.DEFAULT_MAX_BATCH_ROWS, MAX_BATCH_ROWS_PRED,
+//                MAX_BATCH_ROWS_PROPERTY + " should >= 200000");
 
         logRejectedRecordNum = Util.getLongPropertyOrDefault(jobProperties.get(LOG_REJECTED_RECORD_NUM_PROPERTY),
                 0, LOG_REJECTED_RECORD_NUM_PRED,
                 LOG_REJECTED_RECORD_NUM_PROPERTY + " should >= -1");
 
-        strictMode = Util.getBooleanPropertyOrDefault(jobProperties.get(LoadStmt.STRICT_MODE),
-                RoutineLoadJob.DEFAULT_STRICT_MODE,
-                LoadStmt.STRICT_MODE + " should be a boolean");
+//        strictMode = Util.getBooleanPropertyOrDefault(jobProperties.get(LoadStmt.STRICT_MODE),
+//                RoutineLoadJob.DEFAULT_STRICT_MODE,
+//                LoadStmt.STRICT_MODE + " should be a boolean");
 
         partialUpdate = Util.getBooleanPropertyOrDefault(jobProperties.get(LoadStmt.PARTIAL_UPDATE),
                 false,
@@ -648,173 +641,22 @@ public class CreateRoutineLoadStmt extends DdlStmt {
         }
     }
 
-    public void checkDataSourceProperties() throws AnalysisException {
-        LoadDataSourceType type;
-        try {
-            type = LoadDataSourceType.valueOf(typeName);
-        } catch (IllegalArgumentException e) {
-            throw new AnalysisException("routine load job does not support this type " + typeName);
-        }
-        switch (type) {
-            case KAFKA:
-                checkKafkaProperties();
-                break;
-            case PULSAR:
-                checkPulsarProperties();
-                break;
-            default:
-                break;
-        }
-    }
+//    public void checkDataSourceProperties() throws AnalysisException {
+//        LoadDataSourceType type;
+//        try {
+//            type = LoadDataSourceType.valueOf(typeName);
+//        } catch (IllegalArgumentException e) {
+//            throw new AnalysisException("routine load job does not support this type " + typeName);
+//        }
+//        switch (type) {
+//            case PULSAR:
+//                checkPulsarProperties();
+//                break;
+//            default:
+//                break;
+//        }
+//    }
 
-    private void checkKafkaProperties() throws AnalysisException {
-        Optional<String> optional = dataSourceProperties.keySet().stream()
-                .filter(entity -> !KAFKA_PROPERTIES_SET.contains(entity))
-                .filter(entity -> !entity.startsWith("property.")).findFirst();
-        if (optional.isPresent()) {
-            throw new AnalysisException(optional.get() + " is invalid kafka custom property");
-        }
-
-        // check broker list
-        kafkaBrokerList = Strings.nullToEmpty(dataSourceProperties.get(KAFKA_BROKER_LIST_PROPERTY)).replaceAll(" ", "");
-        if (Strings.isNullOrEmpty(kafkaBrokerList)) {
-            throw new AnalysisException(KAFKA_BROKER_LIST_PROPERTY + " is a required property");
-        }
-        String[] kafkaBrokerList = this.kafkaBrokerList.split(",");
-        for (String broker : kafkaBrokerList) {
-            if (!Pattern.matches(ENDPOINT_REGEX, broker)) {
-                throw new AnalysisException(KAFKA_BROKER_LIST_PROPERTY + ":" + broker
-                        + " not match pattern " + ENDPOINT_REGEX);
-            }
-        }
-
-        // check topic
-        kafkaTopic = Strings.nullToEmpty(dataSourceProperties.get(KAFKA_TOPIC_PROPERTY)).replaceAll(" ", "");
-        if (Strings.isNullOrEmpty(kafkaTopic)) {
-            throw new AnalysisException(KAFKA_TOPIC_PROPERTY + " is a required property");
-        }
-
-        // check custom kafka property before check partitions,
-        // because partitions can use kafka_default_offsets property
-        analyzeKafkaCustomProperties(dataSourceProperties, customKafkaProperties);
-
-        // check partitions
-        String kafkaPartitionsString = dataSourceProperties.get(KAFKA_PARTITIONS_PROPERTY);
-        if (kafkaPartitionsString != null) {
-            analyzeKafkaPartitionProperty(kafkaPartitionsString, customKafkaProperties, kafkaPartitionOffsets);
-        }
-
-        // check offset
-        String kafkaOffsetsString = dataSourceProperties.get(KAFKA_OFFSETS_PROPERTY);
-        if (kafkaOffsetsString != null) {
-            analyzeKafkaOffsetProperty(kafkaOffsetsString, kafkaPartitionOffsets);
-        }
-        String confluentSchemaRegistryUrlString = dataSourceProperties.get(CONFLUENT_SCHEMA_REGISTRY_URL);
-        if (confluentSchemaRegistryUrlString == null) {
-            if (format == null) {
-                format = jobProperties.get(FORMAT);
-                if (format != null) {
-                    if (format.equalsIgnoreCase("avro")) {
-                        format = "avro";
-                    }
-                }
-            }
-            if (format.equals("avro")) {
-                throw new AnalysisException(CONFLUENT_SCHEMA_REGISTRY_URL + " is a required property");
-            }
-        } else {
-            confluentSchemaRegistryUrl = confluentSchemaRegistryUrlString;
-        }
-    }
-
-    public static void analyzeKafkaPartitionProperty(String kafkaPartitionsString,
-                                                     Map<String, String> customKafkaProperties,
-                                                     List<Pair<Integer, Long>> kafkaPartitionOffsets)
-            throws AnalysisException {
-        kafkaPartitionsString = kafkaPartitionsString.replaceAll(" ", "");
-        if (kafkaPartitionsString.isEmpty()) {
-            throw new AnalysisException(KAFKA_PARTITIONS_PROPERTY + " could not be a empty string");
-        }
-
-        // get kafka default offset if set
-        Long kafkaDefaultOffset = null;
-        if (customKafkaProperties.containsKey(KAFKA_DEFAULT_OFFSETS)) {
-            kafkaDefaultOffset = getKafkaOffset(customKafkaProperties.get(KAFKA_DEFAULT_OFFSETS));
-        }
-
-        String[] kafkaPartitionsStringList = kafkaPartitionsString.split(",");
-        for (String s : kafkaPartitionsStringList) {
-            try {
-                kafkaPartitionOffsets.add(
-                        Pair.create(getIntegerValueFromString(s, KAFKA_PARTITIONS_PROPERTY),
-                                kafkaDefaultOffset == null ? KafkaProgress.OFFSET_END_VAL : kafkaDefaultOffset));
-            } catch (AnalysisException e) {
-                throw new AnalysisException(KAFKA_PARTITIONS_PROPERTY
-                        + " must be a number string with comma-separated");
-            }
-        }
-    }
-
-    public static void analyzeKafkaOffsetProperty(String kafkaOffsetsString,
-                                                  List<Pair<Integer, Long>> kafkaPartitionOffsets)
-            throws AnalysisException {
-        kafkaOffsetsString = kafkaOffsetsString.replaceAll(" ", "");
-        if (kafkaOffsetsString.isEmpty()) {
-            throw new AnalysisException(KAFKA_OFFSETS_PROPERTY + " could not be a empty string");
-        }
-        String[] kafkaOffsetsStringList = kafkaOffsetsString.split(",");
-        if (kafkaOffsetsStringList.length != kafkaPartitionOffsets.size()) {
-            throw new AnalysisException("Partitions number should be equals to offsets number");
-        }
-
-        for (int i = 0; i < kafkaOffsetsStringList.length; i++) {
-            kafkaPartitionOffsets.get(i).second = getKafkaOffset(kafkaOffsetsStringList[i]);
-        }
-    }
-
-    // Get kafka offset from string
-    // defined in librdkafka/rdkafkacpp.h
-    // OFFSET_BEGINNING: -2
-    // OFFSET_END: -1
-    public static long getKafkaOffset(String offsetStr) throws AnalysisException {
-        long offset = -1;
-        try {
-            offset = getLongValueFromString(offsetStr, "kafka offset");
-            if (offset < 0) {
-                throw new AnalysisException("Can not specify offset smaller than 0");
-            }
-        } catch (AnalysisException e) {
-            if (offsetStr.equalsIgnoreCase(KafkaProgress.OFFSET_BEGINNING)) {
-                offset = KafkaProgress.OFFSET_BEGINNING_VAL;
-            } else if (offsetStr.equalsIgnoreCase(KafkaProgress.OFFSET_END)) {
-                offset = KafkaProgress.OFFSET_END_VAL;
-            } else {
-                throw e;
-            }
-        }
-        return offset;
-    }
-
-    public static void analyzeKafkaCustomProperties(Map<String, String> dataSourceProperties,
-                                                    Map<String, String> customKafkaProperties) throws AnalysisException {
-        for (Map.Entry<String, String> dataSourceProperty : dataSourceProperties.entrySet()) {
-            if (dataSourceProperty.getKey().startsWith("property.")) {
-                String propertyKey = dataSourceProperty.getKey();
-                String propertyValue = dataSourceProperty.getValue();
-                String[] propertyValueArr = propertyKey.split("\\.");
-                if (propertyValueArr.length < 2) {
-                    throw new AnalysisException("kafka property value could not be a empty string");
-                }
-                customKafkaProperties.put(propertyKey.substring(propertyKey.indexOf(".") + 1), propertyValue);
-            }
-            // can be extended in the future which other prefix
-        }
-
-        // check kafka_default_offsets
-        if (customKafkaProperties.containsKey(KAFKA_DEFAULT_OFFSETS)) {
-            getKafkaOffset(customKafkaProperties.get(KAFKA_DEFAULT_OFFSETS));
-        }
-    }
 
     private void checkPulsarProperties() throws AnalysisException {
         Optional<String> optional = dataSourceProperties.keySet().stream()
@@ -834,7 +676,7 @@ public class CreateRoutineLoadStmt extends DdlStmt {
         for (String serviceUrl : pulsarServiceUrlList) {
             if (!Pattern.matches(ENDPOINT_REGEX, serviceUrl)) {
                 throw new AnalysisException(PULSAR_SERVICE_URL_PROPERTY + ":" + serviceUrl
-                        + " not match pattern " + ENDPOINT_REGEX);
+                                            + " not match pattern " + ENDPOINT_REGEX);
             }
         }
 
@@ -921,15 +763,16 @@ public class CreateRoutineLoadStmt extends DdlStmt {
     // InitialPositionLatest: 0
     // InitialPositionEarliest: 1
     public static long getPulsarPosition(String positionStr) throws AnalysisException {
-        long position;
-        if (positionStr.equalsIgnoreCase(PulsarRoutineLoadJob.POSITION_EARLIEST)) {
-            position = PulsarRoutineLoadJob.POSITION_EARLIEST_VAL;
-        } else if (positionStr.equalsIgnoreCase(PulsarRoutineLoadJob.POSITION_LATEST)) {
-            position = PulsarRoutineLoadJob.POSITION_LATEST_VAL;
-        } else {
-            throw new AnalysisException("Only POSITION_EARLIEST or POSITION_LATEST can be specified");
-        }
-        return position;
+//        long position;
+//        if (positionStr.equalsIgnoreCase(PulsarRoutineLoadJob.POSITION_EARLIEST)) {
+//            position = PulsarRoutineLoadJob.POSITION_EARLIEST_VAL;
+//        } else if (positionStr.equalsIgnoreCase(PulsarRoutineLoadJob.POSITION_LATEST)) {
+//            position = PulsarRoutineLoadJob.POSITION_LATEST_VAL;
+//        } else {
+//            throw new AnalysisException("Only POSITION_EARLIEST or POSITION_LATEST can be specified");
+//        }
+//        return position;
+        return 1;
     }
 
     public static void analyzePulsarCustomProperties(Map<String, String> dataSourceProperties,

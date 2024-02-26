@@ -45,7 +45,6 @@ import io.datafibre.fibre.common.Pair;
 import io.datafibre.fibre.common.io.Text;
 import io.datafibre.fibre.common.io.Writable;
 import io.datafibre.fibre.sql.ast.HdfsURI;
-import io.datafibre.fibre.thrift.TFunction;
 import io.datafibre.fibre.thrift.TFunctionBinaryType;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -671,24 +670,24 @@ public class Function implements Writable {
         }
     }
 
-    public TFunction toThrift() {
-        TFunction fn = new TFunction();
-        fn.setName(name.toThrift());
-        fn.setBinary_type(binaryType);
-        if (location != null) {
-            fn.setHdfs_location(location.toString());
-        }
-        fn.setArg_types(Type.toThrift(argTypes));
-        fn.setRet_type(getReturnType().toThrift());
-        fn.setHas_var_args(hasVarArgs);
-        fn.setId(id);
-        fn.setFid(functionId);
-        if (!checksum.isEmpty()) {
-            fn.setChecksum(checksum);
-        }
-        fn.setCould_apply_dict_optimize(couldApplyDictOptimize);
-        return fn;
-    }
+//    public TFunction toThrift() {
+//        TFunction fn = new TFunction();
+//        fn.setName(name.toThrift());
+//        fn.setBinary_type(binaryType);
+//        if (location != null) {
+//            fn.setHdfs_location(location.toString());
+//        }
+//        fn.setArg_types(Type.toThrift(argTypes));
+//        fn.setRet_type(getReturnType().toThrift());
+//        fn.setHas_var_args(hasVarArgs);
+//        fn.setId(id);
+//        fn.setFid(functionId);
+//        if (!checksum.isEmpty()) {
+//            fn.setChecksum(checksum);
+//        }
+//        fn.setCould_apply_dict_optimize(couldApplyDictOptimize);
+//        return fn;
+//    }
 
     // Child classes must override this function.
     public String toSql(boolean ifNotExists) {
