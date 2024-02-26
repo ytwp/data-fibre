@@ -34,11 +34,11 @@
 
 package io.datafibre.fibre.qe;
 
-import com.google.common.base.Strings;
-import com.starrocks.common.Config;
-import com.starrocks.mysql.MysqlServer;
-import com.starrocks.mysql.nio.NMysqlServer;
-import com.starrocks.mysql.ssl.SSLChannelImpClassLoader;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.mysql.MysqlServer;
+import io.datafibre.fibre.mysql.nio.NMysqlServer;
+import io.datafibre.fibre.mysql.ssl.SSLChannelImpClassLoader;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -59,8 +59,8 @@ public class QeService {
 
     public QeService(int port, boolean nioEnabled, ConnectScheduler scheduler) throws Exception {
         SSLContext sslContext = null;
-        if (!Strings.isNullOrEmpty(Config.ssl_keystore_location)
-                && SSLChannelImpClassLoader.loadSSLChannelImpClazz() != null) {
+        if (!StringUtils.isEmpty(Config.ssl_keystore_location)
+            && SSLChannelImpClassLoader.loadSSLChannelImpClazz() != null) {
             sslContext = createSSLContext();
         }
         if (nioEnabled) {
@@ -97,7 +97,7 @@ public class QeService {
 
         SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
         TrustManager[] trustManagers = null;
-        if (!Strings.isNullOrEmpty(Config.ssl_truststore_location)) {
+        if (!StringUtils.isEmpty(Config.ssl_truststore_location)) {
             trustManagers = createTrustManagers(Config.ssl_truststore_location, Config.ssl_truststore_password);
         }
         sslContext.init(kmf.getKeyManagers(), trustManagers, new SecureRandom());
