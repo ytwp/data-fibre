@@ -1,0 +1,262 @@
+// Copyright 2021-present StarRocks, Inc. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.rule;
+
+import com.github.benmanes.caffeine.cache.Cache;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.profile.Tracers;
+import io.datafibre.fibre.metric.MaterializedViewMetricsEntity;
+import io.datafibre.fibre.metric.MaterializedViewMetricsRegistry;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.optimizer.MaterializationContext;
+import io.datafibre.fibre.sql.optimizer.MvRewriteContext;
+import io.datafibre.fibre.sql.optimizer.OptExpression;
+import io.datafibre.fibre.sql.optimizer.OptimizerContext;
+import io.datafibre.fibre.sql.optimizer.QueryMaterializationContext;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefFactory;
+import io.datafibre.fibre.sql.optimizer.operator.Operator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalAggregationOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalOlapScanOperator;
+import io.datafibre.fibre.sql.optimizer.operator.pattern.Pattern;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.rewrite.ReplaceColumnRefRewriter;
+import io.datafibre.fibre.sql.optimizer.rule.RuleType;
+import io.datafibre.fibre.sql.optimizer.rule.transformation.TransformationRule;
+import io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.BestMvSelector;
+import io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.MVColumnPruner;
+import io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.MVPartitionPruner;
+import io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.MaterializedViewRewriter;
+import io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.MvUtils;
+import io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.PredicateSplit;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static io.datafibre.fibre.metric.MaterializedViewMetricsEntity.isUpdateMaterializedViewMetrics;
+import static io.datafibre.fibre.sql.optimizer.OptimizerTraceUtil.logMVRewrite;
+
+public abstract class BaseMaterializedViewRewriteRule extends TransformationRule {
+
+    protected BaseMaterializedViewRewriteRule(RuleType type, Pattern pattern) {
+        super(type, pattern);
+    }
+
+    private boolean checkOlapScanWithoutTabletOrPartitionHints(OptExpression input) {
+        Operator op = input.getOp();
+        if (op instanceof LogicalOlapScanOperator) {
+            LogicalOlapScanOperator scan = op.cast();
+            if (scan.hasTableHints()) {
+                return false;
+            }
+            // Avoid rewrite the query repeat, add a shortcut.
+            Table table = scan.getTable();
+            if ((table instanceof MaterializedView) && ((MaterializedView) (table)).getRefreshScheme().isSync()) {
+                return false;
+            }
+        }
+        if (input.getInputs().isEmpty()) {
+            return true;
+        }
+        return input.getInputs().stream().allMatch(this::checkOlapScanWithoutTabletOrPartitionHints);
+    }
+
+    @Override
+    public boolean check(OptExpression input, OptimizerContext context) {
+        return !context.getCandidateMvs().isEmpty() && checkOlapScanWithoutTabletOrPartitionHints(input);
+    }
+
+    @Override
+    public boolean exhausted(OptimizerContext context) {
+        if (context.ruleExhausted(type())) {
+            Tracers.log(Tracers.Module.MV, args -> String.format("[MV TRACE] RULE %s exhausted\n", this));
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List<OptExpression> transform(OptExpression queryExpression, OptimizerContext context) {
+        try {
+            List<OptExpression> expressions = doTransform(queryExpression, context);
+            if (expressions == null || expressions.isEmpty()) {
+                return Lists.newArrayList();
+            }
+            if (context.isInMemoPhase()) {
+                return expressions;
+            } else {
+                // in rule phase, only return the best one result
+                BestMvSelector bestMvSelector = new BestMvSelector(
+                        expressions, context, queryExpression.getOp() instanceof LogicalAggregationOperator);
+                return Lists.newArrayList(bestMvSelector.selectBest());
+            }
+        } catch (Exception e) {
+            String errMsg = ExceptionUtils.getStackTrace(e);
+            // for mv rewrite rules, do not disturb query when exception.
+            logMVRewrite(context, this, "mv rewrite exception, exception message:{}", errMsg);
+            return Lists.newArrayList();
+        }
+    }
+
+    private List<OptExpression> doTransform(OptExpression queryExpression, OptimizerContext context) {
+        List<MaterializationContext> mvCandidateContexts = Lists.newArrayList();
+        if (queryExpression.getGroupExpression() != null) {
+            int currentRootGroupId = queryExpression.getGroupExpression().getGroup().getId();
+            for (MaterializationContext mvContext : context.getCandidateMvs()) {
+                if (!mvContext.isMatchedGroup(currentRootGroupId)) {
+                    mvCandidateContexts.add(mvContext);
+                }
+            }
+        } else {
+            mvCandidateContexts.addAll(context.getCandidateMvs());
+        }
+        mvCandidateContexts.removeIf(x -> !x.prune(context, queryExpression));
+
+        // Order all candidate mvs by priority so can be rewritten fast.
+        MaterializationContext.RewriteOrdering ordering =
+                new MaterializationContext.RewriteOrdering(queryExpression, context.getColumnRefFactory());
+        mvCandidateContexts.sort(ordering);
+        int numCandidates = context.getSessionVariable().getCboMaterializedViewRewriteCandidateLimit();
+        if (numCandidates > 0 && mvCandidateContexts.size() > numCandidates) {
+            logMVRewrite(context, this, "too many MV candidates, truncate them to " + numCandidates);
+            mvCandidateContexts = mvCandidateContexts.subList(0, numCandidates);
+        }
+        if (CollectionUtils.isEmpty(mvCandidateContexts)) {
+            return Lists.newArrayList();
+        }
+
+        List<OptExpression> results = Lists.newArrayList();
+        // Construct queryPredicateSplit to avoid creating multi times for multi MVs.
+        // Compute Query queryPredicateSplit
+        final ColumnRefFactory queryColumnRefFactory = context.getColumnRefFactory();
+        final ReplaceColumnRefRewriter queryColumnRefRewriter =
+                MvUtils.getReplaceColumnRefWriter(queryExpression, queryColumnRefFactory);
+
+        List<ScalarOperator> onPredicates = MvUtils.collectOnPredicate(queryExpression);
+        QueryMaterializationContext queryMaterializationContext = context.getQueryMaterializationContext();
+        onPredicates = onPredicates.stream()
+                .map(p -> MvUtils.canonizePredicateForRewrite(queryMaterializationContext, p))
+                .map(predicate -> queryColumnRefRewriter.rewrite(predicate))
+                .collect(Collectors.toList());
+        List<Table> queryTables = MvUtils.getAllTables(queryExpression);
+        ConnectContext connectContext = ConnectContext.get();
+        for (MaterializationContext mvContext : mvCandidateContexts) {
+            PredicateSplit queryPredicateSplit = getQuerySplitPredicate(context, mvContext, queryExpression,
+                    queryColumnRefFactory, queryColumnRefRewriter);
+            if (queryPredicateSplit == null) {
+                continue;
+            }
+            MvRewriteContext mvRewriteContext = new MvRewriteContext(mvContext, queryTables, queryExpression,
+                        queryColumnRefRewriter, queryPredicateSplit, onPredicates, this);
+
+            // rewrite query
+            MaterializedViewRewriter mvRewriter = getMaterializedViewRewrite(mvRewriteContext);
+            OptExpression candidate = mvRewriter.rewrite();
+            if (candidate == null) {
+                continue;
+            }
+
+            candidate = postRewriteMV(context, mvRewriteContext, candidate);
+            if (queryExpression.getGroupExpression() != null) {
+                int currentRootGroupId = queryExpression.getGroupExpression().getGroup().getId();
+                mvContext.addMatchedGroup(currentRootGroupId);
+            }
+
+            results.add(candidate);
+
+            // update metrics
+            mvContext.updateMVUsedCount();
+            if (isUpdateMaterializedViewMetrics(connectContext)) {
+                MaterializedViewMetricsEntity mvEntity =
+                        MaterializedViewMetricsRegistry.getInstance().getMetricsEntity(mvContext.getMv().getMvId());
+                mvEntity.increaseQueryMatchedCount(1L);
+            }
+
+            // Do not try to enumerate all plans, it would take a lot of time
+            int limit = context.getSessionVariable().getCboMaterializedViewRewriteRuleOutputLimit();
+            if (limit > 0 && results.size() >= limit) {
+                logMVRewrite(context, this, "too many MV rewrite results generated, but limit to {}", limit);
+                break;
+            }
+
+            // Give up rewrite if it exceeds the optimizer timeout
+            context.checkTimeout();
+        }
+
+        return results;
+    }
+
+    /**
+     * Return the query predicate split with/without compensate :
+     * - with compensate    : deducing from the selected partition ids.
+     * - without compensate : only get the partition predicate from pruned partitions of scan operator
+     * eg: for sync mv without partition columns, we always no need compensate partition predicates because
+     * mv and the base table are always synced.
+     */
+    private PredicateSplit getQuerySplitPredicate(OptimizerContext optimizerContext,
+                                                  MaterializationContext mvContext,
+                                                  OptExpression queryExpression,
+                                                  ColumnRefFactory queryColumnRefFactory,
+                                                  ReplaceColumnRefRewriter queryColumnRefRewriter) {
+        // Cache partition predicate predicates because it's expensive time costing if there are too many materialized views or
+        // query expressions are too complex.
+        final ScalarOperator queryPartitionPredicate = MvUtils.compensatePartitionPredicate(mvContext,
+                queryColumnRefFactory, queryExpression);
+        if (queryPartitionPredicate == null) {
+            logMVRewrite(mvContext.getOptimizerContext(), this, "Compensate query expression's partition " +
+                    "predicates from pruned partitions failed.");
+            return null;
+        }
+        // only add valid predicates into query split predicate
+        Set<ScalarOperator> queryConjuncts = MvUtils.getPredicateForRewrite(queryExpression);
+        if (!ConstantOperator.TRUE.equals(queryPartitionPredicate)) {
+            logMVRewrite(mvContext.getOptimizerContext(), this, "Query compensate partition predicate:{}",
+                    queryPartitionPredicate);
+            queryConjuncts.addAll(MvUtils.getAllValidPredicates(queryPartitionPredicate));
+        }
+
+        QueryMaterializationContext queryMaterializationContext = optimizerContext.getQueryMaterializationContext();
+        Cache<Object, Object> predicateSplitCache = queryMaterializationContext.getMvQueryContextCache();
+        Preconditions.checkArgument(predicateSplitCache != null);
+        // Cache predicate split for predicates because it's time costing if there are too many materialized views.
+        return queryMaterializationContext.getPredicateSplit(queryConjuncts, queryColumnRefRewriter);
+    }
+
+    /**
+     * After plan is rewritten by MV, still do some actions for new MV's plan.
+     * 1. column prune
+     * 2. partition prune
+     * 3. bucket prune
+     */
+    private OptExpression postRewriteMV(
+            OptimizerContext optimizerContext, MvRewriteContext mvRewriteContext, OptExpression candidate) {
+        if (candidate == null) {
+            return null;
+        }
+        candidate = new MVColumnPruner().pruneColumns(candidate);
+        candidate = new MVPartitionPruner(optimizerContext, mvRewriteContext).prunePartition(candidate);
+        return candidate;
+    }
+
+    public MaterializedViewRewriter getMaterializedViewRewrite(MvRewriteContext mvContext) {
+        return new MaterializedViewRewriter(mvContext);
+    }
+}

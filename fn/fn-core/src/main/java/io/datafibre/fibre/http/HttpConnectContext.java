@@ -34,7 +34,6 @@ package io.datafibre.fibre.http;
 import io.datafibre.fibre.qe.ConnectContext;
 import io.datafibre.fibre.qe.StmtExecutor;
 import io.datafibre.fibre.sql.ast.StatementBase;
-import io.datafibre.fibre.thrift.TResultSinkFormatType;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import org.apache.logging.log4j.LogManager;
@@ -68,7 +67,7 @@ public class HttpConnectContext extends ConnectContext {
     private boolean isKeepAlive;
 
     // right now only support json type
-    private TResultSinkFormatType resultSinkFormatType;
+//    private TResultSinkFormatType resultSinkFormatType;
 
     public HttpConnectContext() {
         super();
@@ -77,13 +76,13 @@ public class HttpConnectContext extends ConnectContext {
         onlyOutputResultRaw = false;
     }
 
-    public TResultSinkFormatType getResultSinkFormatType() {
-        return resultSinkFormatType;
-    }
+//    public TResultSinkFormatType getResultSinkFormatType() {
+//        return resultSinkFormatType;
+//    }
 
-    public void setResultSinkFormatType(TResultSinkFormatType resultSinkFormatType) {
-        this.resultSinkFormatType = resultSinkFormatType;
-    }
+//    public void setResultSinkFormatType(TResultSinkFormatType resultSinkFormatType) {
+//        this.resultSinkFormatType = resultSinkFormatType;
+//    }
 
     public boolean isForwardToLeader() {
         return forwardToLeader;

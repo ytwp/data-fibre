@@ -56,7 +56,7 @@ public class AccessDeniedException extends Exception {
                 }
             }
 
-            List<String> inactivatedRoles = new ArrayList<>();
+            List<String> inactivatedRoles;
             try {
                 inactivatedRoles = authorizationMgr.getRoleNamesByUser(userIdentity);
             } catch (PrivilegeException e) {

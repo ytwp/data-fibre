@@ -40,11 +40,11 @@ public class Authorizer {
     private static final AccessControlProvider INSTANCE;
 
     static {
-        if (Config.access_control.equals("ranger")) {
-            INSTANCE = new AccessControlProvider(new AuthorizerStmtVisitor(), new RangerStarRocksAccessController());
-        } else {
-            INSTANCE = new AccessControlProvider(new AuthorizerStmtVisitor(), new NativeAccessController());
-        }
+//        if (Config.access_control.equals("ranger")) {
+//            INSTANCE = new AccessControlProvider(new AuthorizerStmtVisitor(), new RangerStarRocksAccessController());
+//        } else {
+//            INSTANCE = new AccessControlProvider(new AuthorizerStmtVisitor(), new NativeAccessController());
+//        }
     }
 
     public static AccessControlProvider getInstance() {
