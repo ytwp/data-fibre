@@ -118,7 +118,7 @@ public class DefaultCoordinator extends Coordinator {
 
     private LogicalSlot slot = null;
 
-    private ShortCircuitExecutor shortCircuitExecutor = null;
+//    private ShortCircuitExecutor shortCircuitExecutor = null;
     private boolean isShortCircuit = false;
     private boolean isBinaryRow = false;
 
@@ -241,20 +241,20 @@ public class DefaultCoordinator extends Coordinator {
         this.executionDAG = coordinatorPreprocessor.getExecutionDAG();
 
         this.queryProfile = new QueryRuntimeProfile(connectContext, jobSpec, executionDAG.getFragmentsInCreatedOrder().size());
-        List<PlanFragment> fragments = jobSpec.getFragments();
-        List<ScanNode> scanNodes = jobSpec.getScanNodes();
-        TDescriptorTable descTable = jobSpec.getDescTable();
-
-        if (connectContext.getCommand() == MysqlCommand.COM_STMT_EXECUTE) {
-            isBinaryRow = true;
-        }
-
-        shortCircuitExecutor = ShortCircuitExecutor.create(context, fragments, scanNodes, descTable,
-                isBinaryRow, jobSpec.isNeedReport());
-
-        if (null != shortCircuitExecutor) {
-            isShortCircuit = true;
-        }
+//        List<PlanFragment> fragments = jobSpec.getFragments();
+//        List<ScanNode> scanNodes = jobSpec.getScanNodes();
+//        TDescriptorTable descTable = jobSpec.getDescTable();
+//
+//        if (connectContext.getCommand() == MysqlCommand.COM_STMT_EXECUTE) {
+//            isBinaryRow = true;
+//        }
+//
+//        shortCircuitExecutor = ShortCircuitExecutor.create(context, fragments, scanNodes, descTable,
+//                isBinaryRow, jobSpec.isNeedReport());
+//
+//        if (null != shortCircuitExecutor) {
+//            isShortCircuit = true;
+//        }
     }
 
     @Override

@@ -775,10 +775,10 @@ public class Column implements Writable, GsonPreProcessable, GsonPostProcessable
 
     @Override
     public void gsonPostProcess() throws IOException {
-        if (generatedColumnExprSerialized != null && generatedColumnExprSerialized.expressionSql != null) {
-            generatedColumnExpr = SqlParser.parseSqlToExpr(generatedColumnExprSerialized.expressionSql,
-                    SqlModeHelper.MODE_DEFAULT);
-        }
+//        if (generatedColumnExprSerialized != null && generatedColumnExprSerialized.expressionSql != null) {
+//            generatedColumnExpr = SqlParser.parseSqlToExpr(generatedColumnExprSerialized.expressionSql,
+//                    SqlModeHelper.MODE_DEFAULT);
+//        }
     }
 
     @Override

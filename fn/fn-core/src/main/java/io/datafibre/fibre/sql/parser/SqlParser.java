@@ -15,29 +15,15 @@
 package io.datafibre.fibre.sql.parser;
 
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.analysis.Expr;
-import io.datafibre.fibre.common.Config;
-import io.datafibre.fibre.connector.parser.trino.TrinoParserUtils;
 import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.qe.OriginStatement;
 import io.datafibre.fibre.qe.SessionVariable;
-import io.datafibre.fibre.sql.ast.ImportColumnsStmt;
-import io.datafibre.fibre.sql.ast.PrepareStmt;
 import io.datafibre.fibre.sql.ast.StatementBase;
-import io.trino.sql.parser.StatementSplitter;
-import org.antlr.v4.runtime.InputMismatchException;
-import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.misc.Interval;
-import org.antlr.v4.runtime.misc.IntervalSet;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.similarity.JaroWinklerDistance;
+import org.antlr.v4.runtime.Token;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static io.datafibre.fibre.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
+import java.util.List;
+import java.util.Objects;
 
 public class SqlParser {
     private static final Logger LOG = LogManager.getLogger(SqlParser.class);
@@ -55,14 +41,14 @@ public class SqlParser {
     private static List<StatementBase> parseWithTrinoDialect(String sql, SessionVariable sessionVariable) {
         List<StatementBase> statements = Lists.newArrayList();
         try {
-            StatementSplitter splitter = new StatementSplitter(sql);
-            for (StatementSplitter.Statement statement : splitter.getCompleteStatements()) {
-                statements.add(TrinoParserUtils.toStatement(statement.statement(), sessionVariable.getSqlMode()));
-            }
-            if (!splitter.getPartialStatement().isEmpty()) {
-                statements.add(TrinoParserUtils.toStatement(splitter.getPartialStatement(),
-                        sessionVariable.getSqlMode()));
-            }
+//            StatementSplitter splitter = new StatementSplitter(sql);
+//            for (StatementSplitter.Statement statement : splitter.getCompleteStatements()) {
+//                statements.add(TrinoParserUtils.toStatement(statement.statement(), sessionVariable.getSqlMode()));
+//            }
+//            if (!splitter.getPartialStatement().isEmpty()) {
+//                statements.add(TrinoParserUtils.toStatement(splitter.getPartialStatement(),
+//                        sessionVariable.getSqlMode()));
+//            }
             if (ConnectContext.get() != null) {
                 ConnectContext.get().setRelationAliasCaseInSensitive(true);
             }
@@ -142,18 +128,19 @@ public class SqlParser {
 
     /**
      * parse sql to expression, only supports new parser
+     * <p>
+     * //     * @param expressionSql expression sql
+     * //     * @param sqlMode       sqlMode
      *
-     * @param expressionSql expression sql
-     * @param sqlMode       sqlMode
      * @return Expr
      */
-    public static Expr parseSqlToExpr(String expressionSql, long sqlMode) {
-        SessionVariable sessionVariable = new SessionVariable();
-        sessionVariable.setSqlMode(sqlMode);
-
-        return (Expr) new AstBuilder(sqlMode)
-                .visit(parserBuilder(expressionSql, sessionVariable).expressionSingleton().expression());
-    }
+//    public static Expr parseSqlToExpr(String expressionSql, long sqlMode) {
+//        SessionVariable sessionVariable = new SessionVariable();
+//        sessionVariable.setSqlMode(sqlMode);
+//
+//        return (Expr) new AstBuilder(sqlMode)
+//                .visit(parserBuilder(expressionSql, sessionVariable).expressionSingleton().expression());
+//    }
 
 //    public static List<Expr> parseSqlToExprs(String expressions, SessionVariable sessionVariable) {
 //        List<StarRocksParser.ExpressionContext> expressionContexts =
@@ -172,131 +159,130 @@ public class SqlParser {
 //                .visit(parserBuilder(expressionSql, sessionVariable).importColumns());
 //    }
 
-    private static StarRocksParser parserBuilder(String sql, SessionVariable sessionVariable) {
-        StarRocksLexer lexer = new StarRocksLexer(new CaseInsensitiveStream(CharStreams.fromString(sql)));
-        lexer.setSqlMode(sessionVariable.getSqlMode());
-        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
-        StarRocksParser parser = new StarRocksParser(tokenStream);
-
-        // Unify the error message
-        parser.setErrorHandler(new DefaultErrorStrategy() {
-            @Override
-            public Token recoverInline(Parser recognizer)
-                    throws RecognitionException {
-                if (nextTokensContext == null) {
-                    throw new InputMismatchException(recognizer);
-                } else {
-                    throw new InputMismatchException(recognizer, nextTokensState, nextTokensContext);
-                }
-            }
-
-            @Override
-            public void reportNoViableAlternative(Parser recognizer, NoViableAltException e) {
-                TokenStream tokens = recognizer.getInputStream();
-                String input;
-                if (tokens != null) {
-                    if (e.getStartToken().getType() == Token.EOF) {
-                        input = EOF;
-                    } else {
-                        input = tokens.getText(e.getStartToken(), e.getOffendingToken());
-                    }
-                } else {
-                    input = "<unknown input>";
-                }
-                String msg = PARSER_ERROR_MSG.noViableStatement(input);
-                recognizer.notifyErrorListeners(e.getOffendingToken(), msg, e);
-            }
-
-            @Override
-            public void reportInputMismatch(Parser recognizer, InputMismatchException e) {
-                Token t = e.getOffendingToken();
-                String tokenName = getTokenDisplay(t);
-                IntervalSet expecting = getExpectedTokens(recognizer);
-                String expects = filterExpectingToken(tokenName, expecting, recognizer.getVocabulary());
-                String msg = PARSER_ERROR_MSG.unexpectedInput(tokenName, expects);
-                recognizer.notifyErrorListeners(e.getOffendingToken(), msg, e);
-            }
-
-            @Override
-            public void reportUnwantedToken(Parser recognizer) {
-                if (inErrorRecoveryMode(recognizer)) {
-                    return;
-                }
-                beginErrorCondition(recognizer);
-                Token t = recognizer.getCurrentToken();
-                String tokenName = getTokenDisplay(t);
-                IntervalSet expecting = getExpectedTokens(recognizer);
-                String expects = filterExpectingToken(tokenName, expecting, recognizer.getVocabulary());
-                String msg = PARSER_ERROR_MSG.unexpectedInput(tokenName, expects);
-                recognizer.notifyErrorListeners(t, msg, null);
-            }
-
-            private String filterExpectingToken(String token, IntervalSet expecting, Vocabulary vocabulary) {
-                List<String> symbols = Lists.newArrayList();
-                List<String> words = Lists.newArrayList();
-
-                List<String> result = Lists.newArrayList();
-                StringJoiner joiner = new StringJoiner(", ", "{", "}");
-                JaroWinklerDistance jaroWinklerDistance = new JaroWinklerDistance();
-
-                if (expecting.isNil()) {
-                    return joiner.toString();
-                }
-
-                Iterator<Interval> iter = expecting.getIntervals().iterator();
-                while (iter.hasNext()) {
-                    Interval interval = iter.next();
-                    int a = interval.a;
-                    int b = interval.b;
-                    if (a == b) {
-                        addToken(vocabulary, a, symbols, words);
-                    } else {
-                        for (int i = a; i <= b; i++) {
-                            addToken(vocabulary, i, symbols, words);
-                        }
-                    }
-                }
-
-                // if there exists an expect word in nonReserved words, there should be a legal identifier.
-                if (words.contains("'ACCESS'")) {
-                    result.add("a legal identifier");
-                } else {
-                    String upperToken = StringUtils.upperCase(token);
-                    Collections.sort(words, Comparator.comparingDouble(s -> jaroWinklerDistance.apply(s, upperToken)));
-                    int limit = Math.min(5, words.size());
-                    result.addAll(words.subList(0, limit));
-                    result.addAll(symbols);
-                }
-
-                result.forEach(joiner::add);
-                return joiner.toString();
-            }
-
-            private void addToken(Vocabulary vocabulary, int a, Collection<String> symbols, Collection<String> words) {
-                if (a == Token.EOF) {
-                    symbols.add(EOF);
-                } else if (a == Token.EPSILON) {
-                    // do nothing
-                } else {
-                    String token = vocabulary.getDisplayName(a);
-                    // ensure it's a word
-                    if (token.length() > 1 && token.charAt(1) >= 'A' && token.charAt(1) <= 'Z') {
-                        words.add(token);
-                    } else {
-                        symbols.add(token);
-                    }
-                }
-            }
-        });
-
-        parser.removeErrorListeners();
-        parser.addErrorListener(new ErrorHandler());
-        parser.removeParseListeners();
-        parser.addParseListener(new PostProcessListener(sessionVariable.getParseTokensLimit(),
-                Math.max(Config.expr_children_limit, sessionVariable.getExprChildrenLimit())));
-        return parser;
-    }
-
+//    private static StarRocksParser parserBuilder(String sql, SessionVariable sessionVariable) {
+//        StarRocksLexer lexer = new StarRocksLexer(new CaseInsensitiveStream(CharStreams.fromString(sql)));
+//        lexer.setSqlMode(sessionVariable.getSqlMode());
+//        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
+//        StarRocksParser parser = new StarRocksParser(tokenStream);
+//
+//        // Unify the error message
+//        parser.setErrorHandler(new DefaultErrorStrategy() {
+//            @Override
+//            public Token recoverInline(Parser recognizer)
+//                    throws RecognitionException {
+//                if (nextTokensContext == null) {
+//                    throw new InputMismatchException(recognizer);
+//                } else {
+//                    throw new InputMismatchException(recognizer, nextTokensState, nextTokensContext);
+//                }
+//            }
+//
+//            @Override
+//            public void reportNoViableAlternative(Parser recognizer, NoViableAltException e) {
+//                TokenStream tokens = recognizer.getInputStream();
+//                String input;
+//                if (tokens != null) {
+//                    if (e.getStartToken().getType() == Token.EOF) {
+//                        input = EOF;
+//                    } else {
+//                        input = tokens.getText(e.getStartToken(), e.getOffendingToken());
+//                    }
+//                } else {
+//                    input = "<unknown input>";
+//                }
+//                String msg = PARSER_ERROR_MSG.noViableStatement(input);
+//                recognizer.notifyErrorListeners(e.getOffendingToken(), msg, e);
+//            }
+//
+//            @Override
+//            public void reportInputMismatch(Parser recognizer, InputMismatchException e) {
+//                Token t = e.getOffendingToken();
+//                String tokenName = getTokenDisplay(t);
+//                IntervalSet expecting = getExpectedTokens(recognizer);
+//                String expects = filterExpectingToken(tokenName, expecting, recognizer.getVocabulary());
+//                String msg = PARSER_ERROR_MSG.unexpectedInput(tokenName, expects);
+//                recognizer.notifyErrorListeners(e.getOffendingToken(), msg, e);
+//            }
+//
+//            @Override
+//            public void reportUnwantedToken(Parser recognizer) {
+//                if (inErrorRecoveryMode(recognizer)) {
+//                    return;
+//                }
+//                beginErrorCondition(recognizer);
+//                Token t = recognizer.getCurrentToken();
+//                String tokenName = getTokenDisplay(t);
+//                IntervalSet expecting = getExpectedTokens(recognizer);
+//                String expects = filterExpectingToken(tokenName, expecting, recognizer.getVocabulary());
+//                String msg = PARSER_ERROR_MSG.unexpectedInput(tokenName, expects);
+//                recognizer.notifyErrorListeners(t, msg, null);
+//            }
+//
+//            private String filterExpectingToken(String token, IntervalSet expecting, Vocabulary vocabulary) {
+//                List<String> symbols = Lists.newArrayList();
+//                List<String> words = Lists.newArrayList();
+//
+//                List<String> result = Lists.newArrayList();
+//                StringJoiner joiner = new StringJoiner(", ", "{", "}");
+//                JaroWinklerDistance jaroWinklerDistance = new JaroWinklerDistance();
+//
+//                if (expecting.isNil()) {
+//                    return joiner.toString();
+//                }
+//
+//                Iterator<Interval> iter = expecting.getIntervals().iterator();
+//                while (iter.hasNext()) {
+//                    Interval interval = iter.next();
+//                    int a = interval.a;
+//                    int b = interval.b;
+//                    if (a == b) {
+//                        addToken(vocabulary, a, symbols, words);
+//                    } else {
+//                        for (int i = a; i <= b; i++) {
+//                            addToken(vocabulary, i, symbols, words);
+//                        }
+//                    }
+//                }
+//
+//                // if there exists an expect word in nonReserved words, there should be a legal identifier.
+//                if (words.contains("'ACCESS'")) {
+//                    result.add("a legal identifier");
+//                } else {
+//                    String upperToken = StringUtils.upperCase(token);
+//                    Collections.sort(words, Comparator.comparingDouble(s -> jaroWinklerDistance.apply(s, upperToken)));
+//                    int limit = Math.min(5, words.size());
+//                    result.addAll(words.subList(0, limit));
+//                    result.addAll(symbols);
+//                }
+//
+//                result.forEach(joiner::add);
+//                return joiner.toString();
+//            }
+//
+//            private void addToken(Vocabulary vocabulary, int a, Collection<String> symbols, Collection<String> words) {
+//                if (a == Token.EOF) {
+//                    symbols.add(EOF);
+//                } else if (a == Token.EPSILON) {
+//                    // do nothing
+//                } else {
+//                    String token = vocabulary.getDisplayName(a);
+//                    // ensure it's a word
+//                    if (token.length() > 1 && token.charAt(1) >= 'A' && token.charAt(1) <= 'Z') {
+//                        words.add(token);
+//                    } else {
+//                        symbols.add(token);
+//                    }
+//                }
+//            }
+//        });
+//
+//        parser.removeErrorListeners();
+//        parser.addErrorListener(new ErrorHandler());
+//        parser.removeParseListeners();
+//        parser.addParseListener(new PostProcessListener(sessionVariable.getParseTokensLimit(),
+//                Math.max(Config.expr_children_limit, sessionVariable.getExprChildrenLimit())));
+//        return parser;
+//    }
     public static String getTokenDisplay(Token t) {
         if (t == null) {
             return "<no token>";

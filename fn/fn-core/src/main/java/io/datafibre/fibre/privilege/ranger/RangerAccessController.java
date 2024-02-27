@@ -61,62 +61,62 @@ public abstract class RangerAccessController extends ExternalAccessController im
         return rangerPlugin;
     }
 
-    public Expr getColumnMaskingExpression(RangerAccessResourceImpl resource, Column column, ConnectContext context) {
-        RangerStarRocksAccessRequest request = RangerStarRocksAccessRequest.createAccessRequest(
-                resource, context.getCurrentUserIdentity(), PrivilegeType.SELECT.name().toLowerCase(ENGLISH));
+//    public Expr getColumnMaskingExpression(RangerAccessResourceImpl resource, Column column, ConnectContext context) {
+//        RangerStarRocksAccessRequest request = RangerStarRocksAccessRequest.createAccessRequest(
+//                resource, context.getCurrentUserIdentity(), PrivilegeType.SELECT.name().toLowerCase(ENGLISH));
+//
+//        RangerAccessResult result = rangerPlugin.evalDataMaskPolicies(request, null);
+//        if (result != null && result.isMaskEnabled()) {
+//            String maskType = result.getMaskType();
+//            RangerServiceDef.RangerDataMaskTypeDef maskTypeDef = result.getMaskTypeDef();
+//            String transformer = null;
+//
+//            if (maskTypeDef != null) {
+//                transformer = maskTypeDef.getTransformer();
+//            }
+//
+//            if (StringUtils.equalsIgnoreCase(maskType, RangerPolicy.MASK_TYPE_NULL)) {
+//                transformer = "NULL";
+//            } else if (StringUtils.equalsIgnoreCase(maskType, RangerPolicy.MASK_TYPE_CUSTOM)) {
+//                String maskedValue = result.getMaskedValue();
+//                transformer = Objects.requireNonNullElse(maskedValue, "NULL");
+//            }
+//
+//            if (StringUtils.isNotEmpty(transformer)) {
+//                transformer = transformer.replace("{col}", column.getName())
+//                        .replace("{type}", column.getType().toSql());
+//            }
+//
+//            return SqlParser.parseSqlToExpr(transformer, context.getSessionVariable().getSqlMode());
+//        }
+//
+//        return null;
+//    }
 
-        RangerAccessResult result = rangerPlugin.evalDataMaskPolicies(request, null);
-        if (result != null && result.isMaskEnabled()) {
-            String maskType = result.getMaskType();
-            RangerServiceDef.RangerDataMaskTypeDef maskTypeDef = result.getMaskTypeDef();
-            String transformer = null;
+//    protected Expr getRowAccessExpression(RangerAccessResourceImpl resource, ConnectContext context) {
+//        RangerStarRocksAccessRequest request = RangerStarRocksAccessRequest.createAccessRequest(
+//                resource, context.getCurrentUserIdentity(), PrivilegeType.SELECT.name().toLowerCase(ENGLISH));
+//        RangerAccessResult result = rangerPlugin.evalRowFilterPolicies(request, null);
+//        if (result != null && result.isRowFilterEnabled()) {
+//            return SqlParser.parseSqlToExpr(result.getFilterExpr(), context.getSessionVariable().getSqlMode());
+//        } else {
+//            return null;
+//        }
+//    }
 
-            if (maskTypeDef != null) {
-                transformer = maskTypeDef.getTransformer();
-            }
-
-            if (StringUtils.equalsIgnoreCase(maskType, RangerPolicy.MASK_TYPE_NULL)) {
-                transformer = "NULL";
-            } else if (StringUtils.equalsIgnoreCase(maskType, RangerPolicy.MASK_TYPE_CUSTOM)) {
-                String maskedValue = result.getMaskedValue();
-                transformer = Objects.requireNonNullElse(maskedValue, "NULL");
-            }
-
-            if (StringUtils.isNotEmpty(transformer)) {
-                transformer = transformer.replace("{col}", column.getName())
-                        .replace("{type}", column.getType().toSql());
-            }
-
-            return SqlParser.parseSqlToExpr(transformer, context.getSessionVariable().getSqlMode());
-        }
-
-        return null;
-    }
-
-    protected Expr getRowAccessExpression(RangerAccessResourceImpl resource, ConnectContext context) {
-        RangerStarRocksAccessRequest request = RangerStarRocksAccessRequest.createAccessRequest(
-                resource, context.getCurrentUserIdentity(), PrivilegeType.SELECT.name().toLowerCase(ENGLISH));
-        RangerAccessResult result = rangerPlugin.evalRowFilterPolicies(request, null);
-        if (result != null && result.isRowFilterEnabled()) {
-            return SqlParser.parseSqlToExpr(result.getFilterExpr(), context.getSessionVariable().getSqlMode());
-        } else {
-            return null;
-        }
-    }
-
-    protected void hasPermission(RangerAccessResourceImpl resource, UserIdentity user, PrivilegeType privilegeType)
-            throws AccessDeniedException {
-        String accessType;
-        if (privilegeType.equals(PrivilegeType.ANY)) {
-            accessType = RangerPolicyEngine.ANY_ACCESS;
-        } else {
-            accessType = convertToAccessType(privilegeType);
-        }
-
-        RangerStarRocksAccessRequest request = RangerStarRocksAccessRequest.createAccessRequest(resource, user, accessType);
-        RangerAccessResult result = rangerPlugin.isAccessAllowed(request);
-        if (result == null || !result.getIsAllowed()) {
-            throw new AccessDeniedException();
-        }
-    }
+//    protected void hasPermission(RangerAccessResourceImpl resource, UserIdentity user, PrivilegeType privilegeType)
+//            throws AccessDeniedException {
+//        String accessType;
+//        if (privilegeType.equals(PrivilegeType.ANY)) {
+//            accessType = RangerPolicyEngine.ANY_ACCESS;
+//        } else {
+//            accessType = convertToAccessType(privilegeType);
+//        }
+//
+//        RangerStarRocksAccessRequest request = RangerStarRocksAccessRequest.createAccessRequest(resource, user, accessType);
+//        RangerAccessResult result = rangerPlugin.isAccessAllowed(request);
+//        if (result == null || !result.getIsAllowed()) {
+//            throw new AccessDeniedException();
+//        }
+//    }
 }

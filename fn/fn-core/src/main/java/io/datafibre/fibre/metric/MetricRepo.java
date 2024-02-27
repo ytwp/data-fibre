@@ -34,124 +34,78 @@
 
 package io.datafibre.fibre.metric;
 
-import com.codahale.metrics.Histogram;
-import com.codahale.metrics.MetricRegistry;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import io.datafibre.fibre.alter.AlterJobMgr;
-import io.datafibre.fibre.alter.AlterJobV2;
-import io.datafibre.fibre.backup.AbstractJob;
-import io.datafibre.fibre.backup.BackupJob;
-import io.datafibre.fibre.backup.RestoreJob;
-import io.datafibre.fibre.catalog.*;
-import io.datafibre.fibre.common.Config;
-import io.datafibre.fibre.common.DdlException;
 import io.datafibre.fibre.common.ThreadPoolManager;
-import io.datafibre.fibre.common.UserException;
-import io.datafibre.fibre.common.util.KafkaUtil;
-import io.datafibre.fibre.common.util.ProfileManager;
-import io.datafibre.fibre.http.HttpMetricRegistry;
-import io.datafibre.fibre.http.rest.MetricsAction;
-import io.datafibre.fibre.load.EtlJobType;
-import io.datafibre.fibre.load.loadv2.JobState;
-import io.datafibre.fibre.load.loadv2.LoadMgr;
-import io.datafibre.fibre.load.routineload.KafkaProgress;
-import io.datafibre.fibre.load.routineload.KafkaRoutineLoadJob;
-import io.datafibre.fibre.load.routineload.RoutineLoadJob;
-import io.datafibre.fibre.load.routineload.RoutineLoadMgr;
-import io.datafibre.fibre.metric.Metric.MetricType;
-import io.datafibre.fibre.metric.Metric.MetricUnit;
-import io.datafibre.fibre.monitor.jvm.JvmStatCollector;
-import io.datafibre.fibre.monitor.jvm.JvmStats;
-import io.datafibre.fibre.proto.PKafkaOffsetProxyRequest;
-import io.datafibre.fibre.proto.PKafkaOffsetProxyResult;
-import io.datafibre.fibre.qe.QeProcessorImpl;
-import io.datafibre.fibre.qe.QueryDetailQueue;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.service.ExecuteEnv;
-import io.datafibre.fibre.staros.StarMgrServer;
-import io.datafibre.fibre.system.Backend;
-import io.datafibre.fibre.system.SystemInfoService;
-import io.datafibre.fibre.task.AgentTaskQueue;
-import io.datafibre.fibre.transaction.TransactionState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.spark.util.SizeEstimator;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 public final class MetricRepo {
     private static final Logger LOG = LogManager.getLogger(MetricRepo.class);
 
-    private static final MetricRegistry METRIC_REGISTER = new MetricRegistry();
-    private static final StarRocksMetricRegistry STARROCKS_METRIC_REGISTER = new StarRocksMetricRegistry();
+//    private static final MetricRegistry METRIC_REGISTER = new MetricRegistry();
+//    private static final StarRocksMetricRegistry STARROCKS_METRIC_REGISTER = new StarRocksMetricRegistry();
 
     public static volatile boolean hasInit = false;
-    public static final SystemMetrics SYSTEM_METRICS = new SystemMetrics();
+//    public static final SystemMetrics SYSTEM_METRICS = new SystemMetrics();
 
     public static final String TABLET_NUM = "tablet_num";
     public static final String TABLET_MAX_COMPACTION_SCORE = "tablet_max_compaction_score";
 
-    public static LongCounterMetric COUNTER_REQUEST_ALL;
-    public static LongCounterMetric COUNTER_QUERY_ALL;
-    public static LongCounterMetric COUNTER_QUERY_ERR;
-    public static LongCounterMetric COUNTER_QUERY_TIMEOUT;
-    public static LongCounterMetric COUNTER_QUERY_SUCCESS;
-    public static LongCounterMetric COUNTER_SLOW_QUERY;
+    //    public static LongCounterMetric COUNTER_REQUEST_ALL;
+//    public static LongCounterMetric COUNTER_QUERY_ALL;
+//    public static LongCounterMetric COUNTER_QUERY_ERR;
+//    public static LongCounterMetric COUNTER_QUERY_TIMEOUT;
+//    public static LongCounterMetric COUNTER_QUERY_SUCCESS;
+//    public static LongCounterMetric COUNTER_SLOW_QUERY;
 
-    public static LongCounterMetric COUNTER_QUERY_QUEUE_PENDING;
-    public static LongCounterMetric COUNTER_QUERY_QUEUE_TOTAL;
-    public static LongCounterMetric COUNTER_QUERY_QUEUE_TIMEOUT;
+    //    public static LongCounterMetric COUNTER_QUERY_QUEUE_PENDING;
+//    public static LongCounterMetric COUNTER_QUERY_QUEUE_TOTAL;
+//    public static LongCounterMetric COUNTER_QUERY_QUEUE_TIMEOUT;
+//
+//    public static LongCounterMetric COUNTER_UNFINISHED_BACKUP_JOB;
+//    public static LongCounterMetric COUNTER_UNFINISHED_RESTORE_JOB;
+//
+//    public static LongCounterMetric COUNTER_LOAD_ADD;
+//    public static LongCounterMetric COUNTER_LOAD_FINISHED;
+//    public static LongCounterMetric COUNTER_EDIT_LOG_WRITE;
+//    public static LongCounterMetric COUNTER_EDIT_LOG_READ;
+//    public static LongCounterMetric COUNTER_EDIT_LOG_SIZE_BYTES;
+//    public static LongCounterMetric COUNTER_IMAGE_WRITE;
+//    public static LongCounterMetric COUNTER_IMAGE_PUSH;
+//    public static LongCounterMetric COUNTER_TXN_REJECT;
+//    public static LongCounterMetric COUNTER_TXN_BEGIN;
+//    public static LongCounterMetric COUNTER_TXN_FAILED;
+//    public static LongCounterMetric COUNTER_TXN_SUCCESS;
+//    public static LongCounterMetric COUNTER_ROUTINE_LOAD_ROWS;
+//    public static LongCounterMetric COUNTER_ROUTINE_LOAD_RECEIVED_BYTES;
+//    public static LongCounterMetric COUNTER_ROUTINE_LOAD_ERROR_ROWS;
+//    public static LongCounterMetric COUNTER_ROUTINE_LOAD_PAUSED;
+//    public static LongCounterMetric COUNTER_SHORTCIRCUIT_QUERY;
+//    public static LongCounterMetric COUNTER_SHORTCIRCUIT_RPC;
 
-    public static LongCounterMetric COUNTER_UNFINISHED_BACKUP_JOB;
-    public static LongCounterMetric COUNTER_UNFINISHED_RESTORE_JOB;
-
-    public static LongCounterMetric COUNTER_LOAD_ADD;
-    public static LongCounterMetric COUNTER_LOAD_FINISHED;
-    public static LongCounterMetric COUNTER_EDIT_LOG_WRITE;
-    public static LongCounterMetric COUNTER_EDIT_LOG_READ;
-    public static LongCounterMetric COUNTER_EDIT_LOG_SIZE_BYTES;
-    public static LongCounterMetric COUNTER_IMAGE_WRITE;
-    public static LongCounterMetric COUNTER_IMAGE_PUSH;
-    public static LongCounterMetric COUNTER_TXN_REJECT;
-    public static LongCounterMetric COUNTER_TXN_BEGIN;
-    public static LongCounterMetric COUNTER_TXN_FAILED;
-    public static LongCounterMetric COUNTER_TXN_SUCCESS;
-    public static LongCounterMetric COUNTER_ROUTINE_LOAD_ROWS;
-    public static LongCounterMetric COUNTER_ROUTINE_LOAD_RECEIVED_BYTES;
-    public static LongCounterMetric COUNTER_ROUTINE_LOAD_ERROR_ROWS;
-    public static LongCounterMetric COUNTER_ROUTINE_LOAD_PAUSED;
-    public static LongCounterMetric COUNTER_SHORTCIRCUIT_QUERY;
-    public static LongCounterMetric COUNTER_SHORTCIRCUIT_RPC;
-
-    public static Histogram HISTO_QUERY_LATENCY;
-    public static Histogram HISTO_EDIT_LOG_WRITE_LATENCY;
-    public static Histogram HISTO_JOURNAL_WRITE_LATENCY;
-    public static Histogram HISTO_JOURNAL_WRITE_BATCH;
-    public static Histogram HISTO_JOURNAL_WRITE_BYTES;
-    public static Histogram HISTO_SHORTCIRCUIT_RPC_LATENCY;
+    //    public static Histogram HISTO_QUERY_LATENCY;
+//    public static Histogram HISTO_EDIT_LOG_WRITE_LATENCY;
+//    public static Histogram HISTO_JOURNAL_WRITE_LATENCY;
+//    public static Histogram HISTO_JOURNAL_WRITE_BATCH;
+//    public static Histogram HISTO_JOURNAL_WRITE_BYTES;
+//    public static Histogram HISTO_SHORTCIRCUIT_RPC_LATENCY;
 
     // following metrics will be updated by metric calculator
-    public static GaugeMetricImpl<Double> GAUGE_QUERY_PER_SECOND;
-    public static GaugeMetricImpl<Double> GAUGE_REQUEST_PER_SECOND;
-    public static GaugeMetricImpl<Double> GAUGE_QUERY_ERR_RATE;
-    // these query latency is different from HISTO_QUERY_LATENCY, for these only summarize the latest queries, but HISTO_QUERY_LATENCY summarizes all queries.
-    public static GaugeMetricImpl<Double> GAUGE_QUERY_LATENCY_MEAN;
-    public static GaugeMetricImpl<Double> GAUGE_QUERY_LATENCY_MEDIAN;
-    public static GaugeMetricImpl<Double> GAUGE_QUERY_LATENCY_P75;
-    public static GaugeMetricImpl<Double> GAUGE_QUERY_LATENCY_P90;
-    public static GaugeMetricImpl<Double> GAUGE_QUERY_LATENCY_P95;
-    public static GaugeMetricImpl<Double> GAUGE_QUERY_LATENCY_P99;
-    public static GaugeMetricImpl<Double> GAUGE_QUERY_LATENCY_P999;
-    public static GaugeMetricImpl<Long> GAUGE_MAX_TABLET_COMPACTION_SCORE;
-    public static GaugeMetricImpl<Long> GAUGE_STACKED_JOURNAL_NUM;
+//    public static GaugeMetricImpl<Double> GAUGE_QUERY_PER_SECOND;
+//    public static GaugeMetricImpl<Double> GAUGE_REQUEST_PER_SECOND;
+//    public static GaugeMetricImpl<Double> GAUGE_QUERY_ERR_RATE;
+//     these query latency is different from HISTO_QUERY_LATENCY, for these only summarize the latest queries, but HISTO_QUERY_LATENCY summarizes all queries.
+//    public static GaugeMetricImpl<Double> GAUGE_QUERY_LATENCY_MEAN;
+//    public static GaugeMetricImpl<Double> GAUGE_QUERY_LATENCY_MEDIAN;
+//    public static GaugeMetricImpl<Double> GAUGE_QUERY_LATENCY_P75;
+//    public static GaugeMetricImpl<Double> GAUGE_QUERY_LATENCY_P90;
+//    public static GaugeMetricImpl<Double> GAUGE_QUERY_LATENCY_P95;
+//    public static GaugeMetricImpl<Double> GAUGE_QUERY_LATENCY_P99;
+//    public static GaugeMetricImpl<Double> GAUGE_QUERY_LATENCY_P999;
+//    public static GaugeMetricImpl<Long> GAUGE_MAX_TABLET_COMPACTION_SCORE;
+//    public static GaugeMetricImpl<Long> GAUGE_STACKED_JOURNAL_NUM;
 
     public static List<GaugeMetricImpl<Long>> GAUGE_ROUTINE_LOAD_LAGS;
 
@@ -160,7 +114,7 @@ public final class MetricRepo {
 
     private static final ScheduledThreadPoolExecutor METRIC_TIMER =
             ThreadPoolManager.newDaemonScheduledThreadPool(1, "Metric-Timer-Pool", true);
-    private static final MetricCalculator METRIC_CALCULATOR = new MetricCalculator();
+//    private static final MetricCalculator METRIC_CALCULATOR = new MetricCalculator();
 
 //    public static synchronized void init() {
 //        if (hasInit) {
@@ -477,51 +431,51 @@ public final class MetricRepo {
 //        }
 //    }
 
-    private static void initSystemMetrics() {
-        // TCP retransSegs
-        GaugeMetric<Long> tcpRetransSegs = (GaugeMetric<Long>) new GaugeMetric<Long>(
-                "snmp", MetricUnit.NOUNIT, "All TCP packets retransmitted") {
-            @Override
-            public Long getValue() {
-                return SYSTEM_METRICS.tcpRetransSegs;
-            }
-        };
-        tcpRetransSegs.addLabel(new MetricLabel("name", "tcp_retrans_segs"));
-        STARROCKS_METRIC_REGISTER.addMetric(tcpRetransSegs);
-
-        // TCP inErrs
-        GaugeMetric<Long> tpcInErrs = (GaugeMetric<Long>) new GaugeMetric<Long>(
-                "snmp", MetricUnit.NOUNIT, "The number of all problematic TCP packets received") {
-            @Override
-            public Long getValue() {
-                return SYSTEM_METRICS.tcpInErrs;
-            }
-        };
-        tpcInErrs.addLabel(new MetricLabel("name", "tcp_in_errs"));
-        STARROCKS_METRIC_REGISTER.addMetric(tpcInErrs);
-
-        // TCP inSegs
-        GaugeMetric<Long> tpcInSegs = (GaugeMetric<Long>) new GaugeMetric<Long>(
-                "snmp", MetricUnit.NOUNIT, "The number of all TCP packets received") {
-            @Override
-            public Long getValue() {
-                return SYSTEM_METRICS.tcpInSegs;
-            }
-        };
-        tpcInSegs.addLabel(new MetricLabel("name", "tcp_in_segs"));
-        STARROCKS_METRIC_REGISTER.addMetric(tpcInSegs);
-
-        // TCP outSegs
-        GaugeMetric<Long> tpcOutSegs = (GaugeMetric<Long>) new GaugeMetric<Long>(
-                "snmp", MetricUnit.NOUNIT, "The number of all TCP packets send with RST") {
-            @Override
-            public Long getValue() {
-                return SYSTEM_METRICS.tcpOutSegs;
-            }
-        };
-        tpcOutSegs.addLabel(new MetricLabel("name", "tcp_out_segs"));
-        STARROCKS_METRIC_REGISTER.addMetric(tpcOutSegs);
-    }
+//    private static void initSystemMetrics() {
+//        // TCP retransSegs
+//        GaugeMetric<Long> tcpRetransSegs = (GaugeMetric<Long>) new GaugeMetric<Long>(
+//                "snmp", MetricUnit.NOUNIT, "All TCP packets retransmitted") {
+//            @Override
+//            public Long getValue() {
+//                return SYSTEM_METRICS.tcpRetransSegs;
+//            }
+//        };
+//        tcpRetransSegs.addLabel(new MetricLabel("name", "tcp_retrans_segs"));
+//        STARROCKS_METRIC_REGISTER.addMetric(tcpRetransSegs);
+//
+//        // TCP inErrs
+//        GaugeMetric<Long> tpcInErrs = (GaugeMetric<Long>) new GaugeMetric<Long>(
+//                "snmp", MetricUnit.NOUNIT, "The number of all problematic TCP packets received") {
+//            @Override
+//            public Long getValue() {
+//                return SYSTEM_METRICS.tcpInErrs;
+//            }
+//        };
+//        tpcInErrs.addLabel(new MetricLabel("name", "tcp_in_errs"));
+//        STARROCKS_METRIC_REGISTER.addMetric(tpcInErrs);
+//
+//        // TCP inSegs
+//        GaugeMetric<Long> tpcInSegs = (GaugeMetric<Long>) new GaugeMetric<Long>(
+//                "snmp", MetricUnit.NOUNIT, "The number of all TCP packets received") {
+//            @Override
+//            public Long getValue() {
+//                return SYSTEM_METRICS.tcpInSegs;
+//            }
+//        };
+//        tpcInSegs.addLabel(new MetricLabel("name", "tcp_in_segs"));
+//        STARROCKS_METRIC_REGISTER.addMetric(tpcInSegs);
+//
+//        // TCP outSegs
+//        GaugeMetric<Long> tpcOutSegs = (GaugeMetric<Long>) new GaugeMetric<Long>(
+//                "snmp", MetricUnit.NOUNIT, "The number of all TCP packets send with RST") {
+//            @Override
+//            public Long getValue() {
+//                return SYSTEM_METRICS.tcpOutSegs;
+//            }
+//        };
+//        tpcOutSegs.addLabel(new MetricLabel("name", "tcp_out_segs"));
+//        STARROCKS_METRIC_REGISTER.addMetric(tpcOutSegs);
+//    }
 
 //    public static void initMemoryMetrics() {
 //        GaugeMetric<Long> tabletCnt = new GaugeMetric<Long>("memory", MetricUnit.NOUNIT,
@@ -929,9 +883,9 @@ public final class MetricRepo {
 //    }
 
     // update some metrics to make a ready to be visited
-    private static void updateMetrics() {
-        SYSTEM_METRICS.update();
-    }
+//    private static void updateMetrics() {
+//        SYSTEM_METRICS.update();
+//    }
 
     // collect table-level metrics
 //    private static void collectTableMetrics(MetricVisitor visitor, boolean minifyTableMetrics) {
