@@ -716,63 +716,63 @@ public class DefaultCoordinator extends Coordinator {
             throw new UserException("There is no receiver.");
         }
 
-        RowBatch resultBatch;
-        Status status = new Status();
-
-        resultBatch = receiver.getNext(status);
-        if (!status.ok()) {
-            connectContext.setErrorCodeOnce(status.getErrorCodeString());
-            LOG.warn("get next fail, need cancel. status {}, query id: {}", status,
-                    DebugUtil.printId(jobSpec.getQueryId()));
-        }
-        updateStatus(status, null /* no instance id */);
-
-        Status copyStatus;
-        lock();
-        try {
-            copyStatus = new Status(queryStatus);
-        } finally {
-            unlock();
-        }
-
-        if (!copyStatus.ok()) {
-            if (Strings.isNullOrEmpty(copyStatus.getErrorMsg())) {
-                copyStatus.rewriteErrorMsg();
-            }
-
-            if (copyStatus.isRemoteFileNotFound()) {
-                throw new RemoteFileNotFoundException(copyStatus.getErrorMsg());
-            }
-
-            if (copyStatus.isRpcError()) {
-                throw new RpcException("unknown", copyStatus.getErrorMsg());
-            } else {
-                String errMsg = copyStatus.getErrorMsg();
-                LOG.warn("query failed: {}", errMsg);
-
-                // hide host info
-                int hostIndex = errMsg.indexOf("host");
-                if (hostIndex != -1) {
-                    errMsg = errMsg.substring(0, hostIndex);
-                }
-                throw new UserException(errMsg);
-            }
-        }
-
-        if (resultBatch.isEos()) {
-            this.returnedAllResults = true;
-
-            // if this query is a block query do not cancel.
-            long numLimitRows = executionDAG.getRootFragment().getPlanFragment().getPlanRoot().getLimit();
-            boolean hasLimit = numLimitRows > 0;
-            if (!jobSpec.isBlockQuery() && executionDAG.getInstanceIds().size() > 1 && hasLimit &&
-                    numReceivedRows >= numLimitRows) {
-                LOG.debug("no block query, return num >= limit rows, need cancel");
-                cancelInternal(PPlanFragmentCancelReason.LIMIT_REACH);
-            }
-        } else {
-            numReceivedRows += resultBatch.getBatch().getRowsSize();
-        }
+        RowBatch resultBatch = null;
+//        Status status = new Status();
+//
+//        resultBatch = receiver.getNext(status);
+//        if (!status.ok()) {
+//            connectContext.setErrorCodeOnce(status.getErrorCodeString());
+//            LOG.warn("get next fail, need cancel. status {}, query id: {}", status,
+//                    DebugUtil.printId(jobSpec.getQueryId()));
+//        }
+//        updateStatus(status, null /* no instance id */);
+//
+//        Status copyStatus;
+//        lock();
+//        try {
+//            copyStatus = new Status(queryStatus);
+//        } finally {
+//            unlock();
+//        }
+//
+//        if (!copyStatus.ok()) {
+//            if (Strings.isNullOrEmpty(copyStatus.getErrorMsg())) {
+//                copyStatus.rewriteErrorMsg();
+//            }
+//
+//            if (copyStatus.isRemoteFileNotFound()) {
+//                throw new RemoteFileNotFoundException(copyStatus.getErrorMsg());
+//            }
+//
+//            if (copyStatus.isRpcError()) {
+//                throw new RpcException("unknown", copyStatus.getErrorMsg());
+//            } else {
+//                String errMsg = copyStatus.getErrorMsg();
+//                LOG.warn("query failed: {}", errMsg);
+//
+//                // hide host info
+//                int hostIndex = errMsg.indexOf("host");
+//                if (hostIndex != -1) {
+//                    errMsg = errMsg.substring(0, hostIndex);
+//                }
+//                throw new UserException(errMsg);
+//            }
+//        }
+//
+//        if (resultBatch.isEos()) {
+//            this.returnedAllResults = true;
+//
+//            // if this query is a block query do not cancel.
+//            long numLimitRows = executionDAG.getRootFragment().getPlanFragment().getPlanRoot().getLimit();
+//            boolean hasLimit = numLimitRows > 0;
+//            if (!jobSpec.isBlockQuery() && executionDAG.getInstanceIds().size() > 1 && hasLimit &&
+//                    numReceivedRows >= numLimitRows) {
+//                LOG.debug("no block query, return num >= limit rows, need cancel");
+//                cancelInternal(PPlanFragmentCancelReason.LIMIT_REACH);
+//            }
+//        } else {
+//            numReceivedRows += resultBatch.getBatch().getRowsSize();
+//        }
 
         return resultBatch;
     }

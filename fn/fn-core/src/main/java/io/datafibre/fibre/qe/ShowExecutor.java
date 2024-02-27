@@ -267,7 +267,7 @@ public class ShowExecutor {
         } else if (stmt instanceof ShowFailPointStatement) {
             handleShowFailPoint();
         } else if (stmt instanceof ShowDictionaryStmt) {
-            handleShowDictionary();
+//            handleShowDictionary();
         } else if (stmt instanceof ShowBackendBlackListStmt) {
             handleBackendBlackList();
         } else {
@@ -1998,41 +1998,41 @@ public class ShowExecutor {
         List<Database> dbs = Lists.newArrayList();
 
         if (filterDb == null) {
-            for (Map.Entry<Long, Database> entry : GlobalStateMgr.getCurrentState().getLocalMetastore().getIdToDb().entrySet()) {
-                dbs.add(entry.getValue());
-            }
+//            for (Map.Entry<Long, Database> entry : GlobalStateMgr.getCurrentState().getLocalMetastore().getIdToDb().entrySet()) {
+//                dbs.add(entry.getValue());
+//            }
         } else {
             dbs.add(filterDb);
         }
 
         for (Database db : dbs) {
-            AbstractJob jobI = GlobalStateMgr.getCurrentState().getBackupHandler().getJob(db.getId());
-            if (!(jobI instanceof BackupJob)) {
-                resultSet = new ShowResultSet(showStmt.getMetaData(), EMPTY_SET);
-                continue;
-            }
-
-            BackupJob backupJob = (BackupJob) jobI;
-
-            // check privilege
-            List<TableRef> tableRefs = backupJob.getTableRef();
-            AtomicBoolean privilegeDeny = new AtomicBoolean(false);
-            tableRefs.forEach(tableRef -> {
-                TableName tableName = tableRef.getName();
-                try {
-                    Authorizer.checkTableAction(connectContext.getCurrentUserIdentity(), connectContext.getCurrentRoleIds(),
-                            tableName.getDb(), tableName.getTbl(), PrivilegeType.EXPORT);
-                } catch (AccessDeniedException e) {
-                    privilegeDeny.set(true);
-                }
-            });
-            if (privilegeDeny.get()) {
-                resultSet = new ShowResultSet(showStmt.getMetaData(), EMPTY_SET);
-                return;
-            }
-
-            List<String> info = backupJob.getInfo();
-            infos.add(info);
+//            AbstractJob jobI = GlobalStateMgr.getCurrentState().getBackupHandler().getJob(db.getId());
+//            if (!(jobI instanceof BackupJob)) {
+//                resultSet = new ShowResultSet(showStmt.getMetaData(), EMPTY_SET);
+//                continue;
+//            }
+//
+//            BackupJob backupJob = (BackupJob) jobI;
+//
+//            // check privilege
+//            List<TableRef> tableRefs = backupJob.getTableRef();
+//            AtomicBoolean privilegeDeny = new AtomicBoolean(false);
+//            tableRefs.forEach(tableRef -> {
+//                TableName tableName = tableRef.getName();
+//                try {
+//                    Authorizer.checkTableAction(connectContext.getCurrentUserIdentity(), connectContext.getCurrentRoleIds(),
+//                            tableName.getDb(), tableName.getTbl(), PrivilegeType.EXPORT);
+//                } catch (AccessDeniedException e) {
+//                    privilegeDeny.set(true);
+//                }
+//            });
+//            if (privilegeDeny.get()) {
+//                resultSet = new ShowResultSet(showStmt.getMetaData(), EMPTY_SET);
+//                return;
+//            }
+//
+//            List<String> info = backupJob.getInfo();
+//            infos.add(info);
         }
         resultSet = new ShowResultSet(showStmt.getMetaData(), infos);
     }
@@ -2044,23 +2044,23 @@ public class ShowExecutor {
         List<Database> dbs = Lists.newArrayList();
 
         if (filterDb == null) {
-            for (Map.Entry<Long, Database> entry : GlobalStateMgr.getCurrentState().getLocalMetastore().getIdToDb().entrySet()) {
-                dbs.add(entry.getValue());
-            }
+//            for (Map.Entry<Long, Database> entry : GlobalStateMgr.getCurrentState().getLocalMetastore().getIdToDb().entrySet()) {
+//                dbs.add(entry.getValue());
+//            }
         } else {
             dbs.add(filterDb);
         }
 
         for (Database db : dbs) {
-            AbstractJob jobI = GlobalStateMgr.getCurrentState().getBackupHandler().getJob(db.getId());
-            if (!(jobI instanceof RestoreJob)) {
-                resultSet = new ShowResultSet(showStmt.getMetaData(), EMPTY_SET);
-                continue;
-            }
-
-            RestoreJob restoreJob = (RestoreJob) jobI;
-            List<String> info = restoreJob.getInfo();
-            infos.add(info);
+//            AbstractJob jobI = GlobalStateMgr.getCurrentState().getBackupHandler().getJob(db.getId());
+//            if (!(jobI instanceof RestoreJob)) {
+//                resultSet = new ShowResultSet(showStmt.getMetaData(), EMPTY_SET);
+//                continue;
+//            }
+//
+//            RestoreJob restoreJob = (RestoreJob) jobI;
+//            List<String> info = restoreJob.getInfo();
+//            infos.add(info);
         }
         resultSet = new ShowResultSet(showStmt.getMetaData(), infos);
     }
@@ -2756,14 +2756,14 @@ public class ShowExecutor {
         resultSet = new ShowResultSet(stmt.getMetaData(), rows);
     }
 
-    private void handleShowDictionary() throws AnalysisException {
-        ShowDictionaryStmt showStmt = (ShowDictionaryStmt) stmt;
-        List<List<String>> allInfo = null;
-        try {
-            allInfo = GlobalStateMgr.getCurrentState().getDictionaryMgr().getAllInfo(showStmt.getDictionaryName());
-        } catch (Exception e) {
-            throw new AnalysisException(e.getMessage());
-        }
-        resultSet = new ShowResultSet(showStmt.getMetaData(), allInfo);
-    }
+//    private void handleShowDictionary() throws AnalysisException {
+//        ShowDictionaryStmt showStmt = (ShowDictionaryStmt) stmt;
+//        List<List<String>> allInfo = null;
+//        try {
+//            allInfo = GlobalStateMgr.getCurrentState().getDictionaryMgr().getAllInfo(showStmt.getDictionaryName());
+//        } catch (Exception e) {
+//            throw new AnalysisException(e.getMessage());
+//        }
+//        resultSet = new ShowResultSet(showStmt.getMetaData(), allInfo);
+//    }
 }

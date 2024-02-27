@@ -41,8 +41,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.datafibre.fibre.alter.AlterJobMgr;
-import io.datafibre.fibre.alter.MaterializedViewHandler;
-import io.datafibre.fibre.alter.SchemaChangeHandler;
 import io.datafibre.fibre.analysis.LiteralExpr;
 import io.datafibre.fibre.analysis.TableName;
 import io.datafibre.fibre.authentication.AuthenticationMgr;
@@ -64,9 +62,6 @@ import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
 import io.datafibre.fibre.consistency.ConsistencyChecker;
 import io.datafibre.fibre.consistency.LockChecker;
 import io.datafibre.fibre.ha.FrontendNodeType;
-import io.datafibre.fibre.ha.HAProtocol;
-import io.datafibre.fibre.ha.LeaderInfo;
-import io.datafibre.fibre.ha.StateChangeExecution;
 import io.datafibre.fibre.healthchecker.SafeModeChecker;
 import io.datafibre.fibre.journal.*;
 import io.datafibre.fibre.journal.bdbje.Timestamp;
@@ -116,7 +111,6 @@ import io.datafibre.fibre.statistic.StatisticsMetaManager;
 import io.datafibre.fibre.system.*;
 import io.datafibre.fibre.task.LeaderTaskExecutor;
 import io.datafibre.fibre.task.PriorityLeaderTaskExecutor;
-import io.datafibre.fibre.thrift.*;
 import io.datafibre.fibre.transaction.GlobalTransactionMgr;
 import io.datafibre.fibre.transaction.PublishVersionDaemon;
 import io.datafibre.fibre.transaction.UpdateDbUsedDataQuotaDaemon;
@@ -220,7 +214,7 @@ public class GlobalStateMgr {
     private static long checkpointThreadId = -1;
     private Checkpoint checkpointer;
 
-    private HAProtocol haProtocol = null;
+//    private HAProtocol haProtocol = null;
 
     private final JournalObservable journalObservable;
 
@@ -309,7 +303,7 @@ public class GlobalStateMgr {
     @Deprecated
     private final ShardManager shardManager;
 
-    private final StateChangeExecution execution;
+//    private final StateChangeExecution execution;
 
     private TaskRunStateSynchronizer taskRunStateSynchronizer;
 
@@ -339,8 +333,8 @@ public class GlobalStateMgr {
     private final SlotManager slotManager = new SlotManager(resourceUsageMonitor);
     private final SlotProvider slotProvider = new SlotProvider();
 
-    private final DictionaryMgr dictionaryMgr = new DictionaryMgr();
-    private final RefreshDictionaryCacheTaskDaemon refreshDictionaryCacheTaskDaemon;
+//    private final DictionaryMgr dictionaryMgr = new DictionaryMgr();
+//    private final RefreshDictionaryCacheTaskDaemon refreshDictionaryCacheTaskDaemon;
 
     private MemoryUsageTracker memoryUsageTracker;
 
@@ -420,9 +414,9 @@ public class GlobalStateMgr {
         return configRefreshDaemon;
     }
 
-    public RefreshDictionaryCacheTaskDaemon getRefreshDictionaryCacheTaskDaemon() {
-        return refreshDictionaryCacheTaskDaemon;
-    }
+//    public RefreshDictionaryCacheTaskDaemon getRefreshDictionaryCacheTaskDaemon() {
+//        return refreshDictionaryCacheTaskDaemon;
+//    }
 
     private static class SingletonHolder {
         private static final GlobalStateMgr INSTANCE = new GlobalStateMgr();
@@ -553,7 +547,7 @@ public class GlobalStateMgr {
         this.compactionMgr = new CompactionMgr();
         this.configRefreshDaemon = new ConfigRefreshDaemon();
         this.starMgrMetaSyncer = new StarMgrMetaSyncer();
-        this.refreshDictionaryCacheTaskDaemon = new RefreshDictionaryCacheTaskDaemon();
+//        this.refreshDictionaryCacheTaskDaemon = new RefreshDictionaryCacheTaskDaemon();
 
         this.binlogManager = new BinlogManager();
         this.pipeManager = new PipeManager();
@@ -571,22 +565,22 @@ public class GlobalStateMgr {
         this.lockManager = new LockManager();
 
         GlobalStateMgr gsm = this;
-        this.execution = new StateChangeExecution() {
-            @Override
-            public void transferToLeader() {
-                isInTransferringToLeader = true;
-                try {
-                    gsm.transferToLeader();
-                } finally {
-                    isInTransferringToLeader = false;
-                }
-            }
-
-            @Override
-            public void transferToNonLeader(FrontendNodeType newType) {
-                gsm.transferToNonLeader(newType);
-            }
-        };
+//        this.execution = new StateChangeExecution() {
+//            @Override
+//            public void transferToLeader() {
+//                isInTransferringToLeader = true;
+//                try {
+//                    gsm.transferToLeader();
+//                } finally {
+//                    isInTransferringToLeader = false;
+//                }
+//            }
+//
+//            @Override
+//            public void transferToNonLeader(FrontendNodeType newType) {
+//                gsm.transferToNonLeader(newType);
+//            }
+//        };
 
         getConfigRefreshDaemon().registerListener(() -> {
             try {
@@ -844,109 +838,109 @@ public class GlobalStateMgr {
         nodeMgr.setImageDir(imageDir);
     }
 
-    public void initialize(String[] args) throws Exception {
-        // set meta dir first.
-        // we already set these variables in constructor. but GlobalStateMgr is a singleton class.
-        // so they may be set before Config is initialized.
-        // set them here again to make sure these variables use values in fe.conf.
-        setMetaDir();
+//    public void initialize(String[] args) throws Exception {
+//        // set meta dir first.
+//        // we already set these variables in constructor. but GlobalStateMgr is a singleton class.
+//        // so they may be set before Config is initialized.
+//        // set them here again to make sure these variables use values in fe.conf.
+//        setMetaDir();
+//
+//        // must judge whether it is first time start here before initializing GlobalStateMgr.
+//        // Possibly remove clusterId and role to ensure that the system is not left in a half-initialized state.
+//        boolean isFirstTimeStart = nodeMgr.isVersionAndRoleFilesNotExist();
+//        try {
+//            // 0. get local node and helper node info
+//            nodeMgr.initialize(args);
+//
+//            // 1. create dirs and files
+//            if (Config.edit_log_type.equalsIgnoreCase("bdb")) {
+//                File imageDir = new File(this.imageDir);
+//                if (!imageDir.exists()) {
+//                    imageDir.mkdirs();
+//                }
+//            } else {
+//                LOG.error("Invalid edit log type: {}", Config.edit_log_type);
+//                System.exit(-1);
+//            }
+//
+//            // init plugin manager
+//            pluginMgr.init();
+//            auditEventProcessor.start();
+//
+//            // 2. get cluster id and role (Observer or Follower)
+//            nodeMgr.getClusterIdAndRoleOnStartup();
+//
+//            // 3. Load image first and replay edits
+//            initJournal();
+//            loadImage(this.imageDir); // load image file
+//
+//            // 4. create load and export job label cleaner thread
+//            createLabelCleaner();
+//
+//            // 5. create txn timeout checker thread
+//            createTxnTimeoutChecker();
+//
+//            // 6. start task cleaner thread
+//            createTaskCleaner();
+//
+//            // 7. init starosAgent
+//            if (RunMode.isSharedDataMode() && !starOSAgent.init(null)) {
+//                LOG.error("init starOSAgent failed");
+//                System.exit(-1);
+//            }
+//        } catch (Exception e) {
+//            try {
+//                if (isFirstTimeStart) {
+//                    // If it is the first time we start, we remove the cluster ID and role
+//                    // to prevent leaving the system in an inconsistent state.
+//                    nodeMgr.removeClusterIdAndRole();
+//                }
+//            } catch (Throwable t) {
+//                e.addSuppressed(t);
+//            }
+//            throw e;
+//        }
+//    }
 
-        // must judge whether it is first time start here before initializing GlobalStateMgr.
-        // Possibly remove clusterId and role to ensure that the system is not left in a half-initialized state.
-        boolean isFirstTimeStart = nodeMgr.isVersionAndRoleFilesNotExist();
-        try {
-            // 0. get local node and helper node info
-            nodeMgr.initialize(args);
-
-            // 1. create dirs and files
-            if (Config.edit_log_type.equalsIgnoreCase("bdb")) {
-                File imageDir = new File(this.imageDir);
-                if (!imageDir.exists()) {
-                    imageDir.mkdirs();
-                }
-            } else {
-                LOG.error("Invalid edit log type: {}", Config.edit_log_type);
-                System.exit(-1);
-            }
-
-            // init plugin manager
-            pluginMgr.init();
-            auditEventProcessor.start();
-
-            // 2. get cluster id and role (Observer or Follower)
-            nodeMgr.getClusterIdAndRoleOnStartup();
-
-            // 3. Load image first and replay edits
-            initJournal();
-            loadImage(this.imageDir); // load image file
-
-            // 4. create load and export job label cleaner thread
-            createLabelCleaner();
-
-            // 5. create txn timeout checker thread
-            createTxnTimeoutChecker();
-
-            // 6. start task cleaner thread
-            createTaskCleaner();
-
-            // 7. init starosAgent
-            if (RunMode.isSharedDataMode() && !starOSAgent.init(null)) {
-                LOG.error("init starOSAgent failed");
-                System.exit(-1);
-            }
-        } catch (Exception e) {
-            try {
-                if (isFirstTimeStart) {
-                    // If it is the first time we start, we remove the cluster ID and role
-                    // to prevent leaving the system in an inconsistent state.
-                    nodeMgr.removeClusterIdAndRole();
-                }
-            } catch (Throwable t) {
-                e.addSuppressed(t);
-            }
-            throw e;
-        }
-    }
-
-    protected void initJournal() throws JournalException, InterruptedException {
-        BlockingQueue<JournalTask> journalQueue =
-                new ArrayBlockingQueue<JournalTask>(Config.metadata_journal_queue_size);
-        journal = JournalFactory.create(nodeMgr.getNodeName());
-        journalWriter = new JournalWriter(journal, journalQueue);
-
-        editLog = new EditLog(journalQueue);
-    }
+//    protected void initJournal() throws JournalException, InterruptedException {
+//        BlockingQueue<JournalTask> journalQueue =
+//                new ArrayBlockingQueue<JournalTask>(Config.metadata_journal_queue_size);
+//        journal = JournalFactory.create(nodeMgr.getNodeName());
+//        journalWriter = new JournalWriter(journal, journalQueue);
+//
+//        editLog = new EditLog(journalQueue);
+//    }
 
     // wait until FE is ready.
-    public void waitForReady() throws InterruptedException {
-        long lastLoggingTimeMs = System.currentTimeMillis();
-        while (true) {
-            if (isReady()) {
-                LOG.info("globalStateMgr is ready. FE type: {}", feType);
-                feStartTime = System.currentTimeMillis();
-                break;
-            }
-
-            Thread.sleep(2000);
-            LOG.info("wait globalStateMgr to be ready. FE type: {}. is ready: {}", feType, isReady.get());
-
-            if (System.currentTimeMillis() - lastLoggingTimeMs > 60000L) {
-                lastLoggingTimeMs = System.currentTimeMillis();
-                LOG.warn("It took too much time for FE to transfer to a stable state(LEADER/FOLLOWER), " +
-                         "it maybe caused by one of the following reasons: " +
-                         "1. There are too many BDB logs to replay, because of previous failure of checkpoint" +
-                         "(you can check the create time of image file under meta/image dir). " +
-                         "2. Majority voting members(LEADER or FOLLOWER) of the FE cluster haven't started completely. " +
-                         "3. FE node has multiple IPs, you should configure the priority_networks in fe.conf " +
-                         "to match the ip record in meta/image/ROLE. And we don't support change the ip of FE node. " +
-                         "Ignore this reason if you are using FQDN. " +
-                         "4. The time deviation between FE nodes is greater than 5s, " +
-                         "please use ntp or other tools to keep clock synchronized. " +
-                         "5. The configuration of edit_log_port has changed, please reset to the original value. " +
-                         "6. The replayer thread may get stuck, please use jstack to find the details.");
-            }
-        }
-    }
+//    public void waitForReady() throws InterruptedException {
+//        long lastLoggingTimeMs = System.currentTimeMillis();
+//        while (true) {
+//            if (isReady()) {
+//                LOG.info("globalStateMgr is ready. FE type: {}", feType);
+//                feStartTime = System.currentTimeMillis();
+//                break;
+//            }
+//
+//            Thread.sleep(2000);
+//            LOG.info("wait globalStateMgr to be ready. FE type: {}. is ready: {}", feType, isReady.get());
+//
+//            if (System.currentTimeMillis() - lastLoggingTimeMs > 60000L) {
+//                lastLoggingTimeMs = System.currentTimeMillis();
+//                LOG.warn("It took too much time for FE to transfer to a stable state(LEADER/FOLLOWER), " +
+//                         "it maybe caused by one of the following reasons: " +
+//                         "1. There are too many BDB logs to replay, because of previous failure of checkpoint" +
+//                         "(you can check the create time of image file under meta/image dir). " +
+//                         "2. Majority voting members(LEADER or FOLLOWER) of the FE cluster haven't started completely. " +
+//                         "3. FE node has multiple IPs, you should configure the priority_networks in fe.conf " +
+//                         "to match the ip record in meta/image/ROLE. And we don't support change the ip of FE node. " +
+//                         "Ignore this reason if you are using FQDN. " +
+//                         "4. The time deviation between FE nodes is greater than 5s, " +
+//                         "please use ntp or other tools to keep clock synchronized. " +
+//                         "5. The configuration of edit_log_port has changed, please reset to the original value. " +
+//                         "6. The replayer thread may get stuck, please use jstack to find the details.");
+//            }
+//        }
+//    }
 
     public boolean isReady() {
         return isReady.get();
@@ -961,111 +955,111 @@ public class GlobalStateMgr {
         }
     }
 
-    private void transferToLeader() {
-        FrontendNodeType oldType = feType;
-        // stop replayer
-        if (replayer != null) {
-            replayer.setStop();
-            try {
-                replayer.join();
-            } catch (InterruptedException e) {
-                LOG.warn("got exception when stopping the replayer thread", e);
-            }
-            replayer = null;
-        }
-
-        // set this after replay thread stopped. to avoid replay thread modify them.
-        isReady.set(false);
-
-        // setup for journal
-        try {
-            journal.open();
-            if (!haProtocol.fencing()) {
-                throw new Exception("fencing failed. will exit");
-            }
-            long maxJournalId = journal.getMaxJournalId();
-            replayJournal(maxJournalId);
-            nodeMgr.checkCurrentNodeExist();
-            journalWriter.init(maxJournalId);
-        } catch (Exception e) {
-            // TODO: gracefully exit
-            LOG.error("failed to init journal after transfer to leader! will exit", e);
-            System.exit(-1);
-        }
-
-        journalWriter.startDaemon();
-
-        // Set the feType to LEADER before writing edit log, because the feType must be Leader when writing edit log.
-        // It will be set to the old type if any error happens in the following procedure
-        feType = FrontendNodeType.LEADER;
-
-        try {
-            // Log meta_version
-            int starrocksMetaVersion = MetaContext.get().getStarRocksMetaVersion();
-            if (starrocksMetaVersion < FeConstants.STARROCKS_META_VERSION) {
-                editLog.logMetaVersion(new MetaVersion(FeConstants.STARROCKS_META_VERSION));
-                MetaContext.get().setStarRocksMetaVersion(FeConstants.STARROCKS_META_VERSION);
-            }
-
-            // Log the first frontend
-            if (nodeMgr.isFirstTimeStartUp()) {
-                // if isFirstTimeStartUp is true, frontends must contain this Node.
-                Frontend self = nodeMgr.getMySelf();
-                Preconditions.checkNotNull(self);
-                // OP_ADD_FIRST_FRONTEND is emitted, so it can write to BDBJE even if canWrite is false
-                editLog.logAddFirstFrontend(self);
-            }
-
-            if (!isDefaultClusterCreated) {
-                initDefaultCluster();
-            }
-
-            // MUST set leader ip before starting checkpoint thread.
-            // because checkpoint thread need this info to select non-leader FE to push image
-            nodeMgr.setLeaderInfo();
-
-            // start all daemon threads that only running on MASTER FE
-            startLeaderOnlyDaemonThreads();
-            // start other daemon threads that should run on all FEs
-            startAllNodeTypeDaemonThreads();
-            insertOverwriteJobMgr.cancelRunningJobs();
-
-            if (!isDefaultWarehouseCreated) {
-                initDefaultWarehouse();
-            }
-
-            MetricRepo.init();
-
-            isReady.set(true);
-
-            String msg = "leader finished to replay journal, can write now.";
-            Util.stdoutWithTime(msg);
-            LOG.info(msg);
-
-            // for leader, there are some new thread pools need to register metric
-            ThreadPoolManager.registerAllThreadPoolMetric();
-
-            if (nodeMgr.isFirstTimeStartUp()) {
-                // When the cluster is initially deployed, we set ENABLE_ADAPTIVE_SINK_DOP so
-                // that the load is automatically configured as the best performance
-                // configuration. If it is upgraded from an old version, the original
-                // configuration is retained to avoid system stability problems caused by
-                // changes in concurrency
-                VariableMgr.setSystemVariable(VariableMgr.getDefaultSessionVariable(), new SystemVariable(SetType.GLOBAL,
-                                SessionVariable.ENABLE_ADAPTIVE_SINK_DOP,
-                                LiteralExpr.create("true", Type.BOOLEAN)),
-                        false);
-            }
-        } catch (UserException e) {
-            LOG.warn("Failed to set ENABLE_ADAPTIVE_SINK_DOP", e);
-        } catch (Throwable t) {
-            LOG.warn("transfer to leader failed with error", t);
-            feType = oldType;
-            throw t;
-        }
-
-        createBuiltinStorageVolume();
-    }
+//    private void transferToLeader() {
+//        FrontendNodeType oldType = feType;
+//        // stop replayer
+//        if (replayer != null) {
+//            replayer.setStop();
+//            try {
+//                replayer.join();
+//            } catch (InterruptedException e) {
+//                LOG.warn("got exception when stopping the replayer thread", e);
+//            }
+//            replayer = null;
+//        }
+//
+//        // set this after replay thread stopped. to avoid replay thread modify them.
+//        isReady.set(false);
+//
+//        // setup for journal
+//        try {
+//            journal.open();
+////            if (!haProtocol.fencing()) {
+////                throw new Exception("fencing failed. will exit");
+////            }
+//            long maxJournalId = journal.getMaxJournalId();
+//            replayJournal(maxJournalId);
+//            nodeMgr.checkCurrentNodeExist();
+//            journalWriter.init(maxJournalId);
+//        } catch (Exception e) {
+//            // TODO: gracefully exit
+//            LOG.error("failed to init journal after transfer to leader! will exit", e);
+//            System.exit(-1);
+//        }
+//
+//        journalWriter.startDaemon();
+//
+//        // Set the feType to LEADER before writing edit log, because the feType must be Leader when writing edit log.
+//        // It will be set to the old type if any error happens in the following procedure
+//        feType = FrontendNodeType.LEADER;
+//
+//        try {
+//            // Log meta_version
+//            int starrocksMetaVersion = MetaContext.get().getStarRocksMetaVersion();
+//            if (starrocksMetaVersion < FeConstants.STARROCKS_META_VERSION) {
+//                editLog.logMetaVersion(new MetaVersion(FeConstants.STARROCKS_META_VERSION));
+//                MetaContext.get().setStarRocksMetaVersion(FeConstants.STARROCKS_META_VERSION);
+//            }
+//
+//            // Log the first frontend
+//            if (nodeMgr.isFirstTimeStartUp()) {
+//                // if isFirstTimeStartUp is true, frontends must contain this Node.
+//                Frontend self = nodeMgr.getMySelf();
+//                Preconditions.checkNotNull(self);
+//                // OP_ADD_FIRST_FRONTEND is emitted, so it can write to BDBJE even if canWrite is false
+//                editLog.logAddFirstFrontend(self);
+//            }
+//
+//            if (!isDefaultClusterCreated) {
+//                initDefaultCluster();
+//            }
+//
+//            // MUST set leader ip before starting checkpoint thread.
+//            // because checkpoint thread need this info to select non-leader FE to push image
+////            nodeMgr.setLeaderInfo();
+//
+//            // start all daemon threads that only running on MASTER FE
+//            startLeaderOnlyDaemonThreads();
+//            // start other daemon threads that should run on all FEs
+//            startAllNodeTypeDaemonThreads();
+//            insertOverwriteJobMgr.cancelRunningJobs();
+//
+//            if (!isDefaultWarehouseCreated) {
+//                initDefaultWarehouse();
+//            }
+//
+//            MetricRepo.init();
+//
+//            isReady.set(true);
+//
+//            String msg = "leader finished to replay journal, can write now.";
+//            Util.stdoutWithTime(msg);
+//            LOG.info(msg);
+//
+//            // for leader, there are some new thread pools need to register metric
+//            ThreadPoolManager.registerAllThreadPoolMetric();
+//
+//            if (nodeMgr.isFirstTimeStartUp()) {
+//                // When the cluster is initially deployed, we set ENABLE_ADAPTIVE_SINK_DOP so
+//                // that the load is automatically configured as the best performance
+//                // configuration. If it is upgraded from an old version, the original
+//                // configuration is retained to avoid system stability problems caused by
+//                // changes in concurrency
+//                VariableMgr.setSystemVariable(VariableMgr.getDefaultSessionVariable(), new SystemVariable(SetType.GLOBAL,
+//                                SessionVariable.ENABLE_ADAPTIVE_SINK_DOP,
+//                                LiteralExpr.create("true", Type.BOOLEAN)),
+//                        false);
+//            }
+//        } catch (UserException e) {
+//            LOG.warn("Failed to set ENABLE_ADAPTIVE_SINK_DOP", e);
+//        } catch (Throwable t) {
+//            LOG.warn("transfer to leader failed with error", t);
+//            feType = oldType;
+//            throw t;
+//        }
+//
+//        createBuiltinStorageVolume();
+//    }
 
     public void setFrontendNodeType(FrontendNodeType newType) {
         // just for test, don't call it directly
@@ -1073,377 +1067,377 @@ public class GlobalStateMgr {
     }
 
     // start all daemon threads only running on Master
-    private void startLeaderOnlyDaemonThreads() {
-        if (RunMode.isSharedDataMode()) {
-            // register service to starMgr
-            if (!getStarOSAgent().registerAndBootstrapService()) {
-                System.exit(-1);
-            }
-        }
-
-        // start checkpoint thread
-        checkpointer = new Checkpoint(journal);
-        checkpointer.setMetaContext(metaContext);
-        // set "checkpointThreadId" before the checkpoint thread start, because the thread
-        // need to check the "checkpointThreadId" when running.
-        checkpointThreadId = checkpointer.getId();
-
-        checkpointer.start();
-        LOG.info("checkpointer thread started. thread id is {}", checkpointThreadId);
-
-        // heartbeat mgr
-        heartbeatMgr.setLeader(nodeMgr.getClusterId(), nodeMgr.getToken(), epoch);
-        heartbeatMgr.start();
-        // New load scheduler
-        pendingLoadTaskScheduler.start();
-        loadingLoadTaskScheduler.start();
-        loadMgr.prepareJobs();
-        loadJobScheduler.start();
-        loadTimeoutChecker.start();
-        loadEtlChecker.start();
-        loadLoadingChecker.start();
-        // Export checker
-        ExportChecker.init(Config.export_checker_interval_second * 1000L);
-        ExportChecker.startAll();
-        // Tablet checker and scheduler
-        tabletChecker.start();
-        tabletScheduler.start();
-        // Colocate tables balancer
-        ColocateTableBalancer.getInstance().start();
-        // Publish Version Daemon
-        publishVersionDaemon.start();
-        // Start txn timeout checker
-        txnTimeoutChecker.start();
-        // Alter
-        getAlterJobMgr().start();
-        // Consistency checker
-        getConsistencyChecker().start();
-        // Backup handler
-        getBackupHandler().start();
-        // globalStateMgr recycle bin
-        getRecycleBin().start();
-        // time printer
-        createTimePrinter();
-        timePrinter.start();
-        // start routine load scheduler
-        routineLoadScheduler.start();
-        routineLoadTaskScheduler.start();
-        // start dynamic partition task
-        dynamicPartitionScheduler.start();
-        // start daemon thread to update db used data quota for db txn manager periodically
-        updateDbUsedDataQuotaDaemon.start();
-        statisticsMetaManager.start();
-        statisticAutoCollector.start();
-        taskManager.start();
-        taskCleaner.start();
-        mvMVJobExecutor.start();
-        pipeListener.start();
-        pipeScheduler.start();
-        mvActiveChecker.start();
-
-        // start daemon thread to report the progress of RunningTaskRun to the follower by editlog
-        taskRunStateSynchronizer = new TaskRunStateSynchronizer();
-        taskRunStateSynchronizer.start();
-
-        if (RunMode.isSharedDataMode()) {
-            starMgrMetaSyncer.start();
-            autovacuumDaemon.start();
-        }
-
-        if (Config.enable_safe_mode) {
-            LOG.info("Start safe mode checker!");
-            safeModeChecker.start();
-        }
-
-        replicationMgr.start();
-    }
+//    private void startLeaderOnlyDaemonThreads() {
+//        if (RunMode.isSharedDataMode()) {
+//            // register service to starMgr
+//            if (!getStarOSAgent().registerAndBootstrapService()) {
+//                System.exit(-1);
+//            }
+//        }
+//
+//        // start checkpoint thread
+//        checkpointer = new Checkpoint(journal);
+//        checkpointer.setMetaContext(metaContext);
+//        // set "checkpointThreadId" before the checkpoint thread start, because the thread
+//        // need to check the "checkpointThreadId" when running.
+//        checkpointThreadId = checkpointer.getId();
+//
+//        checkpointer.start();
+//        LOG.info("checkpointer thread started. thread id is {}", checkpointThreadId);
+//
+//        // heartbeat mgr
+//        heartbeatMgr.setLeader(nodeMgr.getClusterId(), nodeMgr.getToken(), epoch);
+//        heartbeatMgr.start();
+//        // New load scheduler
+//        pendingLoadTaskScheduler.start();
+//        loadingLoadTaskScheduler.start();
+//        loadMgr.prepareJobs();
+//        loadJobScheduler.start();
+//        loadTimeoutChecker.start();
+//        loadEtlChecker.start();
+//        loadLoadingChecker.start();
+//        // Export checker
+//        ExportChecker.init(Config.export_checker_interval_second * 1000L);
+//        ExportChecker.startAll();
+//        // Tablet checker and scheduler
+//        tabletChecker.start();
+//        tabletScheduler.start();
+//        // Colocate tables balancer
+//        ColocateTableBalancer.getInstance().start();
+//        // Publish Version Daemon
+//        publishVersionDaemon.start();
+//        // Start txn timeout checker
+//        txnTimeoutChecker.start();
+//        // Alter
+//        getAlterJobMgr().start();
+//        // Consistency checker
+//        getConsistencyChecker().start();
+//        // Backup handler
+//        getBackupHandler().start();
+//        // globalStateMgr recycle bin
+//        getRecycleBin().start();
+//        // time printer
+//        createTimePrinter();
+//        timePrinter.start();
+//        // start routine load scheduler
+//        routineLoadScheduler.start();
+//        routineLoadTaskScheduler.start();
+//        // start dynamic partition task
+//        dynamicPartitionScheduler.start();
+//        // start daemon thread to update db used data quota for db txn manager periodically
+//        updateDbUsedDataQuotaDaemon.start();
+//        statisticsMetaManager.start();
+//        statisticAutoCollector.start();
+//        taskManager.start();
+//        taskCleaner.start();
+//        mvMVJobExecutor.start();
+//        pipeListener.start();
+//        pipeScheduler.start();
+//        mvActiveChecker.start();
+//
+//        // start daemon thread to report the progress of RunningTaskRun to the follower by editlog
+//        taskRunStateSynchronizer = new TaskRunStateSynchronizer();
+//        taskRunStateSynchronizer.start();
+//
+//        if (RunMode.isSharedDataMode()) {
+//            starMgrMetaSyncer.start();
+//            autovacuumDaemon.start();
+//        }
+//
+//        if (Config.enable_safe_mode) {
+//            LOG.info("Start safe mode checker!");
+//            safeModeChecker.start();
+//        }
+//
+//        replicationMgr.start();
+//    }
 
     // start threads that should run on all FE
-    private void startAllNodeTypeDaemonThreads() {
-        portConnectivityChecker.start();
-        tabletStatMgr.start();
-        // load and export job label cleaner thread
-        labelCleaner.start();
+//    private void startAllNodeTypeDaemonThreads() {
+//        portConnectivityChecker.start();
+//        tabletStatMgr.start();
+//        // load and export job label cleaner thread
+//        labelCleaner.start();
+//
+//        // domain resolver
+//        domainResolver.start();
+//        if (RunMode.isSharedDataMode()) {
+//            compactionMgr.start();
+//        }
+//        configRefreshDaemon.start();
+//
+//        slotManager.start();
+//
+//        lockChecker.start();
+//
+////        refreshDictionaryCacheTaskDaemon.start();
+//
+//        // The memory tracker should be placed at the end
+//        memoryUsageTracker.start();
+//    }
 
-        // domain resolver
-        domainResolver.start();
-        if (RunMode.isSharedDataMode()) {
-            compactionMgr.start();
-        }
-        configRefreshDaemon.start();
+//    private void transferToNonLeader(FrontendNodeType newType) {
+//        isReady.set(false);
+//
+//        if (feType == FrontendNodeType.OBSERVER || feType == FrontendNodeType.FOLLOWER) {
+//            Preconditions.checkState(newType == FrontendNodeType.UNKNOWN);
+//            LOG.warn("{} to UNKNOWN, still offer read service", feType.name());
+//            // not set canRead here, leave canRead as what it was.
+//            // if meta out of date, canRead will be set to false in replayer thread.
+//            metaReplayState.setTransferToUnknown();
+//            feType = newType;
+//            return;
+//        }
+//
+//        // transfer from INIT/UNKNOWN to OBSERVER/FOLLOWER
+//
+//        if (replayer == null) {
+//            createReplayer();
+//            replayer.start();
+//        }
+//
+//        startAllNodeTypeDaemonThreads();
+//
+//        if (!isDefaultWarehouseCreated) {
+//            initDefaultWarehouse();
+//        }
+//
+//        MetricRepo.init();
+//
+//        feType = newType;
+//    }
 
-        slotManager.start();
+//    public void loadImage(String imageDir) throws IOException, DdlException {
+//        Storage storage = new Storage(imageDir);
+//        nodeMgr.setClusterId(storage.getClusterID());
+//        File curFile = storage.getCurrentImageFile();
+//        if (!curFile.exists()) {
+//            // image.0 may not exist
+//            LOG.info("image does not exist: {}", curFile.getAbsolutePath());
+//            return;
+//        }
+//        replayedJournalId.set(storage.getImageJournalId());
+//        LOG.info("start load image from {}. is ckpt: {}", curFile.getAbsolutePath(),
+//                GlobalStateMgr.isCheckpointThread());
+//        long loadImageStartTime = System.currentTimeMillis();
+//
+//        Map<SRMetaBlockID, SRMetaBlockLoader> loadImages = ImmutableMap.<SRMetaBlockID, SRMetaBlockLoader>builder()
+//                .put(SRMetaBlockID.NODE_MGR, nodeMgr::load)
+//                .put(SRMetaBlockID.LOCAL_META_STORE, localMetastore::load)
+//                .put(SRMetaBlockID.ALTER_MGR, alterJobMgr::load)
+//                .put(SRMetaBlockID.CATALOG_RECYCLE_BIN, recycleBin::load)
+//                .put(SRMetaBlockID.VARIABLE_MGR, VariableMgr::load)
+//                .put(SRMetaBlockID.RESOURCE_MGR, resourceMgr::loadResourcesV2)
+//                .put(SRMetaBlockID.EXPORT_MGR, exportMgr::loadExportJobV2)
+//                .put(SRMetaBlockID.BACKUP_MGR, backupHandler::loadBackupHandlerV2)
+//                .put(SRMetaBlockID.GLOBAL_TRANSACTION_MGR, globalTransactionMgr::loadTransactionStateV2)
+//                .put(SRMetaBlockID.COLOCATE_TABLE_INDEX, colocateTableIndex::loadColocateTableIndexV2)
+//                .put(SRMetaBlockID.ROUTINE_LOAD_MGR, routineLoadMgr::loadRoutineLoadJobsV2)
+//                .put(SRMetaBlockID.LOAD_MGR, loadMgr::loadLoadJobsV2JsonFormat)
+//                .put(SRMetaBlockID.SMALL_FILE_MGR, smallFileMgr::loadSmallFilesV2)
+//                .put(SRMetaBlockID.PLUGIN_MGR, pluginMgr::load)
+//                .put(SRMetaBlockID.DELETE_MGR, deleteMgr::load)
+//                .put(SRMetaBlockID.ANALYZE_MGR, analyzeMgr::load)
+//                .put(SRMetaBlockID.RESOURCE_GROUP_MGR, resourceGroupMgr::load)
+//                .put(SRMetaBlockID.AUTHENTICATION_MGR, authenticationMgr::loadV2)
+//                .put(SRMetaBlockID.AUTHORIZATION_MGR, authorizationMgr::loadV2)
+//                .put(SRMetaBlockID.TASK_MGR, taskManager::loadTasksV2)
+//                .put(SRMetaBlockID.CATALOG_MGR, catalogMgr::load)
+//                .put(SRMetaBlockID.INSERT_OVERWRITE_JOB_MGR, insertOverwriteJobMgr::load)
+//                .put(SRMetaBlockID.COMPACTION_MGR, compactionMgr::load)
+//                .put(SRMetaBlockID.STREAM_LOAD_MGR, streamLoadMgr::load)
+//                .put(SRMetaBlockID.MATERIALIZED_VIEW_MGR, MaterializedViewMgr.getInstance()::load)
+//                .put(SRMetaBlockID.GLOBAL_FUNCTION_MGR, globalFunctionMgr::load)
+//                .put(SRMetaBlockID.STORAGE_VOLUME_MGR, storageVolumeMgr::load)
+////                .put(SRMetaBlockID.DICTIONARY_MGR, dictionaryMgr::load)
+//                .put(SRMetaBlockID.REPLICATION_MGR, replicationMgr::load)
+//                .build();
+//
+//        Set<SRMetaBlockID> metaMgrMustExists = new HashSet<>(loadImages.keySet());
+//        try (DataInputStream dis = new DataInputStream(new BufferedInputStream(Files.newInputStream(curFile.toPath())))) {
+//            loadHeader(dis);
+//            while (true) {
+//                SRMetaBlockReader reader = new SRMetaBlockReader(dis);
+//                SRMetaBlockID srMetaBlockID = reader.getHeader().getSrMetaBlockID();
+//
+//                try {
+//                    SRMetaBlockLoader imageLoader = loadImages.get(srMetaBlockID);
+//                    if (imageLoader == null) {
+//                        /*
+//                         * The expected read module does not match the module stored in the image,
+//                         * and the json chunk is skipped directly. This usually occurs in several situations.
+//                         * 1. When the obsolete image code is deleted.
+//                         * 2. When the new version rolls back to the old version,
+//                         *    the old version ignores the functions of the new version
+//                         */
+//                        LOG.warn(String.format("Ignore this invalid meta block, sr meta block id mismatch" +
+//                                               "(expect sr meta block id %s)", srMetaBlockID));
+//                        continue;
+//                    }
+//
+//                    imageLoader.apply(reader);
+//                    metaMgrMustExists.remove(srMetaBlockID);
+//                    LOG.info("Success load StarRocks meta block " + srMetaBlockID + " from image");
+//                } catch (SRMetaBlockEOFException srMetaBlockEOFException) {
+//                    /*
+//                     * The number of json expected to be read is more than the number of json actually stored in the image
+//                     */
+//                    metaMgrMustExists.remove(srMetaBlockID);
+//                    LOG.warn("Got EOF exception, ignore, ", srMetaBlockEOFException);
+//                } finally {
+//                    reader.close();
+//                }
+//            }
+//        } catch (EOFException exception) {
+//            if (!metaMgrMustExists.isEmpty()) {
+//                LOG.warn("Miss meta block [" + Joiner.on(",").join(new ArrayList<>(metaMgrMustExists)) + "], " +
+//                         "This may not be a fatal error. It may be because there are new features in the version " +
+//                         "you upgraded this time, but there is no relevant metadata.");
+//            } else {
+//                LOG.info("Load meta-image EOF, successful loading all requires meta module");
+//            }
+//        } catch (SRMetaBlockException e) {
+//            LOG.error("load meta block failed ", e);
+//            throw new IOException("load meta block failed ", e);
+//        }
+//
+//        try {
+//            postLoadImage();
+//        } catch (Exception t) {
+//            LOG.warn("there is an exception during processing after load image. exception:", t);
+//        }
+//
+//        long loadImageEndTime = System.currentTimeMillis();
+//        this.imageJournalId = storage.getImageJournalId();
+//        LOG.info("finished to load image in " + (loadImageEndTime - loadImageStartTime) + " ms");
+//    }
 
-        lockChecker.start();
+//    private void postLoadImage() {
+//        processMvRelatedMeta();
+//    }
 
-        refreshDictionaryCacheTaskDaemon.start();
+//    private void processMvRelatedMeta() {
+//        List<String> dbNames = metadataMgr.listDbNames(InternalCatalog.DEFAULT_INTERNAL_CATALOG_NAME);
+//
+//        long startMillis = System.currentTimeMillis();
+//        for (String dbName : dbNames) {
+//            Database db = metadataMgr.getDb(InternalCatalog.DEFAULT_INTERNAL_CATALOG_NAME, dbName);
+//            for (MaterializedView mv : db.getMaterializedViews()) {
+//                mv.onReload();
+//            }
+//        }
+//
+//        long duration = System.currentTimeMillis() - startMillis;
+//        LOG.info("finish processing all tables' related materialized views in {}ms", duration);
+//    }
 
-        // The memory tracker should be placed at the end
-        memoryUsageTracker.start();
-    }
-
-    private void transferToNonLeader(FrontendNodeType newType) {
-        isReady.set(false);
-
-        if (feType == FrontendNodeType.OBSERVER || feType == FrontendNodeType.FOLLOWER) {
-            Preconditions.checkState(newType == FrontendNodeType.UNKNOWN);
-            LOG.warn("{} to UNKNOWN, still offer read service", feType.name());
-            // not set canRead here, leave canRead as what it was.
-            // if meta out of date, canRead will be set to false in replayer thread.
-            metaReplayState.setTransferToUnknown();
-            feType = newType;
-            return;
-        }
-
-        // transfer from INIT/UNKNOWN to OBSERVER/FOLLOWER
-
-        if (replayer == null) {
-            createReplayer();
-            replayer.start();
-        }
-
-        startAllNodeTypeDaemonThreads();
-
-        if (!isDefaultWarehouseCreated) {
-            initDefaultWarehouse();
-        }
-
-        MetricRepo.init();
-
-        feType = newType;
-    }
-
-    public void loadImage(String imageDir) throws IOException, DdlException {
-        Storage storage = new Storage(imageDir);
-        nodeMgr.setClusterId(storage.getClusterID());
-        File curFile = storage.getCurrentImageFile();
-        if (!curFile.exists()) {
-            // image.0 may not exist
-            LOG.info("image does not exist: {}", curFile.getAbsolutePath());
-            return;
-        }
-        replayedJournalId.set(storage.getImageJournalId());
-        LOG.info("start load image from {}. is ckpt: {}", curFile.getAbsolutePath(),
-                GlobalStateMgr.isCheckpointThread());
-        long loadImageStartTime = System.currentTimeMillis();
-
-        Map<SRMetaBlockID, SRMetaBlockLoader> loadImages = ImmutableMap.<SRMetaBlockID, SRMetaBlockLoader>builder()
-                .put(SRMetaBlockID.NODE_MGR, nodeMgr::load)
-                .put(SRMetaBlockID.LOCAL_META_STORE, localMetastore::load)
-                .put(SRMetaBlockID.ALTER_MGR, alterJobMgr::load)
-                .put(SRMetaBlockID.CATALOG_RECYCLE_BIN, recycleBin::load)
-                .put(SRMetaBlockID.VARIABLE_MGR, VariableMgr::load)
-                .put(SRMetaBlockID.RESOURCE_MGR, resourceMgr::loadResourcesV2)
-                .put(SRMetaBlockID.EXPORT_MGR, exportMgr::loadExportJobV2)
-                .put(SRMetaBlockID.BACKUP_MGR, backupHandler::loadBackupHandlerV2)
-                .put(SRMetaBlockID.GLOBAL_TRANSACTION_MGR, globalTransactionMgr::loadTransactionStateV2)
-                .put(SRMetaBlockID.COLOCATE_TABLE_INDEX, colocateTableIndex::loadColocateTableIndexV2)
-                .put(SRMetaBlockID.ROUTINE_LOAD_MGR, routineLoadMgr::loadRoutineLoadJobsV2)
-                .put(SRMetaBlockID.LOAD_MGR, loadMgr::loadLoadJobsV2JsonFormat)
-                .put(SRMetaBlockID.SMALL_FILE_MGR, smallFileMgr::loadSmallFilesV2)
-                .put(SRMetaBlockID.PLUGIN_MGR, pluginMgr::load)
-                .put(SRMetaBlockID.DELETE_MGR, deleteMgr::load)
-                .put(SRMetaBlockID.ANALYZE_MGR, analyzeMgr::load)
-                .put(SRMetaBlockID.RESOURCE_GROUP_MGR, resourceGroupMgr::load)
-                .put(SRMetaBlockID.AUTHENTICATION_MGR, authenticationMgr::loadV2)
-                .put(SRMetaBlockID.AUTHORIZATION_MGR, authorizationMgr::loadV2)
-                .put(SRMetaBlockID.TASK_MGR, taskManager::loadTasksV2)
-                .put(SRMetaBlockID.CATALOG_MGR, catalogMgr::load)
-                .put(SRMetaBlockID.INSERT_OVERWRITE_JOB_MGR, insertOverwriteJobMgr::load)
-                .put(SRMetaBlockID.COMPACTION_MGR, compactionMgr::load)
-                .put(SRMetaBlockID.STREAM_LOAD_MGR, streamLoadMgr::load)
-                .put(SRMetaBlockID.MATERIALIZED_VIEW_MGR, MaterializedViewMgr.getInstance()::load)
-                .put(SRMetaBlockID.GLOBAL_FUNCTION_MGR, globalFunctionMgr::load)
-                .put(SRMetaBlockID.STORAGE_VOLUME_MGR, storageVolumeMgr::load)
-                .put(SRMetaBlockID.DICTIONARY_MGR, dictionaryMgr::load)
-                .put(SRMetaBlockID.REPLICATION_MGR, replicationMgr::load)
-                .build();
-
-        Set<SRMetaBlockID> metaMgrMustExists = new HashSet<>(loadImages.keySet());
-        try (DataInputStream dis = new DataInputStream(new BufferedInputStream(Files.newInputStream(curFile.toPath())))) {
-            loadHeader(dis);
-            while (true) {
-                SRMetaBlockReader reader = new SRMetaBlockReader(dis);
-                SRMetaBlockID srMetaBlockID = reader.getHeader().getSrMetaBlockID();
-
-                try {
-                    SRMetaBlockLoader imageLoader = loadImages.get(srMetaBlockID);
-                    if (imageLoader == null) {
-                        /*
-                         * The expected read module does not match the module stored in the image,
-                         * and the json chunk is skipped directly. This usually occurs in several situations.
-                         * 1. When the obsolete image code is deleted.
-                         * 2. When the new version rolls back to the old version,
-                         *    the old version ignores the functions of the new version
-                         */
-                        LOG.warn(String.format("Ignore this invalid meta block, sr meta block id mismatch" +
-                                               "(expect sr meta block id %s)", srMetaBlockID));
-                        continue;
-                    }
-
-                    imageLoader.apply(reader);
-                    metaMgrMustExists.remove(srMetaBlockID);
-                    LOG.info("Success load StarRocks meta block " + srMetaBlockID + " from image");
-                } catch (SRMetaBlockEOFException srMetaBlockEOFException) {
-                    /*
-                     * The number of json expected to be read is more than the number of json actually stored in the image
-                     */
-                    metaMgrMustExists.remove(srMetaBlockID);
-                    LOG.warn("Got EOF exception, ignore, ", srMetaBlockEOFException);
-                } finally {
-                    reader.close();
-                }
-            }
-        } catch (EOFException exception) {
-            if (!metaMgrMustExists.isEmpty()) {
-                LOG.warn("Miss meta block [" + Joiner.on(",").join(new ArrayList<>(metaMgrMustExists)) + "], " +
-                         "This may not be a fatal error. It may be because there are new features in the version " +
-                         "you upgraded this time, but there is no relevant metadata.");
-            } else {
-                LOG.info("Load meta-image EOF, successful loading all requires meta module");
-            }
-        } catch (SRMetaBlockException e) {
-            LOG.error("load meta block failed ", e);
-            throw new IOException("load meta block failed ", e);
-        }
-
-        try {
-            postLoadImage();
-        } catch (Exception t) {
-            LOG.warn("there is an exception during processing after load image. exception:", t);
-        }
-
-        long loadImageEndTime = System.currentTimeMillis();
-        this.imageJournalId = storage.getImageJournalId();
-        LOG.info("finished to load image in " + (loadImageEndTime - loadImageStartTime) + " ms");
-    }
-
-    private void postLoadImage() {
-        processMvRelatedMeta();
-    }
-
-    private void processMvRelatedMeta() {
-        List<String> dbNames = metadataMgr.listDbNames(InternalCatalog.DEFAULT_INTERNAL_CATALOG_NAME);
-
-        long startMillis = System.currentTimeMillis();
-        for (String dbName : dbNames) {
-            Database db = metadataMgr.getDb(InternalCatalog.DEFAULT_INTERNAL_CATALOG_NAME, dbName);
-            for (MaterializedView mv : db.getMaterializedViews()) {
-                mv.onReload();
-            }
-        }
-
-        long duration = System.currentTimeMillis() - startMillis;
-        LOG.info("finish processing all tables' related materialized views in {}ms", duration);
-    }
-
-    public void loadHeader(DataInputStream dis) throws IOException {
-        // for new format, version schema is [starrocksMetaVersion], and the int value must be positive
-        // for old format, version schema is [-1, metaVersion, starrocksMetaVersion]
-        // so we can check the first int to determine the version schema
-        int flag = dis.readInt();
-        int starrocksMetaVersion;
-        if (flag < 0) {
-            dis.readInt();
-            starrocksMetaVersion = dis.readInt();
-        } else {
-            // when flag is positive, this is new version format
-            starrocksMetaVersion = flag;
-        }
-
-        if (starrocksMetaVersion != FeConstants.STARROCKS_META_VERSION) {
-            LOG.error("Not compatible with meta version {}, current version is {}",
-                    starrocksMetaVersion, FeConstants.STARROCKS_META_VERSION);
-            System.exit(-1);
-        }
-
-        MetaContext.get().setStarRocksMetaVersion(starrocksMetaVersion);
-        ImageHeader header = GsonUtils.GSON.fromJson(Text.readString(dis), ImageHeader.class);
-        idGenerator.setId(header.getBatchEndId());
-        isDefaultClusterCreated = header.isDefaultClusterCreated();
-        LOG.info("finished to replay header from image");
-    }
+//    public void loadHeader(DataInputStream dis) throws IOException {
+//        // for new format, version schema is [starrocksMetaVersion], and the int value must be positive
+//        // for old format, version schema is [-1, metaVersion, starrocksMetaVersion]
+//        // so we can check the first int to determine the version schema
+//        int flag = dis.readInt();
+//        int starrocksMetaVersion;
+//        if (flag < 0) {
+//            dis.readInt();
+//            starrocksMetaVersion = dis.readInt();
+//        } else {
+//            // when flag is positive, this is new version format
+//            starrocksMetaVersion = flag;
+//        }
+//
+//        if (starrocksMetaVersion != FeConstants.STARROCKS_META_VERSION) {
+//            LOG.error("Not compatible with meta version {}, current version is {}",
+//                    starrocksMetaVersion, FeConstants.STARROCKS_META_VERSION);
+//            System.exit(-1);
+//        }
+//
+//        MetaContext.get().setStarRocksMetaVersion(starrocksMetaVersion);
+//        ImageHeader header = GsonUtils.GSON.fromJson(Text.readString(dis), ImageHeader.class);
+//        idGenerator.setId(header.getBatchEndId());
+//        isDefaultClusterCreated = header.isDefaultClusterCreated();
+//        LOG.info("finished to replay header from image");
+//    }
 
     // Only called by checkpoint thread
-    public void saveImage() throws IOException {
-        // Write image.ckpt
-        Storage storage = new Storage(this.imageDir);
-        File curFile = storage.getImageFile(replayedJournalId.get());
-        File ckpt = new File(this.imageDir, Storage.IMAGE_NEW);
-        saveImage(ckpt, replayedJournalId.get());
+//    public void saveImage() throws IOException {
+//        // Write image.ckpt
+//        Storage storage = new Storage(this.imageDir);
+//        File curFile = storage.getImageFile(replayedJournalId.get());
+//        File ckpt = new File(this.imageDir, Storage.IMAGE_NEW);
+//        saveImage(ckpt, replayedJournalId.get());
+//
+//        // Move image.ckpt to image.dataVersion
+//        LOG.info("Move " + ckpt.getAbsolutePath() + " to " + curFile.getAbsolutePath());
+//        if (!ckpt.renameTo(curFile)) {
+//            if (!curFile.delete()) {
+//                LOG.warn("Failed to delete file, filepath={}", curFile.getAbsolutePath());
+//            }
+//            throw new IOException();
+//        }
+//    }
 
-        // Move image.ckpt to image.dataVersion
-        LOG.info("Move " + ckpt.getAbsolutePath() + " to " + curFile.getAbsolutePath());
-        if (!ckpt.renameTo(curFile)) {
-            if (!curFile.delete()) {
-                LOG.warn("Failed to delete file, filepath={}", curFile.getAbsolutePath());
-            }
-            throw new IOException();
-        }
-    }
+//    public void saveImage(File curFile, long replayedJournalId) throws IOException {
+//        if (!curFile.exists()) {
+//            if (!curFile.createNewFile()) {
+//                LOG.warn("Failed to create file, filepath={}", curFile.getAbsolutePath());
+//            }
+//        }
+//
+//        // save image does not need any lock. because only checkpoint thread will call this method.
+//        LOG.info("start save image to {}. is ckpt: {}", curFile.getAbsolutePath(), GlobalStateMgr.isCheckpointThread());
+//
+//        long saveImageStartTime = System.currentTimeMillis();
+//        try (DataOutputStream dos = new DataOutputStream(Files.newOutputStream(curFile.toPath()))) {
+//            try {
+//                saveHeader(dos);
+//                nodeMgr.save(dos);
+//                localMetastore.save(dos);
+//                alterJobMgr.save(dos);
+//                recycleBin.save(dos);
+//                VariableMgr.save(dos);
+//                resourceMgr.saveResourcesV2(dos);
+//                exportMgr.saveExportJobV2(dos);
+//                backupHandler.saveBackupHandlerV2(dos);
+//                globalTransactionMgr.saveTransactionStateV2(dos);
+//                colocateTableIndex.saveColocateTableIndexV2(dos);
+//                routineLoadMgr.saveRoutineLoadJobsV2(dos);
+//                loadMgr.saveLoadJobsV2JsonFormat(dos);
+//                smallFileMgr.saveSmallFilesV2(dos);
+//                pluginMgr.save(dos);
+//                deleteMgr.save(dos);
+//                analyzeMgr.save(dos);
+//                resourceGroupMgr.save(dos);
+//                authenticationMgr.saveV2(dos);
+//                authorizationMgr.saveV2(dos);
+//                taskManager.saveTasksV2(dos);
+//                catalogMgr.save(dos);
+//                insertOverwriteJobMgr.save(dos);
+//                compactionMgr.save(dos);
+//                streamLoadMgr.save(dos);
+//                MaterializedViewMgr.getInstance().save(dos);
+//                globalFunctionMgr.save(dos);
+//                storageVolumeMgr.save(dos);
+////                dictionaryMgr.save(dos);
+//                replicationMgr.save(dos);
+//            } catch (SRMetaBlockException e) {
+//                LOG.error("Save meta block failed ", e);
+//                throw new IOException("Save meta block failed ", e);
+//            }
+//
+//            long saveImageEndTime = System.currentTimeMillis();
+//            LOG.info("Finished save meta block {} in {} ms.",
+//                    curFile.getAbsolutePath(), (saveImageEndTime - saveImageStartTime));
+//        }
+//    }
 
-    public void saveImage(File curFile, long replayedJournalId) throws IOException {
-        if (!curFile.exists()) {
-            if (!curFile.createNewFile()) {
-                LOG.warn("Failed to create file, filepath={}", curFile.getAbsolutePath());
-            }
-        }
-
-        // save image does not need any lock. because only checkpoint thread will call this method.
-        LOG.info("start save image to {}. is ckpt: {}", curFile.getAbsolutePath(), GlobalStateMgr.isCheckpointThread());
-
-        long saveImageStartTime = System.currentTimeMillis();
-        try (DataOutputStream dos = new DataOutputStream(Files.newOutputStream(curFile.toPath()))) {
-            try {
-                saveHeader(dos);
-                nodeMgr.save(dos);
-                localMetastore.save(dos);
-                alterJobMgr.save(dos);
-                recycleBin.save(dos);
-                VariableMgr.save(dos);
-                resourceMgr.saveResourcesV2(dos);
-                exportMgr.saveExportJobV2(dos);
-                backupHandler.saveBackupHandlerV2(dos);
-                globalTransactionMgr.saveTransactionStateV2(dos);
-                colocateTableIndex.saveColocateTableIndexV2(dos);
-                routineLoadMgr.saveRoutineLoadJobsV2(dos);
-                loadMgr.saveLoadJobsV2JsonFormat(dos);
-                smallFileMgr.saveSmallFilesV2(dos);
-                pluginMgr.save(dos);
-                deleteMgr.save(dos);
-                analyzeMgr.save(dos);
-                resourceGroupMgr.save(dos);
-                authenticationMgr.saveV2(dos);
-                authorizationMgr.saveV2(dos);
-                taskManager.saveTasksV2(dos);
-                catalogMgr.save(dos);
-                insertOverwriteJobMgr.save(dos);
-                compactionMgr.save(dos);
-                streamLoadMgr.save(dos);
-                MaterializedViewMgr.getInstance().save(dos);
-                globalFunctionMgr.save(dos);
-                storageVolumeMgr.save(dos);
-                dictionaryMgr.save(dos);
-                replicationMgr.save(dos);
-            } catch (SRMetaBlockException e) {
-                LOG.error("Save meta block failed ", e);
-                throw new IOException("Save meta block failed ", e);
-            }
-
-            long saveImageEndTime = System.currentTimeMillis();
-            LOG.info("Finished save meta block {} in {} ms.",
-                    curFile.getAbsolutePath(), (saveImageEndTime - saveImageStartTime));
-        }
-    }
-
-    public void saveHeader(DataOutputStream dos) throws IOException {
-        dos.writeInt(FeConstants.STARROCKS_META_VERSION);
-        ImageHeader header = new ImageHeader();
-        long id = idGenerator.getBatchEndId();
-        header.setBatchEndId(id);
-        header.setDefaultClusterCreated(isDefaultClusterCreated);
-        Text.writeString(dos, GsonUtils.GSON.toJson(header));
-    }
+//    public void saveHeader(DataOutputStream dos) throws IOException {
+//        dos.writeInt(FeConstants.STARROCKS_META_VERSION);
+//        ImageHeader header = new ImageHeader();
+//        long id = idGenerator.getBatchEndId();
+//        header.setBatchEndId(id);
+//        header.setDefaultClusterCreated(isDefaultClusterCreated);
+//        Text.writeString(dos, GsonUtils.GSON.toJson(header));
+//    }
 
     public void createLabelCleaner() {
         labelCleaner = new FrontendDaemon("LoadLabelCleaner", Config.label_clean_interval_second * 1000L) {
@@ -1463,284 +1457,284 @@ public class GlobalStateMgr {
         };
     }
 
-    public void createTxnTimeoutChecker() {
-        txnTimeoutChecker = new FrontendDaemon("txnTimeoutChecker",
-                Config.transaction_clean_interval_second * 1000L) {
-            @Override
-            protected void runAfterCatalogReady() {
-                globalTransactionMgr.abortTimeoutTxns();
+//    public void createTxnTimeoutChecker() {
+//        txnTimeoutChecker = new FrontendDaemon("txnTimeoutChecker",
+//                Config.transaction_clean_interval_second * 1000L) {
+//            @Override
+//            protected void runAfterCatalogReady() {
+//                globalTransactionMgr.abortTimeoutTxns();
+//
+//                try {
+//                    loadMgr.cancelResidualJob();
+//                } catch (Throwable t) {
+//                    LOG.warn("load manager cancel residual job failed", t);
+//                }
+//            }
+//        };
+//    }
 
-                try {
-                    loadMgr.cancelResidualJob();
-                } catch (Throwable t) {
-                    LOG.warn("load manager cancel residual job failed", t);
-                }
-            }
-        };
-    }
-
-    public void createReplayer() {
-        replayer = new Daemon("replayer", REPLAY_INTERVAL_MS) {
-            private JournalCursor cursor = null;
-            // avoid numerous 'meta out of date' log
-            private long lastMetaOutOfDateLogTime = 0;
-
-            @Override
-            @SuppressWarnings("squid:S2142")  // allow catch InterruptedException
-            protected void runOneCycle() {
-                boolean err = false;
-                boolean hasLog = false;
-                try {
-                    if (cursor == null) {
-                        // 1. set replay to the end
-                        LOG.info("start to replay from {}", replayedJournalId.get());
-                        cursor = journal.read(replayedJournalId.get() + 1, JournalCursor.CURSOR_END_KEY);
-                    } else {
-                        cursor.refresh();
-                    }
-                    // 2. replay with flow control
-                    hasLog = replayJournalInner(cursor, true);
-                    metaReplayState.setOk();
-                } catch (JournalInconsistentException | InterruptedException e) {
-                    LOG.warn("got interrupt exception or inconsistent exception when replay journal {}, will exit, ",
-                            replayedJournalId.get() + 1, e);
-                    // TODO exit gracefully
-                    Util.stdoutWithTime(e.getMessage());
-                    System.exit(-1);
-                } catch (Throwable e) {
-                    LOG.error("replayer thread catch an exception when replay journal {}.",
-                            replayedJournalId.get() + 1, e);
-                    metaReplayState.setException(e);
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e1) {
-                        LOG.error("sleep got exception. ", e);
-                    }
-                    err = true;
-                }
-
-                setCanRead(hasLog, err);
-            }
-
-            private void setCanRead(boolean hasLog, boolean err) {
-                if (err) {
-                    canRead.set(false);
-                    isReady.set(false);
-                    return;
-                }
-
-                if (Config.ignore_meta_check) {
-                    // can still offer read, but is not ready
-                    canRead.set(true);
-                    isReady.set(false);
-                    return;
-                }
-
-                long currentTimeMs = System.currentTimeMillis();
-                if (currentTimeMs - synchronizedTimeMs > Config.meta_delay_toleration_second * 1000L) {
-                    if (currentTimeMs - lastMetaOutOfDateLogTime > 5 * 1000L) {
-                        // we still need this log to observe this situation
-                        // but service may be continued when there is no log being replayed.
-                        LOG.warn("meta out of date. current time: {}, synchronized time: {}, has log: {}, fe type: {}",
-                                currentTimeMs, synchronizedTimeMs, hasLog, feType);
-                        lastMetaOutOfDateLogTime = currentTimeMs;
-                    }
-                    if (hasLog || feType == FrontendNodeType.UNKNOWN) {
-                        // 1. if we read log from BDB, which means leader is still alive.
-                        // So we need to set meta out of date.
-                        // 2. if we didn't read any log from BDB and feType is UNKNOWN,
-                        // which means this non-leader node is disconnected with leader.
-                        // So we need to set meta out of date either.
-                        metaReplayState.setOutOfDate(currentTimeMs, synchronizedTimeMs);
-                        canRead.set(false);
-                        isReady.set(false);
-                    }
-                } else {
-                    canRead.set(true);
-                    isReady.set(true);
-                }
-            }
-
-            // close current db after replayer finished
-            @Override
-            public void run() {
-                super.run();
-                if (cursor != null) {
-                    cursor.close();
-                    LOG.info("quit replay at {}", replayedJournalId.get());
-                }
-            }
-        };
-
-        replayer.setMetaContext(metaContext);
-    }
+//    public void createReplayer() {
+//        replayer = new Daemon("replayer", REPLAY_INTERVAL_MS) {
+//            private JournalCursor cursor = null;
+//            // avoid numerous 'meta out of date' log
+//            private long lastMetaOutOfDateLogTime = 0;
+//
+//            @Override
+//            @SuppressWarnings("squid:S2142")  // allow catch InterruptedException
+//            protected void runOneCycle() {
+//                boolean err = false;
+//                boolean hasLog = false;
+//                try {
+//                    if (cursor == null) {
+//                        // 1. set replay to the end
+//                        LOG.info("start to replay from {}", replayedJournalId.get());
+//                        cursor = journal.read(replayedJournalId.get() + 1, JournalCursor.CURSOR_END_KEY);
+//                    } else {
+//                        cursor.refresh();
+//                    }
+//                    // 2. replay with flow control
+//                    hasLog = replayJournalInner(cursor, true);
+//                    metaReplayState.setOk();
+//                } catch (JournalInconsistentException | InterruptedException e) {
+//                    LOG.warn("got interrupt exception or inconsistent exception when replay journal {}, will exit, ",
+//                            replayedJournalId.get() + 1, e);
+//                    // TODO exit gracefully
+//                    Util.stdoutWithTime(e.getMessage());
+//                    System.exit(-1);
+//                } catch (Throwable e) {
+//                    LOG.error("replayer thread catch an exception when replay journal {}.",
+//                            replayedJournalId.get() + 1, e);
+//                    metaReplayState.setException(e);
+//                    try {
+//                        Thread.sleep(5000);
+//                    } catch (InterruptedException e1) {
+//                        LOG.error("sleep got exception. ", e);
+//                    }
+//                    err = true;
+//                }
+//
+//                setCanRead(hasLog, err);
+//            }
+//
+//            private void setCanRead(boolean hasLog, boolean err) {
+//                if (err) {
+//                    canRead.set(false);
+//                    isReady.set(false);
+//                    return;
+//                }
+//
+//                if (Config.ignore_meta_check) {
+//                    // can still offer read, but is not ready
+//                    canRead.set(true);
+//                    isReady.set(false);
+//                    return;
+//                }
+//
+//                long currentTimeMs = System.currentTimeMillis();
+//                if (currentTimeMs - synchronizedTimeMs > Config.meta_delay_toleration_second * 1000L) {
+//                    if (currentTimeMs - lastMetaOutOfDateLogTime > 5 * 1000L) {
+//                        // we still need this log to observe this situation
+//                        // but service may be continued when there is no log being replayed.
+//                        LOG.warn("meta out of date. current time: {}, synchronized time: {}, has log: {}, fe type: {}",
+//                                currentTimeMs, synchronizedTimeMs, hasLog, feType);
+//                        lastMetaOutOfDateLogTime = currentTimeMs;
+//                    }
+//                    if (hasLog || feType == FrontendNodeType.UNKNOWN) {
+//                        // 1. if we read log from BDB, which means leader is still alive.
+//                        // So we need to set meta out of date.
+//                        // 2. if we didn't read any log from BDB and feType is UNKNOWN,
+//                        // which means this non-leader node is disconnected with leader.
+//                        // So we need to set meta out of date either.
+//                        metaReplayState.setOutOfDate(currentTimeMs, synchronizedTimeMs);
+//                        canRead.set(false);
+//                        isReady.set(false);
+//                    }
+//                } else {
+//                    canRead.set(true);
+//                    isReady.set(true);
+//                }
+//            }
+//
+//            // close current db after replayer finished
+//            @Override
+//            public void run() {
+//                super.run();
+//                if (cursor != null) {
+//                    cursor.close();
+//                    LOG.info("quit replay at {}", replayedJournalId.get());
+//                }
+//            }
+//        };
+//
+//        replayer.setMetaContext(metaContext);
+//    }
 
     /**
      * Replay journal from replayedJournalId + 1 to toJournalId
      * used by checkpointer/replay after state change
      * toJournalId is a definite number and cannot set to -1/JournalCursor.CURSOR_END_KEY
      */
-    public void replayJournal(long toJournalId) throws JournalException {
-        if (toJournalId <= replayedJournalId.get()) {
-            LOG.info("skip replay journal because {} <= {}", toJournalId, replayedJournalId.get());
-            return;
-        }
+//    public void replayJournal(long toJournalId) throws JournalException {
+//        if (toJournalId <= replayedJournalId.get()) {
+//            LOG.info("skip replay journal because {} <= {}", toJournalId, replayedJournalId.get());
+//            return;
+//        }
+//
+//        long startJournalId = replayedJournalId.get() + 1;
+//        long replayStartTime = System.currentTimeMillis();
+//        LOG.info("start to replay journal from {} to {}", startJournalId, toJournalId);
 
-        long startJournalId = replayedJournalId.get() + 1;
-        long replayStartTime = System.currentTimeMillis();
-        LOG.info("start to replay journal from {} to {}", startJournalId, toJournalId);
-
-        JournalCursor cursor = null;
-        try {
-            cursor = journal.read(startJournalId, toJournalId);
-            replayJournalInner(cursor, false);
-        } catch (InterruptedException | JournalInconsistentException e) {
-            LOG.warn("got interrupt exception or inconsistent exception when replay journal {}, will exit, ",
-                    replayedJournalId.get() + 1,
-                    e);
-            // TODO exit gracefully
-            Util.stdoutWithTime(e.getMessage());
-            System.exit(-1);
-
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-
-        // verify if all log is replayed
-        if (toJournalId != replayedJournalId.get()) {
-            throw new JournalException(String.format(
-                    "should replay to %d but actual replayed journal id is %d",
-                    toJournalId, replayedJournalId.get()));
-        }
-
-        streamLoadMgr.cancelUnDurableTaskAfterRestart();
-
-        long replayInterval = System.currentTimeMillis() - replayStartTime;
-        LOG.info("finish replay from {} to {} in {} msec", startJournalId, toJournalId, replayInterval);
-    }
+//        JournalCursor cursor = null;
+//        try {
+//            cursor = journal.read(startJournalId, toJournalId);
+//            replayJournalInner(cursor, false);
+//        } catch (InterruptedException | JournalInconsistentException e) {
+//            LOG.warn("got interrupt exception or inconsistent exception when replay journal {}, will exit, ",
+//                    replayedJournalId.get() + 1,
+//                    e);
+//            // TODO exit gracefully
+//            Util.stdoutWithTime(e.getMessage());
+//            System.exit(-1);
+//
+//        } finally {
+//            if (cursor != null) {
+//                cursor.close();
+//            }
+//        }
+//
+//        // verify if all log is replayed
+//        if (toJournalId != replayedJournalId.get()) {
+//            throw new JournalException(String.format(
+//                    "should replay to %d but actual replayed journal id is %d",
+//                    toJournalId, replayedJournalId.get()));
+//        }
+//
+//        streamLoadMgr.cancelUnDurableTaskAfterRestart();
+//
+//        long replayInterval = System.currentTimeMillis() - replayStartTime;
+//        LOG.info("finish replay from {} to {} in {} msec", startJournalId, toJournalId, replayInterval);
+//    }
 
     /**
      * replay journal until cursor returns null(suggest EOF)
      * return true if any journal is replayed
      */
-    protected boolean replayJournalInner(JournalCursor cursor, boolean flowControl)
-            throws JournalException, InterruptedException, JournalInconsistentException {
-        long startReplayId = replayedJournalId.get();
-        long startTime = System.currentTimeMillis();
-        long lineCnt = 0;
-        while (true) {
-            JournalEntity entity = null;
-            boolean readSucc = false;
-            try {
-                entity = cursor.next();
+//    protected boolean replayJournalInner(JournalCursor cursor, boolean flowControl)
+//            throws JournalException, InterruptedException, JournalInconsistentException {
+//        long startReplayId = replayedJournalId.get();
+//        long startTime = System.currentTimeMillis();
+//        long lineCnt = 0;
+//        while (true) {
+//            JournalEntity entity = null;
+//            boolean readSucc = false;
+//            try {
+//                entity = cursor.next();
+//
+//                // EOF or aggressive retry
+//                if (entity == null) {
+//                    break;
+//                }
+//
+//                readSucc = true;
+//
+//                // apply
+//                EditLog.loadJournal(this, entity);
+//            } catch (Throwable e) {
+//                if (canSkipBadReplayedJournal(e)) {
+//                    LOG.error("!!! DANGER: SKIP JOURNAL {}: {} !!!",
+//                            replayedJournalId.incrementAndGet(),
+//                            entity == null ? null : GsonUtils.GSON.toJson(entity.getData()),
+//                            e);
+//                    if (!readSucc) {
+//                        cursor.skipNext();
+//                    }
+//                    continue;
+//                }
+//                // handled in outer loop
+//                LOG.warn("catch exception when replaying {},", replayedJournalId.get() + 1, e);
+//                throw e;
+//            }
+//
+//            replayedJournalId.incrementAndGet();
+//            LOG.debug("journal {} replayed.", replayedJournalId);
+//
+//            if (feType != FrontendNodeType.LEADER) {
+//                journalObservable.notifyObservers(replayedJournalId.get());
+//            }
+//            if (MetricRepo.hasInit) {
+//                // Metric repo may not init after this replay thread start
+//                MetricRepo.COUNTER_EDIT_LOG_READ.increase(1L);
+//            }
+//
+//            if (flowControl) {
+//                // cost too much time
+//                long cost = System.currentTimeMillis() - startTime;
+//                if (cost > REPLAYER_MAX_MS_PER_LOOP) {
+//                    LOG.warn("replay journal cost too much time: {} replayedJournalId: {}", cost, replayedJournalId);
+//                    break;
+//                }
+//                // consume too much lines
+//                lineCnt += 1;
+//                if (lineCnt > REPLAYER_MAX_LOGS_PER_LOOP) {
+//                    LOG.warn("replay too many journals: lineCnt {}, replayedJournalId: {}", lineCnt, replayedJournalId);
+//                    break;
+//                }
+//            }
+//
+//        }
+//        if (replayedJournalId.get() - startReplayId > 0) {
+//            LOG.info("replayed journal from {} - {}", startReplayId, replayedJournalId);
+//            return true;
+//        }
+//        return false;
+//    }
 
-                // EOF or aggressive retry
-                if (entity == null) {
-                    break;
-                }
+//    protected boolean canSkipBadReplayedJournal(Throwable t) {
+//        try {
+//            for (String idStr : Config.metadata_journal_skip_bad_journal_ids.split(",")) {
+//                if (!StringUtils.isEmpty(idStr) && Long.parseLong(idStr) == replayedJournalId.get() + 1) {
+//                    LOG.error("skip bad replayed journal id {} because configured {}",
+//                            idStr, Config.metadata_journal_skip_bad_journal_ids);
+//                    return true;
+//                }
+//            }
+//        } catch (Exception e) {
+//            LOG.warn("failed to parse metadata_journal_skip_bad_journal_ids: {}",
+//                    Config.metadata_journal_skip_bad_journal_ids, e);
+//        }
+//
+//        short opCode = OperationType.OP_INVALID;
+//        if (t instanceof JournalException) {
+//            opCode = ((JournalException) t).getOpCode();
+//        }
+//        if (t instanceof JournalInconsistentException) {
+//            opCode = ((JournalInconsistentException) t).getOpCode();
+//        }
+//
+//        if (opCode != OperationType.OP_INVALID
+//            && OperationType.IGNORABLE_OPERATIONS.contains(opCode)) {
+//            if (Config.metadata_journal_ignore_replay_failure) {
+//                LOG.error("skip ignorable journal load failure, opCode: {}", opCode);
+//                return true;
+//            } else {
+//                LOG.error("the failure of opCode: {} is ignorable, " +
+//                          "you can set metadata_journal_ignore_replay_failure to true to ignore this failure", opCode);
+//                return false;
+//            }
+//        }
+//        return false;
+//    }
 
-                readSucc = true;
-
-                // apply
-                EditLog.loadJournal(this, entity);
-            } catch (Throwable e) {
-                if (canSkipBadReplayedJournal(e)) {
-                    LOG.error("!!! DANGER: SKIP JOURNAL {}: {} !!!",
-                            replayedJournalId.incrementAndGet(),
-                            entity == null ? null : GsonUtils.GSON.toJson(entity.getData()),
-                            e);
-                    if (!readSucc) {
-                        cursor.skipNext();
-                    }
-                    continue;
-                }
-                // handled in outer loop
-                LOG.warn("catch exception when replaying {},", replayedJournalId.get() + 1, e);
-                throw e;
-            }
-
-            replayedJournalId.incrementAndGet();
-            LOG.debug("journal {} replayed.", replayedJournalId);
-
-            if (feType != FrontendNodeType.LEADER) {
-                journalObservable.notifyObservers(replayedJournalId.get());
-            }
-            if (MetricRepo.hasInit) {
-                // Metric repo may not init after this replay thread start
-                MetricRepo.COUNTER_EDIT_LOG_READ.increase(1L);
-            }
-
-            if (flowControl) {
-                // cost too much time
-                long cost = System.currentTimeMillis() - startTime;
-                if (cost > REPLAYER_MAX_MS_PER_LOOP) {
-                    LOG.warn("replay journal cost too much time: {} replayedJournalId: {}", cost, replayedJournalId);
-                    break;
-                }
-                // consume too much lines
-                lineCnt += 1;
-                if (lineCnt > REPLAYER_MAX_LOGS_PER_LOOP) {
-                    LOG.warn("replay too many journals: lineCnt {}, replayedJournalId: {}", lineCnt, replayedJournalId);
-                    break;
-                }
-            }
-
-        }
-        if (replayedJournalId.get() - startReplayId > 0) {
-            LOG.info("replayed journal from {} - {}", startReplayId, replayedJournalId);
-            return true;
-        }
-        return false;
-    }
-
-    protected boolean canSkipBadReplayedJournal(Throwable t) {
-        try {
-            for (String idStr : Config.metadata_journal_skip_bad_journal_ids.split(",")) {
-                if (!StringUtils.isEmpty(idStr) && Long.parseLong(idStr) == replayedJournalId.get() + 1) {
-                    LOG.error("skip bad replayed journal id {} because configured {}",
-                            idStr, Config.metadata_journal_skip_bad_journal_ids);
-                    return true;
-                }
-            }
-        } catch (Exception e) {
-            LOG.warn("failed to parse metadata_journal_skip_bad_journal_ids: {}",
-                    Config.metadata_journal_skip_bad_journal_ids, e);
-        }
-
-        short opCode = OperationType.OP_INVALID;
-        if (t instanceof JournalException) {
-            opCode = ((JournalException) t).getOpCode();
-        }
-        if (t instanceof JournalInconsistentException) {
-            opCode = ((JournalInconsistentException) t).getOpCode();
-        }
-
-        if (opCode != OperationType.OP_INVALID
-            && OperationType.IGNORABLE_OPERATIONS.contains(opCode)) {
-            if (Config.metadata_journal_ignore_replay_failure) {
-                LOG.error("skip ignorable journal load failure, opCode: {}", opCode);
-                return true;
-            } else {
-                LOG.error("the failure of opCode: {} is ignorable, " +
-                          "you can set metadata_journal_ignore_replay_failure to true to ignore this failure", opCode);
-                return false;
-            }
-        }
-        return false;
-    }
-
-    public void createTimePrinter() {
-        // time printer will write timestamp edit log every 10 seconds
-        timePrinter = new FrontendDaemon("timePrinter", 10 * 1000L) {
-            @Override
-            protected void runAfterCatalogReady() {
-                Timestamp stamp = new Timestamp();
-                editLog.logTimestamp(stamp);
-            }
-        };
-    }
+//    public void createTimePrinter() {
+//        // time printer will write timestamp edit log every 10 seconds
+//        timePrinter = new FrontendDaemon("timePrinter", 10 * 1000L) {
+//            @Override
+//            protected void runAfterCatalogReady() {
+//                Timestamp stamp = new Timestamp();
+//                editLog.logTimestamp(stamp);
+//            }
+//        };
+//    }
 
     public Database getDb(String name) {
         return localMetastore.getDb(name);
@@ -1762,34 +1756,34 @@ public class GlobalStateMgr {
         return localMetastore.getDb(dbId);
     }
 
-    public EditLog getEditLog() {
-        return editLog;
-    }
+//    public EditLog getEditLog() {
+//        return editLog;
+//    }
 
-    public Journal getJournal() {
-        return journal;
-    }
+//    public Journal getJournal() {
+//        return journal;
+//    }
 
     // Get the next available, lock-free because nextId is atomic.
     public long getNextId() {
         return idGenerator.getNextId();
     }
 
-    public ConsistencyChecker getConsistencyChecker() {
-        return consistencyChecker;
-    }
+//    public ConsistencyChecker getConsistencyChecker() {
+//        return consistencyChecker;
+//    }
 
-    public AlterJobMgr getAlterJobMgr() {
-        return alterJobMgr;
-    }
+//    public AlterJobMgr getAlterJobMgr() {
+//        return alterJobMgr;
+//    }
 
-    public SchemaChangeHandler getSchemaChangeHandler() {
-        return (SchemaChangeHandler) this.alterJobMgr.getSchemaChangeHandler();
-    }
+//    public SchemaChangeHandler getSchemaChangeHandler() {
+//        return (SchemaChangeHandler) this.alterJobMgr.getSchemaChangeHandler();
+//    }
 
-    public MaterializedViewHandler getRollupHandler() {
-        return (MaterializedViewHandler) this.alterJobMgr.getMaterializedViewHandler();
-    }
+//    public MaterializedViewHandler getRollupHandler() {
+//        return (MaterializedViewHandler) this.alterJobMgr.getMaterializedViewHandler();
+//    }
 
     public BackupHandler getBackupHandler() {
         return this.backupHandler;
@@ -1799,21 +1793,21 @@ public class GlobalStateMgr {
         return deleteMgr;
     }
 
-    public Load getLoadInstance() {
-        return load;
-    }
+//    public Load getLoadInstance() {
+//        return load;
+//    }
 
-    public LoadMgr getLoadMgr() {
-        return loadMgr;
-    }
+//    public LoadMgr getLoadMgr() {
+//        return loadMgr;
+//    }
 
-    public LeaderTaskExecutor getPendingLoadTaskScheduler() {
-        return pendingLoadTaskScheduler;
-    }
+//    public LeaderTaskExecutor getPendingLoadTaskScheduler() {
+//        return pendingLoadTaskScheduler;
+//    }
 
-    public PriorityLeaderTaskExecutor getLoadingLoadTaskScheduler() {
-        return loadingLoadTaskScheduler;
-    }
+//    public PriorityLeaderTaskExecutor getLoadingLoadTaskScheduler() {
+//        return loadingLoadTaskScheduler;
+//    }
 
     public RoutineLoadMgr getRoutineLoadMgr() {
         return routineLoadMgr;
@@ -1823,9 +1817,9 @@ public class GlobalStateMgr {
         return streamLoadMgr;
     }
 
-    public RoutineLoadTaskScheduler getRoutineLoadTaskScheduler() {
-        return routineLoadTaskScheduler;
-    }
+//    public RoutineLoadTaskScheduler getRoutineLoadTaskScheduler() {
+//        return routineLoadTaskScheduler;
+//    }
 
     public ExportMgr getExportMgr() {
         return this.exportMgr;
@@ -1839,9 +1833,9 @@ public class GlobalStateMgr {
         return this.replayedJournalId.get();
     }
 
-    public HAProtocol getHaProtocol() {
-        return this.haProtocol;
-    }
+//    public HAProtocol getHaProtocol() {
+//        return this.haProtocol;
+//    }
 
     public Long getMaxJournalId() {
         return this.journal.getMaxJournalId();
@@ -1859,41 +1853,41 @@ public class GlobalStateMgr {
         return feType;
     }
 
-    public void setLeader(LeaderInfo info) {
-        nodeMgr.setLeader(info);
-    }
+//    public void setLeader(LeaderInfo info) {
+//        nodeMgr.setLeader(info);
+//    }
 
     public boolean canRead() {
         return this.canRead.get();
     }
 
-    public boolean isElectable() {
-        return nodeMgr.isElectable();
-    }
+//    public boolean isElectable() {
+//        return nodeMgr.isElectable();
+//    }
 
     public boolean isLeader() {
         return feType == FrontendNodeType.LEADER;
     }
 
-    public void setSynchronizedTime(long time) {
-        this.synchronizedTimeMs = time;
-    }
+//    public void setSynchronizedTime(long time) {
+//        this.synchronizedTimeMs = time;
+//    }
+//
+//    public void setEditLog(EditLog editLog) {
+//        this.editLog = editLog;
+//    }
+//
+//    public void setJournal(Journal journal) {
+//        this.journal = journal;
+//    }
+//
+//    public void setNextId(long id) {
+//        idGenerator.setId(id);
+//    }
 
-    public void setEditLog(EditLog editLog) {
-        this.editLog = editLog;
-    }
-
-    public void setJournal(Journal journal) {
-        this.journal = journal;
-    }
-
-    public void setNextId(long id) {
-        idGenerator.setId(id);
-    }
-
-    public void setHaProtocol(HAProtocol protocol) {
-        this.haProtocol = protocol;
-    }
+//    public void setHaProtocol(HAProtocol protocol) {
+//        this.haProtocol = protocol;
+//    }
 
     public static short calcShortKeyColumnCount(List<Column> columns, Map<String, String> properties)
             throws DdlException {
@@ -1977,11 +1971,11 @@ public class GlobalStateMgr {
     // for test only
     @VisibleForTesting
     public void clear() {
-        localMetastore.clear();
+//        localMetastore.clear();
     }
 
     public void triggerNewImage() {
-        journalWriter.setForceRollJournal();
+//        journalWriter.setForceRollJournal();
     }
 
     /**
@@ -2010,169 +2004,169 @@ public class GlobalStateMgr {
         this.isDefaultClusterCreated = isDefaultClusterCreated;
     }
 
-    public void refreshExternalTable(RefreshTableStmt stmt) throws DdlException {
-        TableName tableName = stmt.getTableName();
-        List<String> partitionNames = stmt.getPartitions();
-        refreshExternalTable(tableName, partitionNames);
-        refreshOthersFeTable(tableName, partitionNames, true);
-    }
+//    public void refreshExternalTable(RefreshTableStmt stmt) throws DdlException {
+//        TableName tableName = stmt.getTableName();
+//        List<String> partitionNames = stmt.getPartitions();
+//        refreshExternalTable(tableName, partitionNames);
+//        refreshOthersFeTable(tableName, partitionNames, true);
+//    }
 
-    public void refreshOthersFeTable(TableName tableName, List<String> partitions, boolean isSync) throws DdlException {
-        List<Frontend> allFrontends = GlobalStateMgr.getCurrentState().getNodeMgr().getFrontends(null);
-        Map<String, Future<TStatus>> resultMap = Maps.newHashMapWithExpectedSize(allFrontends.size() - 1);
-        for (Frontend fe : allFrontends) {
-            if (fe.getHost().equals(GlobalStateMgr.getCurrentState().getNodeMgr().getSelfNode().first)) {
-                continue;
-            }
+//    public void refreshOthersFeTable(TableName tableName, List<String> partitions, boolean isSync) throws DdlException {
+//        List<Frontend> allFrontends = GlobalStateMgr.getCurrentState().getNodeMgr().getFrontends(null);
+//        Map<String, Future<TStatus>> resultMap = Maps.newHashMapWithExpectedSize(allFrontends.size() - 1);
+//        for (Frontend fe : allFrontends) {
+//            if (fe.getHost().equals(GlobalStateMgr.getCurrentState().getNodeMgr().getSelfNode().first)) {
+//                continue;
+//            }
+//
+//            resultMap.put(fe.getHost(), refreshOtherFesTable(
+//                    new TNetworkAddress(fe.getHost(), fe.getRpcPort()), tableName, partitions));
+//        }
+//
+//        String errMsg = "";
+//        for (Map.Entry<String, Future<TStatus>> entry : resultMap.entrySet()) {
+//            try {
+//                TStatus status = entry.getValue().get();
+//                if (status.getStatus_code() != TStatusCode.OK) {
+//                    String err = "refresh fe " + entry.getKey() + " failed: ";
+//                    if (status.getError_msgs() != null && status.getError_msgs().size() > 0) {
+//                        err += String.join(",", status.getError_msgs());
+//                    }
+//                    errMsg += err + ";";
+//                }
+//            } catch (Exception e) {
+//                errMsg += "refresh fe " + entry.getKey() + " failed: " + e.getMessage();
+//            }
+//        }
+//
+//        if (!errMsg.equals("")) {
+//            if (isSync) {
+//                ErrorReport.reportDdlException(ErrorCode.ERROR_REFRESH_EXTERNAL_TABLE_FAILED, errMsg);
+//            } else {
+//                LOG.error("Background refresh others fe failed, {}", errMsg);
+//            }
+//        }
+//    }
 
-            resultMap.put(fe.getHost(), refreshOtherFesTable(
-                    new TNetworkAddress(fe.getHost(), fe.getRpcPort()), tableName, partitions));
-        }
+//    public Future<TStatus> refreshOtherFesTable(TNetworkAddress thriftAddress, TableName tableName,
+//                                                List<String> partitions) {
+//        int timeout;
+//        if (ConnectContext.get() == null || ConnectContext.get().getSessionVariable() == null) {
+//            timeout = Config.thrift_rpc_timeout_ms * 10;
+//        } else {
+//            timeout = ConnectContext.get().getSessionVariable().getQueryTimeoutS() * 1000 + Config.thrift_rpc_timeout_ms;
+//        }
+//
+//        FutureTask<TStatus> task = new FutureTask<TStatus>(() -> {
+//            TRefreshTableRequest request = new TRefreshTableRequest();
+//            request.setCatalog_name(tableName.getCatalog());
+//            request.setDb_name(tableName.getDb());
+//            request.setTable_name(tableName.getTbl());
+//            request.setPartitions(partitions);
+//            try {
+//                TRefreshTableResponse response = FrontendServiceProxy.call(thriftAddress,
+//                        timeout,
+//                        Config.thrift_rpc_retry_times,
+//                        client -> client.refreshTable(request));
+//                return response.getStatus();
+//            } catch (Exception e) {
+//                LOG.warn("call fe {} refreshTable rpc method failed", thriftAddress, e);
+//                TStatus status = new TStatus(TStatusCode.INTERNAL_ERROR);
+//                status.setError_msgs(Lists.newArrayList(e.getMessage()));
+//                return status;
+//            }
+//        });
+//
+//        new Thread(task).start();
+//
+//        return task;
+//    }
 
-        String errMsg = "";
-        for (Map.Entry<String, Future<TStatus>> entry : resultMap.entrySet()) {
-            try {
-                TStatus status = entry.getValue().get();
-                if (status.getStatus_code() != TStatusCode.OK) {
-                    String err = "refresh fe " + entry.getKey() + " failed: ";
-                    if (status.getError_msgs() != null && status.getError_msgs().size() > 0) {
-                        err += String.join(",", status.getError_msgs());
-                    }
-                    errMsg += err + ";";
-                }
-            } catch (Exception e) {
-                errMsg += "refresh fe " + entry.getKey() + " failed: " + e.getMessage();
-            }
-        }
-
-        if (!errMsg.equals("")) {
-            if (isSync) {
-                ErrorReport.reportDdlException(ErrorCode.ERROR_REFRESH_EXTERNAL_TABLE_FAILED, errMsg);
-            } else {
-                LOG.error("Background refresh others fe failed, {}", errMsg);
-            }
-        }
-    }
-
-    public Future<TStatus> refreshOtherFesTable(TNetworkAddress thriftAddress, TableName tableName,
-                                                List<String> partitions) {
-        int timeout;
-        if (ConnectContext.get() == null || ConnectContext.get().getSessionVariable() == null) {
-            timeout = Config.thrift_rpc_timeout_ms * 10;
-        } else {
-            timeout = ConnectContext.get().getSessionVariable().getQueryTimeoutS() * 1000 + Config.thrift_rpc_timeout_ms;
-        }
-
-        FutureTask<TStatus> task = new FutureTask<TStatus>(() -> {
-            TRefreshTableRequest request = new TRefreshTableRequest();
-            request.setCatalog_name(tableName.getCatalog());
-            request.setDb_name(tableName.getDb());
-            request.setTable_name(tableName.getTbl());
-            request.setPartitions(partitions);
-            try {
-                TRefreshTableResponse response = FrontendServiceProxy.call(thriftAddress,
-                        timeout,
-                        Config.thrift_rpc_retry_times,
-                        client -> client.refreshTable(request));
-                return response.getStatus();
-            } catch (Exception e) {
-                LOG.warn("call fe {} refreshTable rpc method failed", thriftAddress, e);
-                TStatus status = new TStatus(TStatusCode.INTERNAL_ERROR);
-                status.setError_msgs(Lists.newArrayList(e.getMessage()));
-                return status;
-            }
-        });
-
-        new Thread(task).start();
-
-        return task;
-    }
-
-    public void refreshExternalTable(TableName tableName, List<String> partitions) {
-        String catalogName = tableName.getCatalog();
-        String dbName = tableName.getDb();
-        String tblName = tableName.getTbl();
-        Database db = metadataMgr.getDb(catalogName, tableName.getDb());
-        if (db == null) {
-            throw new StarRocksConnectorException("db: " + tableName.getDb() + " not exists");
-        }
-
-        Table table;
-        Locker locker = new Locker();
-        locker.lockDatabase(db, LockType.READ);
-        try {
-            table = metadataMgr.getTable(catalogName, dbName, tblName);
-            if (!(table instanceof HiveMetaStoreTable) && !(table instanceof HiveView)
-                && !(table instanceof IcebergTable) && !(table instanceof JDBCTable)) {
-                throw new StarRocksConnectorException(
-                        "table : " + tableName + " not exists, or is not hive/hudi/iceberg/odps/jdbc external table/view");
-            }
-        } finally {
-            locker.unLockDatabase(db, LockType.READ);
-        }
-
-        if (CatalogMgr.isInternalCatalog(catalogName)) {
-            Preconditions.checkState(table instanceof HiveMetaStoreTable);
-            catalogName = ((HiveMetaStoreTable) table).getCatalogName();
-        }
-
-        metadataMgr.refreshTable(catalogName, dbName, table, partitions, true);
-    }
+//    public void refreshExternalTable(TableName tableName, List<String> partitions) {
+//        String catalogName = tableName.getCatalog();
+//        String dbName = tableName.getDb();
+//        String tblName = tableName.getTbl();
+//        Database db = metadataMgr.getDb(catalogName, tableName.getDb());
+//        if (db == null) {
+//            throw new StarRocksConnectorException("db: " + tableName.getDb() + " not exists");
+//        }
+//
+//        Table table;
+//        Locker locker = new Locker();
+//        locker.lockDatabase(db, LockType.READ);
+//        try {
+//            table = metadataMgr.getTable(catalogName, dbName, tblName);
+//            if (!(table instanceof HiveMetaStoreTable) && !(table instanceof HiveView)
+//                && !(table instanceof IcebergTable) && !(table instanceof JDBCTable)) {
+//                throw new StarRocksConnectorException(
+//                        "table : " + tableName + " not exists, or is not hive/hudi/iceberg/odps/jdbc external table/view");
+//            }
+//        } finally {
+//            locker.unLockDatabase(db, LockType.READ);
+//        }
+//
+//        if (CatalogMgr.isInternalCatalog(catalogName)) {
+//            Preconditions.checkState(table instanceof HiveMetaStoreTable);
+//            catalogName = ((HiveMetaStoreTable) table).getCatalogName();
+//        }
+//
+//        metadataMgr.refreshTable(catalogName, dbName, table, partitions, true);
+//    }
 
     // TODO [meta-format-change] deprecated
     public void initDefaultCluster() {
-        localMetastore.initDefaultCluster();
+//        localMetastore.initDefaultCluster();
     }
 
     public void initDefaultWarehouse() {
-        warehouseMgr.initDefaultWarehouse();
+//        warehouseMgr.initDefaultWarehouse();
         isDefaultWarehouseCreated = true;
     }
 
-    public void replayUpdateClusterAndBackends(BackendIdsUpdateInfo info) {
-        localMetastore.replayUpdateClusterAndBackends(info);
-    }
+//    public void replayUpdateClusterAndBackends(BackendIdsUpdateInfo info) {
+//        localMetastore.replayUpdateClusterAndBackends(info);
+//    }
 
-    public String dumpImage() {
-        LOG.info("begin to dump meta data");
-        String dumpFilePath;
-        Map<Long, Database> lockedDbMap = Maps.newTreeMap();
-        tryLock(true);
-        Locker locker = new Locker();
-        try {
-            // sort all dbs
-            for (long dbId : localMetastore.getDbIds()) {
-                Database db = getDb(dbId);
-                Preconditions.checkNotNull(db);
-                lockedDbMap.put(dbId, db);
-            }
-
-            // lock all dbs
-            for (Database db : lockedDbMap.values()) {
-                locker.lockDatabase(db, LockType.READ);
-            }
-            LOG.info("acquired all the dbs' read lock.");
-
-            long journalId = getMaxJournalId();
-            File dumpFile = new File(Config.meta_dir, "image." + journalId);
-            dumpFilePath = dumpFile.getAbsolutePath();
-            try {
-                LOG.info("begin to dump {}", dumpFilePath);
-                saveImage(dumpFile, journalId);
-            } catch (IOException e) {
-                LOG.error("failed to dump image to {}", dumpFilePath, e);
-            }
-        } finally {
-            // unlock all
-            for (Database db : lockedDbMap.values()) {
-                locker.unLockDatabase(db, LockType.READ);
-            }
-            unlock();
-        }
-
-        LOG.info("finished dumping image to {}", dumpFilePath);
-        return dumpFilePath;
-    }
+//    public String dumpImage() {
+//        LOG.info("begin to dump meta data");
+//        String dumpFilePath;
+//        Map<Long, Database> lockedDbMap = Maps.newTreeMap();
+//        tryLock(true);
+//        Locker locker = new Locker();
+//        try {
+//            // sort all dbs
+//            for (long dbId : localMetastore.getDbIds()) {
+//                Database db = getDb(dbId);
+//                Preconditions.checkNotNull(db);
+//                lockedDbMap.put(dbId, db);
+//            }
+//
+//            // lock all dbs
+//            for (Database db : lockedDbMap.values()) {
+//                locker.lockDatabase(db, LockType.READ);
+//            }
+//            LOG.info("acquired all the dbs' read lock.");
+//
+//            long journalId = getMaxJournalId();
+//            File dumpFile = new File(Config.meta_dir, "image." + journalId);
+//            dumpFilePath = dumpFile.getAbsolutePath();
+//            try {
+//                LOG.info("begin to dump {}", dumpFilePath);
+//                saveImage(dumpFile, journalId);
+//            } catch (IOException e) {
+//                LOG.error("failed to dump image to {}", dumpFilePath, e);
+//            }
+//        } finally {
+//            // unlock all
+//            for (Database db : lockedDbMap.values()) {
+//                locker.unLockDatabase(db, LockType.READ);
+//            }
+//            unlock();
+//        }
+//
+//        LOG.info("finished dumping image to {}", dumpFilePath);
+//        return dumpFilePath;
+//    }
 
     public long getImageJournalId() {
         return imageJournalId;
@@ -2183,89 +2177,89 @@ public class GlobalStateMgr {
     }
 
     public void clearExpiredJobs() {
-        try {
-            loadMgr.removeOldLoadJob();
-        } catch (Throwable t) {
-            LOG.warn("load manager remove old load jobs failed", t);
-        }
-
-        try {
-            exportMgr.removeOldExportJobs();
-        } catch (Throwable t) {
-            LOG.warn("export manager remove old export jobs failed", t);
-        }
-        try {
-            deleteMgr.removeOldDeleteInfo();
-        } catch (Throwable t) {
-            LOG.warn("delete handler remove old delete info failed", t);
-        }
-        try {
-            globalTransactionMgr.removeExpiredTxns();
-        } catch (Throwable t) {
-            LOG.warn("transaction manager remove expired txns failed", t);
-        }
-        try {
-            routineLoadMgr.cleanOldRoutineLoadJobs();
-        } catch (Throwable t) {
-            LOG.warn("routine load manager clean old routine load jobs failed", t);
-        }
-        try {
-            backupHandler.removeOldJobs();
-        } catch (Throwable t) {
-            LOG.warn("backup handler clean old jobs failed", t);
-        }
-        try {
-            streamLoadMgr.cleanOldStreamLoadTasks(false);
-        } catch (Throwable t) {
-            LOG.warn("delete handler remove old delete info failed", t);
-        }
-        try {
-            taskManager.removeExpiredTasks();
-        } catch (Throwable t) {
-            LOG.warn("task manager clean expire tasks failed", t);
-        }
-        try {
-            taskManager.removeExpiredTaskRuns();
-        } catch (Throwable t) {
-            LOG.warn("task manager clean expire task runs history failed", t);
-        }
+//        try {
+//            loadMgr.removeOldLoadJob();
+//        } catch (Throwable t) {
+//            LOG.warn("load manager remove old load jobs failed", t);
+//        }
+//
+//        try {
+//            exportMgr.removeOldExportJobs();
+//        } catch (Throwable t) {
+//            LOG.warn("export manager remove old export jobs failed", t);
+//        }
+//        try {
+//            deleteMgr.removeOldDeleteInfo();
+//        } catch (Throwable t) {
+//            LOG.warn("delete handler remove old delete info failed", t);
+//        }
+//        try {
+//            globalTransactionMgr.removeExpiredTxns();
+//        } catch (Throwable t) {
+//            LOG.warn("transaction manager remove expired txns failed", t);
+//        }
+//        try {
+//            routineLoadMgr.cleanOldRoutineLoadJobs();
+//        } catch (Throwable t) {
+//            LOG.warn("routine load manager clean old routine load jobs failed", t);
+//        }
+//        try {
+//            backupHandler.removeOldJobs();
+//        } catch (Throwable t) {
+//            LOG.warn("backup handler clean old jobs failed", t);
+//        }
+//        try {
+//            streamLoadMgr.cleanOldStreamLoadTasks(false);
+//        } catch (Throwable t) {
+//            LOG.warn("delete handler remove old delete info failed", t);
+//        }
+//        try {
+//            taskManager.removeExpiredTasks();
+//        } catch (Throwable t) {
+//            LOG.warn("task manager clean expire tasks failed", t);
+//        }
+//        try {
+//            taskManager.removeExpiredTaskRuns();
+//        } catch (Throwable t) {
+//            LOG.warn("task manager clean expire task runs history failed", t);
+//        }
     }
 
     public void doTaskBackgroundJob() {
-        try {
-            taskManager.removeExpiredTasks();
-        } catch (Throwable t) {
-            LOG.warn("task manager clean expire tasks failed", t);
-        }
-        try {
-            taskManager.removeExpiredTaskRuns();
-        } catch (Throwable t) {
-            LOG.warn("task manager clean expire task runs history failed", t);
-        }
+//        try {
+//            taskManager.removeExpiredTasks();
+//        } catch (Throwable t) {
+//            LOG.warn("task manager clean expire tasks failed", t);
+//        }
+//        try {
+//            taskManager.removeExpiredTaskRuns();
+//        } catch (Throwable t) {
+//            LOG.warn("task manager clean expire task runs history failed", t);
+//        }
     }
 
-    public StateChangeExecution getStateChangeExecution() {
-        return execution;
-    }
+//    public StateChangeExecution getStateChangeExecution() {
+//        return execution;
+//    }
 
     public MetaContext getMetaContext() {
         return metaContext;
     }
 
     public void createBuiltinStorageVolume() {
-        try {
-            String builtinStorageVolumeId = storageVolumeMgr.createBuiltinStorageVolume();
-            if (!builtinStorageVolumeId.isEmpty()) {
-                authorizationMgr.grantStorageVolumeUsageToPublicRole(builtinStorageVolumeId);
-            }
-        } catch (InvalidConfException e) {
-            LOG.fatal(e.getMessage());
-            System.exit(-1);
-        } catch (DdlException | AlreadyExistsException e) {
-            LOG.warn("Failed to create or update builtin storage volume", e);
-        } catch (PrivilegeException e) {
-            LOG.warn("Failed to grant builtin storage volume usage to public role", e);
-        }
+//        try {
+//            String builtinStorageVolumeId = storageVolumeMgr.createBuiltinStorageVolume();
+//            if (!builtinStorageVolumeId.isEmpty()) {
+//                authorizationMgr.grantStorageVolumeUsageToPublicRole(builtinStorageVolumeId);
+//            }
+//        } catch (InvalidConfException e) {
+//            LOG.fatal(e.getMessage());
+//            System.exit(-1);
+//        } catch (DdlException | AlreadyExistsException e) {
+//            LOG.warn("Failed to create or update builtin storage volume", e);
+//        } catch (PrivilegeException e) {
+//            LOG.warn("Failed to grant builtin storage volume usage to public role", e);
+//        }
     }
 
     public SlotManager getSlotManager() {
@@ -2280,9 +2274,9 @@ public class GlobalStateMgr {
         return resourceUsageMonitor;
     }
 
-    public DictionaryMgr getDictionaryMgr() {
-        return dictionaryMgr;
-    }
+//    public DictionaryMgr getDictionaryMgr() {
+//        return dictionaryMgr;
+//    }
 
     public boolean isInTransferringToLeader() {
         return isInTransferringToLeader;

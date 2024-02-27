@@ -162,320 +162,320 @@ public final class MetricRepo {
             ThreadPoolManager.newDaemonScheduledThreadPool(1, "Metric-Timer-Pool", true);
     private static final MetricCalculator METRIC_CALCULATOR = new MetricCalculator();
 
-    public static synchronized void init() {
-        if (hasInit) {
-            return;
-        }
-
-        GAUGE_ROUTINE_LOAD_LAGS = new ArrayList<>();
-
-        // 1. gauge
-        // load jobs
-        LoadMgr loadManger = GlobalStateMgr.getCurrentState().getLoadMgr();
-        for (EtlJobType jobType : EtlJobType.values()) {
-            if (jobType == EtlJobType.MINI || jobType == EtlJobType.UNKNOWN) {
-                continue;
-            }
-
-            for (JobState state : JobState.values()) {
-                GaugeMetric<Long> gauge = new GaugeMetric<Long>("job",
-                        MetricUnit.NOUNIT, "job statistics") {
-                    @Override
-                    public Long getValue() {
-                        if (!GlobalStateMgr.getCurrentState().isLeader()) {
-                            return 0L;
-                        }
-                        return loadManger.getLoadJobNum(state, jobType);
-                    }
-                };
-                gauge.addLabel(new MetricLabel("job", "load"))
-                        .addLabel(new MetricLabel("type", jobType.name()))
-                        .addLabel(new MetricLabel("state", state.name()));
-                STARROCKS_METRIC_REGISTER.addMetric(gauge);
-            }
-        }
-
-        // running alter job
-        AlterJobMgr alter = GlobalStateMgr.getCurrentState().getAlterJobMgr();
-        for (AlterJobV2.JobType jobType : AlterJobV2.JobType.values()) {
-            if (jobType != AlterJobV2.JobType.SCHEMA_CHANGE && jobType != AlterJobV2.JobType.ROLLUP) {
-                continue;
-            }
-
-            GaugeMetric<Long> gauge = new GaugeMetric<Long>("job",
-                    MetricUnit.NOUNIT, "job statistics") {
-                @Override
-                public Long getValue() {
-                    if (!GlobalStateMgr.getCurrentState().isLeader()) {
-                        return 0L;
-                    }
-                    if (jobType == AlterJobV2.JobType.SCHEMA_CHANGE) {
-                        return alter.getSchemaChangeHandler()
-                                .getAlterJobV2Num(AlterJobV2.JobState.RUNNING);
-                    } else {
-                        return alter.getMaterializedViewHandler()
-                                .getAlterJobV2Num(AlterJobV2.JobState.RUNNING);
-                    }
-                }
-            };
-            gauge.addLabel(new MetricLabel("job", "alter"))
-                    .addLabel(new MetricLabel("type", jobType.name()))
-                    .addLabel(new MetricLabel("state", "running"));
-            STARROCKS_METRIC_REGISTER.addMetric(gauge);
-        }
-
-        // capacity
-        generateBackendsTabletMetrics();
-
-        // connections
-        GaugeMetric<Integer> connections = new GaugeMetric<Integer>(
-                "connection_total", MetricUnit.CONNECTIONS, "total connections") {
-            @Override
-            public Integer getValue() {
-                return ExecuteEnv.getInstance().getScheduler().getConnectionNum();
-            }
-        };
-        STARROCKS_METRIC_REGISTER.addMetric(connections);
-
-        // journal id
-        GaugeMetric<Long> maxJournalId = (GaugeMetric<Long>) new GaugeMetric<Long>(
-                "max_journal_id", MetricUnit.NOUNIT, "max journal id of this frontends") {
-            @Override
-            public Long getValue() {
-                return GlobalStateMgr.getCurrentState().getMaxJournalId();
-            }
-        };
-        STARROCKS_METRIC_REGISTER.addMetric(maxJournalId);
-
-        // meta log total count
-        GaugeMetric<Long> metaLogCount = new GaugeMetric<Long>(
-                "meta_log_count", MetricUnit.NOUNIT, "meta log total count") {
-            @Override
-            public Long getValue() {
-                return GlobalStateMgr.getCurrentState().getMaxJournalId() -
-                        GlobalStateMgr.getCurrentState().getImageJournalId();
-            }
-        };
-        STARROCKS_METRIC_REGISTER.addMetric(metaLogCount);
-
-        // scheduled tablet num
-        GaugeMetric<Long> scheduledTabletNum = (GaugeMetric<Long>) new GaugeMetric<Long>(
-                "scheduled_tablet_num", MetricUnit.NOUNIT, "number of tablets being scheduled") {
-            @Override
-            public Long getValue() {
-                if (!GlobalStateMgr.getCurrentState().isLeader()) {
-                    return 0L;
-                }
-                return (long) GlobalStateMgr.getCurrentState().getTabletScheduler().getTotalNum();
-            }
-        };
-        STARROCKS_METRIC_REGISTER.addMetric(scheduledTabletNum);
-
-        // routine load jobs
-        RoutineLoadMgr routineLoadManger = GlobalStateMgr.getCurrentState().getRoutineLoadMgr();
-        for (RoutineLoadJob.JobState state : RoutineLoadJob.JobState.values()) {
-            GaugeMetric<Long> gauge = new GaugeMetric<Long>("routine_load_jobs",
-                    MetricUnit.NOUNIT, "routine load jobs") {
-                @Override
-                public Long getValue() {
-                    if (null == routineLoadManger) {
-                        return 0L;
-                    }
-                    return (long) routineLoadManger.getRoutineLoadJobByState(Sets.newHashSet(state)).size();
-                }
-            };
-            gauge.addLabel(new MetricLabel("state", state.name()));
-            STARROCKS_METRIC_REGISTER.addMetric(gauge);
-        }
-
-        // qps, rps, error rate and query latency
-        // these metrics should be set an init value, in case that metric calculator is not running
-        GAUGE_QUERY_PER_SECOND = new GaugeMetricImpl<>("qps", MetricUnit.NOUNIT, "query per second");
-        GAUGE_QUERY_PER_SECOND.setValue(0.0);
-        STARROCKS_METRIC_REGISTER.addMetric(GAUGE_QUERY_PER_SECOND);
-
-        GAUGE_REQUEST_PER_SECOND = new GaugeMetricImpl<>("rps", MetricUnit.NOUNIT, "request per second");
-        GAUGE_REQUEST_PER_SECOND.setValue(0.0);
-        STARROCKS_METRIC_REGISTER.addMetric(GAUGE_REQUEST_PER_SECOND);
-
-        GAUGE_QUERY_ERR_RATE = new GaugeMetricImpl<>("query_err_rate", MetricUnit.NOUNIT, "query error rate");
-        GAUGE_QUERY_ERR_RATE.setValue(0.0);
-        STARROCKS_METRIC_REGISTER.addMetric(GAUGE_QUERY_ERR_RATE);
-
-        GAUGE_MAX_TABLET_COMPACTION_SCORE = new GaugeMetricImpl<>("max_tablet_compaction_score",
-                MetricUnit.NOUNIT, "max tablet compaction score of all backends");
-        GAUGE_MAX_TABLET_COMPACTION_SCORE.setValue(0L);
-        STARROCKS_METRIC_REGISTER.addMetric(GAUGE_MAX_TABLET_COMPACTION_SCORE);
-
-        GAUGE_STACKED_JOURNAL_NUM = new GaugeMetricImpl<>(
-                "editlog_stacked_num", MetricUnit.OPERATIONS, "counter of edit log that are stacked");
-        GAUGE_STACKED_JOURNAL_NUM.setValue(0L);
-        STARROCKS_METRIC_REGISTER.addMetric(GAUGE_STACKED_JOURNAL_NUM);
-
-        GAUGE_QUERY_LATENCY_MEAN =
-                new GaugeMetricImpl<>("query_latency", MetricUnit.MILLISECONDS, "mean of query latency");
-        GAUGE_QUERY_LATENCY_MEAN.addLabel(new MetricLabel("type", "mean"));
-        GAUGE_QUERY_LATENCY_MEAN.setValue(0.0);
-        STARROCKS_METRIC_REGISTER.addMetric(GAUGE_QUERY_LATENCY_MEAN);
-
-        GAUGE_QUERY_LATENCY_MEDIAN =
-                new GaugeMetricImpl<>("query_latency", MetricUnit.MILLISECONDS, "median of query latency");
-        GAUGE_QUERY_LATENCY_MEDIAN.addLabel(new MetricLabel("type", "50_quantile"));
-        GAUGE_QUERY_LATENCY_MEDIAN.setValue(0.0);
-        STARROCKS_METRIC_REGISTER.addMetric(GAUGE_QUERY_LATENCY_MEDIAN);
-
-        GAUGE_QUERY_LATENCY_P75 =
-                new GaugeMetricImpl<>("query_latency", MetricUnit.MILLISECONDS, "p75 of query latency");
-        GAUGE_QUERY_LATENCY_P75.addLabel(new MetricLabel("type", "75_quantile"));
-        GAUGE_QUERY_LATENCY_P75.setValue(0.0);
-        STARROCKS_METRIC_REGISTER.addMetric(GAUGE_QUERY_LATENCY_P75);
-
-        GAUGE_QUERY_LATENCY_P90 =
-                new GaugeMetricImpl<>("query_latency", MetricUnit.MILLISECONDS, "p90 of query latency");
-        GAUGE_QUERY_LATENCY_P90.addLabel(new MetricLabel("type", "90_quantile"));
-        GAUGE_QUERY_LATENCY_P90.setValue(0.0);
-        STARROCKS_METRIC_REGISTER.addMetric(GAUGE_QUERY_LATENCY_P90);
-
-        GAUGE_QUERY_LATENCY_P95 =
-                new GaugeMetricImpl<>("query_latency", MetricUnit.MILLISECONDS, "p95 of query latency");
-        GAUGE_QUERY_LATENCY_P95.addLabel(new MetricLabel("type", "95_quantile"));
-        GAUGE_QUERY_LATENCY_P95.setValue(0.0);
-        STARROCKS_METRIC_REGISTER.addMetric(GAUGE_QUERY_LATENCY_P95);
-
-        GAUGE_QUERY_LATENCY_P99 =
-                new GaugeMetricImpl<>("query_latency", MetricUnit.MILLISECONDS, "p99 of query latency");
-        GAUGE_QUERY_LATENCY_P99.addLabel(new MetricLabel("type", "99_quantile"));
-        GAUGE_QUERY_LATENCY_P99.setValue(0.0);
-        STARROCKS_METRIC_REGISTER.addMetric(GAUGE_QUERY_LATENCY_P99);
-
-        GAUGE_QUERY_LATENCY_P999 =
-                new GaugeMetricImpl<>("query_latency", MetricUnit.MILLISECONDS, "p999 of query latency");
-        GAUGE_QUERY_LATENCY_P999.addLabel(new MetricLabel("type", "999_quantile"));
-        GAUGE_QUERY_LATENCY_P999.setValue(0.0);
-        STARROCKS_METRIC_REGISTER.addMetric(GAUGE_QUERY_LATENCY_P999);
-
-        GAUGE_SAFE_MODE = new GaugeMetricImpl<>("safe_mode", MetricUnit.NOUNIT, "safe mode flag");
-        GAUGE_SAFE_MODE.addLabel(new MetricLabel("type", "safe_mode"));
-        GAUGE_SAFE_MODE.setValue(0);
-        STARROCKS_METRIC_REGISTER.addMetric(GAUGE_SAFE_MODE);
-
-        // 2. counter
-        COUNTER_REQUEST_ALL = new LongCounterMetric("request_total", MetricUnit.REQUESTS, "total request");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_REQUEST_ALL);
-        COUNTER_QUERY_ALL = new LongCounterMetric("query_total", MetricUnit.REQUESTS, "total query");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_QUERY_ALL);
-        COUNTER_QUERY_ERR = new LongCounterMetric("query_err", MetricUnit.REQUESTS, "total error query");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_QUERY_ERR);
-        COUNTER_QUERY_TIMEOUT = new LongCounterMetric("query_timeout", MetricUnit.REQUESTS, "total timeout query");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_QUERY_TIMEOUT);
-        COUNTER_QUERY_SUCCESS = new LongCounterMetric("query_success", MetricUnit.REQUESTS, "total success query");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_QUERY_SUCCESS);
-        COUNTER_SLOW_QUERY = new LongCounterMetric("slow_query", MetricUnit.REQUESTS, "total slow query");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_SLOW_QUERY);
-        COUNTER_QUERY_QUEUE_PENDING = new LongCounterMetric("query_queue_pending", MetricUnit.REQUESTS,
-                "total pending query");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_QUERY_QUEUE_PENDING);
-        COUNTER_QUERY_QUEUE_TOTAL = new LongCounterMetric("query_queue_total", MetricUnit.REQUESTS,
-                "total history queued query");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_QUERY_QUEUE_TOTAL);
-        COUNTER_QUERY_QUEUE_TIMEOUT = new LongCounterMetric("query_queue_timeout", MetricUnit.REQUESTS,
-                "total history query for timeout in queue");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_QUERY_QUEUE_TIMEOUT);
-        COUNTER_LOAD_ADD = new LongCounterMetric("load_add", MetricUnit.REQUESTS, "total load submit");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_LOAD_ADD);
-        COUNTER_ROUTINE_LOAD_PAUSED =
-                new LongCounterMetric("routine_load_paused", MetricUnit.REQUESTS, "counter of routine load paused");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_ROUTINE_LOAD_PAUSED);
-        COUNTER_LOAD_FINISHED = new LongCounterMetric("load_finished", MetricUnit.REQUESTS, "total load finished");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_LOAD_FINISHED);
-        COUNTER_EDIT_LOG_WRITE =
-                new LongCounterMetric("edit_log_write", MetricUnit.OPERATIONS, "counter of edit log write into bdbje");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_EDIT_LOG_WRITE);
-        COUNTER_EDIT_LOG_READ =
-                new LongCounterMetric("edit_log_read", MetricUnit.OPERATIONS, "counter of edit log read from bdbje");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_EDIT_LOG_READ);
-        COUNTER_EDIT_LOG_SIZE_BYTES =
-                new LongCounterMetric("edit_log_size_bytes", MetricUnit.BYTES, "size of edit log");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_EDIT_LOG_SIZE_BYTES);
-        COUNTER_IMAGE_WRITE = new LongCounterMetric("image_write", MetricUnit.OPERATIONS, "counter of image generated");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_IMAGE_WRITE);
-        COUNTER_IMAGE_PUSH = new LongCounterMetric("image_push", MetricUnit.OPERATIONS,
-                "counter of image succeeded in pushing to other frontends");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_IMAGE_PUSH);
-
-        COUNTER_SHORTCIRCUIT_QUERY = new LongCounterMetric("shortcircuit_query", MetricUnit.REQUESTS, "total shortcircuit query");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_SHORTCIRCUIT_QUERY);
-        COUNTER_SHORTCIRCUIT_RPC = new LongCounterMetric("shortcircuit_rpc", MetricUnit.REQUESTS, "total shortcircuit rpc");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_SHORTCIRCUIT_RPC);
-
-        COUNTER_TXN_REJECT =
-                new LongCounterMetric("txn_reject", MetricUnit.REQUESTS, "counter of rejected transactions");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_TXN_REJECT);
-        COUNTER_TXN_BEGIN = new LongCounterMetric("txn_begin", MetricUnit.REQUESTS, "counter of beginning transactions");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_TXN_BEGIN);
-        COUNTER_TXN_SUCCESS =
-                new LongCounterMetric("txn_success", MetricUnit.REQUESTS, "counter of success transactions");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_TXN_SUCCESS);
-        COUNTER_TXN_FAILED = new LongCounterMetric("txn_failed", MetricUnit.REQUESTS, "counter of failed transactions");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_TXN_FAILED);
-
-        COUNTER_ROUTINE_LOAD_ROWS =
-                new LongCounterMetric("routine_load_rows", MetricUnit.ROWS, "total rows of routine load");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_ROUTINE_LOAD_ROWS);
-        COUNTER_ROUTINE_LOAD_RECEIVED_BYTES = new LongCounterMetric("routine_load_receive_bytes", MetricUnit.BYTES,
-                "total received bytes of routine load");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_ROUTINE_LOAD_RECEIVED_BYTES);
-        COUNTER_ROUTINE_LOAD_ERROR_ROWS = new LongCounterMetric("routine_load_error_rows", MetricUnit.ROWS,
-                "total error rows of routine load");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_ROUTINE_LOAD_ERROR_ROWS);
-
-        COUNTER_UNFINISHED_BACKUP_JOB = new LongCounterMetric("unfinished_backup_job", MetricUnit.REQUESTS,
-                "current unfinished backup job");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_UNFINISHED_BACKUP_JOB);
-        COUNTER_UNFINISHED_RESTORE_JOB = new LongCounterMetric("unfinished_restore_job", MetricUnit.REQUESTS,
-                "current unfinished restore job");
-        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_UNFINISHED_RESTORE_JOB);
-        List<Database> dbs = Lists.newArrayList();
-        if (GlobalStateMgr.getCurrentState().getLocalMetastore().getIdToDb() != null) {
-            for (Map.Entry<Long, Database> entry : GlobalStateMgr.getCurrentState().getLocalMetastore().getIdToDb().entrySet()) {
-                dbs.add(entry.getValue());
-            }
-
-            for (Database db : dbs) {
-                AbstractJob jobI = GlobalStateMgr.getCurrentState().getBackupHandler().getJob(db.getId());
-                if (jobI instanceof BackupJob && !((BackupJob) jobI).isDone()) {
-                    COUNTER_UNFINISHED_BACKUP_JOB.increase(1L);
-                } else if (jobI instanceof RestoreJob && !((RestoreJob) jobI).isDone()) {
-                    COUNTER_UNFINISHED_RESTORE_JOB.increase(1L);
-                }
-
-            }
-        }
-
-        // 3. histogram
-        HISTO_QUERY_LATENCY = METRIC_REGISTER.histogram(MetricRegistry.name("query", "latency", "ms"));
-        HISTO_EDIT_LOG_WRITE_LATENCY =
-                METRIC_REGISTER.histogram(MetricRegistry.name("editlog", "write", "latency", "ms"));
-        HISTO_JOURNAL_WRITE_LATENCY =
-                METRIC_REGISTER.histogram(MetricRegistry.name("journal", "write", "latency", "ms"));
-        HISTO_JOURNAL_WRITE_BATCH =
-                METRIC_REGISTER.histogram(MetricRegistry.name("journal", "write", "batch"));
-        HISTO_JOURNAL_WRITE_BYTES =
-                METRIC_REGISTER.histogram(MetricRegistry.name("journal", "write", "bytes"));
-        HISTO_SHORTCIRCUIT_RPC_LATENCY = METRIC_REGISTER.histogram(MetricRegistry.name("shortcircuit", "latency", "ms"));
-
-        // init system metrics
-        initSystemMetrics();
-
-        initMemoryMetrics();
-
-        updateMetrics();
-        hasInit = true;
-
-        if (Config.enable_metric_calculator) {
-            METRIC_TIMER.scheduleAtFixedRate(METRIC_CALCULATOR, 0, 15 * 1000L, TimeUnit.MILLISECONDS);
-        }
-    }
+//    public static synchronized void init() {
+//        if (hasInit) {
+//            return;
+//        }
+//
+//        GAUGE_ROUTINE_LOAD_LAGS = new ArrayList<>();
+//
+//        // 1. gauge
+//        // load jobs
+//        LoadMgr loadManger = GlobalStateMgr.getCurrentState().getLoadMgr();
+//        for (EtlJobType jobType : EtlJobType.values()) {
+//            if (jobType == EtlJobType.MINI || jobType == EtlJobType.UNKNOWN) {
+//                continue;
+//            }
+//
+//            for (JobState state : JobState.values()) {
+//                GaugeMetric<Long> gauge = new GaugeMetric<Long>("job",
+//                        MetricUnit.NOUNIT, "job statistics") {
+//                    @Override
+//                    public Long getValue() {
+//                        if (!GlobalStateMgr.getCurrentState().isLeader()) {
+//                            return 0L;
+//                        }
+//                        return loadManger.getLoadJobNum(state, jobType);
+//                    }
+//                };
+//                gauge.addLabel(new MetricLabel("job", "load"))
+//                        .addLabel(new MetricLabel("type", jobType.name()))
+//                        .addLabel(new MetricLabel("state", state.name()));
+//                STARROCKS_METRIC_REGISTER.addMetric(gauge);
+//            }
+//        }
+//
+//        // running alter job
+//        AlterJobMgr alter = GlobalStateMgr.getCurrentState().getAlterJobMgr();
+//        for (AlterJobV2.JobType jobType : AlterJobV2.JobType.values()) {
+//            if (jobType != AlterJobV2.JobType.SCHEMA_CHANGE && jobType != AlterJobV2.JobType.ROLLUP) {
+//                continue;
+//            }
+//
+//            GaugeMetric<Long> gauge = new GaugeMetric<Long>("job",
+//                    MetricUnit.NOUNIT, "job statistics") {
+//                @Override
+//                public Long getValue() {
+//                    if (!GlobalStateMgr.getCurrentState().isLeader()) {
+//                        return 0L;
+//                    }
+//                    if (jobType == AlterJobV2.JobType.SCHEMA_CHANGE) {
+//                        return alter.getSchemaChangeHandler()
+//                                .getAlterJobV2Num(AlterJobV2.JobState.RUNNING);
+//                    } else {
+//                        return alter.getMaterializedViewHandler()
+//                                .getAlterJobV2Num(AlterJobV2.JobState.RUNNING);
+//                    }
+//                }
+//            };
+//            gauge.addLabel(new MetricLabel("job", "alter"))
+//                    .addLabel(new MetricLabel("type", jobType.name()))
+//                    .addLabel(new MetricLabel("state", "running"));
+//            STARROCKS_METRIC_REGISTER.addMetric(gauge);
+//        }
+//
+//        // capacity
+//        generateBackendsTabletMetrics();
+//
+//        // connections
+//        GaugeMetric<Integer> connections = new GaugeMetric<Integer>(
+//                "connection_total", MetricUnit.CONNECTIONS, "total connections") {
+//            @Override
+//            public Integer getValue() {
+//                return ExecuteEnv.getInstance().getScheduler().getConnectionNum();
+//            }
+//        };
+//        STARROCKS_METRIC_REGISTER.addMetric(connections);
+//
+//        // journal id
+//        GaugeMetric<Long> maxJournalId = (GaugeMetric<Long>) new GaugeMetric<Long>(
+//                "max_journal_id", MetricUnit.NOUNIT, "max journal id of this frontends") {
+//            @Override
+//            public Long getValue() {
+//                return GlobalStateMgr.getCurrentState().getMaxJournalId();
+//            }
+//        };
+//        STARROCKS_METRIC_REGISTER.addMetric(maxJournalId);
+//
+//        // meta log total count
+//        GaugeMetric<Long> metaLogCount = new GaugeMetric<Long>(
+//                "meta_log_count", MetricUnit.NOUNIT, "meta log total count") {
+//            @Override
+//            public Long getValue() {
+//                return GlobalStateMgr.getCurrentState().getMaxJournalId() -
+//                        GlobalStateMgr.getCurrentState().getImageJournalId();
+//            }
+//        };
+//        STARROCKS_METRIC_REGISTER.addMetric(metaLogCount);
+//
+//        // scheduled tablet num
+//        GaugeMetric<Long> scheduledTabletNum = (GaugeMetric<Long>) new GaugeMetric<Long>(
+//                "scheduled_tablet_num", MetricUnit.NOUNIT, "number of tablets being scheduled") {
+//            @Override
+//            public Long getValue() {
+//                if (!GlobalStateMgr.getCurrentState().isLeader()) {
+//                    return 0L;
+//                }
+//                return (long) GlobalStateMgr.getCurrentState().getTabletScheduler().getTotalNum();
+//            }
+//        };
+//        STARROCKS_METRIC_REGISTER.addMetric(scheduledTabletNum);
+//
+//        // routine load jobs
+//        RoutineLoadMgr routineLoadManger = GlobalStateMgr.getCurrentState().getRoutineLoadMgr();
+//        for (RoutineLoadJob.JobState state : RoutineLoadJob.JobState.values()) {
+//            GaugeMetric<Long> gauge = new GaugeMetric<Long>("routine_load_jobs",
+//                    MetricUnit.NOUNIT, "routine load jobs") {
+//                @Override
+//                public Long getValue() {
+//                    if (null == routineLoadManger) {
+//                        return 0L;
+//                    }
+//                    return (long) routineLoadManger.getRoutineLoadJobByState(Sets.newHashSet(state)).size();
+//                }
+//            };
+//            gauge.addLabel(new MetricLabel("state", state.name()));
+//            STARROCKS_METRIC_REGISTER.addMetric(gauge);
+//        }
+//
+//        // qps, rps, error rate and query latency
+//        // these metrics should be set an init value, in case that metric calculator is not running
+//        GAUGE_QUERY_PER_SECOND = new GaugeMetricImpl<>("qps", MetricUnit.NOUNIT, "query per second");
+//        GAUGE_QUERY_PER_SECOND.setValue(0.0);
+//        STARROCKS_METRIC_REGISTER.addMetric(GAUGE_QUERY_PER_SECOND);
+//
+//        GAUGE_REQUEST_PER_SECOND = new GaugeMetricImpl<>("rps", MetricUnit.NOUNIT, "request per second");
+//        GAUGE_REQUEST_PER_SECOND.setValue(0.0);
+//        STARROCKS_METRIC_REGISTER.addMetric(GAUGE_REQUEST_PER_SECOND);
+//
+//        GAUGE_QUERY_ERR_RATE = new GaugeMetricImpl<>("query_err_rate", MetricUnit.NOUNIT, "query error rate");
+//        GAUGE_QUERY_ERR_RATE.setValue(0.0);
+//        STARROCKS_METRIC_REGISTER.addMetric(GAUGE_QUERY_ERR_RATE);
+//
+//        GAUGE_MAX_TABLET_COMPACTION_SCORE = new GaugeMetricImpl<>("max_tablet_compaction_score",
+//                MetricUnit.NOUNIT, "max tablet compaction score of all backends");
+//        GAUGE_MAX_TABLET_COMPACTION_SCORE.setValue(0L);
+//        STARROCKS_METRIC_REGISTER.addMetric(GAUGE_MAX_TABLET_COMPACTION_SCORE);
+//
+//        GAUGE_STACKED_JOURNAL_NUM = new GaugeMetricImpl<>(
+//                "editlog_stacked_num", MetricUnit.OPERATIONS, "counter of edit log that are stacked");
+//        GAUGE_STACKED_JOURNAL_NUM.setValue(0L);
+//        STARROCKS_METRIC_REGISTER.addMetric(GAUGE_STACKED_JOURNAL_NUM);
+//
+//        GAUGE_QUERY_LATENCY_MEAN =
+//                new GaugeMetricImpl<>("query_latency", MetricUnit.MILLISECONDS, "mean of query latency");
+//        GAUGE_QUERY_LATENCY_MEAN.addLabel(new MetricLabel("type", "mean"));
+//        GAUGE_QUERY_LATENCY_MEAN.setValue(0.0);
+//        STARROCKS_METRIC_REGISTER.addMetric(GAUGE_QUERY_LATENCY_MEAN);
+//
+//        GAUGE_QUERY_LATENCY_MEDIAN =
+//                new GaugeMetricImpl<>("query_latency", MetricUnit.MILLISECONDS, "median of query latency");
+//        GAUGE_QUERY_LATENCY_MEDIAN.addLabel(new MetricLabel("type", "50_quantile"));
+//        GAUGE_QUERY_LATENCY_MEDIAN.setValue(0.0);
+//        STARROCKS_METRIC_REGISTER.addMetric(GAUGE_QUERY_LATENCY_MEDIAN);
+//
+//        GAUGE_QUERY_LATENCY_P75 =
+//                new GaugeMetricImpl<>("query_latency", MetricUnit.MILLISECONDS, "p75 of query latency");
+//        GAUGE_QUERY_LATENCY_P75.addLabel(new MetricLabel("type", "75_quantile"));
+//        GAUGE_QUERY_LATENCY_P75.setValue(0.0);
+//        STARROCKS_METRIC_REGISTER.addMetric(GAUGE_QUERY_LATENCY_P75);
+//
+//        GAUGE_QUERY_LATENCY_P90 =
+//                new GaugeMetricImpl<>("query_latency", MetricUnit.MILLISECONDS, "p90 of query latency");
+//        GAUGE_QUERY_LATENCY_P90.addLabel(new MetricLabel("type", "90_quantile"));
+//        GAUGE_QUERY_LATENCY_P90.setValue(0.0);
+//        STARROCKS_METRIC_REGISTER.addMetric(GAUGE_QUERY_LATENCY_P90);
+//
+//        GAUGE_QUERY_LATENCY_P95 =
+//                new GaugeMetricImpl<>("query_latency", MetricUnit.MILLISECONDS, "p95 of query latency");
+//        GAUGE_QUERY_LATENCY_P95.addLabel(new MetricLabel("type", "95_quantile"));
+//        GAUGE_QUERY_LATENCY_P95.setValue(0.0);
+//        STARROCKS_METRIC_REGISTER.addMetric(GAUGE_QUERY_LATENCY_P95);
+//
+//        GAUGE_QUERY_LATENCY_P99 =
+//                new GaugeMetricImpl<>("query_latency", MetricUnit.MILLISECONDS, "p99 of query latency");
+//        GAUGE_QUERY_LATENCY_P99.addLabel(new MetricLabel("type", "99_quantile"));
+//        GAUGE_QUERY_LATENCY_P99.setValue(0.0);
+//        STARROCKS_METRIC_REGISTER.addMetric(GAUGE_QUERY_LATENCY_P99);
+//
+//        GAUGE_QUERY_LATENCY_P999 =
+//                new GaugeMetricImpl<>("query_latency", MetricUnit.MILLISECONDS, "p999 of query latency");
+//        GAUGE_QUERY_LATENCY_P999.addLabel(new MetricLabel("type", "999_quantile"));
+//        GAUGE_QUERY_LATENCY_P999.setValue(0.0);
+//        STARROCKS_METRIC_REGISTER.addMetric(GAUGE_QUERY_LATENCY_P999);
+//
+//        GAUGE_SAFE_MODE = new GaugeMetricImpl<>("safe_mode", MetricUnit.NOUNIT, "safe mode flag");
+//        GAUGE_SAFE_MODE.addLabel(new MetricLabel("type", "safe_mode"));
+//        GAUGE_SAFE_MODE.setValue(0);
+//        STARROCKS_METRIC_REGISTER.addMetric(GAUGE_SAFE_MODE);
+//
+//        // 2. counter
+//        COUNTER_REQUEST_ALL = new LongCounterMetric("request_total", MetricUnit.REQUESTS, "total request");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_REQUEST_ALL);
+//        COUNTER_QUERY_ALL = new LongCounterMetric("query_total", MetricUnit.REQUESTS, "total query");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_QUERY_ALL);
+//        COUNTER_QUERY_ERR = new LongCounterMetric("query_err", MetricUnit.REQUESTS, "total error query");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_QUERY_ERR);
+//        COUNTER_QUERY_TIMEOUT = new LongCounterMetric("query_timeout", MetricUnit.REQUESTS, "total timeout query");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_QUERY_TIMEOUT);
+//        COUNTER_QUERY_SUCCESS = new LongCounterMetric("query_success", MetricUnit.REQUESTS, "total success query");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_QUERY_SUCCESS);
+//        COUNTER_SLOW_QUERY = new LongCounterMetric("slow_query", MetricUnit.REQUESTS, "total slow query");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_SLOW_QUERY);
+//        COUNTER_QUERY_QUEUE_PENDING = new LongCounterMetric("query_queue_pending", MetricUnit.REQUESTS,
+//                "total pending query");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_QUERY_QUEUE_PENDING);
+//        COUNTER_QUERY_QUEUE_TOTAL = new LongCounterMetric("query_queue_total", MetricUnit.REQUESTS,
+//                "total history queued query");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_QUERY_QUEUE_TOTAL);
+//        COUNTER_QUERY_QUEUE_TIMEOUT = new LongCounterMetric("query_queue_timeout", MetricUnit.REQUESTS,
+//                "total history query for timeout in queue");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_QUERY_QUEUE_TIMEOUT);
+//        COUNTER_LOAD_ADD = new LongCounterMetric("load_add", MetricUnit.REQUESTS, "total load submit");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_LOAD_ADD);
+//        COUNTER_ROUTINE_LOAD_PAUSED =
+//                new LongCounterMetric("routine_load_paused", MetricUnit.REQUESTS, "counter of routine load paused");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_ROUTINE_LOAD_PAUSED);
+//        COUNTER_LOAD_FINISHED = new LongCounterMetric("load_finished", MetricUnit.REQUESTS, "total load finished");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_LOAD_FINISHED);
+//        COUNTER_EDIT_LOG_WRITE =
+//                new LongCounterMetric("edit_log_write", MetricUnit.OPERATIONS, "counter of edit log write into bdbje");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_EDIT_LOG_WRITE);
+//        COUNTER_EDIT_LOG_READ =
+//                new LongCounterMetric("edit_log_read", MetricUnit.OPERATIONS, "counter of edit log read from bdbje");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_EDIT_LOG_READ);
+//        COUNTER_EDIT_LOG_SIZE_BYTES =
+//                new LongCounterMetric("edit_log_size_bytes", MetricUnit.BYTES, "size of edit log");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_EDIT_LOG_SIZE_BYTES);
+//        COUNTER_IMAGE_WRITE = new LongCounterMetric("image_write", MetricUnit.OPERATIONS, "counter of image generated");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_IMAGE_WRITE);
+//        COUNTER_IMAGE_PUSH = new LongCounterMetric("image_push", MetricUnit.OPERATIONS,
+//                "counter of image succeeded in pushing to other frontends");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_IMAGE_PUSH);
+//
+//        COUNTER_SHORTCIRCUIT_QUERY = new LongCounterMetric("shortcircuit_query", MetricUnit.REQUESTS, "total shortcircuit query");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_SHORTCIRCUIT_QUERY);
+//        COUNTER_SHORTCIRCUIT_RPC = new LongCounterMetric("shortcircuit_rpc", MetricUnit.REQUESTS, "total shortcircuit rpc");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_SHORTCIRCUIT_RPC);
+//
+//        COUNTER_TXN_REJECT =
+//                new LongCounterMetric("txn_reject", MetricUnit.REQUESTS, "counter of rejected transactions");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_TXN_REJECT);
+//        COUNTER_TXN_BEGIN = new LongCounterMetric("txn_begin", MetricUnit.REQUESTS, "counter of beginning transactions");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_TXN_BEGIN);
+//        COUNTER_TXN_SUCCESS =
+//                new LongCounterMetric("txn_success", MetricUnit.REQUESTS, "counter of success transactions");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_TXN_SUCCESS);
+//        COUNTER_TXN_FAILED = new LongCounterMetric("txn_failed", MetricUnit.REQUESTS, "counter of failed transactions");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_TXN_FAILED);
+//
+//        COUNTER_ROUTINE_LOAD_ROWS =
+//                new LongCounterMetric("routine_load_rows", MetricUnit.ROWS, "total rows of routine load");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_ROUTINE_LOAD_ROWS);
+//        COUNTER_ROUTINE_LOAD_RECEIVED_BYTES = new LongCounterMetric("routine_load_receive_bytes", MetricUnit.BYTES,
+//                "total received bytes of routine load");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_ROUTINE_LOAD_RECEIVED_BYTES);
+//        COUNTER_ROUTINE_LOAD_ERROR_ROWS = new LongCounterMetric("routine_load_error_rows", MetricUnit.ROWS,
+//                "total error rows of routine load");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_ROUTINE_LOAD_ERROR_ROWS);
+//
+//        COUNTER_UNFINISHED_BACKUP_JOB = new LongCounterMetric("unfinished_backup_job", MetricUnit.REQUESTS,
+//                "current unfinished backup job");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_UNFINISHED_BACKUP_JOB);
+//        COUNTER_UNFINISHED_RESTORE_JOB = new LongCounterMetric("unfinished_restore_job", MetricUnit.REQUESTS,
+//                "current unfinished restore job");
+//        STARROCKS_METRIC_REGISTER.addMetric(COUNTER_UNFINISHED_RESTORE_JOB);
+//        List<Database> dbs = Lists.newArrayList();
+//        if (GlobalStateMgr.getCurrentState().getLocalMetastore().getIdToDb() != null) {
+//            for (Map.Entry<Long, Database> entry : GlobalStateMgr.getCurrentState().getLocalMetastore().getIdToDb().entrySet()) {
+//                dbs.add(entry.getValue());
+//            }
+//
+//            for (Database db : dbs) {
+//                AbstractJob jobI = GlobalStateMgr.getCurrentState().getBackupHandler().getJob(db.getId());
+//                if (jobI instanceof BackupJob && !((BackupJob) jobI).isDone()) {
+//                    COUNTER_UNFINISHED_BACKUP_JOB.increase(1L);
+//                } else if (jobI instanceof RestoreJob && !((RestoreJob) jobI).isDone()) {
+//                    COUNTER_UNFINISHED_RESTORE_JOB.increase(1L);
+//                }
+//
+//            }
+//        }
+//
+//        // 3. histogram
+//        HISTO_QUERY_LATENCY = METRIC_REGISTER.histogram(MetricRegistry.name("query", "latency", "ms"));
+//        HISTO_EDIT_LOG_WRITE_LATENCY =
+//                METRIC_REGISTER.histogram(MetricRegistry.name("editlog", "write", "latency", "ms"));
+//        HISTO_JOURNAL_WRITE_LATENCY =
+//                METRIC_REGISTER.histogram(MetricRegistry.name("journal", "write", "latency", "ms"));
+//        HISTO_JOURNAL_WRITE_BATCH =
+//                METRIC_REGISTER.histogram(MetricRegistry.name("journal", "write", "batch"));
+//        HISTO_JOURNAL_WRITE_BYTES =
+//                METRIC_REGISTER.histogram(MetricRegistry.name("journal", "write", "bytes"));
+//        HISTO_SHORTCIRCUIT_RPC_LATENCY = METRIC_REGISTER.histogram(MetricRegistry.name("shortcircuit", "latency", "ms"));
+//
+//        // init system metrics
+//        initSystemMetrics();
+//
+//        initMemoryMetrics();
+//
+//        updateMetrics();
+//        hasInit = true;
+//
+//        if (Config.enable_metric_calculator) {
+//            METRIC_TIMER.scheduleAtFixedRate(METRIC_CALCULATOR, 0, 15 * 1000L, TimeUnit.MILLISECONDS);
+//        }
+//    }
 
     private static void initSystemMetrics() {
         // TCP retransSegs
@@ -874,59 +874,59 @@ public final class MetricRepo {
         GAUGE_ROUTINE_LOAD_LAGS = routineLoadLags;
     }
 
-    public static synchronized String getMetric(MetricVisitor visitor, MetricsAction.RequestParams requestParams) {
-        if (!hasInit) {
-            return "";
-        }
-
-        // update the metrics first
-        updateMetrics();
-
-        // jvm
-        JvmStatCollector jvmStatCollector = new JvmStatCollector();
-        JvmStats jvmStats = jvmStatCollector.stats();
-        visitor.visitJvm(jvmStats);
-
-        // starrocks metrics
-        for (Metric metric : STARROCKS_METRIC_REGISTER.getMetrics()) {
-            visitor.visit(metric);
-        }
-
-        // database metrics
-        collectDatabaseMetrics(visitor);
-
-        // table metrics
-        if (requestParams.isCollectTableMetrics()) {
-            collectTableMetrics(visitor, requestParams.isMinifyTableMetrics());
-        }
-
-        // materialized view metrics
-        if (requestParams.isCollectMVMetrics()) {
-            MaterializedViewMetricsRegistry.collectMaterializedViewMetrics(visitor, requestParams.isMinifyMVMetrics());
-        }
-
-        // histogram
-        SortedMap<String, Histogram> histograms = METRIC_REGISTER.getHistograms();
-        for (Map.Entry<String, Histogram> entry : histograms.entrySet()) {
-            visitor.visitHistogram(entry.getKey(), entry.getValue());
-        }
-        ResourceGroupMetricMgr.visitQueryLatency();
-
-        // collect routine load process metrics
-        if (Config.enable_routine_load_lag_metrics) {
-            collectRoutineLoadProcessMetrics(visitor);
-        }
-
-        // collect http metrics
-        HttpMetricRegistry.getInstance().visit(visitor);
-
-        // collect starmgr related metrics as well
-        StarMgrServer.getCurrentState().visitMetrics(visitor);
-
-        // node info
-        visitor.getNodeInfo();
-        return visitor.build();
-    }
+//    public static synchronized String getMetric(MetricVisitor visitor, MetricsAction.RequestParams requestParams) {
+//        if (!hasInit) {
+//            return "";
+//        }
+//
+//        // update the metrics first
+//        updateMetrics();
+//
+//        // jvm
+//        JvmStatCollector jvmStatCollector = new JvmStatCollector();
+//        JvmStats jvmStats = jvmStatCollector.stats();
+//        visitor.visitJvm(jvmStats);
+//
+//        // starrocks metrics
+//        for (Metric metric : STARROCKS_METRIC_REGISTER.getMetrics()) {
+//            visitor.visit(metric);
+//        }
+//
+//        // database metrics
+//        collectDatabaseMetrics(visitor);
+//
+//        // table metrics
+//        if (requestParams.isCollectTableMetrics()) {
+//            collectTableMetrics(visitor, requestParams.isMinifyTableMetrics());
+//        }
+//
+//        // materialized view metrics
+//        if (requestParams.isCollectMVMetrics()) {
+//            MaterializedViewMetricsRegistry.collectMaterializedViewMetrics(visitor, requestParams.isMinifyMVMetrics());
+//        }
+//
+//        // histogram
+//        SortedMap<String, Histogram> histograms = METRIC_REGISTER.getHistograms();
+//        for (Map.Entry<String, Histogram> entry : histograms.entrySet()) {
+//            visitor.visitHistogram(entry.getKey(), entry.getValue());
+//        }
+//        ResourceGroupMetricMgr.visitQueryLatency();
+//
+//        // collect routine load process metrics
+//        if (Config.enable_routine_load_lag_metrics) {
+//            collectRoutineLoadProcessMetrics(visitor);
+//        }
+//
+//        // collect http metrics
+//        HttpMetricRegistry.getInstance().visit(visitor);
+//
+//        // collect starmgr related metrics as well
+//        StarMgrServer.getCurrentState().visitMetrics(visitor);
+//
+//        // node info
+//        visitor.getNodeInfo();
+//        return visitor.build();
+//    }
 
     // update some metrics to make a ready to be visited
     private static void updateMetrics() {
@@ -934,69 +934,69 @@ public final class MetricRepo {
     }
 
     // collect table-level metrics
-    private static void collectTableMetrics(MetricVisitor visitor, boolean minifyTableMetrics) {
-        GlobalStateMgr globalStateMgr = GlobalStateMgr.getCurrentState();
-        List<String> dbNames = globalStateMgr.getLocalMetastore().listDbNames();
-        for (String dbName : dbNames) {
-            Database db = GlobalStateMgr.getCurrentState().getDb(dbName);
-            if (null == db) {
-                continue;
-            }
+//    private static void collectTableMetrics(MetricVisitor visitor, boolean minifyTableMetrics) {
+//        GlobalStateMgr globalStateMgr = GlobalStateMgr.getCurrentState();
+//        List<String> dbNames = globalStateMgr.getLocalMetastore().listDbNames();
+//        for (String dbName : dbNames) {
+//            Database db = GlobalStateMgr.getCurrentState().getDb(dbName);
+//            if (null == db) {
+//                continue;
+//            }
+//
+//            // NOTE: avoid holding database lock here, since we only read all tables, and immutable fields of table
+//            for (Table table : db.getTables()) {
+//                long tableId = table.getId();
+//                String tableName = table.getName();
+//                TableMetricsEntity entity = TableMetricsRegistry.getInstance().getMetricsEntity(tableId);
+//                for (Metric m : entity.getMetrics()) {
+//                    if (minifyTableMetrics && (null == m.getValue() ||
+//                            (MetricType.COUNTER == m.type && (Long) m.getValue() == 0L))) {
+//                        continue;
+//                    }
+//                    m.addLabel(new MetricLabel("db_name", dbName))
+//                            .addLabel(new MetricLabel("tbl_name", tableName))
+//                            .addLabel(new MetricLabel("tbl_id", String.valueOf(tableId)));
+//                    visitor.visit(m);
+//                }
+//            }
+//        }
+//    }
 
-            // NOTE: avoid holding database lock here, since we only read all tables, and immutable fields of table
-            for (Table table : db.getTables()) {
-                long tableId = table.getId();
-                String tableName = table.getName();
-                TableMetricsEntity entity = TableMetricsRegistry.getInstance().getMetricsEntity(tableId);
-                for (Metric m : entity.getMetrics()) {
-                    if (minifyTableMetrics && (null == m.getValue() ||
-                            (MetricType.COUNTER == m.type && (Long) m.getValue() == 0L))) {
-                        continue;
-                    }
-                    m.addLabel(new MetricLabel("db_name", dbName))
-                            .addLabel(new MetricLabel("tbl_name", tableName))
-                            .addLabel(new MetricLabel("tbl_id", String.valueOf(tableId)));
-                    visitor.visit(m);
-                }
-            }
-        }
-    }
+//    private static void collectDatabaseMetrics(MetricVisitor visitor) {
+//        GlobalStateMgr globalStateMgr = GlobalStateMgr.getCurrentState();
+//        List<String> dbNames = globalStateMgr.getLocalMetastore().listDbNames();
+//        GaugeMetricImpl<Integer> databaseNum = new GaugeMetricImpl<>(
+//                "database_num", MetricUnit.OPERATIONS, "count of database");
+//        int dbNum = 0;
+//        for (String dbName : dbNames) {
+//            Database db = GlobalStateMgr.getCurrentState().getDb(dbName);
+//            if (null == db) {
+//                continue;
+//            }
+//            dbNum++;
+//            GaugeMetricImpl<Integer> tableNum = new GaugeMetricImpl<>(
+//                    "table_num", MetricUnit.OPERATIONS, "count of table");
+//            tableNum.setValue(db.getTableNumber());
+//            tableNum.addLabel(new MetricLabel("db_name", dbName));
+//            visitor.visit(tableNum);
+//        }
+//        databaseNum.setValue(dbNum);
+//        visitor.visit(databaseNum);
+//    }
 
-    private static void collectDatabaseMetrics(MetricVisitor visitor) {
-        GlobalStateMgr globalStateMgr = GlobalStateMgr.getCurrentState();
-        List<String> dbNames = globalStateMgr.getLocalMetastore().listDbNames();
-        GaugeMetricImpl<Integer> databaseNum = new GaugeMetricImpl<>(
-                "database_num", MetricUnit.OPERATIONS, "count of database");
-        int dbNum = 0;
-        for (String dbName : dbNames) {
-            Database db = GlobalStateMgr.getCurrentState().getDb(dbName);
-            if (null == db) {
-                continue;
-            }
-            dbNum++;
-            GaugeMetricImpl<Integer> tableNum = new GaugeMetricImpl<>(
-                    "table_num", MetricUnit.OPERATIONS, "count of table");
-            tableNum.setValue(db.getTableNumber());
-            tableNum.addLabel(new MetricLabel("db_name", dbName));
-            visitor.visit(tableNum);
-        }
-        databaseNum.setValue(dbNum);
-        visitor.visit(databaseNum);
-    }
+//    private static void collectRoutineLoadProcessMetrics(MetricVisitor visitor) {
+//        for (GaugeMetricImpl<Long> metric : GAUGE_ROUTINE_LOAD_LAGS) {
+//            visitor.visit(metric);
+//        }
+//    }
 
-    private static void collectRoutineLoadProcessMetrics(MetricVisitor visitor) {
-        for (GaugeMetricImpl<Long> metric : GAUGE_ROUTINE_LOAD_LAGS) {
-            visitor.visit(metric);
-        }
-    }
-
-    public static synchronized List<Metric> getMetricsByName(String name) {
-        return STARROCKS_METRIC_REGISTER.getMetricsByName(name);
-    }
+//    public static synchronized List<Metric> getMetricsByName(String name) {
+//        return STARROCKS_METRIC_REGISTER.getMetricsByName(name);
+//    }
 
     public static void addMetric(Metric<?> metric) {
-        init();
-        STARROCKS_METRIC_REGISTER.addMetric(metric);
+//        init();
+//        STARROCKS_METRIC_REGISTER.addMetric(metric);
     }
 }
 

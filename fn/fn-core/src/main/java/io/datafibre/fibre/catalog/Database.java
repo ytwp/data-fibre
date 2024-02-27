@@ -288,70 +288,70 @@ public class Database extends MetaObject implements Writable {
         }
     }
 
-    public void dropTable(String tableName, boolean isSetIfExists, boolean isForce) throws DdlException {
-        Table table;
-        Runnable runnable;
-        Locker locker = new Locker();
-        locker.lockDatabase(this, LockType.WRITE);
-        try {
-            table = getTable(tableName);
-            if (table == null && isSetIfExists) {
-                return;
-            }
-            if (table == null) {
-                ErrorReport.reportDdlException(ErrorCode.ERR_BAD_TABLE_ERROR, tableName);
-                return;
-            }
-            if (!isForce &&
-                    GlobalStateMgr.getCurrentState().getGlobalTransactionMgr().existCommittedTxns(id, table.getId(), null)) {
-                throw new DdlException("There are still some transactions in the COMMITTED state waiting to be completed. " +
-                        "The table [" + table.getName() +
-                        "] cannot be dropped. If you want to forcibly drop(cannot be recovered)," +
-                        " please use \"DROP TABLE <table> FORCE\".");
-            }
-            runnable = unprotectDropTable(table.getId(), isForce, false);
-            DropInfo info = new DropInfo(id, table.getId(), -1L, isForce);
-            GlobalStateMgr.getCurrentState().getEditLog().logDropTable(info);
-        } finally {
-            locker.unLockDatabase(this, LockType.WRITE);
-        }
+//    public void dropTable(String tableName, boolean isSetIfExists, boolean isForce) throws DdlException {
+//        Table table;
+//        Runnable runnable;
+//        Locker locker = new Locker();
+//        locker.lockDatabase(this, LockType.WRITE);
+//        try {
+//            table = getTable(tableName);
+//            if (table == null && isSetIfExists) {
+//                return;
+//            }
+//            if (table == null) {
+//                ErrorReport.reportDdlException(ErrorCode.ERR_BAD_TABLE_ERROR, tableName);
+//                return;
+//            }
+//            if (!isForce &&
+//                    GlobalStateMgr.getCurrentState().getGlobalTransactionMgr().existCommittedTxns(id, table.getId(), null)) {
+//                throw new DdlException("There are still some transactions in the COMMITTED state waiting to be completed. " +
+//                        "The table [" + table.getName() +
+//                        "] cannot be dropped. If you want to forcibly drop(cannot be recovered)," +
+//                        " please use \"DROP TABLE <table> FORCE\".");
+//            }
+//            runnable = unprotectDropTable(table.getId(), isForce, false);
+//            DropInfo info = new DropInfo(id, table.getId(), -1L, isForce);
+//            GlobalStateMgr.getCurrentState().getEditLog().logDropTable(info);
+//        } finally {
+//            locker.unLockDatabase(this, LockType.WRITE);
+//        }
+//
+//        if (runnable != null) {
+//            runnable.run();
+//        }
+//        LOG.info("finished dropping table: {}, type:{} from db: {}, is force: {}", tableName, table.getType(), fullQualifiedName,
+//                isForce);
+//    }
 
-        if (runnable != null) {
-            runnable.run();
-        }
-        LOG.info("finished dropping table: {}, type:{} from db: {}, is force: {}", tableName, table.getType(), fullQualifiedName,
-                isForce);
-    }
-
-    public Runnable unprotectDropTable(long tableId, boolean isForceDrop, boolean isReplay) {
-        Runnable runnable;
-        Table table = getTable(tableId);
-        // delete from db meta
-        if (table == null) {
-            return null;
-        }
-
-        if (table instanceof OlapTable && table.hasAutoIncrementColumn()) {
-            if (!isReplay) {
-                ((OlapTable) table).sendDropAutoIncrementMapTask();
-            }
-        }
-
-        table.onDrop(this, isForceDrop, isReplay);
-
-        dropTable(table.getName());
-
-        if (!isForceDrop) {
-            Table oldTable = GlobalStateMgr.getCurrentState().getRecycleBin().recycleTable(id, table);
-            runnable = (oldTable != null) ? oldTable.delete(isReplay) : null;
-        } else {
-            GlobalStateMgr.getCurrentState().getLocalMetastore().removeAutoIncrementIdByTableId(tableId, isReplay);
-            runnable = table.delete(isReplay);
-        }
-
-        LOG.info("finished dropping table[{}] in db[{}], tableId: {}", table.getName(), getOriginName(), tableId);
-        return runnable;
-    }
+//    public Runnable unprotectDropTable(long tableId, boolean isForceDrop, boolean isReplay) {
+//        Runnable runnable;
+//        Table table = getTable(tableId);
+//        // delete from db meta
+//        if (table == null) {
+//            return null;
+//        }
+//
+//        if (table instanceof OlapTable && table.hasAutoIncrementColumn()) {
+//            if (!isReplay) {
+//                ((OlapTable) table).sendDropAutoIncrementMapTask();
+//            }
+//        }
+//
+//        table.onDrop(this, isForceDrop, isReplay);
+//
+//        dropTable(table.getName());
+//
+//        if (!isForceDrop) {
+//            Table oldTable = GlobalStateMgr.getCurrentState().getRecycleBin().recycleTable(id, table);
+//            runnable = (oldTable != null) ? oldTable.delete(isReplay) : null;
+//        } else {
+//            GlobalStateMgr.getCurrentState().getLocalMetastore().removeAutoIncrementIdByTableId(tableId, isReplay);
+//            runnable = table.delete(isReplay);
+//        }
+//
+//        LOG.info("finished dropping table[{}] in db[{}], tableId: {}", table.getName(), getOriginName(), tableId);
+//        return runnable;
+//    }
 
     public void dropTable(String tableName) {
         Table table = this.nameToTable.get(tableName);
