@@ -595,21 +595,21 @@ public class GlobalStateMgr {
 //        return resourceMgr;
 //    }
 
-    public GlobalFunctionMgr getGlobalFunctionMgr() {
-        return globalFunctionMgr;
-    }
+//    public GlobalFunctionMgr getGlobalFunctionMgr() {
+//        return globalFunctionMgr;
+//    }
 
-    public GlobalTransactionMgr getGlobalTransactionMgr() {
-        return globalTransactionMgr;
-    }
+//    public GlobalTransactionMgr getGlobalTransactionMgr() {
+//        return globalTransactionMgr;
+//    }
 
-    public PluginMgr getPluginMgr() {
-        return pluginMgr;
-    }
+//    public PluginMgr getPluginMgr() {
+//        return pluginMgr;
+//    }
 
-    public AnalyzeMgr getAnalyzeMgr() {
-        return analyzeMgr;
-    }
+//    public AnalyzeMgr getAnalyzeMgr() {
+//        return analyzeMgr;
+//    }
 
     public AuthenticationMgr getAuthenticationMgr() {
         return authenticationMgr;

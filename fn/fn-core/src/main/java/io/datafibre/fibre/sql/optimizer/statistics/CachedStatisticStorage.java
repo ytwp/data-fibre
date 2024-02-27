@@ -368,10 +368,10 @@ public class CachedStatisticStorage implements StatisticStorage {
 
         List<String> columnHasHistogram = new ArrayList<>();
         for (String columnName : columns) {
-            if (GlobalStateMgr.getCurrentState().getAnalyzeMgr().getHistogramStatsMetaMap()
-                    .get(new Pair<>(table.getId(), columnName)) != null) {
-                columnHasHistogram.add(columnName);
-            }
+//            if (GlobalStateMgr.getCurrentState().getAnalyzeMgr().getHistogramStatsMetaMap()
+//                    .get(new Pair<>(table.getId(), columnName)) != null) {
+//                columnHasHistogram.add(columnName);
+//            }
         }
 
         List<ColumnStatsCacheKey> cacheKeys = new ArrayList<>();

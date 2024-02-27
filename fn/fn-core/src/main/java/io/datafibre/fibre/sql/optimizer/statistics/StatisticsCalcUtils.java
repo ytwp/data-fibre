@@ -83,87 +83,87 @@ public class StatisticsCalcUtils {
 
     public static long getTableRowCount(Table table, Operator node, OptimizerContext optimizerContext) {
         if (table.isNativeTableOrMaterializedView()) {
-            OlapTable olapTable = (OlapTable) table;
-            Collection<Partition> selectedPartitions;
-            if (node.getOpType() == OperatorType.LOGICAL_BINLOG_SCAN ||
-                    node.getOpType() == OperatorType.PHYSICAL_STREAM_SCAN) {
-                return 1;
-            } else if (node.isLogical()) {
-                LogicalOlapScanOperator olapScanOperator = (LogicalOlapScanOperator) node;
-                if (olapScanOperator.getSelectedPartitionId() == null) {
-                    selectedPartitions = olapScanOperator.getTable().getPartitions();
-                } else {
-                    selectedPartitions = olapScanOperator.getSelectedPartitionId().stream().map(
-                            olapTable::getPartition).collect(Collectors.toList());
-                }
-            } else {
-                PhysicalOlapScanOperator olapScanOperator = (PhysicalOlapScanOperator) node;
-                if (olapScanOperator.getSelectedPartitionId() == null) {
-                    selectedPartitions = olapScanOperator.getTable().getPartitions();
-                } else {
-                    selectedPartitions = olapScanOperator.getSelectedPartitionId().stream().map(
-                            olapTable::getPartition).collect(Collectors.toList());
-                }
-            }
-            long rowCount = 0;
-
-            BasicStatsMeta basicStatsMeta =
-                    GlobalStateMgr.getCurrentState().getAnalyzeMgr().getBasicStatsMetaMap().get(table.getId());
-            StatsConstants.AnalyzeType analyzeType = basicStatsMeta == null ? null : basicStatsMeta.getType();
-            LocalDateTime lastWorkTimestamp = GlobalStateMgr.getCurrentState().getTabletStatMgr().getLastWorkTimestamp();
-            if (StatsConstants.AnalyzeType.FULL == analyzeType) {
-
-                // The basicStatsMeta.getUpdateRows() interface can get the number of
-                // loaded rows in the table since the last statistics update. But this number is at the table level.
-                // So here we can count the number of partitions that have changed since the last statistics update,
-                // and then evenly distribute the number of updated rows at the table level to the partition boundaries
-                // The purpose of this is to make the statistics of the number of rows more accurate.
-                // For example, a large amount of data LOAD may cause the number of rows to change greatly.
-                // This leads to very inaccurate row counts.
-                long deltaRows = deltaRows(table, basicStatsMeta.getUpdateRows());
-                for (Partition partition : selectedPartitions) {
-                    long partitionRowCount;
-                    TableStatistic tableStatistic = GlobalStateMgr.getCurrentState().getStatisticStorage()
-                            .getTableStatistic(table.getId(), partition.getId());
-                    LocalDateTime updateDatetime = StatisticUtils.getPartitionLastUpdateTime(partition);
-                    if (tableStatistic.equals(TableStatistic.unknown())) {
-                        partitionRowCount = partition.getRowCount();
-                        if (updateDatetime.isAfter(lastWorkTimestamp)) {
-                            partitionRowCount += deltaRows;
-                        }
-                    } else {
-                        partitionRowCount = tableStatistic.getRowCount();
-                        if (updateDatetime.isAfter(basicStatsMeta.getUpdateTime())) {
-                            partitionRowCount += deltaRows;
-                        }
-                    }
-                    updateQueryDumpInfo(optimizerContext, table, partition.getName(), partitionRowCount);
-                    rowCount += partitionRowCount;
-                }
-                return Math.max(rowCount, 1);
-            }
-
-            for (Partition partition : selectedPartitions) {
-                rowCount += partition.getRowCount();
-                updateQueryDumpInfo(optimizerContext, table, partition.getName(), partition.getRowCount());
-            }
-
-            // attempt use updateRows from basicStatsMeta to adjust estimated row counts
-            if (StatsConstants.AnalyzeType.SAMPLE == analyzeType
-                    && basicStatsMeta.getUpdateTime().isAfter(lastWorkTimestamp)) {
-                long statsRowCount = Math.max(basicStatsMeta.getUpdateRows() / table.getPartitions().size(), 1)
-                        * selectedPartitions.size();
-                if (statsRowCount > rowCount) {
-                    rowCount = statsRowCount;
-                    for (Partition partition : selectedPartitions) {
-                        updateQueryDumpInfo(optimizerContext, table, partition.getName(),
-                                rowCount / selectedPartitions.size());
-                    }
-                }
-            }
-            // Currently, after FE just start, the row count of table is always 0.
-            // Explicitly set table row count to 1 to make our cost estimate work.
-            return Math.max(rowCount, 1);
+//            OlapTable olapTable = (OlapTable) table;
+//            Collection<Partition> selectedPartitions;
+//            if (node.getOpType() == OperatorType.LOGICAL_BINLOG_SCAN ||
+//                    node.getOpType() == OperatorType.PHYSICAL_STREAM_SCAN) {
+//                return 1;
+//            } else if (node.isLogical()) {
+//                LogicalOlapScanOperator olapScanOperator = (LogicalOlapScanOperator) node;
+//                if (olapScanOperator.getSelectedPartitionId() == null) {
+//                    selectedPartitions = olapScanOperator.getTable().getPartitions();
+//                } else {
+//                    selectedPartitions = olapScanOperator.getSelectedPartitionId().stream().map(
+//                            olapTable::getPartition).collect(Collectors.toList());
+//                }
+//            } else {
+//                PhysicalOlapScanOperator olapScanOperator = (PhysicalOlapScanOperator) node;
+//                if (olapScanOperator.getSelectedPartitionId() == null) {
+//                    selectedPartitions = olapScanOperator.getTable().getPartitions();
+//                } else {
+//                    selectedPartitions = olapScanOperator.getSelectedPartitionId().stream().map(
+//                            olapTable::getPartition).collect(Collectors.toList());
+//                }
+//            }
+//            long rowCount = 0;
+//
+//            BasicStatsMeta basicStatsMeta =
+//                    GlobalStateMgr.getCurrentState().getAnalyzeMgr().getBasicStatsMetaMap().get(table.getId());
+//            StatsConstants.AnalyzeType analyzeType = basicStatsMeta == null ? null : basicStatsMeta.getType();
+//            LocalDateTime lastWorkTimestamp = GlobalStateMgr.getCurrentState().getTabletStatMgr().getLastWorkTimestamp();
+//            if (StatsConstants.AnalyzeType.FULL == analyzeType) {
+//
+//                // The basicStatsMeta.getUpdateRows() interface can get the number of
+//                // loaded rows in the table since the last statistics update. But this number is at the table level.
+//                // So here we can count the number of partitions that have changed since the last statistics update,
+//                // and then evenly distribute the number of updated rows at the table level to the partition boundaries
+//                // The purpose of this is to make the statistics of the number of rows more accurate.
+//                // For example, a large amount of data LOAD may cause the number of rows to change greatly.
+//                // This leads to very inaccurate row counts.
+//                long deltaRows = deltaRows(table, basicStatsMeta.getUpdateRows());
+//                for (Partition partition : selectedPartitions) {
+//                    long partitionRowCount;
+//                    TableStatistic tableStatistic = GlobalStateMgr.getCurrentState().getStatisticStorage()
+//                            .getTableStatistic(table.getId(), partition.getId());
+//                    LocalDateTime updateDatetime = StatisticUtils.getPartitionLastUpdateTime(partition);
+//                    if (tableStatistic.equals(TableStatistic.unknown())) {
+//                        partitionRowCount = partition.getRowCount();
+//                        if (updateDatetime.isAfter(lastWorkTimestamp)) {
+//                            partitionRowCount += deltaRows;
+//                        }
+//                    } else {
+//                        partitionRowCount = tableStatistic.getRowCount();
+//                        if (updateDatetime.isAfter(basicStatsMeta.getUpdateTime())) {
+//                            partitionRowCount += deltaRows;
+//                        }
+//                    }
+//                    updateQueryDumpInfo(optimizerContext, table, partition.getName(), partitionRowCount);
+//                    rowCount += partitionRowCount;
+//                }
+//                return Math.max(rowCount, 1);
+//            }
+//
+//            for (Partition partition : selectedPartitions) {
+//                rowCount += partition.getRowCount();
+//                updateQueryDumpInfo(optimizerContext, table, partition.getName(), partition.getRowCount());
+//            }
+//
+//            // attempt use updateRows from basicStatsMeta to adjust estimated row counts
+//            if (StatsConstants.AnalyzeType.SAMPLE == analyzeType
+//                    && basicStatsMeta.getUpdateTime().isAfter(lastWorkTimestamp)) {
+//                long statsRowCount = Math.max(basicStatsMeta.getUpdateRows() / table.getPartitions().size(), 1)
+//                        * selectedPartitions.size();
+//                if (statsRowCount > rowCount) {
+//                    rowCount = statsRowCount;
+//                    for (Partition partition : selectedPartitions) {
+//                        updateQueryDumpInfo(optimizerContext, table, partition.getName(),
+//                                rowCount / selectedPartitions.size());
+//                    }
+//                }
+//            }
+//            // Currently, after FE just start, the row count of table is always 0.
+//            // Explicitly set table row count to 1 to make our cost estimate work.
+//            return Math.max(rowCount, 1);
         }
 
         return 1;

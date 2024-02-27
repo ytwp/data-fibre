@@ -144,22 +144,24 @@ public class AnalyzerUtils {
     }
 
     private static Function getGlobalUdfFunction(ConnectContext context, FunctionName fnName, Type[] argTypes) {
-        Function search = new Function(fnName, argTypes, Type.INVALID, false);
-        Function fn = context.getGlobalStateMgr().getGlobalFunctionMgr()
-                .getFunction(search, Function.CompareMode.IS_NONSTRICT_SUPERTYPE_OF);
-        if (fn != null) {
-            try {
-                Authorizer.checkGlobalFunctionAction(context.getCurrentUserIdentity(), context.getCurrentRoleIds(),
-                        fn, PrivilegeType.USAGE);
-            } catch (AccessDeniedException e) {
-                AccessDeniedException.reportAccessDenied(
-                        InternalCatalog.DEFAULT_INTERNAL_CATALOG_NAME,
-                        context.getCurrentUserIdentity(), context.getCurrentRoleIds(),
-                        PrivilegeType.USAGE.name(), ObjectType.GLOBAL_FUNCTION.name(), fn.getSignature());
-            }
-        }
+//        Function search = new Function(fnName, argTypes, Type.INVALID, false);
+//        Function fn = context.getGlobalStateMgr().getGlobalFunctionMgr()
+//                .getFunction(search, Function.CompareMode.IS_NONSTRICT_SUPERTYPE_OF);
+//        if (fn != null) {
+//            try {
+//                Authorizer.checkGlobalFunctionAction(context.getCurrentUserIdentity(), context.getCurrentRoleIds(),
+//                        fn, PrivilegeType.USAGE);
+//            } catch (AccessDeniedException e) {
+//                AccessDeniedException.reportAccessDenied(
+//                        InternalCatalog.DEFAULT_INTERNAL_CATALOG_NAME,
+//                        context.getCurrentUserIdentity(), context.getCurrentRoleIds(),
+//                        PrivilegeType.USAGE.name(), ObjectType.GLOBAL_FUNCTION.name(), fn.getSignature());
+//            }
+//        }
+//
+//        return fn;
 
-        return fn;
+        return null;
     }
 
     public static Function getUdfFunction(ConnectContext context, FunctionName fnName, Type[] argTypes) {
