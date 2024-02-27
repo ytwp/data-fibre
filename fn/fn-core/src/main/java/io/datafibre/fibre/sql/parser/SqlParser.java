@@ -84,28 +84,28 @@ public class SqlParser {
 
     private static List<StatementBase> parseWithStarRocksDialect(String sql, SessionVariable sessionVariable) {
         List<StatementBase> statements = Lists.newArrayList();
-        StarRocksParser parser = parserBuilder(sql, sessionVariable);
-        List<StarRocksParser.SingleStatementContext> singleStatementContexts =
-                parser.sqlStatements().singleStatement();
-        for (int idx = 0; idx < singleStatementContexts.size(); ++idx) {
-            // collect hint info
-            HintCollector collector = new HintCollector((CommonTokenStream) parser.getTokenStream(), sessionVariable);
-            collector.collect(singleStatementContexts.get(idx));
-
-            AstBuilder astBuilder = new AstBuilder(sessionVariable.getSqlMode(), collector.getContextWithHintMap());
-            StatementBase statement = (StatementBase) astBuilder.visitSingleStatement(singleStatementContexts.get(idx));
-            if (astBuilder.getParameters() != null && astBuilder.getParameters().size() != 0
-                    && !(statement instanceof PrepareStmt)) {
-                // for prepare stm1 from  '', here statement is inner statement
-                statement = new PrepareStmt("", statement, astBuilder.getParameters());
-            } else {
-                statement.setOrigStmt(new OriginStatement(sql, idx));
-            }
-            statements.add(statement);
-        }
-        if (ConnectContext.get() != null) {
-            ConnectContext.get().setRelationAliasCaseInSensitive(false);
-        }
+//        StarRocksParser parser = parserBuilder(sql, sessionVariable);
+//        List<StarRocksParser.SingleStatementContext> singleStatementContexts =
+//                parser.sqlStatements().singleStatement();
+//        for (int idx = 0; idx < singleStatementContexts.size(); ++idx) {
+//            // collect hint info
+//            HintCollector collector = new HintCollector((CommonTokenStream) parser.getTokenStream(), sessionVariable);
+//            collector.collect(singleStatementContexts.get(idx));
+//
+//            AstBuilder astBuilder = new AstBuilder(sessionVariable.getSqlMode(), collector.getContextWithHintMap());
+//            StatementBase statement = (StatementBase) astBuilder.visitSingleStatement(singleStatementContexts.get(idx));
+//            if (astBuilder.getParameters() != null && astBuilder.getParameters().size() != 0
+//                    && !(statement instanceof PrepareStmt)) {
+//                // for prepare stm1 from  '', here statement is inner statement
+//                statement = new PrepareStmt("", statement, astBuilder.getParameters());
+//            } else {
+//                statement.setOrigStmt(new OriginStatement(sql, idx));
+//            }
+//            statements.add(statement);
+//        }
+//        if (ConnectContext.get() != null) {
+//            ConnectContext.get().setRelationAliasCaseInSensitive(false);
+//        }
         return statements;
     }
 
@@ -155,22 +155,22 @@ public class SqlParser {
                 .visit(parserBuilder(expressionSql, sessionVariable).expressionSingleton().expression());
     }
 
-    public static List<Expr> parseSqlToExprs(String expressions, SessionVariable sessionVariable) {
-        List<StarRocksParser.ExpressionContext> expressionContexts =
-                parserBuilder(expressions, sessionVariable).expressionList().expression();
-        AstBuilder astBuilder = new AstBuilder(sessionVariable.getSqlMode());
-        return expressionContexts.stream()
-                .map(e -> (Expr) astBuilder.visit(e))
-                .collect(Collectors.toList());
-    }
+//    public static List<Expr> parseSqlToExprs(String expressions, SessionVariable sessionVariable) {
+//        List<StarRocksParser.ExpressionContext> expressionContexts =
+//                parserBuilder(expressions, sessionVariable).expressionList().expression();
+//        AstBuilder astBuilder = new AstBuilder(sessionVariable.getSqlMode());
+//        return expressionContexts.stream()
+//                .map(e -> (Expr) astBuilder.visit(e))
+//                .collect(Collectors.toList());
+//    }
 
-    public static ImportColumnsStmt parseImportColumns(String expressionSql, long sqlMode) {
-        SessionVariable sessionVariable = new SessionVariable();
-        sessionVariable.setSqlMode(sqlMode);
-
-        return (ImportColumnsStmt) new AstBuilder(sqlMode)
-                .visit(parserBuilder(expressionSql, sessionVariable).importColumns());
-    }
+//    public static ImportColumnsStmt parseImportColumns(String expressionSql, long sqlMode) {
+//        SessionVariable sessionVariable = new SessionVariable();
+//        sessionVariable.setSqlMode(sqlMode);
+//
+//        return (ImportColumnsStmt) new AstBuilder(sqlMode)
+//                .visit(parserBuilder(expressionSql, sessionVariable).importColumns());
+//    }
 
     private static StarRocksParser parserBuilder(String sql, SessionVariable sessionVariable) {
         StarRocksLexer lexer = new StarRocksLexer(new CaseInsensitiveStream(CharStreams.fromString(sql)));

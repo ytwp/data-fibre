@@ -1265,67 +1265,67 @@ public class ShowExecutor {
     private void handleShowCreateRoutineLoad() throws AnalysisException {
         ShowCreateRoutineLoadStmt showCreateRoutineLoadStmt = (ShowCreateRoutineLoadStmt) stmt;
         List<List<String>> rows = Lists.newArrayList();
-        List<RoutineLoadJob> routineLoadJobList;
-        try {
-            routineLoadJobList = GlobalStateMgr.getCurrentState().getRoutineLoadMgr()
-                    .getJob(showCreateRoutineLoadStmt.getDbFullName(),
-                            showCreateRoutineLoadStmt.getName(),
-                            false);
-        } catch (MetaNotFoundException e) {
-            LOG.warn(e.getMessage(), e);
-            throw new AnalysisException(e.getMessage());
-        }
-        if (routineLoadJobList == null || routineLoadJobList.size() == 0) {
-            resultSet = new ShowResultSet(showCreateRoutineLoadStmt.getMetaData(), rows);
-            return;
-        }
-        RoutineLoadJob routineLoadJob = routineLoadJobList.get(0);
-        if (routineLoadJob.getDataSourceTypeName().equals("PULSAR")) {
-            throw new AnalysisException("not support pulsar datasource");
-        }
-        StringBuilder createRoutineLoadSql = new StringBuilder();
-        try {
-            String dbName = routineLoadJob.getDbFullName();
-            createRoutineLoadSql.append("CREATE ROUTINE LOAD ").append(dbName).append(".")
-                    .append(showCreateRoutineLoadStmt.getName())
-                    .append(" on ").append(routineLoadJob.getTableName());
-        } catch (MetaNotFoundException e) {
-            LOG.warn(e.getMessage(), e);
-            throw new AnalysisException(e.getMessage());
-        }
-
-        if (routineLoadJob.getColumnSeparator() != null) {
-            createRoutineLoadSql.append("\n COLUMNS TERMINATED BY ")
-                    .append(routineLoadJob.getColumnSeparator().toSql(true));
-        }
-
-        if (routineLoadJob.getColumnDescs() != null) {
-            createRoutineLoadSql.append(",\nCOLUMNS (");
-            List<ImportColumnDesc> descs = routineLoadJob.getColumnDescs();
-            for (int i = 0; i < descs.size(); i++) {
-                ImportColumnDesc desc = descs.get(i);
-                createRoutineLoadSql.append(desc.toString());
-                if (descs.size() == 1 || i == descs.size() - 1) {
-                    createRoutineLoadSql.append(")");
-                } else {
-                    createRoutineLoadSql.append(", ");
-                }
-            }
-        }
-        if (routineLoadJob.getPartitions() != null) {
-            createRoutineLoadSql.append(",\n");
-            createRoutineLoadSql.append(routineLoadJob.getPartitions().toString());
-        }
-        if (routineLoadJob.getWhereExpr() != null) {
-            createRoutineLoadSql.append(",\nWHERE ");
-            createRoutineLoadSql.append(routineLoadJob.getWhereExpr().toSql());
-        }
-
-        createRoutineLoadSql.append("\nPROPERTIES\n").append(routineLoadJob.jobPropertiesToSql());
-        createRoutineLoadSql.append("FROM ").append(routineLoadJob.getDataSourceTypeName()).append("\n");
-        createRoutineLoadSql.append(routineLoadJob.dataSourcePropertiesToSql());
-        createRoutineLoadSql.append(";");
-        rows.add(Lists.newArrayList(showCreateRoutineLoadStmt.getName(), createRoutineLoadSql.toString()));
+//        List<RoutineLoadJob> routineLoadJobList;
+//        try {
+//            routineLoadJobList = GlobalStateMgr.getCurrentState().getRoutineLoadMgr()
+//                    .getJob(showCreateRoutineLoadStmt.getDbFullName(),
+//                            showCreateRoutineLoadStmt.getName(),
+//                            false);
+//        } catch (MetaNotFoundException e) {
+//            LOG.warn(e.getMessage(), e);
+//            throw new AnalysisException(e.getMessage());
+//        }
+//        if (routineLoadJobList == null || routineLoadJobList.size() == 0) {
+//            resultSet = new ShowResultSet(showCreateRoutineLoadStmt.getMetaData(), rows);
+//            return;
+//        }
+//        RoutineLoadJob routineLoadJob = routineLoadJobList.get(0);
+//        if (routineLoadJob.getDataSourceTypeName().equals("PULSAR")) {
+//            throw new AnalysisException("not support pulsar datasource");
+//        }
+//        StringBuilder createRoutineLoadSql = new StringBuilder();
+//        try {
+//            String dbName = routineLoadJob.getDbFullName();
+//            createRoutineLoadSql.append("CREATE ROUTINE LOAD ").append(dbName).append(".")
+//                    .append(showCreateRoutineLoadStmt.getName())
+//                    .append(" on ").append(routineLoadJob.getTableName());
+//        } catch (MetaNotFoundException e) {
+//            LOG.warn(e.getMessage(), e);
+//            throw new AnalysisException(e.getMessage());
+//        }
+//
+//        if (routineLoadJob.getColumnSeparator() != null) {
+//            createRoutineLoadSql.append("\n COLUMNS TERMINATED BY ")
+//                    .append(routineLoadJob.getColumnSeparator().toSql(true));
+//        }
+//
+//        if (routineLoadJob.getColumnDescs() != null) {
+//            createRoutineLoadSql.append(",\nCOLUMNS (");
+//            List<ImportColumnDesc> descs = routineLoadJob.getColumnDescs();
+//            for (int i = 0; i < descs.size(); i++) {
+//                ImportColumnDesc desc = descs.get(i);
+//                createRoutineLoadSql.append(desc.toString());
+//                if (descs.size() == 1 || i == descs.size() - 1) {
+//                    createRoutineLoadSql.append(")");
+//                } else {
+//                    createRoutineLoadSql.append(", ");
+//                }
+//            }
+//        }
+//        if (routineLoadJob.getPartitions() != null) {
+//            createRoutineLoadSql.append(",\n");
+//            createRoutineLoadSql.append(routineLoadJob.getPartitions().toString());
+//        }
+//        if (routineLoadJob.getWhereExpr() != null) {
+//            createRoutineLoadSql.append(",\nWHERE ");
+//            createRoutineLoadSql.append(routineLoadJob.getWhereExpr().toSql());
+//        }
+//
+//        createRoutineLoadSql.append("\nPROPERTIES\n").append(routineLoadJob.jobPropertiesToSql());
+//        createRoutineLoadSql.append("FROM ").append(routineLoadJob.getDataSourceTypeName()).append("\n");
+//        createRoutineLoadSql.append(routineLoadJob.dataSourcePropertiesToSql());
+//        createRoutineLoadSql.append(";");
+//        rows.add(Lists.newArrayList(showCreateRoutineLoadStmt.getName(), createRoutineLoadSql.toString()));
         resultSet = new ShowResultSet(showCreateRoutineLoadStmt.getMetaData(), rows);
     }
 
@@ -1333,55 +1333,55 @@ public class ShowExecutor {
         ShowRoutineLoadStmt showRoutineLoadStmt = (ShowRoutineLoadStmt) stmt;
         List<List<String>> rows = Lists.newArrayList();
         // if job exists
-        List<RoutineLoadJob> routineLoadJobList;
-        try {
-            routineLoadJobList = GlobalStateMgr.getCurrentState().getRoutineLoadMgr()
-                    .getJob(showRoutineLoadStmt.getDbFullName(),
-                            showRoutineLoadStmt.getName(),
-                            showRoutineLoadStmt.isIncludeHistory());
-        } catch (MetaNotFoundException e) {
-            LOG.warn(e.getMessage(), e);
-            throw new AnalysisException(e.getMessage());
-        }
-        // In new privilege framework(RBAC), user needs any action on the table to show routine load job on it.
-        if (routineLoadJobList != null) {
-            Iterator<RoutineLoadJob> iterator = routineLoadJobList.iterator();
-            while (iterator.hasNext()) {
-                RoutineLoadJob routineLoadJob = iterator.next();
-                try {
-                    try {
-                        Authorizer.checkAnyActionOnTable(connectContext.getCurrentUserIdentity(),
-                                connectContext.getCurrentRoleIds(), new TableName(routineLoadJob.getDbFullName(),
-                                        routineLoadJob.getTableName()));
-                    } catch (AccessDeniedException e) {
-                        iterator.remove();
-                    }
-                } catch (MetaNotFoundException e) {
-                    // ignore
-                }
-            }
-        }
-
-        if (routineLoadJobList != null) {
-            RoutineLoadFunctionalExprProvider fProvider =
-                    showRoutineLoadStmt.getFunctionalExprProvider(this.connectContext);
-            rows = routineLoadJobList.parallelStream()
-                    .filter(fProvider.getPredicateChain())
-                    .sorted(fProvider.getOrderComparator())
-                    .skip(fProvider.getSkipCount())
-                    .limit(fProvider.getLimitCount())
-                    .map(RoutineLoadJob::getShowInfo)
-                    .collect(Collectors.toList());
-        }
-
-        if (!Strings.isNullOrEmpty(showRoutineLoadStmt.getName()) && rows.isEmpty()) {
-            // if the jobName has been specified
-            throw new AnalysisException("There is no running job named " + showRoutineLoadStmt.getName()
-                    + " in db " + showRoutineLoadStmt.getDbFullName()
-                    + ". Include history? " + showRoutineLoadStmt.isIncludeHistory()
-                    +
-                    ", you can try `show all routine load job for job_name` if you want to list stopped and cancelled jobs");
-        }
+//        List<RoutineLoadJob> routineLoadJobList;
+//        try {
+//            routineLoadJobList = GlobalStateMgr.getCurrentState().getRoutineLoadMgr()
+//                    .getJob(showRoutineLoadStmt.getDbFullName(),
+//                            showRoutineLoadStmt.getName(),
+//                            showRoutineLoadStmt.isIncludeHistory());
+//        } catch (MetaNotFoundException e) {
+//            LOG.warn(e.getMessage(), e);
+//            throw new AnalysisException(e.getMessage());
+//        }
+//        // In new privilege framework(RBAC), user needs any action on the table to show routine load job on it.
+//        if (routineLoadJobList != null) {
+//            Iterator<RoutineLoadJob> iterator = routineLoadJobList.iterator();
+//            while (iterator.hasNext()) {
+//                RoutineLoadJob routineLoadJob = iterator.next();
+//                try {
+//                    try {
+//                        Authorizer.checkAnyActionOnTable(connectContext.getCurrentUserIdentity(),
+//                                connectContext.getCurrentRoleIds(), new TableName(routineLoadJob.getDbFullName(),
+//                                        routineLoadJob.getTableName()));
+//                    } catch (AccessDeniedException e) {
+//                        iterator.remove();
+//                    }
+//                } catch (MetaNotFoundException e) {
+//                    // ignore
+//                }
+//            }
+//        }
+//
+//        if (routineLoadJobList != null) {
+//            RoutineLoadFunctionalExprProvider fProvider =
+//                    showRoutineLoadStmt.getFunctionalExprProvider(this.connectContext);
+//            rows = routineLoadJobList.parallelStream()
+//                    .filter(fProvider.getPredicateChain())
+//                    .sorted(fProvider.getOrderComparator())
+//                    .skip(fProvider.getSkipCount())
+//                    .limit(fProvider.getLimitCount())
+//                    .map(RoutineLoadJob::getShowInfo)
+//                    .collect(Collectors.toList());
+//        }
+//
+//        if (!Strings.isNullOrEmpty(showRoutineLoadStmt.getName()) && rows.isEmpty()) {
+//            // if the jobName has been specified
+//            throw new AnalysisException("There is no running job named " + showRoutineLoadStmt.getName()
+//                    + " in db " + showRoutineLoadStmt.getDbFullName()
+//                    + ". Include history? " + showRoutineLoadStmt.isIncludeHistory()
+//                    +
+//                    ", you can try `show all routine load job for job_name` if you want to list stopped and cancelled jobs");
+//        }
         resultSet = new ShowResultSet(showRoutineLoadStmt.getMetaData(), rows);
     }
 
@@ -1389,42 +1389,42 @@ public class ShowExecutor {
         ShowRoutineLoadTaskStmt showRoutineLoadTaskStmt = (ShowRoutineLoadTaskStmt) stmt;
         List<List<String>> rows = Lists.newArrayList();
         // if job exists
-        RoutineLoadJob routineLoadJob;
-        try {
-            routineLoadJob =
-                    GlobalStateMgr.getCurrentState().getRoutineLoadMgr()
-                            .getJob(showRoutineLoadTaskStmt.getDbFullName(),
-                                    showRoutineLoadTaskStmt.getJobName());
-        } catch (MetaNotFoundException e) {
-            LOG.warn(e.getMessage(), e);
-            throw new AnalysisException(e.getMessage());
-        }
-        if (routineLoadJob == null) {
-            throw new AnalysisException("The job named " + showRoutineLoadTaskStmt.getJobName() + "does not exists "
-                    + "or job state is stopped or cancelled");
-        }
-
-        // check auth
-        String dbFullName = showRoutineLoadTaskStmt.getDbFullName();
-        String tableName;
-        try {
-            tableName = routineLoadJob.getTableName();
-        } catch (MetaNotFoundException e) {
-            throw new AnalysisException(
-                    "The table metadata of job has been changed. The job will be cancelled automatically", e);
-        }
-        // In new privilege framework(RBAC), user needs any action on the table to show routine load job on it.
-        try {
-            Authorizer.checkAnyActionOnTable(connectContext.getCurrentUserIdentity(),
-                    connectContext.getCurrentRoleIds(), new TableName(dbFullName, tableName));
-        } catch (AccessDeniedException e) {
-            // if we have no privilege, return an empty result set
-            resultSet = new ShowResultSet(showRoutineLoadTaskStmt.getMetaData(), rows);
-            return;
-        }
-
-        // get routine load task info
-        rows.addAll(routineLoadJob.getTasksShowInfo());
+//        RoutineLoadJob routineLoadJob;
+//        try {
+//            routineLoadJob =
+//                    GlobalStateMgr.getCurrentState().getRoutineLoadMgr()
+//                            .getJob(showRoutineLoadTaskStmt.getDbFullName(),
+//                                    showRoutineLoadTaskStmt.getJobName());
+//        } catch (MetaNotFoundException e) {
+//            LOG.warn(e.getMessage(), e);
+//            throw new AnalysisException(e.getMessage());
+//        }
+//        if (routineLoadJob == null) {
+//            throw new AnalysisException("The job named " + showRoutineLoadTaskStmt.getJobName() + "does not exists "
+//                    + "or job state is stopped or cancelled");
+//        }
+//
+//        // check auth
+//        String dbFullName = showRoutineLoadTaskStmt.getDbFullName();
+//        String tableName;
+//        try {
+//            tableName = routineLoadJob.getTableName();
+//        } catch (MetaNotFoundException e) {
+//            throw new AnalysisException(
+//                    "The table metadata of job has been changed. The job will be cancelled automatically", e);
+//        }
+//        // In new privilege framework(RBAC), user needs any action on the table to show routine load job on it.
+//        try {
+//            Authorizer.checkAnyActionOnTable(connectContext.getCurrentUserIdentity(),
+//                    connectContext.getCurrentRoleIds(), new TableName(dbFullName, tableName));
+//        } catch (AccessDeniedException e) {
+//            // if we have no privilege, return an empty result set
+//            resultSet = new ShowResultSet(showRoutineLoadTaskStmt.getMetaData(), rows);
+//            return;
+//        }
+//
+//        // get routine load task info
+//        rows.addAll(routineLoadJob.getTasksShowInfo());
         resultSet = new ShowResultSet(showRoutineLoadTaskStmt.getMetaData(), rows);
     }
 
@@ -1432,28 +1432,28 @@ public class ShowExecutor {
         ShowStreamLoadStmt showStreamLoadStmt = (ShowStreamLoadStmt) stmt;
         List<List<String>> rows = Lists.newArrayList();
         // if task exists
-        List<StreamLoadTask> streamLoadTaskList;
-        try {
-            streamLoadTaskList = GlobalStateMgr.getCurrentState().getStreamLoadMgr()
-                    .getTask(showStreamLoadStmt.getDbFullName(),
-                            showStreamLoadStmt.getName(),
-                            showStreamLoadStmt.isIncludeHistory());
-        } catch (MetaNotFoundException e) {
-            LOG.warn(e.getMessage(), e);
-            throw new AnalysisException(e.getMessage());
-        }
-
-        if (streamLoadTaskList != null) {
-            StreamLoadFunctionalExprProvider fProvider =
-                    showStreamLoadStmt.getFunctionalExprProvider(this.connectContext);
-            rows = streamLoadTaskList.parallelStream()
-                    .filter(fProvider.getPredicateChain())
-                    .sorted(fProvider.getOrderComparator())
-                    .skip(fProvider.getSkipCount())
-                    .limit(fProvider.getLimitCount())
-                    .map(StreamLoadTask::getShowInfo)
-                    .collect(Collectors.toList());
-        }
+//        List<StreamLoadTask> streamLoadTaskList;
+//        try {
+//            streamLoadTaskList = GlobalStateMgr.getCurrentState().getStreamLoadMgr()
+//                    .getTask(showStreamLoadStmt.getDbFullName(),
+//                            showStreamLoadStmt.getName(),
+//                            showStreamLoadStmt.isIncludeHistory());
+//        } catch (MetaNotFoundException e) {
+//            LOG.warn(e.getMessage(), e);
+//            throw new AnalysisException(e.getMessage());
+//        }
+//
+//        if (streamLoadTaskList != null) {
+//            StreamLoadFunctionalExprProvider fProvider =
+//                    showStreamLoadStmt.getFunctionalExprProvider(this.connectContext);
+//            rows = streamLoadTaskList.parallelStream()
+//                    .filter(fProvider.getPredicateChain())
+//                    .sorted(fProvider.getOrderComparator())
+//                    .skip(fProvider.getSkipCount())
+//                    .limit(fProvider.getLimitCount())
+//                    .map(StreamLoadTask::getShowInfo)
+//                    .collect(Collectors.toList());
+//        }
 
         if (!Strings.isNullOrEmpty(showStreamLoadStmt.getName()) && rows.isEmpty()) {
             // if the label has been specified
@@ -1479,16 +1479,16 @@ public class ShowExecutor {
         MetaUtils.checkDbNullAndReport(db, showStmt.getDbName());
         long dbId = db.getId();
 
-        DeleteMgr deleteHandler = globalStateMgr.getDeleteMgr();
-        List<List<Comparable>> deleteInfos = deleteHandler.getDeleteInfosByDb(dbId);
+//        DeleteMgr deleteHandler = globalStateMgr.getDeleteMgr();
+//        List<List<Comparable>> deleteInfos = deleteHandler.getDeleteInfosByDb(dbId);
         List<List<String>> rows = Lists.newArrayList();
-        for (List<Comparable> deleteInfo : deleteInfos) {
-            List<String> oneInfo = new ArrayList<>(deleteInfo.size());
-            for (Comparable element : deleteInfo) {
-                oneInfo.add(element.toString());
-            }
-            rows.add(oneInfo);
-        }
+//        for (List<Comparable> deleteInfo : deleteInfos) {
+//            List<String> oneInfo = new ArrayList<>(deleteInfo.size());
+//            for (Comparable element : deleteInfo) {
+//                oneInfo.add(element.toString());
+//            }
+//            rows.add(oneInfo);
+//        }
 
         resultSet = new ShowResultSet(showStmt.getMetaData(), rows);
     }
@@ -1923,19 +1923,19 @@ public class ShowExecutor {
     // Handle show brokers
     private void handleShowBroker() {
         ShowBrokerStmt showStmt = (ShowBrokerStmt) stmt;
-        List<List<String>> rowSet = GlobalStateMgr.getCurrentState().getBrokerMgr().getBrokersInfo();
+//        List<List<String>> rowSet = GlobalStateMgr.getCurrentState().getBrokerMgr().getBrokersInfo();
 
         // Only success
-        resultSet = new ShowResultSet(showStmt.getMetaData(), rowSet);
+//        resultSet = new ShowResultSet(showStmt.getMetaData(), rowSet);
     }
 
     // Handle show resources
     private void handleShowResources() {
         ShowResourcesStmt showStmt = (ShowResourcesStmt) stmt;
-        List<List<String>> rowSet = GlobalStateMgr.getCurrentState().getResourceMgr().getResourcesInfo();
+//        List<List<String>> rowSet = GlobalStateMgr.getCurrentState().getResourceMgr().getResourcesInfo();
 
         // Only success
-        resultSet = new ShowResultSet(showStmt.getMetaData(), rowSet);
+//        resultSet = new ShowResultSet(showStmt.getMetaData(), rowSet);
     }
 
     private void handleShowExport() throws AnalysisException {
@@ -1945,18 +1945,18 @@ public class ShowExecutor {
         MetaUtils.checkDbNullAndReport(db, showExportStmt.getDbName());
         long dbId = db.getId();
 
-        ExportMgr exportMgr = globalStateMgr.getExportMgr();
+//        ExportMgr exportMgr = globalStateMgr.getExportMgr();
 
-        Set<ExportJob.JobState> states = null;
-        ExportJob.JobState state = showExportStmt.getJobState();
-        if (state != null) {
-            states = Sets.newHashSet(state);
-        }
-        List<List<String>> infos = exportMgr.getExportJobInfosByIdOrState(
-                dbId, showExportStmt.getJobId(), states, showExportStmt.getQueryId(),
-                showExportStmt.getOrderByPairs(), showExportStmt.getLimit());
+//        Set<ExportJob.JobState> states = null;
+//        ExportJob.JobState state = showExportStmt.getJobState();
+//        if (state != null) {
+//            states = Sets.newHashSet(state);
+//        }
+//        List<List<String>> infos = exportMgr.getExportJobInfosByIdOrState(
+//                dbId, showExportStmt.getJobId(), states, showExportStmt.getQueryId(),
+//                showExportStmt.getOrderByPairs(), showExportStmt.getLimit());
 
-        resultSet = new ShowResultSet(showExportStmt.getMetaData(), infos);
+//        resultSet = new ShowResultSet(showExportStmt.getMetaData(), infos);
     }
 
     private void handleShowBackends() {
@@ -1974,21 +1974,21 @@ public class ShowExecutor {
 
     private void handleShowRepositories() {
         final ShowRepositoriesStmt showStmt = (ShowRepositoriesStmt) stmt;
-        List<List<String>> repoInfos = GlobalStateMgr.getCurrentState().getBackupHandler().getRepoMgr().getReposInfo();
-        resultSet = new ShowResultSet(showStmt.getMetaData(), repoInfos);
+//        List<List<String>> repoInfos = GlobalStateMgr.getCurrentState().getBackupHandler().getRepoMgr().getReposInfo();
+//        resultSet = new ShowResultSet(showStmt.getMetaData(), repoInfos);
     }
 
     private void handleShowSnapshot() throws AnalysisException {
         final ShowSnapshotStmt showStmt = (ShowSnapshotStmt) stmt;
-        Repository repo =
-                GlobalStateMgr.getCurrentState().getBackupHandler().getRepoMgr().getRepo(showStmt.getRepoName());
-        if (repo == null) {
-            throw new AnalysisException("Repository " + showStmt.getRepoName() + " does not exist");
-        }
-
-        List<List<String>> snapshotInfos = repo.getSnapshotInfos(showStmt.getSnapshotName(), showStmt.getTimestamp(),
-                showStmt.getSnapshotNames());
-        resultSet = new ShowResultSet(showStmt.getMetaData(), snapshotInfos);
+//        Repository repo =
+//                GlobalStateMgr.getCurrentState().getBackupHandler().getRepoMgr().getRepo(showStmt.getRepoName());
+//        if (repo == null) {
+//            throw new AnalysisException("Repository " + showStmt.getRepoName() + " does not exist");
+//        }
+//
+//        List<List<String>> snapshotInfos = repo.getSnapshotInfos(showStmt.getSnapshotName(), showStmt.getTimestamp(),
+//                showStmt.getSnapshotNames());
+//        resultSet = new ShowResultSet(showStmt.getMetaData(), snapshotInfos);
     }
 
     private void handleShowBackup() {

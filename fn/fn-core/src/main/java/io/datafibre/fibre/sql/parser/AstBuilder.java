@@ -253,128 +253,128 @@ public class AstBuilder extends StarRocksBaseVisitor<ParseNode> {
 
     // ------------------------------------------- Table Statement -----------------------------------------------------
 
-    @Override
-    public ParseNode visitCreateTableStatement(StarRocksParser.CreateTableStatementContext context) {
-        Map<String, String> properties = null;
-        if (context.properties() != null) {
-            properties = new HashMap<>();
-            List<Property> propertyList = visit(context.properties().property(), Property.class);
-            for (Property property : propertyList) {
-                properties.put(property.getKey(), property.getValue());
-            }
-        }
-        Map<String, String> extProperties = null;
-        if (context.extProperties() != null) {
-            extProperties = new HashMap<>();
-            List<Property> propertyList = visit(context.extProperties().properties().property(), Property.class);
-            for (Property property : propertyList) {
-                extProperties.put(property.getKey(), property.getValue());
-            }
-        }
-        TableName tableName = qualifiedNameToTableName(getQualifiedName(context.qualifiedName()));
+//    @Override
+//    public ParseNode visitCreateTableStatement(StarRocksParser.CreateTableStatementContext context) {
+//        Map<String, String> properties = null;
+//        if (context.properties() != null) {
+//            properties = new HashMap<>();
+//            List<Property> propertyList = visit(context.properties().property(), Property.class);
+//            for (Property property : propertyList) {
+//                properties.put(property.getKey(), property.getValue());
+//            }
+//        }
+//        Map<String, String> extProperties = null;
+//        if (context.extProperties() != null) {
+//            extProperties = new HashMap<>();
+//            List<Property> propertyList = visit(context.extProperties().properties().property(), Property.class);
+//            for (Property property : propertyList) {
+//                extProperties.put(property.getKey(), property.getValue());
+//            }
+//        }
+//        TableName tableName = qualifiedNameToTableName(getQualifiedName(context.qualifiedName()));
+//
+//        List<ColumnDef> columnDefs = null;
+//        if (context.columnDesc() != null) {
+//            columnDefs = getColumnDefs(context.columnDesc());
+//        }
+//
+//        return new CreateTableStmt(
+//                context.IF() != null,
+//                context.EXTERNAL() != null,
+//                tableName,
+//                columnDefs,
+//                context.indexDesc() == null ? null : getIndexDefs(context.indexDesc()),
+//                context.engineDesc() == null ? "" :
+//                        ((Identifier) visit(context.engineDesc().identifier())).getValue(),
+//                context.charsetDesc() == null ? null :
+//                        ((Identifier) visit(context.charsetDesc().identifierOrString())).getValue(),
+//                context.keyDesc() == null ? null : getKeysDesc(context.keyDesc()),
+//                context.partitionDesc() == null ? null : getPartitionDesc(context.partitionDesc(), columnDefs),
+//                context.distributionDesc() == null ? null : (DistributionDesc) visit(context.distributionDesc()),
+//                properties,
+//                extProperties,
+//                context.comment() == null ? null : ((StringLiteral) visit(context.comment().string())).getStringValue(),
+//                context.rollupDesc() == null ?
+//                        null : context.rollupDesc().rollupItem().stream().map(this::getRollup).collect(toList()),
+//                context.orderByDesc() == null ? null :
+//                        visit(context.orderByDesc().identifierList().identifier(), Identifier.class)
+//                                .stream().map(Identifier::getValue).collect(toList()));
+//    }
 
-        List<ColumnDef> columnDefs = null;
-        if (context.columnDesc() != null) {
-            columnDefs = getColumnDefs(context.columnDesc());
-        }
-
-        return new CreateTableStmt(
-                context.IF() != null,
-                context.EXTERNAL() != null,
-                tableName,
-                columnDefs,
-                context.indexDesc() == null ? null : getIndexDefs(context.indexDesc()),
-                context.engineDesc() == null ? "" :
-                        ((Identifier) visit(context.engineDesc().identifier())).getValue(),
-                context.charsetDesc() == null ? null :
-                        ((Identifier) visit(context.charsetDesc().identifierOrString())).getValue(),
-                context.keyDesc() == null ? null : getKeysDesc(context.keyDesc()),
-                context.partitionDesc() == null ? null : getPartitionDesc(context.partitionDesc(), columnDefs),
-                context.distributionDesc() == null ? null : (DistributionDesc) visit(context.distributionDesc()),
-                properties,
-                extProperties,
-                context.comment() == null ? null : ((StringLiteral) visit(context.comment().string())).getStringValue(),
-                context.rollupDesc() == null ?
-                        null : context.rollupDesc().rollupItem().stream().map(this::getRollup).collect(toList()),
-                context.orderByDesc() == null ? null :
-                        visit(context.orderByDesc().identifierList().identifier(), Identifier.class)
-                                .stream().map(Identifier::getValue).collect(toList()));
-    }
-
-    private PartitionDesc getPartitionDesc(StarRocksParser.PartitionDescContext context, List<ColumnDef> columnDefs) {
-        List<PartitionDesc> partitionDescList = new ArrayList<>();
-        // for automatic partition
-        if (context.functionCall() != null) {
-            String currentGranularity = null;
-            for (StarRocksParser.RangePartitionDescContext rangePartitionDescContext : context.rangePartitionDesc()) {
-                final PartitionDesc rangePartitionDesc = (PartitionDesc) visit(rangePartitionDescContext);
-                if (!(rangePartitionDesc instanceof MultiRangePartitionDesc)) {
-                    throw new ParsingException("Automatic partition table creation only supports " +
-                            "batch create partition syntax", rangePartitionDesc.getPos());
-                }
-                MultiRangePartitionDesc multiRangePartitionDesc = (MultiRangePartitionDesc) rangePartitionDesc;
-                String descGranularity = multiRangePartitionDesc.getTimeUnit().toLowerCase();
-                if (currentGranularity == null) {
-                    currentGranularity = descGranularity;
-                } else if (!currentGranularity.equals(descGranularity)) {
-                    throw new ParsingException("The partition granularity of automatic partition table " +
-                            "batch creation in advance should be consistent", rangePartitionDesc.getPos());
-                }
-                partitionDescList.add(rangePartitionDesc);
-            }
-            FunctionCallExpr functionCallExpr = (FunctionCallExpr) visit(context.functionCall());
-            List<String> columnList = AnalyzerUtils.checkAndExtractPartitionCol(functionCallExpr, columnDefs);
-            AnalyzerUtils.checkAutoPartitionTableLimit(functionCallExpr, currentGranularity);
-            RangePartitionDesc rangePartitionDesc = new RangePartitionDesc(columnList, partitionDescList);
-            rangePartitionDesc.setAutoPartitionTable(true);
-            return new ExpressionPartitionDesc(rangePartitionDesc, functionCallExpr);
-        }
-        // for partition by range expression
-        StarRocksParser.PrimaryExpressionContext primaryExpressionContext = context.primaryExpression();
-        if (primaryExpressionContext != null) {
-            Expr primaryExpression = (Expr) visit(primaryExpressionContext);
-            if (context.RANGE() != null) {
-                for (StarRocksParser.RangePartitionDescContext rangePartitionDescContext : context.rangePartitionDesc()) {
-                    final PartitionDesc rangePartitionDesc = (PartitionDesc) visit(rangePartitionDescContext);
-                    partitionDescList.add(rangePartitionDesc);
-                }
-            }
-            List<String> columnList = checkAndExtractPartitionColForRange(primaryExpression, false);
-            RangePartitionDesc rangePartitionDesc = new RangePartitionDesc(columnList, partitionDescList);
-            if (primaryExpression instanceof FunctionCallExpr) {
-                FunctionCallExpr functionCallExpr = (FunctionCallExpr) primaryExpression;
-                String functionName = functionCallExpr.getFnName().getFunction();
-                if (FunctionSet.FROM_UNIXTIME.equals(functionName)
-                        || FunctionSet.FROM_UNIXTIME_MS.equals(functionName)) {
-                    primaryExpression = new CastExpr(TypeDef.create(PrimitiveType.DATETIME), primaryExpression);
-                }
-            }
-            return new ExpressionPartitionDesc(rangePartitionDesc, primaryExpression);
-        }
-        List<Identifier> identifierList = visit(context.identifierList().identifier(), Identifier.class);
-        List<String> columnList = identifierList.stream().map(Identifier::getValue).collect(toList());
-        if (context.RANGE() != null) {
-            for (StarRocksParser.RangePartitionDescContext rangePartitionDescContext : context.rangePartitionDesc()) {
-                final PartitionDesc rangePartitionDesc = (PartitionDesc) visit(rangePartitionDescContext);
-                partitionDescList.add(rangePartitionDesc);
-            }
-            return new RangePartitionDesc(columnList, partitionDescList);
-        } else if (context.LIST() != null) {
-            for (StarRocksParser.ListPartitionDescContext listPartitionDescContext : context.listPartitionDesc()) {
-                final PartitionDesc listPartitionDesc = (PartitionDesc) visit(listPartitionDescContext);
-                partitionDescList.add(listPartitionDesc);
-            }
-            return new ListPartitionDesc(columnList, partitionDescList);
-        } else {
-            if (context.listPartitionDesc().size() > 0) {
-                throw new ParsingException("Does not support creating partitions in advance");
-            }
-            // For hive/iceberg/hudi partition & automatic partition
-            ListPartitionDesc listPartitionDesc = new ListPartitionDesc(columnList, partitionDescList);
-            listPartitionDesc.setAutoPartitionTable(true);
-            return listPartitionDesc;
-        }
-    }
+//    private PartitionDesc getPartitionDesc(StarRocksParser.PartitionDescContext context, List<ColumnDef> columnDefs) {
+//        List<PartitionDesc> partitionDescList = new ArrayList<>();
+//        // for automatic partition
+//        if (context.functionCall() != null) {
+//            String currentGranularity = null;
+//            for (StarRocksParser.RangePartitionDescContext rangePartitionDescContext : context.rangePartitionDesc()) {
+//                final PartitionDesc rangePartitionDesc = (PartitionDesc) visit(rangePartitionDescContext);
+//                if (!(rangePartitionDesc instanceof MultiRangePartitionDesc)) {
+//                    throw new ParsingException("Automatic partition table creation only supports " +
+//                            "batch create partition syntax", rangePartitionDesc.getPos());
+//                }
+//                MultiRangePartitionDesc multiRangePartitionDesc = (MultiRangePartitionDesc) rangePartitionDesc;
+//                String descGranularity = multiRangePartitionDesc.getTimeUnit().toLowerCase();
+//                if (currentGranularity == null) {
+//                    currentGranularity = descGranularity;
+//                } else if (!currentGranularity.equals(descGranularity)) {
+//                    throw new ParsingException("The partition granularity of automatic partition table " +
+//                            "batch creation in advance should be consistent", rangePartitionDesc.getPos());
+//                }
+//                partitionDescList.add(rangePartitionDesc);
+//            }
+//            FunctionCallExpr functionCallExpr = (FunctionCallExpr) visit(context.functionCall());
+//            List<String> columnList = AnalyzerUtils.checkAndExtractPartitionCol(functionCallExpr, columnDefs);
+//            AnalyzerUtils.checkAutoPartitionTableLimit(functionCallExpr, currentGranularity);
+//            RangePartitionDesc rangePartitionDesc = new RangePartitionDesc(columnList, partitionDescList);
+//            rangePartitionDesc.setAutoPartitionTable(true);
+//            return new ExpressionPartitionDesc(rangePartitionDesc, functionCallExpr);
+//        }
+//        // for partition by range expression
+//        StarRocksParser.PrimaryExpressionContext primaryExpressionContext = context.primaryExpression();
+//        if (primaryExpressionContext != null) {
+//            Expr primaryExpression = (Expr) visit(primaryExpressionContext);
+//            if (context.RANGE() != null) {
+//                for (StarRocksParser.RangePartitionDescContext rangePartitionDescContext : context.rangePartitionDesc()) {
+//                    final PartitionDesc rangePartitionDesc = (PartitionDesc) visit(rangePartitionDescContext);
+//                    partitionDescList.add(rangePartitionDesc);
+//                }
+//            }
+//            List<String> columnList = checkAndExtractPartitionColForRange(primaryExpression, false);
+//            RangePartitionDesc rangePartitionDesc = new RangePartitionDesc(columnList, partitionDescList);
+//            if (primaryExpression instanceof FunctionCallExpr) {
+//                FunctionCallExpr functionCallExpr = (FunctionCallExpr) primaryExpression;
+//                String functionName = functionCallExpr.getFnName().getFunction();
+//                if (FunctionSet.FROM_UNIXTIME.equals(functionName)
+//                        || FunctionSet.FROM_UNIXTIME_MS.equals(functionName)) {
+//                    primaryExpression = new CastExpr(TypeDef.create(PrimitiveType.DATETIME), primaryExpression);
+//                }
+//            }
+//            return new ExpressionPartitionDesc(rangePartitionDesc, primaryExpression);
+//        }
+//        List<Identifier> identifierList = visit(context.identifierList().identifier(), Identifier.class);
+//        List<String> columnList = identifierList.stream().map(Identifier::getValue).collect(toList());
+//        if (context.RANGE() != null) {
+//            for (StarRocksParser.RangePartitionDescContext rangePartitionDescContext : context.rangePartitionDesc()) {
+//                final PartitionDesc rangePartitionDesc = (PartitionDesc) visit(rangePartitionDescContext);
+//                partitionDescList.add(rangePartitionDesc);
+//            }
+//            return new RangePartitionDesc(columnList, partitionDescList);
+//        } else if (context.LIST() != null) {
+//            for (StarRocksParser.ListPartitionDescContext listPartitionDescContext : context.listPartitionDesc()) {
+//                final PartitionDesc listPartitionDesc = (PartitionDesc) visit(listPartitionDescContext);
+//                partitionDescList.add(listPartitionDesc);
+//            }
+//            return new ListPartitionDesc(columnList, partitionDescList);
+//        } else {
+//            if (context.listPartitionDesc().size() > 0) {
+//                throw new ParsingException("Does not support creating partitions in advance");
+//            }
+//            // For hive/iceberg/hudi partition & automatic partition
+//            ListPartitionDesc listPartitionDesc = new ListPartitionDesc(columnList, partitionDescList);
+//            listPartitionDesc.setAutoPartitionTable(true);
+//            return listPartitionDesc;
+//        }
+//    }
 
     private List<String> checkAndExtractPartitionColForRange(Expr expr, boolean hasCast) {
         if (expr instanceof CastExpr) {
@@ -529,258 +529,258 @@ public class AstBuilder extends StarRocksBaseVisitor<ParseNode> {
                 isAutoIncrement, expr, comment, createPos(context));
     }
 
-    @Override
-    public ParseNode visitCreateTemporaryTableStatement(StarRocksParser.CreateTemporaryTableStatementContext context) {
-        if (!Config.enable_experimental_temporary_table) {
-            throw new SemanticException(
-                    "Temporary table feature is experimental and disabled by default, could be enabled through " +
-                            ": admin set frontend config('enable_experimental_temporary_table' = 'true')");
-        }
-        CreateTableStmt createTableStmt = new CreateTableStmt(
-                false,
-                false,
-                qualifiedNameToTableName(getQualifiedName(context.qualifiedName())),
-                null,
-                EngineType.defaultEngine().name(),
-                null,
-                null,
-                null,
-                new HashMap<>(),
-                null,
-                null);
+//    @Override
+//    public ParseNode visitCreateTemporaryTableStatement(StarRocksParser.CreateTemporaryTableStatementContext context) {
+//        if (!Config.enable_experimental_temporary_table) {
+//            throw new SemanticException(
+//                    "Temporary table feature is experimental and disabled by default, could be enabled through " +
+//                            ": admin set frontend config('enable_experimental_temporary_table' = 'true')");
+//        }
+//        CreateTableStmt createTableStmt = new CreateTableStmt(
+//                false,
+//                false,
+//                qualifiedNameToTableName(getQualifiedName(context.qualifiedName())),
+//                null,
+//                EngineType.defaultEngine().name(),
+//                null,
+//                null,
+//                null,
+//                new HashMap<>(),
+//                null,
+//                null);
+//
+//        return new CreateTableAsSelectStmt(
+//                createTableStmt,
+//                null,
+//                (QueryStatement) visit(context.queryStatement()));
+//    }
 
-        return new CreateTableAsSelectStmt(
-                createTableStmt,
-                null,
-                (QueryStatement) visit(context.queryStatement()));
-    }
+//    @Override
+//    public ParseNode visitCreateTableAsSelectStatement(StarRocksParser.CreateTableAsSelectStatementContext context) {
+//        Map<String, String> properties = new HashMap<>();
+//        if (context.properties() != null) {
+//            List<Property> propertyList = visit(context.properties().property(), Property.class);
+//            for (Property property : propertyList) {
+//                properties.put(property.getKey(), property.getValue());
+//            }
+//        }
+//
+//        PartitionDesc partitionDesc = null;
+//        if (context.partitionDesc() != null) {
+//            partitionDesc = (PartitionDesc) visit(context.partitionDesc());
+//            if (partitionDesc instanceof ListPartitionDesc && context.partitionDesc().LIST() == null) {
+//                ((ListPartitionDesc) partitionDesc).setAutoPartitionTable(true);
+//            }
+//        }
+//
+//        CreateTableStmt createTableStmt = new CreateTableStmt(
+//                context.IF() != null,
+//                false,
+//                qualifiedNameToTableName(getQualifiedName(context.qualifiedName())),
+//                null,
+//                context.indexDesc() == null ? null : getIndexDefs(context.indexDesc()),
+//                "",
+//                null,
+//                context.keyDesc() == null ? null : getKeysDesc(context.keyDesc()),
+//                partitionDesc,
+//                context.distributionDesc() == null ? null : (DistributionDesc) visit(context.distributionDesc()),
+//                properties,
+//                null,
+//                context.comment() == null ? null :
+//                        ((StringLiteral) visit(context.comment().string())).getStringValue(),
+//                null,
+//                context.orderByDesc() == null ? null :
+//                    visit(context.orderByDesc().identifierList().identifier(), Identifier.class)
+//                        .stream().map(Identifier::getValue).collect(toList())
+//                );
+//
+//        List<Identifier> columns = visitIfPresent(context.identifier(), Identifier.class);
+//        return new CreateTableAsSelectStmt(
+//                createTableStmt,
+//                columns == null ? null : columns.stream().map(Identifier::getValue).collect(toList()),
+//                (QueryStatement) visit(context.queryStatement()),
+//                createPos(context));
+//    }
 
-    @Override
-    public ParseNode visitCreateTableAsSelectStatement(StarRocksParser.CreateTableAsSelectStatementContext context) {
-        Map<String, String> properties = new HashMap<>();
-        if (context.properties() != null) {
-            List<Property> propertyList = visit(context.properties().property(), Property.class);
-            for (Property property : propertyList) {
-                properties.put(property.getKey(), property.getValue());
-            }
-        }
+//    @Override
+//    public ParseNode visitCreateTableLikeStatement(StarRocksParser.CreateTableLikeStatementContext context) {
+//        PartitionDesc partitionDesc = context.partitionDesc() == null ? null :
+//                (PartitionDesc) visit(context.partitionDesc());
+//        DistributionDesc distributionDesc = context.distributionDesc() == null ? null :
+//                (DistributionDesc) visit(context.distributionDesc());
+//        Map<String, String> properties = getProperties(context.properties());
+//
+//        return new CreateTableLikeStmt(context.IF() != null,
+//                qualifiedNameToTableName(getQualifiedName(context.qualifiedName(0))),
+//                qualifiedNameToTableName(getQualifiedName(context.qualifiedName(1))),
+//                partitionDesc, distributionDesc, properties,
+//                createPos(context));
+//    }
 
-        PartitionDesc partitionDesc = null;
-        if (context.partitionDesc() != null) {
-            partitionDesc = (PartitionDesc) visit(context.partitionDesc());
-            if (partitionDesc instanceof ListPartitionDesc && context.partitionDesc().LIST() == null) {
-                ((ListPartitionDesc) partitionDesc).setAutoPartitionTable(true);
-            }
-        }
+//    @Override
+//    public ParseNode visitShowCreateTableStatement(StarRocksParser.ShowCreateTableStatementContext context) {
+//        QualifiedName qualifiedName = getQualifiedName(context.qualifiedName());
+//        TableName targetTableName = qualifiedNameToTableName(qualifiedName);
+//        NodePosition pos = createPos(context);
+//        if (context.MATERIALIZED() != null && context.VIEW() != null) {
+//            return new ShowCreateTableStmt(targetTableName, ShowCreateTableStmt.CreateTableType.MATERIALIZED_VIEW, pos);
+//        }
+//        if (context.VIEW() != null) {
+//            return new ShowCreateTableStmt(targetTableName, ShowCreateTableStmt.CreateTableType.VIEW, pos);
+//        }
+//        return new ShowCreateTableStmt(targetTableName, ShowCreateTableStmt.CreateTableType.TABLE, pos);
+//    }
 
-        CreateTableStmt createTableStmt = new CreateTableStmt(
-                context.IF() != null,
-                false,
-                qualifiedNameToTableName(getQualifiedName(context.qualifiedName())),
-                null,
-                context.indexDesc() == null ? null : getIndexDefs(context.indexDesc()),
-                "",
-                null,
-                context.keyDesc() == null ? null : getKeysDesc(context.keyDesc()),
-                partitionDesc,
-                context.distributionDesc() == null ? null : (DistributionDesc) visit(context.distributionDesc()),
-                properties,
-                null,
-                context.comment() == null ? null :
-                        ((StringLiteral) visit(context.comment().string())).getStringValue(),
-                null,
-                context.orderByDesc() == null ? null :
-                    visit(context.orderByDesc().identifierList().identifier(), Identifier.class)
-                        .stream().map(Identifier::getValue).collect(toList())
-                );
+//    @Override
+//    public ParseNode visitDropTableStatement(StarRocksParser.DropTableStatementContext context) {
+//        boolean ifExists = context.IF() != null && context.EXISTS() != null;
+//        boolean force = context.FORCE() != null;
+//        QualifiedName qualifiedName = getQualifiedName(context.qualifiedName());
+//        TableName targetTableName = qualifiedNameToTableName(qualifiedName);
+//        return new DropTableStmt(ifExists, targetTableName, false, force, createPos(context));
+//    }
 
-        List<Identifier> columns = visitIfPresent(context.identifier(), Identifier.class);
-        return new CreateTableAsSelectStmt(
-                createTableStmt,
-                columns == null ? null : columns.stream().map(Identifier::getValue).collect(toList()),
-                (QueryStatement) visit(context.queryStatement()),
-                createPos(context));
-    }
+//    @Override
+//    public ParseNode visitRecoverTableStatement(StarRocksParser.RecoverTableStatementContext context) {
+//        QualifiedName qualifiedName = getQualifiedName(context.qualifiedName());
+//        TableName tableName = qualifiedNameToTableName(qualifiedName);
+//        return new RecoverTableStmt(tableName, createPos(context));
+//    }
 
-    @Override
-    public ParseNode visitCreateTableLikeStatement(StarRocksParser.CreateTableLikeStatementContext context) {
-        PartitionDesc partitionDesc = context.partitionDesc() == null ? null :
-                (PartitionDesc) visit(context.partitionDesc());
-        DistributionDesc distributionDesc = context.distributionDesc() == null ? null :
-                (DistributionDesc) visit(context.distributionDesc());
-        Map<String, String> properties = getProperties(context.properties());
+//    @Override
+//    public ParseNode visitTruncateTableStatement(StarRocksParser.TruncateTableStatementContext context) {
+//        QualifiedName qualifiedName = getQualifiedName(context.qualifiedName());
+//        TableName targetTableName = qualifiedNameToTableName(qualifiedName);
+//        Token start = context.start;
+//        Token stop = context.stop;
+//        PartitionNames partitionNames = null;
+//        if (context.partitionNames() != null) {
+//            stop = context.partitionNames().stop;
+//            partitionNames = (PartitionNames) visit(context.partitionNames());
+//        }
+//        NodePosition pos = createPos(start, stop);
+//        return new TruncateTableStmt(new TableRef(targetTableName, null, partitionNames, pos));
+//    }
 
-        return new CreateTableLikeStmt(context.IF() != null,
-                qualifiedNameToTableName(getQualifiedName(context.qualifiedName(0))),
-                qualifiedNameToTableName(getQualifiedName(context.qualifiedName(1))),
-                partitionDesc, distributionDesc, properties,
-                createPos(context));
-    }
+//    @Override
+//    public ParseNode visitShowTableStatement(StarRocksParser.ShowTableStatementContext context) {
+//        boolean isVerbose = context.FULL() != null;
+//        String database = null;
+//        String catalog = null;
+//        // catalog.db
+//        if (context.qualifiedName() != null) {
+//            QualifiedName qualifiedName = getQualifiedName(context.qualifiedName());
+//            List<String> parts = qualifiedName.getParts();
+//            if (parts.size() == 2) {
+//                catalog = qualifiedName.getParts().get(0);
+//                database = qualifiedName.getParts().get(1);
+//            } else if (parts.size() == 1) {
+//                database = qualifiedName.getParts().get(0);
+//            }
+//        }
+//
+//        NodePosition pos = createPos(context);
+//
+//        if (context.pattern != null) {
+//            StringLiteral stringLiteral = (StringLiteral) visit(context.pattern);
+//            return new ShowTableStmt(database, isVerbose, stringLiteral.getValue(), null, catalog, pos);
+//        } else if (context.expression() != null) {
+//            return new ShowTableStmt(database, isVerbose, null, (Expr) visit(context.expression()), catalog, pos);
+//        } else {
+//            return new ShowTableStmt(database, isVerbose, null, null, catalog, pos);
+//        }
+//    }
 
-    @Override
-    public ParseNode visitShowCreateTableStatement(StarRocksParser.ShowCreateTableStatementContext context) {
-        QualifiedName qualifiedName = getQualifiedName(context.qualifiedName());
-        TableName targetTableName = qualifiedNameToTableName(qualifiedName);
-        NodePosition pos = createPos(context);
-        if (context.MATERIALIZED() != null && context.VIEW() != null) {
-            return new ShowCreateTableStmt(targetTableName, ShowCreateTableStmt.CreateTableType.MATERIALIZED_VIEW, pos);
-        }
-        if (context.VIEW() != null) {
-            return new ShowCreateTableStmt(targetTableName, ShowCreateTableStmt.CreateTableType.VIEW, pos);
-        }
-        return new ShowCreateTableStmt(targetTableName, ShowCreateTableStmt.CreateTableType.TABLE, pos);
-    }
+//    @Override
+//    public ParseNode visitDescTableStatement(StarRocksParser.DescTableStatementContext context) {
+//        QualifiedName qualifiedName = getQualifiedName(context.qualifiedName());
+//        TableName targetTableName = qualifiedNameToTableName(qualifiedName);
+//        return new DescribeStmt(targetTableName, context.ALL() != null, createPos(context));
+//    }
 
-    @Override
-    public ParseNode visitDropTableStatement(StarRocksParser.DropTableStatementContext context) {
-        boolean ifExists = context.IF() != null && context.EXISTS() != null;
-        boolean force = context.FORCE() != null;
-        QualifiedName qualifiedName = getQualifiedName(context.qualifiedName());
-        TableName targetTableName = qualifiedNameToTableName(qualifiedName);
-        return new DropTableStmt(ifExists, targetTableName, false, force, createPos(context));
-    }
+//    @Override
+//    public ParseNode visitShowTableStatusStatement(StarRocksParser.ShowTableStatusStatementContext context) {
+//        QualifiedName dbName = null;
+//        if (context.qualifiedName() != null) {
+//            dbName = getQualifiedName(context.db);
+//        }
+//
+//        String pattern = null;
+//        if (context.pattern != null) {
+//            StringLiteral stringLiteral = (StringLiteral) visit(context.pattern);
+//            pattern = stringLiteral.getValue();
+//        }
+//
+//        Expr where = null;
+//        if (context.expression() != null) {
+//            where = (Expr) visit(context.expression());
+//        }
+//
+//        return new ShowTableStatusStmt(dbName == null ? null : dbName.toString(), pattern, where,
+//                createPos(context));
+//    }
 
-    @Override
-    public ParseNode visitRecoverTableStatement(StarRocksParser.RecoverTableStatementContext context) {
-        QualifiedName qualifiedName = getQualifiedName(context.qualifiedName());
-        TableName tableName = qualifiedNameToTableName(qualifiedName);
-        return new RecoverTableStmt(tableName, createPos(context));
-    }
+//    @Override
+//    public ParseNode visitShowColumnStatement(StarRocksParser.ShowColumnStatementContext context) {
+//        QualifiedName tableName = getQualifiedName(context.table);
+//
+//        QualifiedName dbName = null;
+//        if (context.db != null) {
+//            dbName = getQualifiedName(context.db);
+//        }
+//
+//        String pattern = null;
+//        if (context.pattern != null) {
+//            StringLiteral stringLiteral = (StringLiteral) visit(context.pattern);
+//            pattern = stringLiteral.getValue();
+//        }
+//
+//        Expr where = null;
+//        if (context.expression() != null) {
+//            where = (Expr) visit(context.expression());
+//        }
+//
+//        return new ShowColumnStmt(qualifiedNameToTableName(tableName),
+//                dbName == null ? null : dbName.toString(),
+//                pattern,
+//                context.FULL() != null,
+//                where, createPos(context));
+//    }
 
-    @Override
-    public ParseNode visitTruncateTableStatement(StarRocksParser.TruncateTableStatementContext context) {
-        QualifiedName qualifiedName = getQualifiedName(context.qualifiedName());
-        TableName targetTableName = qualifiedNameToTableName(qualifiedName);
-        Token start = context.start;
-        Token stop = context.stop;
-        PartitionNames partitionNames = null;
-        if (context.partitionNames() != null) {
-            stop = context.partitionNames().stop;
-            partitionNames = (PartitionNames) visit(context.partitionNames());
-        }
-        NodePosition pos = createPos(start, stop);
-        return new TruncateTableStmt(new TableRef(targetTableName, null, partitionNames, pos));
-    }
+//    @Override
+//    public ParseNode visitRefreshTableStatement(StarRocksParser.RefreshTableStatementContext context) {
+//        QualifiedName qualifiedName = getQualifiedName(context.qualifiedName());
+//        TableName targetTableName = qualifiedNameToTableName(qualifiedName);
+//        List<String> partitionNames = null;
+//        if (context.string() != null) {
+//            partitionNames = context.string().stream()
+//                    .map(c -> ((StringLiteral) visit(c)).getStringValue()).collect(toList());
+//        }
+//        return new RefreshTableStmt(targetTableName, partitionNames, createPos(context));
+//    }
 
-    @Override
-    public ParseNode visitShowTableStatement(StarRocksParser.ShowTableStatementContext context) {
-        boolean isVerbose = context.FULL() != null;
-        String database = null;
-        String catalog = null;
-        // catalog.db
-        if (context.qualifiedName() != null) {
-            QualifiedName qualifiedName = getQualifiedName(context.qualifiedName());
-            List<String> parts = qualifiedName.getParts();
-            if (parts.size() == 2) {
-                catalog = qualifiedName.getParts().get(0);
-                database = qualifiedName.getParts().get(1);
-            } else if (parts.size() == 1) {
-                database = qualifiedName.getParts().get(0);
-            }
-        }
-
-        NodePosition pos = createPos(context);
-
-        if (context.pattern != null) {
-            StringLiteral stringLiteral = (StringLiteral) visit(context.pattern);
-            return new ShowTableStmt(database, isVerbose, stringLiteral.getValue(), null, catalog, pos);
-        } else if (context.expression() != null) {
-            return new ShowTableStmt(database, isVerbose, null, (Expr) visit(context.expression()), catalog, pos);
-        } else {
-            return new ShowTableStmt(database, isVerbose, null, null, catalog, pos);
-        }
-    }
-
-    @Override
-    public ParseNode visitDescTableStatement(StarRocksParser.DescTableStatementContext context) {
-        QualifiedName qualifiedName = getQualifiedName(context.qualifiedName());
-        TableName targetTableName = qualifiedNameToTableName(qualifiedName);
-        return new DescribeStmt(targetTableName, context.ALL() != null, createPos(context));
-    }
-
-    @Override
-    public ParseNode visitShowTableStatusStatement(StarRocksParser.ShowTableStatusStatementContext context) {
-        QualifiedName dbName = null;
-        if (context.qualifiedName() != null) {
-            dbName = getQualifiedName(context.db);
-        }
-
-        String pattern = null;
-        if (context.pattern != null) {
-            StringLiteral stringLiteral = (StringLiteral) visit(context.pattern);
-            pattern = stringLiteral.getValue();
-        }
-
-        Expr where = null;
-        if (context.expression() != null) {
-            where = (Expr) visit(context.expression());
-        }
-
-        return new ShowTableStatusStmt(dbName == null ? null : dbName.toString(), pattern, where,
-                createPos(context));
-    }
-
-    @Override
-    public ParseNode visitShowColumnStatement(StarRocksParser.ShowColumnStatementContext context) {
-        QualifiedName tableName = getQualifiedName(context.table);
-
-        QualifiedName dbName = null;
-        if (context.db != null) {
-            dbName = getQualifiedName(context.db);
-        }
-
-        String pattern = null;
-        if (context.pattern != null) {
-            StringLiteral stringLiteral = (StringLiteral) visit(context.pattern);
-            pattern = stringLiteral.getValue();
-        }
-
-        Expr where = null;
-        if (context.expression() != null) {
-            where = (Expr) visit(context.expression());
-        }
-
-        return new ShowColumnStmt(qualifiedNameToTableName(tableName),
-                dbName == null ? null : dbName.toString(),
-                pattern,
-                context.FULL() != null,
-                where, createPos(context));
-    }
-
-    @Override
-    public ParseNode visitRefreshTableStatement(StarRocksParser.RefreshTableStatementContext context) {
-        QualifiedName qualifiedName = getQualifiedName(context.qualifiedName());
-        TableName targetTableName = qualifiedNameToTableName(qualifiedName);
-        List<String> partitionNames = null;
-        if (context.string() != null) {
-            partitionNames = context.string().stream()
-                    .map(c -> ((StringLiteral) visit(c)).getStringValue()).collect(toList());
-        }
-        return new RefreshTableStmt(targetTableName, partitionNames, createPos(context));
-    }
-
-    @Override
-    public ParseNode visitAlterTableStatement(StarRocksParser.AlterTableStatementContext context) {
-        QualifiedName qualifiedName = getQualifiedName(context.qualifiedName());
-        TableName targetTableName = qualifiedNameToTableName(qualifiedName);
-        NodePosition pos = createPos(context);
-        if (context.ROLLUP() != null) {
-            if (context.ADD() != null) {
-                List<AlterClause> clauses = context.rollupItem().stream().map(this::getRollup).collect(toList());
-                return new AlterTableStmt(targetTableName, clauses, pos);
-            } else {
-                List<Identifier> rollupList = visit(context.identifier(), Identifier.class);
-                List<AlterClause> clauses = new ArrayList<>();
-                for (Identifier rollupName : rollupList) {
-                    clauses.add(new DropRollupClause(rollupName.getValue(), null, rollupName.getPos()));
-                }
-                return new AlterTableStmt(targetTableName, clauses, pos);
-            }
-        } else {
-            List<AlterClause> alterClauses = visit(context.alterClause(), AlterClause.class);
-            return new AlterTableStmt(targetTableName, alterClauses, pos);
-        }
-    }
+//    @Override
+//    public ParseNode visitAlterTableStatement(StarRocksParser.AlterTableStatementContext context) {
+//        QualifiedName qualifiedName = getQualifiedName(context.qualifiedName());
+//        TableName targetTableName = qualifiedNameToTableName(qualifiedName);
+//        NodePosition pos = createPos(context);
+//        if (context.ROLLUP() != null) {
+//            if (context.ADD() != null) {
+//                List<AlterClause> clauses = context.rollupItem().stream().map(this::getRollup).collect(toList());
+//                return new AlterTableStmt(targetTableName, clauses, pos);
+//            } else {
+//                List<Identifier> rollupList = visit(context.identifier(), Identifier.class);
+//                List<AlterClause> clauses = new ArrayList<>();
+//                for (Identifier rollupName : rollupList) {
+//                    clauses.add(new DropRollupClause(rollupName.getValue(), null, rollupName.getPos()));
+//                }
+//                return new AlterTableStmt(targetTableName, clauses, pos);
+//            }
+//        } else {
+//            List<AlterClause> alterClauses = visit(context.alterClause(), AlterClause.class);
+//            return new AlterTableStmt(targetTableName, alterClauses, pos);
+//        }
+//    }
 
     @Override
     public ParseNode visitCancelAlterTableStatement(StarRocksParser.CancelAlterTableStatementContext context) {
@@ -3213,300 +3213,300 @@ public class AstBuilder extends StarRocksBaseVisitor<ParseNode> {
         return new DecommissionBackendClause(clusters, createPos(context));
     }
 
-    @Override
-    public ParseNode visitModifyBackendClause(StarRocksParser.ModifyBackendClauseContext context) {
-        List<String> strings =
-                context.string().stream().map(c -> ((StringLiteral) visit(c)).getStringValue()).collect(toList());
-        if (context.HOST() != null) {
-            return new ModifyBackendClause(strings.get(0), strings.get(1), createPos(context));
-        } else {
-            String backendHostPort = strings.get(0);
-            Map<String, String> properties = new HashMap<>();
-            List<Property> propertyList = visit(context.propertyList().property(), Property.class);
-            for (Property property : propertyList) {
-                properties.put(property.getKey(), property.getValue());
-            }
-            return new ModifyBackendClause(backendHostPort, properties, createPos(context));
-        }
-    }
+//    @Override
+//    public ParseNode visitModifyBackendClause(StarRocksParser.ModifyBackendClauseContext context) {
+//        List<String> strings =
+//                context.string().stream().map(c -> ((StringLiteral) visit(c)).getStringValue()).collect(toList());
+//        if (context.HOST() != null) {
+//            return new ModifyBackendClause(strings.get(0), strings.get(1), createPos(context));
+//        } else {
+//            String backendHostPort = strings.get(0);
+//            Map<String, String> properties = new HashMap<>();
+//            List<Property> propertyList = visit(context.propertyList().property(), Property.class);
+//            for (Property property : propertyList) {
+//                properties.put(property.getKey(), property.getValue());
+//            }
+//            return new ModifyBackendClause(backendHostPort, properties, createPos(context));
+//        }
+//    }
+//
+//    @Override
+//    public ParseNode visitAddComputeNodeClause(StarRocksParser.AddComputeNodeClauseContext context) {
+//        List<String> hostPorts =
+//                context.string().stream().map(c -> ((StringLiteral) visit(c)).getStringValue()).collect(toList());
+//        return new AddComputeNodeClause(hostPorts);
+//    }
+//
+//    @Override
+//    public ParseNode visitDropComputeNodeClause(StarRocksParser.DropComputeNodeClauseContext context) {
+//        List<String> hostPorts =
+//                context.string().stream().map(c -> ((StringLiteral) visit(c)).getStringValue()).collect(toList());
+//        return new DropComputeNodeClause(hostPorts, createPos(context));
+//    }
 
-    @Override
-    public ParseNode visitAddComputeNodeClause(StarRocksParser.AddComputeNodeClauseContext context) {
-        List<String> hostPorts =
-                context.string().stream().map(c -> ((StringLiteral) visit(c)).getStringValue()).collect(toList());
-        return new AddComputeNodeClause(hostPorts);
-    }
+//    @Override
+//    public ParseNode visitModifyBrokerClause(StarRocksParser.ModifyBrokerClauseContext context) {
+//        String brokerName = ((Identifier) visit(context.identifierOrString())).getValue();
+//        NodePosition pos = createPos(context);
+//        if (context.ALL() != null) {
+//            return ModifyBrokerClause.createDropAllBrokerClause(brokerName, pos);
+//        }
+//        List<String> hostPorts =
+//                context.string().stream().map(c -> ((StringLiteral) visit(c)).getStringValue()).collect(toList());
+//        if (context.ADD() != null) {
+//            return ModifyBrokerClause.createAddBrokerClause(brokerName, hostPorts, pos);
+//        }
+//        return ModifyBrokerClause.createDropBrokerClause(brokerName, hostPorts, pos);
+//    }
 
-    @Override
-    public ParseNode visitDropComputeNodeClause(StarRocksParser.DropComputeNodeClauseContext context) {
-        List<String> hostPorts =
-                context.string().stream().map(c -> ((StringLiteral) visit(c)).getStringValue()).collect(toList());
-        return new DropComputeNodeClause(hostPorts, createPos(context));
-    }
+//    @Override
+//    public ParseNode visitAlterLoadErrorUrlClause(StarRocksParser.AlterLoadErrorUrlClauseContext context) {
+//        return new AlterLoadErrorUrlClause(getProperties(context.properties()), createPos(context));
+//    }
+//
+//    @Override
+//    public ParseNode visitCreateImageClause(StarRocksParser.CreateImageClauseContext context) {
+//        return new CreateImageClause(createPos(context));
+//    }
 
-    @Override
-    public ParseNode visitModifyBrokerClause(StarRocksParser.ModifyBrokerClauseContext context) {
-        String brokerName = ((Identifier) visit(context.identifierOrString())).getValue();
-        NodePosition pos = createPos(context);
-        if (context.ALL() != null) {
-            return ModifyBrokerClause.createDropAllBrokerClause(brokerName, pos);
-        }
-        List<String> hostPorts =
-                context.string().stream().map(c -> ((StringLiteral) visit(c)).getStringValue()).collect(toList());
-        if (context.ADD() != null) {
-            return ModifyBrokerClause.createAddBrokerClause(brokerName, hostPorts, pos);
-        }
-        return ModifyBrokerClause.createDropBrokerClause(brokerName, hostPorts, pos);
-    }
-
-    @Override
-    public ParseNode visitAlterLoadErrorUrlClause(StarRocksParser.AlterLoadErrorUrlClauseContext context) {
-        return new AlterLoadErrorUrlClause(getProperties(context.properties()), createPos(context));
-    }
-
-    @Override
-    public ParseNode visitCreateImageClause(StarRocksParser.CreateImageClauseContext context) {
-        return new CreateImageClause(createPos(context));
-    }
-
-    @Override
-    public ParseNode visitCleanTabletSchedQClause(
-            StarRocksParser.CleanTabletSchedQClauseContext context) {
-        return new CleanTabletSchedQClause(createPos(context));
-    }
+//    @Override
+//    public ParseNode visitCleanTabletSchedQClause(
+//            StarRocksParser.CleanTabletSchedQClauseContext context) {
+//        return new CleanTabletSchedQClause(createPos(context));
+//    }
 
     // ---------Alter table clause---------
 
-    @Override
-    public ParseNode visitCreateIndexClause(StarRocksParser.CreateIndexClauseContext context) {
-        Token start = context.identifier().start;
-        String indexName = ((Identifier) visit(context.identifier())).getValue();
-        List<Identifier> columnList = visit(context.identifierList().identifier(), Identifier.class);
-        Token stop = context.identifierList().stop;
-        String comment = null;
-        if (context.comment() != null) {
-            stop = context.comment().stop;
-            comment = ((StringLiteral) visit(context.comment())).getStringValue();
-        }
+//    @Override
+//    public ParseNode visitCreateIndexClause(StarRocksParser.CreateIndexClauseContext context) {
+//        Token start = context.identifier().start;
+//        String indexName = ((Identifier) visit(context.identifier())).getValue();
+//        List<Identifier> columnList = visit(context.identifierList().identifier(), Identifier.class);
+//        Token stop = context.identifierList().stop;
+//        String comment = null;
+//        if (context.comment() != null) {
+//            stop = context.comment().stop;
+//            comment = ((StringLiteral) visit(context.comment())).getStringValue();
+//        }
+//
+//        IndexDef indexDef = new IndexDef(indexName,
+//                columnList.stream().map(Identifier::getValue).collect(toList()),
+//                getIndexType(context.indexType()),
+//                comment, getPropertyList(context.propertyList()),
+//                createPos(start, stop));
+//
+//        return new CreateIndexClause(indexDef, createPos(context));
+//    }
 
-        IndexDef indexDef = new IndexDef(indexName,
-                columnList.stream().map(Identifier::getValue).collect(toList()),
-                getIndexType(context.indexType()),
-                comment, getPropertyList(context.propertyList()),
-                createPos(start, stop));
+//    @Override
+//    public ParseNode visitDropIndexClause(StarRocksParser.DropIndexClauseContext context) {
+//        Identifier identifier = (Identifier) visit(context.identifier());
+//        return new DropIndexClause(identifier.getValue(), createPos(context));
+//    }
 
-        return new CreateIndexClause(indexDef, createPos(context));
-    }
+//    @Override
+//    public ParseNode visitTableRenameClause(StarRocksParser.TableRenameClauseContext context) {
+//        Identifier identifier = (Identifier) visit(context.identifier());
+//        return new TableRenameClause(identifier.getValue(), createPos(context));
+//    }
 
-    @Override
-    public ParseNode visitDropIndexClause(StarRocksParser.DropIndexClauseContext context) {
-        Identifier identifier = (Identifier) visit(context.identifier());
-        return new DropIndexClause(identifier.getValue(), createPos(context));
-    }
+//    @Override
+//    public ParseNode visitModifyCommentClause(StarRocksParser.ModifyCommentClauseContext context) {
+//        String comment = ((StringLiteral) visit(context.string())).getStringValue();
+//        return new AlterTableCommentClause(comment, createPos(context));
+//    }
 
-    @Override
-    public ParseNode visitTableRenameClause(StarRocksParser.TableRenameClauseContext context) {
-        Identifier identifier = (Identifier) visit(context.identifier());
-        return new TableRenameClause(identifier.getValue(), createPos(context));
-    }
+//    @Override
+//    public ParseNode visitSwapTableClause(StarRocksParser.SwapTableClauseContext context) {
+//        Identifier identifier = (Identifier) visit(context.identifier());
+//        return new SwapTableClause(identifier.getValue(), createPos(context));
+//    }
 
-    @Override
-    public ParseNode visitModifyCommentClause(StarRocksParser.ModifyCommentClauseContext context) {
-        String comment = ((StringLiteral) visit(context.string())).getStringValue();
-        return new AlterTableCommentClause(comment, createPos(context));
-    }
+//    @Override
+//    public ParseNode visitModifyPropertiesClause(StarRocksParser.ModifyPropertiesClauseContext context) {
+//        Map<String, String> properties = new HashMap<>();
+//        List<Property> propertyList = visit(context.propertyList().property(), Property.class);
+//        for (Property property : propertyList) {
+//            properties.put(property.getKey(), property.getValue());
+//        }
+//        return new ModifyTablePropertiesClause(properties, createPos(context));
+//    }
 
-    @Override
-    public ParseNode visitSwapTableClause(StarRocksParser.SwapTableClauseContext context) {
-        Identifier identifier = (Identifier) visit(context.identifier());
-        return new SwapTableClause(identifier.getValue(), createPos(context));
-    }
+//    @Override
+//    public ParseNode visitOptimizeClause(StarRocksParser.OptimizeClauseContext context) {
+//        return new OptimizeClause(
+//                context.keyDesc() == null ? null : getKeysDesc(context.keyDesc()),
+//                context.partitionDesc() == null ? null : getPartitionDesc(context.partitionDesc(), null),
+//                context.distributionDesc() == null ? null : (DistributionDesc) visit(context.distributionDesc()),
+//                context.orderByDesc() == null ? null :
+//                        visit(context.orderByDesc().identifierList().identifier(), Identifier.class)
+//                                .stream().map(Identifier::getValue).collect(toList()),
+//                context.partitionNames() == null ? null : (PartitionNames) visit(context.partitionNames()),
+//                createPos(context));
+//    }
 
-    @Override
-    public ParseNode visitModifyPropertiesClause(StarRocksParser.ModifyPropertiesClauseContext context) {
-        Map<String, String> properties = new HashMap<>();
-        List<Property> propertyList = visit(context.propertyList().property(), Property.class);
-        for (Property property : propertyList) {
-            properties.put(property.getKey(), property.getValue());
-        }
-        return new ModifyTablePropertiesClause(properties, createPos(context));
-    }
+//    @Override
+//    public ParseNode visitAddColumnClause(StarRocksParser.AddColumnClauseContext context) {
+//        ColumnDef columnDef = getColumnDef(context.columnDesc());
+//        if (columnDef.isAutoIncrement()) {
+//            throw new ParsingException(PARSER_ERROR_MSG.autoIncrementForbid(columnDef.getName(), "ADD"),
+//                    columnDef.getPos());
+//        }
+//        ColumnPosition columnPosition = null;
+//        if (context.FIRST() != null) {
+//            columnPosition = ColumnPosition.FIRST;
+//        } else if (context.AFTER() != null) {
+//            StarRocksParser.IdentifierContext identifier = context.identifier(0);
+//            String afterColumnName = getIdentifierName(identifier);
+//            columnPosition = new ColumnPosition(afterColumnName, createPos(identifier));
+//        }
+//        String rollupName = null;
+//        if (context.rollupName != null) {
+//            rollupName = getIdentifierName(context.rollupName);
+//        }
+//        Map<String, String> properties = new HashMap<>();
+//        ;
+//        properties = getProperties(context.properties());
+//
+//        if (columnDef.isGeneratedColumn()) {
+//            if (rollupName != null) {
+//                throw new ParsingException(
+//                        PARSER_ERROR_MSG.generatedColumnLimit("rollupName", "ADD GENERATED COLUMN"),
+//                        columnDef.getPos());
+//            }
+//
+//            if (columnPosition != null) {
+//                throw new ParsingException(
+//                        PARSER_ERROR_MSG.generatedColumnLimit("AFTER", "ADD GENERATED COLUMN"),
+//                        columnDef.getPos());
+//            }
+//
+//            if (properties.size() != 0) {
+//                throw new ParsingException(
+//                        PARSER_ERROR_MSG.generatedColumnLimit("properties", "ADD GENERATED COLUMN"),
+//                        columnDef.getPos());
+//            }
+//        }
+//
+//        return new AddColumnClause(columnDef, columnPosition, rollupName, properties, createPos(context));
+//    }
 
-    @Override
-    public ParseNode visitOptimizeClause(StarRocksParser.OptimizeClauseContext context) {
-        return new OptimizeClause(
-                context.keyDesc() == null ? null : getKeysDesc(context.keyDesc()),
-                context.partitionDesc() == null ? null : getPartitionDesc(context.partitionDesc(), null),
-                context.distributionDesc() == null ? null : (DistributionDesc) visit(context.distributionDesc()),
-                context.orderByDesc() == null ? null :
-                        visit(context.orderByDesc().identifierList().identifier(), Identifier.class)
-                                .stream().map(Identifier::getValue).collect(toList()),
-                context.partitionNames() == null ? null : (PartitionNames) visit(context.partitionNames()),
-                createPos(context));
-    }
+//    @Override
+//    public ParseNode visitAddColumnsClause(StarRocksParser.AddColumnsClauseContext context) {
+//        List<ColumnDef> columnDefs = getColumnDefs(context.columnDesc());
+//        Map<String, String> properties = new HashMap<>();
+//        properties = getProperties(context.properties());
+//        String rollupName = null;
+//        if (context.rollupName != null) {
+//            rollupName = getIdentifierName(context.rollupName);
+//        }
+//        for (ColumnDef columnDef : columnDefs) {
+//            if (columnDef.isAutoIncrement()) {
+//                throw new ParsingException(PARSER_ERROR_MSG.autoIncrementForbid(columnDef.getName(), "ADD"),
+//                        columnDef.getPos());
+//            }
+//            if (columnDef.isGeneratedColumn()) {
+//                if (rollupName != null) {
+//                    throw new ParsingException(
+//                            PARSER_ERROR_MSG.generatedColumnLimit("rollupName", "ADD GENERATED COLUMN"),
+//                            columnDef.getPos());
+//                }
+//
+//                if (properties.size() != 0) {
+//                    throw new ParsingException(
+//                            PARSER_ERROR_MSG.generatedColumnLimit("properties", "ADD GENERATED COLUMN"),
+//                            columnDef.getPos());
+//                }
+//            }
+//        }
+//        return new AddColumnsClause(columnDefs, rollupName, getProperties(context.properties()), createPos(context));
+//    }
 
-    @Override
-    public ParseNode visitAddColumnClause(StarRocksParser.AddColumnClauseContext context) {
-        ColumnDef columnDef = getColumnDef(context.columnDesc());
-        if (columnDef.isAutoIncrement()) {
-            throw new ParsingException(PARSER_ERROR_MSG.autoIncrementForbid(columnDef.getName(), "ADD"),
-                    columnDef.getPos());
-        }
-        ColumnPosition columnPosition = null;
-        if (context.FIRST() != null) {
-            columnPosition = ColumnPosition.FIRST;
-        } else if (context.AFTER() != null) {
-            StarRocksParser.IdentifierContext identifier = context.identifier(0);
-            String afterColumnName = getIdentifierName(identifier);
-            columnPosition = new ColumnPosition(afterColumnName, createPos(identifier));
-        }
-        String rollupName = null;
-        if (context.rollupName != null) {
-            rollupName = getIdentifierName(context.rollupName);
-        }
-        Map<String, String> properties = new HashMap<>();
-        ;
-        properties = getProperties(context.properties());
+//    @Override
+//    public ParseNode visitDropColumnClause(StarRocksParser.DropColumnClauseContext context) {
+//        String columnName = getIdentifierName(context.identifier(0));
+//        String rollupName = null;
+//        if (context.rollupName != null) {
+//            rollupName = getIdentifierName(context.rollupName);
+//        }
+//        return new DropColumnClause(columnName, rollupName, getProperties(context.properties()), createPos(context));
+//    }
 
-        if (columnDef.isGeneratedColumn()) {
-            if (rollupName != null) {
-                throw new ParsingException(
-                        PARSER_ERROR_MSG.generatedColumnLimit("rollupName", "ADD GENERATED COLUMN"),
-                        columnDef.getPos());
-            }
+//    @Override
+//    public ParseNode visitModifyColumnClause(StarRocksParser.ModifyColumnClauseContext context) {
+//        ColumnDef columnDef = getColumnDef(context.columnDesc());
+//        if (columnDef.isAutoIncrement()) {
+//            throw new ParsingException(PARSER_ERROR_MSG.autoIncrementForbid(columnDef.getName(), "MODIFY"),
+//                    columnDef.getPos());
+//        }
+//        ColumnPosition columnPosition = null;
+//        if (context.FIRST() != null) {
+//            columnPosition = ColumnPosition.FIRST;
+//        } else if (context.AFTER() != null) {
+//            StarRocksParser.IdentifierContext identifier = context.identifier(0);
+//            String afterColumnName = getIdentifierName(identifier);
+//            columnPosition = new ColumnPosition(afterColumnName, createPos(identifier));
+//        }
+//        String rollupName = null;
+//        if (context.rollupName != null) {
+//            rollupName = getIdentifierName(context.rollupName);
+//        }
+//        if (columnDef.isGeneratedColumn()) {
+//            if (rollupName != null) {
+//                throw new ParsingException(PARSER_ERROR_MSG.generatedColumnLimit("rollupName",
+//                        "MODIFY GENERATED COLUMN"), columnDef.getPos());
+//            }
+//
+//            if (columnPosition != null) {
+//                throw new ParsingException(PARSER_ERROR_MSG.generatedColumnLimit("columnPosition",
+//                        "MODIFY GENERATED COLUMN"), columnDef.getPos());
+//            }
+//        }
+//        return new ModifyColumnClause(columnDef, columnPosition, rollupName, getProperties(context.properties()),
+//                createPos(context));
+//    }
 
-            if (columnPosition != null) {
-                throw new ParsingException(
-                        PARSER_ERROR_MSG.generatedColumnLimit("AFTER", "ADD GENERATED COLUMN"),
-                        columnDef.getPos());
-            }
+//    @Override
+//    public ParseNode visitColumnRenameClause(StarRocksParser.ColumnRenameClauseContext context) {
+//        String oldColumnName = getIdentifierName(context.oldColumn);
+//        String newColumnName = getIdentifierName(context.newColumn);
+//        return new ColumnRenameClause(oldColumnName, newColumnName, createPos(context));
+//    }
 
-            if (properties.size() != 0) {
-                throw new ParsingException(
-                        PARSER_ERROR_MSG.generatedColumnLimit("properties", "ADD GENERATED COLUMN"),
-                        columnDef.getPos());
-            }
-        }
+//    @Override
+//    public ParseNode visitReorderColumnsClause(StarRocksParser.ReorderColumnsClauseContext context) {
+//        List<String> cols =
+//                context.identifierList().identifier().stream().map(this::getIdentifierName).collect(toList());
+//        String rollupName = null;
+//        if (context.rollupName != null) {
+//            rollupName = getIdentifierName(context.rollupName);
+//        }
+//        return new ReorderColumnsClause(cols, rollupName, getProperties(context.properties()), createPos(context));
+//    }
 
-        return new AddColumnClause(columnDef, columnPosition, rollupName, properties, createPos(context));
-    }
+//    @Override
+//    public ParseNode visitRollupRenameClause(StarRocksParser.RollupRenameClauseContext context) {
+//        String rollupName = ((Identifier) visit(context.rollupName)).getValue();
+//        String newRollupName = ((Identifier) visit(context.newRollupName)).getValue();
+//        return new RollupRenameClause(rollupName, newRollupName, createPos(context));
+//    }
 
-    @Override
-    public ParseNode visitAddColumnsClause(StarRocksParser.AddColumnsClauseContext context) {
-        List<ColumnDef> columnDefs = getColumnDefs(context.columnDesc());
-        Map<String, String> properties = new HashMap<>();
-        properties = getProperties(context.properties());
-        String rollupName = null;
-        if (context.rollupName != null) {
-            rollupName = getIdentifierName(context.rollupName);
-        }
-        for (ColumnDef columnDef : columnDefs) {
-            if (columnDef.isAutoIncrement()) {
-                throw new ParsingException(PARSER_ERROR_MSG.autoIncrementForbid(columnDef.getName(), "ADD"),
-                        columnDef.getPos());
-            }
-            if (columnDef.isGeneratedColumn()) {
-                if (rollupName != null) {
-                    throw new ParsingException(
-                            PARSER_ERROR_MSG.generatedColumnLimit("rollupName", "ADD GENERATED COLUMN"),
-                            columnDef.getPos());
-                }
-
-                if (properties.size() != 0) {
-                    throw new ParsingException(
-                            PARSER_ERROR_MSG.generatedColumnLimit("properties", "ADD GENERATED COLUMN"),
-                            columnDef.getPos());
-                }
-            }
-        }
-        return new AddColumnsClause(columnDefs, rollupName, getProperties(context.properties()), createPos(context));
-    }
-
-    @Override
-    public ParseNode visitDropColumnClause(StarRocksParser.DropColumnClauseContext context) {
-        String columnName = getIdentifierName(context.identifier(0));
-        String rollupName = null;
-        if (context.rollupName != null) {
-            rollupName = getIdentifierName(context.rollupName);
-        }
-        return new DropColumnClause(columnName, rollupName, getProperties(context.properties()), createPos(context));
-    }
-
-    @Override
-    public ParseNode visitModifyColumnClause(StarRocksParser.ModifyColumnClauseContext context) {
-        ColumnDef columnDef = getColumnDef(context.columnDesc());
-        if (columnDef.isAutoIncrement()) {
-            throw new ParsingException(PARSER_ERROR_MSG.autoIncrementForbid(columnDef.getName(), "MODIFY"),
-                    columnDef.getPos());
-        }
-        ColumnPosition columnPosition = null;
-        if (context.FIRST() != null) {
-            columnPosition = ColumnPosition.FIRST;
-        } else if (context.AFTER() != null) {
-            StarRocksParser.IdentifierContext identifier = context.identifier(0);
-            String afterColumnName = getIdentifierName(identifier);
-            columnPosition = new ColumnPosition(afterColumnName, createPos(identifier));
-        }
-        String rollupName = null;
-        if (context.rollupName != null) {
-            rollupName = getIdentifierName(context.rollupName);
-        }
-        if (columnDef.isGeneratedColumn()) {
-            if (rollupName != null) {
-                throw new ParsingException(PARSER_ERROR_MSG.generatedColumnLimit("rollupName",
-                        "MODIFY GENERATED COLUMN"), columnDef.getPos());
-            }
-
-            if (columnPosition != null) {
-                throw new ParsingException(PARSER_ERROR_MSG.generatedColumnLimit("columnPosition",
-                        "MODIFY GENERATED COLUMN"), columnDef.getPos());
-            }
-        }
-        return new ModifyColumnClause(columnDef, columnPosition, rollupName, getProperties(context.properties()),
-                createPos(context));
-    }
-
-    @Override
-    public ParseNode visitColumnRenameClause(StarRocksParser.ColumnRenameClauseContext context) {
-        String oldColumnName = getIdentifierName(context.oldColumn);
-        String newColumnName = getIdentifierName(context.newColumn);
-        return new ColumnRenameClause(oldColumnName, newColumnName, createPos(context));
-    }
-
-    @Override
-    public ParseNode visitReorderColumnsClause(StarRocksParser.ReorderColumnsClauseContext context) {
-        List<String> cols =
-                context.identifierList().identifier().stream().map(this::getIdentifierName).collect(toList());
-        String rollupName = null;
-        if (context.rollupName != null) {
-            rollupName = getIdentifierName(context.rollupName);
-        }
-        return new ReorderColumnsClause(cols, rollupName, getProperties(context.properties()), createPos(context));
-    }
-
-    @Override
-    public ParseNode visitRollupRenameClause(StarRocksParser.RollupRenameClauseContext context) {
-        String rollupName = ((Identifier) visit(context.rollupName)).getValue();
-        String newRollupName = ((Identifier) visit(context.newRollupName)).getValue();
-        return new RollupRenameClause(rollupName, newRollupName, createPos(context));
-    }
-
-    @Override
-    public ParseNode visitCompactionClause(StarRocksParser.CompactionClauseContext ctx) {
-        NodePosition pos = createPos(ctx);
-        boolean baseCompaction = ctx.CUMULATIVE() == null;
-
-        if (ctx.identifier() != null) {
-            final String partitionName = ((Identifier) visit(ctx.identifier())).getValue();
-            return new CompactionClause(Collections.singletonList(partitionName), baseCompaction, pos);
-        } else if (ctx.identifierList() != null) {
-            final List<Identifier> identifierList = visit(ctx.identifierList().identifier(), Identifier.class);
-            return new CompactionClause(identifierList.stream().map(Identifier::getValue).collect(toList()),
-                    baseCompaction, pos);
-        } else {
-            return new CompactionClause(baseCompaction, pos);
-        }
-    }
+//    @Override
+//    public ParseNode visitCompactionClause(StarRocksParser.CompactionClauseContext ctx) {
+//        NodePosition pos = createPos(ctx);
+//        boolean baseCompaction = ctx.CUMULATIVE() == null;
+//
+//        if (ctx.identifier() != null) {
+//            final String partitionName = ((Identifier) visit(ctx.identifier())).getValue();
+//            return new CompactionClause(Collections.singletonList(partitionName), baseCompaction, pos);
+//        } else if (ctx.identifierList() != null) {
+//            final List<Identifier> identifierList = visit(ctx.identifierList().identifier(), Identifier.class);
+//            return new CompactionClause(identifierList.stream().map(Identifier::getValue).collect(toList()),
+//                    baseCompaction, pos);
+//        } else {
+//            return new CompactionClause(baseCompaction, pos);
+//        }
+//    }
 
     // ---------Alter partition clause---------
 

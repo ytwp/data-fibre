@@ -500,44 +500,44 @@ public class DefaultCoordinator extends Coordinator {
     private void prepareResultSink() throws AnalysisException {
         ExecutionFragment rootExecFragment = executionDAG.getRootFragment();
         long workerId = rootExecFragment.getInstances().get(0).getWorkerId();
-        ComputeNode worker = coordinatorPreprocessor.getWorkerProvider().getWorkerById(workerId);
-        // Select top fragment as global runtime filter merge address
-        setGlobalRuntimeFilterParams(rootExecFragment, worker.getBrpcIpAddress());
-        boolean isLoadType = !(rootExecFragment.getPlanFragment().getSink() instanceof ResultSink);
-        if (isLoadType) {
-            // TODO (by satanson): Other DataSink except ResultSink can not support global
-            //  runtime filter merging at present, we should support it in future.
-            // pipeline-level runtime filter needs to derive RuntimeFilterLayout, so we collect
-            // RuntimeFilterDescription
-            for (ExecutionFragment execFragment : executionDAG.getFragmentsInPreorder()) {
-                PlanFragment fragment = execFragment.getPlanFragment();
-                fragment.collectBuildRuntimeFilters(fragment.getPlanRoot());
-            }
-            return;
-        }
-
-        TNetworkAddress execBeAddr = worker.getAddress();
-        receiver = new ResultReceiver(
-                rootExecFragment.getInstances().get(0).getInstanceId(),
-                workerId,
-                worker.getBrpcAddress(),
-                jobSpec.getQueryOptions().query_timeout * 1000);
-
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("dispatch query job: {} to {}", DebugUtil.printId(jobSpec.getQueryId()), execBeAddr);
-        }
-
-        // set the broker address for OUTFILE sink
-        ResultSink resultSink = (ResultSink) rootExecFragment.getPlanFragment().getSink();
-        if (isBinaryRow) {
-            resultSink.setBinaryRow(true);
-        }
-        if (resultSink.isOutputFileSink() && resultSink.needBroker()) {
-            FsBroker broker = GlobalStateMgr.getCurrentState().getBrokerMgr().getBroker(resultSink.getBrokerName(),
-                    execBeAddr.getHostname());
-            resultSink.setBrokerAddr(broker.ip, broker.port);
-            LOG.info("OUTFILE through broker: {}:{}", broker.ip, broker.port);
-        }
+//        ComputeNode worker = coordinatorPreprocessor.getWorkerProvider().getWorkerById(workerId);
+//        // Select top fragment as global runtime filter merge address
+//        setGlobalRuntimeFilterParams(rootExecFragment, worker.getBrpcIpAddress());
+//        boolean isLoadType = !(rootExecFragment.getPlanFragment().getSink() instanceof ResultSink);
+//        if (isLoadType) {
+//            // TODO (by satanson): Other DataSink except ResultSink can not support global
+//            //  runtime filter merging at present, we should support it in future.
+//            // pipeline-level runtime filter needs to derive RuntimeFilterLayout, so we collect
+//            // RuntimeFilterDescription
+//            for (ExecutionFragment execFragment : executionDAG.getFragmentsInPreorder()) {
+//                PlanFragment fragment = execFragment.getPlanFragment();
+//                fragment.collectBuildRuntimeFilters(fragment.getPlanRoot());
+//            }
+//            return;
+//        }
+//
+//        TNetworkAddress execBeAddr = worker.getAddress();
+//        receiver = new ResultReceiver(
+//                rootExecFragment.getInstances().get(0).getInstanceId(),
+//                workerId,
+//                worker.getBrpcAddress(),
+//                jobSpec.getQueryOptions().query_timeout * 1000);
+//
+//        if (LOG.isDebugEnabled()) {
+//            LOG.debug("dispatch query job: {} to {}", DebugUtil.printId(jobSpec.getQueryId()), execBeAddr);
+//        }
+//
+//        // set the broker address for OUTFILE sink
+//        ResultSink resultSink = (ResultSink) rootExecFragment.getPlanFragment().getSink();
+//        if (isBinaryRow) {
+//            resultSink.setBinaryRow(true);
+//        }
+//        if (resultSink.isOutputFileSink() && resultSink.needBroker()) {
+//            FsBroker broker = GlobalStateMgr.getCurrentState().getBrokerMgr().getBroker(resultSink.getBrokerName(),
+//                    execBeAddr.getHostname());
+//            resultSink.setBrokerAddr(broker.ip, broker.port);
+//            LOG.info("OUTFILE through broker: {}:{}", broker.ip, broker.port);
+//        }
     }
 
     private void deliverExecFragments(boolean needDeploy) throws RpcException, UserException {

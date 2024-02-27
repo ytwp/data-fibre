@@ -14,20 +14,9 @@
 
 package io.datafibre.fibre.sql.parser;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import io.datafibre.fibre.analysis.*;
+import io.datafibre.fibre.analysis.HintNode;
 import io.datafibre.fibre.qe.SessionVariable;
-import io.datafibre.fibre.sql.ast.UserVariable;
 import org.antlr.v4.runtime.Token;
-
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import static io.datafibre.fibre.analysis.SetVarHint.SET_VAR;
-import static io.datafibre.fibre.analysis.UserVariableHint.SET_USER_VARIABLE;
-import static io.datafibre.fibre.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
 
 public class HintFactory {
 
@@ -38,26 +27,27 @@ public class HintFactory {
         text = text.substring(3, text.length() - 2);
         text = trimWithSpace(text);
         HintNode node;
-        if (SetVarHint.LEAST_LEN < text.length()
-                && SET_VAR.equalsIgnoreCase(text.substring(0, SET_VAR.length()))) {
-            text = text.substring(SET_VAR.length());
-            node = buildSetVarHint(text, token);
-            if (node == null) {
-                throw new ParsingException(PARSER_ERROR_MSG.invalidHintValue(token.getText()), new NodePosition(token));
-            }
-            return node;
-        } else if (UserVariableHint.LEAST_LEN < text.length() &&
-                SET_USER_VARIABLE.equalsIgnoreCase(text.substring(0, SET_USER_VARIABLE.length()))) {
-            text = text.substring(SET_USER_VARIABLE.length());
-            node = buildUserVariableHint(text, token, sessionVariable);
-            if (node == null) {
-                throw new ParsingException(PARSER_ERROR_MSG.invalidHintValue(token.getText()), new NodePosition(token));
-            }
-            return node;
-        } else {
-            // unsupported hint format, just regard it as a comment
-            return null;
-        }
+//        if (SetVarHint.LEAST_LEN < text.length()
+//                && SET_VAR.equalsIgnoreCase(text.substring(0, SET_VAR.length()))) {
+//            text = text.substring(SET_VAR.length());
+//            node = buildSetVarHint(text, token);
+//            if (node == null) {
+//                throw new ParsingException(PARSER_ERROR_MSG.invalidHintValue(token.getText()), new NodePosition(token));
+//            }
+//            return node;
+//        } else if (UserVariableHint.LEAST_LEN < text.length() &&
+//                SET_USER_VARIABLE.equalsIgnoreCase(text.substring(0, SET_USER_VARIABLE.length()))) {
+//            text = text.substring(SET_USER_VARIABLE.length());
+//            node = buildUserVariableHint(text, token, sessionVariable);
+//            if (node == null) {
+//                throw new ParsingException(PARSER_ERROR_MSG.invalidHintValue(token.getText()), new NodePosition(token));
+//            }
+//            return node;
+//        } else {
+//            // unsupported hint format, just regard it as a comment
+//            return null;
+//        }
+        return null;
     }
 
 
@@ -76,108 +66,107 @@ public class HintFactory {
         return st < len ? text.substring(st, len) : "";
     }
 
-    private static SetVarHint buildSetVarHint(String text, Token token) {
-        int length = text.length();
-        int idx = 0;
-        List<String> splitRes = Lists.newArrayList();
-        char inStringStart = '-';
-        StringBuilder sb = new StringBuilder();
+//    private static SetVarHint buildSetVarHint(String text, Token token) {
+//        int length = text.length();
+//        int idx = 0;
+//        List<String> splitRes = Lists.newArrayList();
+//        char inStringStart = '-';
+//        StringBuilder sb = new StringBuilder();
+//
+//        boolean expectSplitSymbol = false;
+//        boolean hasStart = false;
+//        boolean hasStop = false;
+//        while (idx < length) {
+//            char character = text.charAt(idx);
+//            if (character == '\"' || character == '\'') {
+//                inStringStart = character;
+//                idx++;
+//                while (idx < length && ((text.charAt(idx) != inStringStart) || text.charAt(idx - 1) == '\\')) {
+//                    sb.append(text.charAt(idx));
+//                    idx++;
+//                }
+//                expectSplitSymbol = true;
+//            } else if (isWhiteSpace(character)) {
+//                // do nothing just skip
+//            } else if (character == '(' && !hasStart) {
+//                hasStart = true;
+//            } else if (character == ')' && !hasStop) {
+//                hasStop = true;
+//            } else if (character == '=' || character == ',') {
+//                if (sb.length() != 0) {
+//                    splitRes.add(sb.toString());
+//                    sb = new StringBuilder();
+//                    expectSplitSymbol = false;
+//                } else {
+//                    return null;
+//                }
+//            } else if (expectSplitSymbol || character == '(' || character == ')') {
+//                return null;
+//            } else {
+//                sb.append(character);
+//            }
+//            idx++;
+//        }
+//        if (sb.length() != 0) {
+//            splitRes.add(sb.toString());
+//        }
+//
+//        if (splitRes.isEmpty() || (splitRes.size() % 2 != 0)) {
+//            return null;
+//        }
+//
+//        Map<String, String> valueMap = Maps.newHashMap();
+//        int pos = 0;
+//        int size = splitRes.size();
+//        while (pos < size - 1) {
+//            String key = splitRes.get(pos);
+//            String value = splitRes.get(pos + 1);
+//            valueMap.put(key.toLowerCase(Locale.ROOT), value);
+//            pos += 2;
+//        }
+//
+//        return pos == size ?
+//                new SetVarHint(new NodePosition(token), valueMap, token.getText()) : null;
+//    }
 
-        boolean expectSplitSymbol = false;
-        boolean hasStart = false;
-        boolean hasStop = false;
-        while (idx < length) {
-            char character = text.charAt(idx);
-            if (character == '\"' || character == '\'') {
-                inStringStart = character;
-                idx++;
-                while (idx < length && ((text.charAt(idx) != inStringStart) || text.charAt(idx - 1) == '\\')) {
-                    sb.append(text.charAt(idx));
-                    idx++;
-                }
-                expectSplitSymbol = true;
-            } else if (isWhiteSpace(character)) {
-                // do nothing just skip
-            } else if (character == '(' && !hasStart) {
-                hasStart = true;
-            } else if (character == ')' && !hasStop) {
-                hasStop = true;
-            } else if (character == '=' || character == ',') {
-                if (sb.length() != 0) {
-                    splitRes.add(sb.toString());
-                    sb = new StringBuilder();
-                    expectSplitSymbol = false;
-                } else {
-                    return null;
-                }
-            } else if (expectSplitSymbol || character == '(' || character == ')') {
-                return null;
-            } else {
-                sb.append(character);
-            }
-            idx++;
-        }
-        if (sb.length() != 0) {
-            splitRes.add(sb.toString());
-        }
-
-        if (splitRes.isEmpty() || (splitRes.size() % 2 != 0)) {
-            return null;
-        }
-
-        Map<String, String> valueMap = Maps.newHashMap();
-        int pos = 0;
-        int size = splitRes.size();
-        while (pos < size - 1) {
-            String key = splitRes.get(pos);
-            String value = splitRes.get(pos + 1);
-            valueMap.put(key.toLowerCase(Locale.ROOT), value);
-            pos += 2;
-        }
-
-        return pos == size ?
-                new SetVarHint(new NodePosition(token), valueMap, token.getText()) : null;
-    }
-
-    private static UserVariableHint buildUserVariableHint(String text, Token token, SessionVariable sessionVariable) {
-        text = trimWithSpace(text);
-
-        Map<String, UserVariable> userVariables = Maps.newHashMap();
-        if (text.startsWith("(") && text.endsWith(")")) {
-            List<Expr> exprs;
-            try {
-                exprs = SqlParser.parseSqlToExprs(text.substring(1, text.length() - 1), sessionVariable);
-            } catch (Exception e) {
-                return null;
-            }
-
-            for (Expr expr : exprs) {
-                if (!(expr instanceof BinaryPredicate)) {
-                    return null;
-                }
-
-                BinaryPredicate binaryPredicate = (BinaryPredicate) expr;
-                if (binaryPredicate.getOp() != BinaryType.EQ) {
-                    return null;
-                }
-
-                if (binaryPredicate.getChild(0) instanceof VariableExpr) {
-                    VariableExpr variableExpr = (VariableExpr) binaryPredicate.getChild(0);
-                    userVariables.put(variableExpr.getName(),
-                            new UserVariable(variableExpr.getName(), binaryPredicate.getChild(1),
-                                    true, binaryPredicate.getPos()));
-
-                } else {
-                    return null;
-                }
-            }
-
-        } else {
-            return null;
-        }
-        return new UserVariableHint(new NodePosition(token), userVariables, token.getText());
-    }
-
+//    private static UserVariableHint buildUserVariableHint(String text, Token token, SessionVariable sessionVariable) {
+//        text = trimWithSpace(text);
+//
+//        Map<String, UserVariable> userVariables = Maps.newHashMap();
+//        if (text.startsWith("(") && text.endsWith(")")) {
+//            List<Expr> exprs;
+//            try {
+//                exprs = SqlParser.parseSqlToExprs(text.substring(1, text.length() - 1), sessionVariable);
+//            } catch (Exception e) {
+//                return null;
+//            }
+//
+//            for (Expr expr : exprs) {
+//                if (!(expr instanceof BinaryPredicate)) {
+//                    return null;
+//                }
+//
+//                BinaryPredicate binaryPredicate = (BinaryPredicate) expr;
+//                if (binaryPredicate.getOp() != BinaryType.EQ) {
+//                    return null;
+//                }
+//
+//                if (binaryPredicate.getChild(0) instanceof VariableExpr) {
+//                    VariableExpr variableExpr = (VariableExpr) binaryPredicate.getChild(0);
+//                    userVariables.put(variableExpr.getName(),
+//                            new UserVariable(variableExpr.getName(), binaryPredicate.getChild(1),
+//                                    true, binaryPredicate.getPos()));
+//
+//                } else {
+//                    return null;
+//                }
+//            }
+//
+//        } else {
+//            return null;
+//        }
+//        return new UserVariableHint(new NodePosition(token), userVariables, token.getText());
+//    }
 
 
     private static boolean isWhiteSpace(char c) {

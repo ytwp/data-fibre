@@ -35,94 +35,50 @@
 package io.datafibre.fibre.server;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import io.datafibre.fibre.alter.AlterJobMgr;
-import io.datafibre.fibre.analysis.LiteralExpr;
-import io.datafibre.fibre.analysis.TableName;
 import io.datafibre.fibre.authentication.AuthenticationMgr;
 import io.datafibre.fibre.backup.BackupHandler;
-import io.datafibre.fibre.binlog.BinlogManager;
 import io.datafibre.fibre.catalog.*;
 import io.datafibre.fibre.clone.*;
-import io.datafibre.fibre.common.*;
-import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.FeConstants;
 import io.datafibre.fibre.common.util.*;
 import io.datafibre.fibre.common.util.concurrent.QueryableReentrantLock;
 import io.datafibre.fibre.common.util.concurrent.lock.LockManager;
-import io.datafibre.fibre.common.util.concurrent.lock.LockType;
-import io.datafibre.fibre.common.util.concurrent.lock.Locker;
 import io.datafibre.fibre.connector.ConnectorMetadata;
 import io.datafibre.fibre.connector.ConnectorMgr;
 import io.datafibre.fibre.connector.ConnectorTblMetaInfoMgr;
-import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
-import io.datafibre.fibre.consistency.ConsistencyChecker;
-import io.datafibre.fibre.consistency.LockChecker;
 import io.datafibre.fibre.ha.FrontendNodeType;
-import io.datafibre.fibre.healthchecker.SafeModeChecker;
 import io.datafibre.fibre.journal.*;
-import io.datafibre.fibre.journal.bdbje.Timestamp;
-import io.datafibre.fibre.lake.ShardManager;
-import io.datafibre.fibre.lake.StarMgrMetaSyncer;
-import io.datafibre.fibre.lake.StarOSAgent;
 import io.datafibre.fibre.lake.compaction.CompactionMgr;
-import io.datafibre.fibre.lake.vacuum.AutovacuumDaemon;
-import io.datafibre.fibre.leader.Checkpoint;
-import io.datafibre.fibre.leader.TaskRunStateSynchronizer;
 import io.datafibre.fibre.load.*;
 import io.datafibre.fibre.load.loadv2.*;
-import io.datafibre.fibre.load.pipe.PipeListener;
 import io.datafibre.fibre.load.pipe.PipeManager;
-import io.datafibre.fibre.load.pipe.PipeScheduler;
 import io.datafibre.fibre.load.routineload.RoutineLoadMgr;
-import io.datafibre.fibre.load.routineload.RoutineLoadScheduler;
-import io.datafibre.fibre.load.routineload.RoutineLoadTaskScheduler;
 import io.datafibre.fibre.load.streamload.StreamLoadMgr;
-import io.datafibre.fibre.memory.MemoryUsageTracker;
 import io.datafibre.fibre.meta.MetaContext;
-import io.datafibre.fibre.metric.MetricRepo;
-import io.datafibre.fibre.persist.*;
-import io.datafibre.fibre.persist.gson.GsonUtils;
 import io.datafibre.fibre.persist.metablock.*;
 import io.datafibre.fibre.plugin.PluginMgr;
 import io.datafibre.fibre.privilege.AuthorizationMgr;
-import io.datafibre.fibre.privilege.PrivilegeException;
-import io.datafibre.fibre.qe.*;
+import io.datafibre.fibre.qe.AuditEventProcessor;
+import io.datafibre.fibre.qe.JournalObservable;
 import io.datafibre.fibre.qe.scheduler.slot.ResourceUsageMonitor;
 import io.datafibre.fibre.qe.scheduler.slot.SlotManager;
 import io.datafibre.fibre.qe.scheduler.slot.SlotProvider;
-import io.datafibre.fibre.replication.ReplicationMgr;
-import io.datafibre.fibre.rpc.FrontendServiceProxy;
-import io.datafibre.fibre.scheduler.MVActiveChecker;
 import io.datafibre.fibre.scheduler.TaskManager;
-import io.datafibre.fibre.scheduler.mv.MVJobExecutor;
-import io.datafibre.fibre.scheduler.mv.MaterializedViewMgr;
-import io.datafibre.fibre.sql.ast.RefreshTableStmt;
-import io.datafibre.fibre.sql.ast.SetType;
-import io.datafibre.fibre.sql.ast.SystemVariable;
 import io.datafibre.fibre.sql.optimizer.statistics.CachedStatisticStorage;
 import io.datafibre.fibre.sql.optimizer.statistics.StatisticStorage;
 import io.datafibre.fibre.statistic.AnalyzeMgr;
-import io.datafibre.fibre.statistic.StatisticAutoCollector;
-import io.datafibre.fibre.statistic.StatisticsMetaManager;
 import io.datafibre.fibre.system.*;
-import io.datafibre.fibre.task.LeaderTaskExecutor;
 import io.datafibre.fibre.task.PriorityLeaderTaskExecutor;
 import io.datafibre.fibre.transaction.GlobalTransactionMgr;
-import io.datafibre.fibre.transaction.PublishVersionDaemon;
-import io.datafibre.fibre.transaction.UpdateDbUsedDataQuotaDaemon;
-import io.datafibre.fibre.warehouse.Warehouse;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
-import java.nio.file.Files;
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -160,26 +116,26 @@ public class GlobalStateMgr {
     /**
      * Alter Job Manager
      */
-    private final AlterJobMgr alterJobMgr;
+//    private final AlterJobMgr alterJobMgr;
 
-    private final PortConnectivityChecker portConnectivityChecker;
+//    private final PortConnectivityChecker portConnectivityChecker;
 
-    private final Load load;
-    private final LoadMgr loadMgr;
+//    private final Load load;
+//    private final LoadMgr loadMgr;
     private final RoutineLoadMgr routineLoadMgr;
     private final StreamLoadMgr streamLoadMgr;
     private final ExportMgr exportMgr;
 
-    private final ConsistencyChecker consistencyChecker;
+    //    private final ConsistencyChecker consistencyChecker;
     private final BackupHandler backupHandler;
-    private final PublishVersionDaemon publishVersionDaemon;
+    //    private final PublishVersionDaemon publishVersionDaemon;
     private final DeleteMgr deleteMgr;
-    private final UpdateDbUsedDataQuotaDaemon updateDbUsedDataQuotaDaemon;
+//    private final UpdateDbUsedDataQuotaDaemon updateDbUsedDataQuotaDaemon;
 
-    private FrontendDaemon labelCleaner; // To clean old LabelInfo, ExportJobInfos
+    //    private FrontendDaemon labelCleaner; // To clean old LabelInfo, ExportJobInfos
     private FrontendDaemon txnTimeoutChecker; // To abort timeout txns
-    private FrontendDaemon taskCleaner;   // To clean expire Task/TaskRun
-    private JournalWriter journalWriter; // leader only: write journal log
+    //    private FrontendDaemon taskCleaner;   // To clean expire Task/TaskRun
+//    private JournalWriter journalWriter; // leader only: write journal log
     private Daemon replayer;
     private Daemon timePrinter;
     // set to true after finished replay all meta and ready to serve
@@ -205,14 +161,14 @@ public class GlobalStateMgr {
 
     private final CatalogIdGenerator idGenerator = new CatalogIdGenerator(NEXT_ID_INIT_VALUE);
 
-    private EditLog editLog;
-    private Journal journal;
+    //    private EditLog editLog;
+//    private Journal journal;
     // For checkpoint and observer memory replayed marker
     private final AtomicLong replayedJournalId;
 
     private static GlobalStateMgr CHECKPOINT = null;
     private static long checkpointThreadId = -1;
-    private Checkpoint checkpointer;
+//    private Checkpoint checkpointer;
 
 //    private HAProtocol haProtocol = null;
 
@@ -224,7 +180,7 @@ public class GlobalStateMgr {
     private final CatalogRecycleBin recycleBin;
     private final FunctionSet functionSet;
 
-    private final MetaReplayState metaReplayState;
+//    private final MetaReplayState metaReplayState;
 
     private final ResourceMgr resourceMgr;
 
@@ -235,29 +191,29 @@ public class GlobalStateMgr {
     private AuthenticationMgr authenticationMgr;
     private AuthorizationMgr authorizationMgr;
 
-    private DomainResolver domainResolver;
+//    private DomainResolver domainResolver;
 
     private final TabletSchedulerStat stat;
 
     private final TabletScheduler tabletScheduler;
 
-    private final TabletChecker tabletChecker;
+//    private final TabletChecker tabletChecker;
 
     // Thread pools for pending and loading task, separately
-    private final LeaderTaskExecutor pendingLoadTaskScheduler;
+//    private final LeaderTaskExecutor pendingLoadTaskScheduler;
     private final PriorityLeaderTaskExecutor loadingLoadTaskScheduler;
 
     private final LoadJobScheduler loadJobScheduler;
 
-    private final LoadTimeoutChecker loadTimeoutChecker;
-    private final LoadEtlChecker loadEtlChecker;
-    private final LoadLoadingChecker loadLoadingChecker;
-    private final LockChecker lockChecker;
+//    private final LoadTimeoutChecker loadTimeoutChecker;
+//    private final LoadEtlChecker loadEtlChecker;
+//    private final LoadLoadingChecker loadLoadingChecker;
+//    private final LockChecker lockChecker;
+//
+//    private final RoutineLoadScheduler routineLoadScheduler;
+//    private final RoutineLoadTaskScheduler routineLoadTaskScheduler;
 
-    private final RoutineLoadScheduler routineLoadScheduler;
-    private final RoutineLoadTaskScheduler routineLoadTaskScheduler;
-
-    private final MVJobExecutor mvMVJobExecutor;
+//    private final MVJobExecutor mvMVJobExecutor;
 
     private final SmallFileMgr smallFileMgr;
 
@@ -267,11 +223,11 @@ public class GlobalStateMgr {
 
     private final AuditEventProcessor auditEventProcessor;
 
-    private final StatisticsMetaManager statisticsMetaManager;
+//    private final StatisticsMetaManager statisticsMetaManager;
 
-    private final StatisticAutoCollector statisticAutoCollector;
+//    private final StatisticAutoCollector statisticAutoCollector;
 
-    private final SafeModeChecker safeModeChecker;
+//    private final SafeModeChecker safeModeChecker;
 
     private final AnalyzeMgr analyzeMgr;
 
@@ -285,9 +241,9 @@ public class GlobalStateMgr {
 
     private final ResourceGroupMgr resourceGroupMgr;
 
-    private StarOSAgent starOSAgent;
+//    private StarOSAgent starOSAgent;
 
-    private final StarMgrMetaSyncer starMgrMetaSyncer;
+//    private final StarMgrMetaSyncer starMgrMetaSyncer;
 
     private MetadataMgr metadataMgr;
     private final CatalogMgr catalogMgr;
@@ -300,14 +256,14 @@ public class GlobalStateMgr {
     private final LocalMetastore localMetastore;
     private final GlobalFunctionMgr globalFunctionMgr;
 
-    @Deprecated
-    private final ShardManager shardManager;
+//    @Deprecated
+//    private final ShardManager shardManager;
 
 //    private final StateChangeExecution execution;
 
-    private TaskRunStateSynchronizer taskRunStateSynchronizer;
+//    private TaskRunStateSynchronizer taskRunStateSynchronizer;
 
-    private final BinlogManager binlogManager;
+//    private final BinlogManager binlogManager;
 
     // For LakeTable
     private final CompactionMgr compactionMgr;
@@ -318,14 +274,14 @@ public class GlobalStateMgr {
 
     private final StorageVolumeMgr storageVolumeMgr;
 
-    private AutovacuumDaemon autovacuumDaemon;
+//    private AutovacuumDaemon autovacuumDaemon;
 
     private final PipeManager pipeManager;
-    private final PipeListener pipeListener;
-    private final PipeScheduler pipeScheduler;
-    private final MVActiveChecker mvActiveChecker;
-
-    private final ReplicationMgr replicationMgr;
+//    private final PipeListener pipeListener;
+//    private final PipeScheduler pipeScheduler;
+//    private final MVActiveChecker mvActiveChecker;
+//
+//    private final ReplicationMgr replicationMgr;
 
     private LockManager lockManager;
 
@@ -336,7 +292,7 @@ public class GlobalStateMgr {
 //    private final DictionaryMgr dictionaryMgr = new DictionaryMgr();
 //    private final RefreshDictionaryCacheTaskDaemon refreshDictionaryCacheTaskDaemon;
 
-    private MemoryUsageTracker memoryUsageTracker;
+//    private MemoryUsageTracker memoryUsageTracker;
 
     public NodeMgr getNodeMgr() {
         return nodeMgr;
@@ -346,73 +302,73 @@ public class GlobalStateMgr {
         return journalObservable;
     }
 
-    public TNodesInfo createNodesInfo(Integer clusterId) {
-        TNodesInfo nodesInfo = new TNodesInfo();
-        SystemInfoService systemInfoService = nodeMgr.getOrCreateSystemInfo(clusterId);
-        // use default warehouse
-        Warehouse warehouse = warehouseMgr.getDefaultWarehouse();
-        // TODO: need to refactor after be split into cn + dn
-        if (warehouse != null && RunMode.isSharedDataMode()) {
-            io.datafibre.fibre.warehouse.Cluster cluster = warehouse.getAnyAvailableCluster();
-            for (Long cnId : cluster.getComputeNodeIds()) {
-                ComputeNode cn = systemInfoService.getBackendOrComputeNode(cnId);
-                nodesInfo.addToNodes(new TNodeInfo(cnId, 0, cn.getIP(), cn.getBrpcPort()));
-            }
-        } else {
-            for (Long id : systemInfoService.getBackendIds(false)) {
-                Backend backend = systemInfoService.getBackend(id);
-                nodesInfo.addToNodes(new TNodeInfo(backend.getId(), 0, backend.getIP(), backend.getBrpcPort()));
-            }
-        }
+//    public TNodesInfo createNodesInfo(Integer clusterId) {
+//        TNodesInfo nodesInfo = new TNodesInfo();
+//        SystemInfoService systemInfoService = nodeMgr.getOrCreateSystemInfo(clusterId);
+//        // use default warehouse
+//        Warehouse warehouse = warehouseMgr.getDefaultWarehouse();
+//        // TODO: need to refactor after be split into cn + dn
+//        if (warehouse != null && RunMode.isSharedDataMode()) {
+//            io.datafibre.fibre.warehouse.Cluster cluster = warehouse.getAnyAvailableCluster();
+//            for (Long cnId : cluster.getComputeNodeIds()) {
+//                ComputeNode cn = systemInfoService.getBackendOrComputeNode(cnId);
+//                nodesInfo.addToNodes(new TNodeInfo(cnId, 0, cn.getIP(), cn.getBrpcPort()));
+//            }
+//        } else {
+//            for (Long id : systemInfoService.getBackendIds(false)) {
+//                Backend backend = systemInfoService.getBackend(id);
+//                nodesInfo.addToNodes(new TNodeInfo(backend.getId(), 0, backend.getIP(), backend.getBrpcPort()));
+//            }
+//        }
+//
+//        return nodesInfo;
+//    }
 
-        return nodesInfo;
-    }
-
-    public HeartbeatMgr getHeartbeatMgr() {
-        return heartbeatMgr;
-    }
+//    public HeartbeatMgr getHeartbeatMgr() {
+//        return heartbeatMgr;
+//    }
 
     public TabletInvertedIndex getTabletInvertedIndex() {
         return this.tabletInvertedIndex;
     }
 
     // only for test
-    public void setColocateTableIndex(ColocateTableIndex colocateTableIndex) {
-        this.colocateTableIndex = colocateTableIndex;
-        localMetastore.setColocateTableIndex(colocateTableIndex);
-    }
+//    public void setColocateTableIndex(ColocateTableIndex colocateTableIndex) {
+//        this.colocateTableIndex = colocateTableIndex;
+//        localMetastore.setColocateTableIndex(colocateTableIndex);
+//    }
 
     public ColocateTableIndex getColocateTableIndex() {
         return this.colocateTableIndex;
     }
 
-    public CatalogRecycleBin getRecycleBin() {
-        return this.recycleBin;
-    }
+//    public CatalogRecycleBin getRecycleBin() {
+//        return this.recycleBin;
+//    }
 
-    public MetaReplayState getMetaReplayState() {
-        return metaReplayState;
-    }
+//    public MetaReplayState getMetaReplayState() {
+//        return metaReplayState;
+//    }
 
-    public DynamicPartitionScheduler getDynamicPartitionScheduler() {
-        return this.dynamicPartitionScheduler;
-    }
+//    public DynamicPartitionScheduler getDynamicPartitionScheduler() {
+//        return this.dynamicPartitionScheduler;
+//    }
 
     public long getFeStartTime() {
         return feStartTime;
     }
 
-    public LocalMetastore getLocalMetastore() {
-        return localMetastore;
-    }
+//    public LocalMetastore getLocalMetastore() {
+//        return localMetastore;
+//    }
 
-    public CompactionMgr getCompactionMgr() {
-        return compactionMgr;
-    }
+//    public CompactionMgr getCompactionMgr() {
+//        return compactionMgr;
+//    }
 
-    public ConfigRefreshDaemon getConfigRefreshDaemon() {
-        return configRefreshDaemon;
-    }
+//    public ConfigRefreshDaemon getConfigRefreshDaemon() {
+//        return configRefreshDaemon;
+//    }
 
 //    public RefreshDictionaryCacheTaskDaemon getRefreshDictionaryCacheTaskDaemon() {
 //        return refreshDictionaryCacheTaskDaemon;
@@ -424,179 +380,179 @@ public class GlobalStateMgr {
 
     @VisibleForTesting
     protected GlobalStateMgr() {
-        this(new NodeMgr());
+//        this(new NodeMgr());
     }
 
-    @VisibleForTesting
-    protected GlobalStateMgr(NodeMgr nodeMgr) {
-        this(false, nodeMgr);
-    }
+//    @VisibleForTesting
+//    protected GlobalStateMgr(NodeMgr nodeMgr) {
+//        this(false, nodeMgr);
+//    }
 
-    private GlobalStateMgr(boolean isCkptGlobalState) {
-        this(isCkptGlobalState, new NodeMgr());
-    }
+//    private GlobalStateMgr(boolean isCkptGlobalState) {
+//        this(isCkptGlobalState, new NodeMgr());
+//    }
 
     // if isCkptGlobalState is true, it means that we should not collect thread pool metric
-    private GlobalStateMgr(boolean isCkptGlobalState, NodeMgr nodeMgr) {
-        if (!isCkptGlobalState) {
-            RunMode.detectRunMode();
-        }
-
-        if (RunMode.isSharedDataMode()) {
-            this.starOSAgent = new StarOSAgent();
-        }
-
-        // System Manager
-        this.nodeMgr = Objects.requireNonNullElseGet(nodeMgr, NodeMgr::new);
-        this.heartbeatMgr = new HeartbeatMgr(!isCkptGlobalState);
-        this.portConnectivityChecker = new PortConnectivityChecker();
-
-        // Alter Job Manager
-        this.alterJobMgr = new AlterJobMgr();
-
-        this.load = new Load();
-        this.streamLoadMgr = new StreamLoadMgr();
-        this.routineLoadMgr = new RoutineLoadMgr();
-        this.exportMgr = new ExportMgr();
-
-        this.consistencyChecker = new ConsistencyChecker();
-        this.lock = new QueryableReentrantLock(true);
-        this.backupHandler = new BackupHandler(this);
-        this.publishVersionDaemon = new PublishVersionDaemon();
-        this.deleteMgr = new DeleteMgr();
-        this.updateDbUsedDataQuotaDaemon = new UpdateDbUsedDataQuotaDaemon();
-        this.statisticsMetaManager = new StatisticsMetaManager();
-        this.statisticAutoCollector = new StatisticAutoCollector();
-        this.safeModeChecker = new SafeModeChecker();
-        this.statisticStorage = new CachedStatisticStorage();
-
-        this.replayedJournalId = new AtomicLong(0L);
-        this.synchronizedTimeMs = 0;
-        this.feType = FrontendNodeType.INIT;
-
-        this.journalObservable = new JournalObservable();
-
-        this.tabletInvertedIndex = new TabletInvertedIndex();
-        this.colocateTableIndex = new ColocateTableIndex();
-        this.recycleBin = new CatalogRecycleBin();
-        this.functionSet = new FunctionSet();
-        this.functionSet.init();
-
-        this.metaReplayState = new MetaReplayState();
-
-        this.isDefaultClusterCreated = false;
-
-        this.resourceMgr = new ResourceMgr();
-
-        this.globalTransactionMgr = new GlobalTransactionMgr(this);
-        this.tabletStatMgr = new TabletStatMgr();
-        this.authenticationMgr = new AuthenticationMgr();
-        this.domainResolver = new DomainResolver(authenticationMgr);
-        this.authorizationMgr = new AuthorizationMgr(this, null);
-
-        this.resourceGroupMgr = new ResourceGroupMgr();
-
-        this.metaContext = new MetaContext();
-        this.metaContext.setThreadLocalInfo();
-
-        this.stat = new TabletSchedulerStat();
-
-        this.globalFunctionMgr = new GlobalFunctionMgr();
-        this.tabletScheduler = new TabletScheduler(stat);
-        this.tabletChecker = new TabletChecker(tabletScheduler, stat);
-
-        this.pendingLoadTaskScheduler =
-                new LeaderTaskExecutor("pending_load_task_scheduler", Config.max_broker_load_job_concurrency,
-                        Config.desired_max_waiting_jobs, !isCkptGlobalState);
-        // One load job will be split into multiple loading tasks, the queue size is not
-        // determined, so set desired_max_waiting_jobs * 10
-        this.loadingLoadTaskScheduler = new PriorityLeaderTaskExecutor("loading_load_task_scheduler",
-                Config.max_broker_load_job_concurrency,
-                Config.desired_max_waiting_jobs * 10, !isCkptGlobalState);
-
-        this.loadJobScheduler = new LoadJobScheduler();
-        this.loadMgr = new LoadMgr(loadJobScheduler);
-        this.loadTimeoutChecker = new LoadTimeoutChecker(loadMgr);
-        this.loadEtlChecker = new LoadEtlChecker(loadMgr);
-        this.loadLoadingChecker = new LoadLoadingChecker(loadMgr);
-        this.lockChecker = new LockChecker();
-        this.routineLoadScheduler = new RoutineLoadScheduler(routineLoadMgr);
-        this.routineLoadTaskScheduler = new RoutineLoadTaskScheduler(routineLoadMgr);
-        this.mvMVJobExecutor = new MVJobExecutor();
-
-        this.smallFileMgr = new SmallFileMgr();
-
-        this.dynamicPartitionScheduler = new DynamicPartitionScheduler("DynamicPartitionScheduler",
-                Config.dynamic_partition_check_interval_seconds * 1000L);
-
-        setMetaDir();
-
-        this.pluginMgr = new PluginMgr();
-        this.auditEventProcessor = new AuditEventProcessor(this.pluginMgr);
-        this.analyzeMgr = new AnalyzeMgr();
-        this.localMetastore = new LocalMetastore(this, recycleBin, colocateTableIndex);
-        this.warehouseMgr = new WarehouseManager();
-        this.connectorMgr = new ConnectorMgr();
-        this.connectorTblMetaInfoMgr = new ConnectorTblMetaInfoMgr();
-        this.metadataMgr = new MetadataMgr(localMetastore, connectorMgr, connectorTblMetaInfoMgr);
-        this.catalogMgr = new CatalogMgr(connectorMgr);
-
-        this.taskManager = new TaskManager();
-        this.insertOverwriteJobMgr = new InsertOverwriteJobMgr();
-        this.shardManager = new ShardManager();
-        this.compactionMgr = new CompactionMgr();
-        this.configRefreshDaemon = new ConfigRefreshDaemon();
-        this.starMgrMetaSyncer = new StarMgrMetaSyncer();
-//        this.refreshDictionaryCacheTaskDaemon = new RefreshDictionaryCacheTaskDaemon();
-
-        this.binlogManager = new BinlogManager();
-        this.pipeManager = new PipeManager();
-        this.pipeListener = new PipeListener(this.pipeManager);
-        this.pipeScheduler = new PipeScheduler(this.pipeManager);
-        this.mvActiveChecker = new MVActiveChecker();
-
-        if (RunMode.isSharedDataMode()) {
-            this.storageVolumeMgr = new SharedDataStorageVolumeMgr();
-            this.autovacuumDaemon = new AutovacuumDaemon();
-        } else {
-            this.storageVolumeMgr = new SharedNothingStorageVolumeMgr();
-        }
-
-        this.lockManager = new LockManager();
-
-        GlobalStateMgr gsm = this;
-//        this.execution = new StateChangeExecution() {
-//            @Override
-//            public void transferToLeader() {
-//                isInTransferringToLeader = true;
-//                try {
-//                    gsm.transferToLeader();
-//                } finally {
-//                    isInTransferringToLeader = false;
-//                }
-//            }
+//    private GlobalStateMgr(boolean isCkptGlobalState, NodeMgr nodeMgr) {
+//        if (!isCkptGlobalState) {
+//            RunMode.detectRunMode();
+//        }
 //
-//            @Override
-//            public void transferToNonLeader(FrontendNodeType newType) {
-//                gsm.transferToNonLeader(newType);
-//            }
-//        };
-
-        getConfigRefreshDaemon().registerListener(() -> {
-            try {
-                if (Config.max_broker_load_job_concurrency != loadingLoadTaskScheduler.getCorePoolSize()) {
-                    loadingLoadTaskScheduler.setPoolSize(Config.max_broker_load_job_concurrency);
-                }
-            } catch (Exception e) {
-                LOG.warn("check config failed", e);
-            }
-        });
-
-        this.replicationMgr = new ReplicationMgr();
-        nodeMgr.registerLeaderChangeListener(slotProvider::leaderChangeListener);
-
-        this.memoryUsageTracker = new MemoryUsageTracker();
-    }
+////        if (RunMode.isSharedDataMode()) {
+////            this.starOSAgent = new StarOSAgent();
+////        }
+//
+//        // System Manager
+////        this.nodeMgr = Objects.requireNonNullElseGet(nodeMgr, NodeMgr::new);
+//        this.heartbeatMgr = new HeartbeatMgr(!isCkptGlobalState);
+////        this.portConnectivityChecker = new PortConnectivityChecker();
+//
+//        // Alter Job Manager
+////        this.alterJobMgr = new AlterJobMgr();
+//
+////        this.load = new Load();
+//        this.streamLoadMgr = new StreamLoadMgr();
+//        this.routineLoadMgr = new RoutineLoadMgr();
+//        this.exportMgr = new ExportMgr();
+//
+////        this.consistencyChecker = new ConsistencyChecker();
+//        this.lock = new QueryableReentrantLock(true);
+//        this.backupHandler = new BackupHandler(this);
+////        this.publishVersionDaemon = new PublishVersionDaemon();
+//        this.deleteMgr = new DeleteMgr();
+////        this.updateDbUsedDataQuotaDaemon = new UpdateDbUsedDataQuotaDaemon();
+////        this.statisticsMetaManager = new StatisticsMetaManager();
+////        this.statisticAutoCollector = new StatisticAutoCollector();
+////        this.safeModeChecker = new SafeModeChecker();
+//        this.statisticStorage = new CachedStatisticStorage();
+//
+//        this.replayedJournalId = new AtomicLong(0L);
+//        this.synchronizedTimeMs = 0;
+//        this.feType = FrontendNodeType.INIT;
+//
+//        this.journalObservable = new JournalObservable();
+//
+//        this.tabletInvertedIndex = new TabletInvertedIndex();
+//        this.colocateTableIndex = new ColocateTableIndex();
+//        this.recycleBin = new CatalogRecycleBin();
+//        this.functionSet = new FunctionSet();
+//        this.functionSet.init();
+//
+//        this.metaReplayState = new MetaReplayState();
+//
+//        this.isDefaultClusterCreated = false;
+//
+//        this.resourceMgr = new ResourceMgr();
+//
+//        this.globalTransactionMgr = new GlobalTransactionMgr(this);
+//        this.tabletStatMgr = new TabletStatMgr();
+//        this.authenticationMgr = new AuthenticationMgr();
+////        this.domainResolver = new DomainResolver(authenticationMgr);
+//        this.authorizationMgr = new AuthorizationMgr(this, null);
+//
+//        this.resourceGroupMgr = new ResourceGroupMgr();
+//
+//        this.metaContext = new MetaContext();
+//        this.metaContext.setThreadLocalInfo();
+//
+//        this.stat = new TabletSchedulerStat();
+//
+//        this.globalFunctionMgr = new GlobalFunctionMgr();
+//        this.tabletScheduler = new TabletScheduler(stat);
+//        this.tabletChecker = new TabletChecker(tabletScheduler, stat);
+//
+////        this.pendingLoadTaskScheduler =
+////                new LeaderTaskExecutor("pending_load_task_scheduler", Config.max_broker_load_job_concurrency,
+////                        Config.desired_max_waiting_jobs, !isCkptGlobalState);
+//        // One load job will be split into multiple loading tasks, the queue size is not
+//        // determined, so set desired_max_waiting_jobs * 10
+//        this.loadingLoadTaskScheduler = new PriorityLeaderTaskExecutor("loading_load_task_scheduler",
+//                Config.max_broker_load_job_concurrency,
+//                Config.desired_max_waiting_jobs * 10, !isCkptGlobalState);
+//
+//        this.loadJobScheduler = new LoadJobScheduler();
+//        this.loadMgr = new LoadMgr(loadJobScheduler);
+////        this.loadTimeoutChecker = new LoadTimeoutChecker(loadMgr);
+////        this.loadEtlChecker = new LoadEtlChecker(loadMgr);
+////        this.loadLoadingChecker = new LoadLoadingChecker(loadMgr);
+////        this.lockChecker = new LockChecker();
+////        this.routineLoadScheduler = new RoutineLoadScheduler(routineLoadMgr);
+////        this.routineLoadTaskScheduler = new RoutineLoadTaskScheduler(routineLoadMgr);
+////        this.mvMVJobExecutor = new MVJobExecutor();
+//
+//        this.smallFileMgr = new SmallFileMgr();
+//
+//        this.dynamicPartitionScheduler = new DynamicPartitionScheduler("DynamicPartitionScheduler",
+//                Config.dynamic_partition_check_interval_seconds * 1000L);
+//
+//        setMetaDir();
+//
+//        this.pluginMgr = new PluginMgr();
+//        this.auditEventProcessor = new AuditEventProcessor(this.pluginMgr);
+//        this.analyzeMgr = new AnalyzeMgr();
+//        this.localMetastore = new LocalMetastore(this, recycleBin, colocateTableIndex);
+//        this.warehouseMgr = new WarehouseManager();
+//        this.connectorMgr = new ConnectorMgr();
+//        this.connectorTblMetaInfoMgr = new ConnectorTblMetaInfoMgr();
+//        this.metadataMgr = new MetadataMgr(localMetastore, connectorMgr, connectorTblMetaInfoMgr);
+//        this.catalogMgr = new CatalogMgr(connectorMgr);
+//
+//        this.taskManager = new TaskManager();
+//        this.insertOverwriteJobMgr = new InsertOverwriteJobMgr();
+////        this.shardManager = new ShardManager();
+//        this.compactionMgr = new CompactionMgr();
+//        this.configRefreshDaemon = new ConfigRefreshDaemon();
+////        this.starMgrMetaSyncer = new StarMgrMetaSyncer();
+////        this.refreshDictionaryCacheTaskDaemon = new RefreshDictionaryCacheTaskDaemon();
+//
+////        this.binlogManager = new BinlogManager();
+//        this.pipeManager = new PipeManager();
+////        this.pipeListener = new PipeListener(this.pipeManager);
+////        this.pipeScheduler = new PipeScheduler(this.pipeManager);
+////        this.mvActiveChecker = new MVActiveChecker();
+//
+//        if (RunMode.isSharedDataMode()) {
+//            this.storageVolumeMgr = new SharedDataStorageVolumeMgr();
+////            this.autovacuumDaemon = new AutovacuumDaemon();
+//        } else {
+//            this.storageVolumeMgr = new SharedNothingStorageVolumeMgr();
+//        }
+//
+//        this.lockManager = new LockManager();
+//
+//        GlobalStateMgr gsm = this;
+////        this.execution = new StateChangeExecution() {
+////            @Override
+////            public void transferToLeader() {
+////                isInTransferringToLeader = true;
+////                try {
+////                    gsm.transferToLeader();
+////                } finally {
+////                    isInTransferringToLeader = false;
+////                }
+////            }
+////
+////            @Override
+////            public void transferToNonLeader(FrontendNodeType newType) {
+////                gsm.transferToNonLeader(newType);
+////            }
+////        };
+//
+////        getConfigRefreshDaemon().registerListener(() -> {
+////            try {
+////                if (Config.max_broker_load_job_concurrency != loadingLoadTaskScheduler.getCorePoolSize()) {
+////                    loadingLoadTaskScheduler.setPoolSize(Config.max_broker_load_job_concurrency);
+////                }
+////            } catch (Exception e) {
+////                LOG.warn("check config failed", e);
+////            }
+////        });
+//
+////        this.replicationMgr = new ReplicationMgr();
+//        nodeMgr.registerLeaderChangeListener(slotProvider::leaderChangeListener);
+//
+////        this.memoryUsageTracker = new MemoryUsageTracker();
+//    }
 
     public static void destroyCheckpoint() {
         if (CHECKPOINT != null) {
@@ -631,13 +587,13 @@ public class GlobalStateMgr {
         return SingletonHolder.INSTANCE;
     }
 
-    public BrokerMgr getBrokerMgr() {
-        return nodeMgr.getBrokerMgr();
-    }
+//    public BrokerMgr getBrokerMgr() {
+//        return nodeMgr.getBrokerMgr();
+//    }
 
-    public ResourceMgr getResourceMgr() {
-        return resourceMgr;
-    }
+//    public ResourceMgr getResourceMgr() {
+//        return resourceMgr;
+//    }
 
     public GlobalFunctionMgr getGlobalFunctionMgr() {
         return globalFunctionMgr;
@@ -667,21 +623,21 @@ public class GlobalStateMgr {
         return authorizationMgr;
     }
 
-    public void setAuthorizationMgr(AuthorizationMgr authorizationMgr) {
-        this.authorizationMgr = authorizationMgr;
-    }
+//    public void setAuthorizationMgr(AuthorizationMgr authorizationMgr) {
+//        this.authorizationMgr = authorizationMgr;
+//    }
 
     public ResourceGroupMgr getResourceGroupMgr() {
         return resourceGroupMgr;
     }
 
-    public TabletScheduler getTabletScheduler() {
-        return tabletScheduler;
-    }
+//    public TabletScheduler getTabletScheduler() {
+//        return tabletScheduler;
+//    }
 
-    public TabletChecker getTabletChecker() {
-        return tabletChecker;
-    }
+//    public TabletChecker getTabletChecker() {
+//        return tabletChecker;
+//    }
 
     public AuditEventProcessor getAuditEventProcessor() {
         return auditEventProcessor;
@@ -708,21 +664,21 @@ public class GlobalStateMgr {
         this.statisticStorage = statisticStorage;
     }
 
-    public StarOSAgent getStarOSAgent() {
-        return starOSAgent;
-    }
+//    public StarOSAgent getStarOSAgent() {
+//        return starOSAgent;
+//    }
 
-    public StarMgrMetaSyncer getStarMgrMetaSyncer() {
-        return starMgrMetaSyncer;
-    }
+//    public StarMgrMetaSyncer getStarMgrMetaSyncer() {
+//        return starMgrMetaSyncer;
+//    }
 
     public CatalogMgr getCatalogMgr() {
         return catalogMgr;
     }
 
-    public ConnectorMgr getConnectorMgr() {
-        return connectorMgr;
-    }
+//    public ConnectorMgr getConnectorMgr() {
+//        return connectorMgr;
+//    }
 
     public MetadataMgr getMetadataMgr() {
         return metadataMgr;
@@ -732,23 +688,23 @@ public class GlobalStateMgr {
         return localMetastore;
     }
 
-    @VisibleForTesting
-    public void setMetadataMgr(MetadataMgr metadataMgr) {
-        this.metadataMgr = metadataMgr;
-    }
+//    @VisibleForTesting
+//    public void setMetadataMgr(MetadataMgr metadataMgr) {
+//        this.metadataMgr = metadataMgr;
+//    }
 
-    @VisibleForTesting
-    public void setStarOSAgent(StarOSAgent starOSAgent) {
-        this.starOSAgent = starOSAgent;
-    }
+//    @VisibleForTesting
+//    public void setStarOSAgent(StarOSAgent starOSAgent) {
+//        this.starOSAgent = starOSAgent;
+//    }
 
     public TaskManager getTaskManager() {
         return taskManager;
     }
 
-    public BinlogManager getBinlogManager() {
-        return binlogManager;
-    }
+//    public BinlogManager getBinlogManager() {
+//        return binlogManager;
+//    }
 
     public InsertOverwriteJobMgr getInsertOverwriteJobMgr() {
         return insertOverwriteJobMgr;
@@ -766,25 +722,25 @@ public class GlobalStateMgr {
         return pipeManager;
     }
 
-    public PipeScheduler getPipeScheduler() {
-        return pipeScheduler;
-    }
+//    public PipeScheduler getPipeScheduler() {
+//        return pipeScheduler;
+//    }
 
-    public PipeListener getPipeListener() {
-        return pipeListener;
-    }
+//    public PipeListener getPipeListener() {
+//        return pipeListener;
+//    }
 
-    public MVActiveChecker getMvActiveChecker() {
-        return mvActiveChecker;
-    }
+//    public MVActiveChecker getMvActiveChecker() {
+//        return mvActiveChecker;
+//    }
 
     public ConnectorTblMetaInfoMgr getConnectorTblMetaInfoMgr() {
         return connectorTblMetaInfoMgr;
     }
 
-    public ReplicationMgr getReplicationMgr() {
-        return replicationMgr;
-    }
+//    public ReplicationMgr getReplicationMgr() {
+//        return replicationMgr;
+//    }
 
     public LockManager getLockManager() {
         return lockManager;
@@ -835,7 +791,7 @@ public class GlobalStateMgr {
 
     private void setMetaDir() {
         this.imageDir = Config.meta_dir + IMAGE_DIR;
-        nodeMgr.setImageDir(imageDir);
+//        nodeMgr.setImageDir(imageDir);
     }
 
 //    public void initialize(String[] args) throws Exception {
@@ -1439,23 +1395,23 @@ public class GlobalStateMgr {
 //        Text.writeString(dos, GsonUtils.GSON.toJson(header));
 //    }
 
-    public void createLabelCleaner() {
-        labelCleaner = new FrontendDaemon("LoadLabelCleaner", Config.label_clean_interval_second * 1000L) {
-            @Override
-            protected void runAfterCatalogReady() {
-                clearExpiredJobs();
-            }
-        };
-    }
+//    public void createLabelCleaner() {
+//        labelCleaner = new FrontendDaemon("LoadLabelCleaner", Config.label_clean_interval_second * 1000L) {
+//            @Override
+//            protected void runAfterCatalogReady() {
+//                clearExpiredJobs();
+//            }
+//        };
+//    }
 
-    public void createTaskCleaner() {
-        taskCleaner = new FrontendDaemon("TaskCleaner", Config.task_check_interval_second * 1000L) {
-            @Override
-            protected void runAfterCatalogReady() {
-                doTaskBackgroundJob();
-            }
-        };
-    }
+//    public void createTaskCleaner() {
+//        taskCleaner = new FrontendDaemon("TaskCleaner", Config.task_check_interval_second * 1000L) {
+//            @Override
+//            protected void runAfterCatalogReady() {
+//                doTaskBackgroundJob();
+//            }
+//        };
+//    }
 
 //    public void createTxnTimeoutChecker() {
 //        txnTimeoutChecker = new FrontendDaemon("txnTimeoutChecker",
@@ -1735,9 +1691,9 @@ public class GlobalStateMgr {
 //            }
 //        };
 //    }
-
     public Database getDb(String name) {
-        return localMetastore.getDb(name);
+//        return localMetastore.getDb(name);
+        return new Database(1, "test_tmp");
     }
 
     public Optional<Table> mayGetTable(long dbId, long tableId) {
@@ -1745,15 +1701,18 @@ public class GlobalStateMgr {
     }
 
     public Optional<Database> mayGetDb(String name) {
-        return Optional.ofNullable(localMetastore.getDb(name));
+//        return Optional.ofNullable(localMetastore.getDb(name));
+        return Optional.ofNullable(new Database(1, "test_tmp"));
     }
 
     public Optional<Database> mayGetDb(long dbId) {
-        return Optional.ofNullable(localMetastore.getDb(dbId));
+//        return Optional.ofNullable(localMetastore.getDb(dbId));
+        return Optional.ofNullable(new Database(1, "test_tmp"));
     }
 
     public Database getDb(long dbId) {
-        return localMetastore.getDb(dbId);
+//        return localMetastore.getDb(dbId);
+        return new Database(1, "test_tmp");
     }
 
 //    public EditLog getEditLog() {
@@ -1785,13 +1744,13 @@ public class GlobalStateMgr {
 //        return (MaterializedViewHandler) this.alterJobMgr.getMaterializedViewHandler();
 //    }
 
-    public BackupHandler getBackupHandler() {
-        return this.backupHandler;
-    }
+//    public BackupHandler getBackupHandler() {
+//        return this.backupHandler;
+//    }
 
-    public DeleteMgr getDeleteMgr() {
-        return deleteMgr;
-    }
+//    public DeleteMgr getDeleteMgr() {
+//        return deleteMgr;
+//    }
 
 //    public Load getLoadInstance() {
 //        return load;
@@ -1809,21 +1768,21 @@ public class GlobalStateMgr {
 //        return loadingLoadTaskScheduler;
 //    }
 
-    public RoutineLoadMgr getRoutineLoadMgr() {
-        return routineLoadMgr;
-    }
+//    public RoutineLoadMgr getRoutineLoadMgr() {
+//        return routineLoadMgr;
+//    }
 
-    public StreamLoadMgr getStreamLoadMgr() {
-        return streamLoadMgr;
-    }
+//    public StreamLoadMgr getStreamLoadMgr() {
+//        return streamLoadMgr;
+//    }
 
 //    public RoutineLoadTaskScheduler getRoutineLoadTaskScheduler() {
 //        return routineLoadTaskScheduler;
 //    }
 
-    public ExportMgr getExportMgr() {
-        return this.exportMgr;
-    }
+//    public ExportMgr getExportMgr() {
+//        return this.exportMgr;
+//    }
 
     public SmallFileMgr getSmallFileMgr() {
         return this.smallFileMgr;
@@ -1837,9 +1796,9 @@ public class GlobalStateMgr {
 //        return this.haProtocol;
 //    }
 
-    public Long getMaxJournalId() {
-        return this.journal.getMaxJournalId();
-    }
+//    public Long getMaxJournalId() {
+//        return this.journal.getMaxJournalId();
+//    }
 
     public long getEpoch() {
         return this.epoch;

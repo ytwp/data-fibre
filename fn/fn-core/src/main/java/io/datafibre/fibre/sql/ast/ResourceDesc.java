@@ -71,13 +71,13 @@ public class ResourceDesc implements ParseNode {
 
     public void analyze() throws AnalysisException {
         // check resource exist or not
-        Resource resource = GlobalStateMgr.getCurrentState().getResourceMgr().getResource(getName());
-        if (resource == null) {
-            throw new AnalysisException("Resource does not exist. name: " + getName());
-        }
-        if (resource.getType() == Resource.ResourceType.SPARK) {
-            etlJobType = EtlJobType.SPARK;
-        }
+//        Resource resource = GlobalStateMgr.getCurrentState().getResourceMgr().getResource(getName());
+//        if (resource == null) {
+//            throw new AnalysisException("Resource does not exist. name: " + getName());
+//        }
+//        if (resource.getType() == Resource.ResourceType.SPARK) {
+//            etlJobType = EtlJobType.SPARK;
+//        }
     }
 
     public String toString() {

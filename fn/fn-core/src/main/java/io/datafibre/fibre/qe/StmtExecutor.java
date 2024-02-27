@@ -1741,16 +1741,16 @@ public class StmtExecutor {
 
         // special handling for delete of non-primary key table, using old handler
         if (stmt instanceof DeleteStmt && ((DeleteStmt) stmt).shouldHandledByDeleteHandler()) {
-            try {
-                context.getGlobalStateMgr().getDeleteMgr().process((DeleteStmt) stmt);
-                context.getState().setOk();
-            } catch (QueryStateException e) {
-                if (e.getQueryState().getStateType() != MysqlStateType.OK) {
-                    LOG.warn("DDL statement(" + originStmt.originStmt + ") process failed.", e);
-                }
-                context.setState(e.getQueryState());
-            }
-            return;
+//            try {
+//                context.getGlobalStateMgr().getDeleteMgr().process((DeleteStmt) stmt);
+//                context.getState().setOk();
+//            } catch (QueryStateException e) {
+//                if (e.getQueryState().getStateType() != MysqlStateType.OK) {
+//                    LOG.warn("DDL statement(" + originStmt.originStmt + ") process failed.", e);
+//                }
+//                context.setState(e.getQueryState());
+//            }
+//            return;
         }
 
         MetaUtils.normalizationTableName(context, stmt.getTableName());
