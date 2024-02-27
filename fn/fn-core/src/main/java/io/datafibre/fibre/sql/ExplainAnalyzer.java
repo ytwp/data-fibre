@@ -28,8 +28,6 @@ import io.datafibre.fibre.qe.SessionVariable;
 import io.datafibre.fibre.sql.optimizer.cost.CostEstimate;
 import io.datafibre.fibre.sql.optimizer.statistics.ColumnStatistic;
 import io.datafibre.fibre.sql.optimizer.statistics.Statistics;
-import io.datafibre.fibre.thrift.TPartitionType;
-import io.datafibre.fibre.thrift.TUnit;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;

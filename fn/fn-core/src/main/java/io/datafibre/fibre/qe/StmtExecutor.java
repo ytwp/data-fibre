@@ -357,7 +357,7 @@ public class StmtExecutor {
                         QueryStatement selectStmt = ((ShowStmt) parsedStmt).toSelectStmt();
                         if (selectStmt != null) {
                             parsedStmt = selectStmt;
-                            execPlan = StatementPlanner.plan(parsedStmt, context);
+//                            execPlan = StatementPlanner.plan(parsedStmt, context);
                         }
                     } else if (parsedStmt instanceof ExecuteStmt) {
                         ExecuteStmt executeStmt = (ExecuteStmt) parsedStmt;
@@ -372,7 +372,7 @@ public class StmtExecutor {
                         parsedStmt = prepareStmt.assignValues(executeStmt.getParamsExpr());
                         parsedStmt.setOrigStmt(originStmt);
                         try {
-                            execPlan = StatementPlanner.plan(parsedStmt, context);
+//                            execPlan = StatementPlanner.plan(parsedStmt, context);
                         } catch (SemanticException e) {
                             if (e.getMessage().contains("Unknown partition")) {
                                 throw new SemanticException(e.getMessage() +
@@ -382,7 +382,7 @@ public class StmtExecutor {
                             }
                         }
                     } else {
-                        execPlan = StatementPlanner.plan(parsedStmt, context);
+//                        execPlan = StatementPlanner.plan(parsedStmt, context);
                         if (parsedStmt instanceof QueryStatement && context.shouldDumpQuery()) {
 //                            context.getDumpInfo().setExplainInfo(execPlan.getExplainString(TExplainLevel.COSTS));
                         }

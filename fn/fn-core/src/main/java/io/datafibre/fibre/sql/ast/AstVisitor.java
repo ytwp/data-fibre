@@ -375,17 +375,17 @@ public abstract class AstVisitor<R, C> {
 
     // ---------------------------------------- Cluster Management Statement -------------------------------------------
 
-    public R visitAlterSystemStatement(AlterSystemStmt statement, C context) {
-        return visitDDLStatement(statement, context);
-    }
-
-    public R visitCancelAlterSystemStatement(CancelAlterSystemStmt statement, C context) {
-        return visitStatement(statement, context);
-    }
-
-    public R visitShowComputeNodes(ShowComputeNodesStmt statement, C context) {
-        return visitStatement(statement, context);
-    }
+//    public R visitAlterSystemStatement(AlterSystemStmt statement, C context) {
+//        return visitDDLStatement(statement, context);
+//    }
+//
+//    public R visitCancelAlterSystemStatement(CancelAlterSystemStmt statement, C context) {
+//        return visitStatement(statement, context);
+//    }
+//
+//    public R visitShowComputeNodes(ShowComputeNodesStmt statement, C context) {
+//        return visitStatement(statement, context);
+//    }
 
     // ------------------------------------------- Analyze Statement ---------------------------------------------------
 

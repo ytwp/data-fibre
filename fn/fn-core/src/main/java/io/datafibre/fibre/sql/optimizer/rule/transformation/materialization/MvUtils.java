@@ -15,37 +15,12 @@
 
 package io.datafibre.fibre.sql.optimizer.rule.transformation.materialization;
 
-import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicates;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Range;
-import com.google.common.collect.Sets;
-import io.datafibre.fibre.analysis.BinaryPredicate;
-import io.datafibre.fibre.analysis.BinaryType;
-import io.datafibre.fibre.analysis.CompoundPredicate;
-import io.datafibre.fibre.analysis.DateLiteral;
-import io.datafibre.fibre.analysis.Expr;
-import io.datafibre.fibre.analysis.IntLiteral;
-import io.datafibre.fibre.analysis.JoinOperator;
-import io.datafibre.fibre.analysis.LiteralExpr;
-import io.datafibre.fibre.analysis.SlotRef;
-import io.datafibre.fibre.analysis.StringLiteral;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.Database;
-import io.datafibre.fibre.catalog.ExpressionRangePartitionInfo;
-import io.datafibre.fibre.catalog.HiveTable;
-import io.datafibre.fibre.catalog.MaterializedView;
-import io.datafibre.fibre.catalog.MvId;
-import io.datafibre.fibre.catalog.MvPlanContext;
-import io.datafibre.fibre.catalog.OlapTable;
-import io.datafibre.fibre.catalog.Partition;
-import io.datafibre.fibre.catalog.PartitionKey;
-import io.datafibre.fibre.catalog.RangePartitionInfo;
-import io.datafibre.fibre.catalog.SinglePartitionInfo;
+import com.google.common.collect.*;
+import io.datafibre.fibre.analysis.*;
 import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.*;
 import io.datafibre.fibre.common.AnalysisException;
 import io.datafibre.fibre.common.Pair;
 import io.datafibre.fibre.common.UserException;
@@ -58,54 +33,20 @@ import io.datafibre.fibre.sql.analyzer.Analyzer;
 import io.datafibre.fibre.sql.analyzer.RelationFields;
 import io.datafibre.fibre.sql.analyzer.RelationId;
 import io.datafibre.fibre.sql.analyzer.Scope;
-import io.datafibre.fibre.sql.analyzer.SemanticException;
 import io.datafibre.fibre.sql.ast.QueryRelation;
 import io.datafibre.fibre.sql.ast.QueryStatement;
 import io.datafibre.fibre.sql.ast.StatementBase;
-import io.datafibre.fibre.sql.optimizer.ExpressionContext;
-import io.datafibre.fibre.sql.optimizer.JoinHelper;
-import io.datafibre.fibre.sql.optimizer.MaterializationContext;
-import io.datafibre.fibre.sql.optimizer.MvPlanContextBuilder;
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.OptExpressionVisitor;
-import io.datafibre.fibre.sql.optimizer.Optimizer;
-import io.datafibre.fibre.sql.optimizer.OptimizerConfig;
-import io.datafibre.fibre.sql.optimizer.QueryMaterializationContext;
-import io.datafibre.fibre.sql.optimizer.Utils;
+import io.datafibre.fibre.sql.optimizer.*;
 import io.datafibre.fibre.sql.optimizer.base.ColumnRefFactory;
 import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
 import io.datafibre.fibre.sql.optimizer.base.PhysicalPropertySet;
-import io.datafibre.fibre.sql.optimizer.operator.AggType;
-import io.datafibre.fibre.sql.optimizer.operator.Operator;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorBuilderFactory;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
-import io.datafibre.fibre.sql.optimizer.operator.ScanOperatorPredicates;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalAggregationOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalFilterOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalHiveScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalJoinOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalOlapScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalProjectOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalTreeAnchorOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalViewScanOperator;
+import io.datafibre.fibre.sql.optimizer.operator.*;
+import io.datafibre.fibre.sql.optimizer.operator.logical.*;
 import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.BinaryPredicateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.CompoundPredicateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.InPredicateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.IsNullPredicateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperatorVisitor;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.*;
 import io.datafibre.fibre.sql.optimizer.rewrite.ReplaceColumnRefRewriter;
 import io.datafibre.fibre.sql.optimizer.rewrite.ScalarOperatorRewriter;
-import io.datafibre.fibre.sql.optimizer.transformer.ExpressionMapping;
-import io.datafibre.fibre.sql.optimizer.transformer.LogicalPlan;
-import io.datafibre.fibre.sql.optimizer.transformer.RelationTransformer;
-import io.datafibre.fibre.sql.optimizer.transformer.SqlToScalarOperatorTranslator;
-import io.datafibre.fibre.sql.optimizer.transformer.TransformerContext;
+import io.datafibre.fibre.sql.optimizer.transformer.*;
 import io.datafibre.fibre.sql.parser.ParsingException;
 import org.apache.commons.collections4.SetUtils;
 import org.apache.logging.log4j.LogManager;
@@ -113,14 +54,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -157,7 +91,7 @@ public class MvUtils {
                 newMvIds.addAll(mvIds);
             } else if (currentLevel == 0) {
                 logMVPrepare(connectContext, "Table/MaterializedView {} has no related materialized views, " +
-                                "identifier:{}", table.getName(), table.getTableIdentifier());
+                                             "identifier:{}", table.getName(), table.getTableIdentifier());
             }
         }
         if (newMvIds.isEmpty()) {
@@ -410,9 +344,9 @@ public class MvUtils {
             return false;
         }
         if (!(operator instanceof LogicalScanOperator)
-                && !(operator instanceof LogicalProjectOperator)
-                && !(operator instanceof LogicalFilterOperator)
-                && !(operator instanceof LogicalJoinOperator)) {
+            && !(operator instanceof LogicalProjectOperator)
+            && !(operator instanceof LogicalFilterOperator)
+            && !(operator instanceof LogicalJoinOperator)) {
             return false;
         }
         for (OptExpression child : root.getInputs()) {
@@ -425,10 +359,10 @@ public class MvUtils {
 
     public static boolean isLogicalSPJGOperator(Operator operator) {
         return (operator instanceof LogicalScanOperator)
-                || (operator instanceof LogicalProjectOperator)
-                || (operator instanceof LogicalFilterOperator)
-                || (operator instanceof LogicalJoinOperator)
-                || (operator instanceof LogicalAggregationOperator);
+               || (operator instanceof LogicalProjectOperator)
+               || (operator instanceof LogicalFilterOperator)
+               || (operator instanceof LogicalJoinOperator)
+               || (operator instanceof LogicalAggregationOperator);
     }
 
     public static Pair<OptExpression, LogicalPlan> getRuleOptimizedLogicalPlan(
@@ -557,7 +491,7 @@ public class MvUtils {
             JoinOperator joinOperatorType = joinOperator.getJoinType();
             // Collect all join on predicates which join type are not inner/cross join.
             if ((joinOperatorType != JoinOperator.INNER_JOIN
-                    && joinOperatorType != JoinOperator.CROSS_JOIN) && joinOperator.getOnPredicate() != null) {
+                 && joinOperatorType != JoinOperator.CROSS_JOIN) && joinOperator.getOnPredicate() != null) {
                 // Now join's on-predicates may be pushed down below join, so use original on-predicates
                 // instead of new on-predicates.
                 List<ScalarOperator> conjuncts = Utils.extractConjuncts(joinOperator.getOriginalOnPredicate());
@@ -621,7 +555,7 @@ public class MvUtils {
                     if (conjunct instanceof IsNullPredicateOperator) {
                         IsNullPredicateOperator isNullPredicateOperator = conjunct.cast();
                         if (isNullPredicateOperator.isNotNull() && context != null
-                                && context.containsAll(isNullPredicateOperator.getUsedColumns())) {
+                            && context.containsAll(isNullPredicateOperator.getUsedColumns())) {
                             // if column ref is join key and column ref is not null can be ignored for inner and semi join
                             continue;
                         }
@@ -720,7 +654,7 @@ public class MvUtils {
      * NOTE:
      * 1. `canonizePredicateForRewrite` will do more optimizations than `canonizePredicate`.
      * 2. if you need to rewrite src predicate to target predicate, should use `canonizePredicateForRewrite`
-     *  both rather than one use `canonizePredicate` or `canonizePredicateForRewrite`.
+     * both rather than one use `canonizePredicate` or `canonizePredicateForRewrite`.
      */
     public static ScalarOperator canonizePredicateForRewrite(QueryMaterializationContext queryMaterializationContext,
                                                              ScalarOperator predicate) {
@@ -785,7 +719,7 @@ public class MvUtils {
         }
 
         return joinOperator.getJoinType() == JoinOperator.INNER_JOIN &&
-                isColumnEqualPredicate(joinOperator.getOnPredicate());
+               isColumnEqualPredicate(joinOperator.getOnPredicate());
     }
 
     public static boolean isColumnEqualPredicate(ScalarOperator predicate) {
@@ -816,8 +750,8 @@ public class MvUtils {
             @Override
             public Boolean visitBinaryPredicate(BinaryPredicateOperator predicate, Void context) {
                 return predicate.getBinaryType().isEqual()
-                        && predicate.getChild(0).isColumnRef()
-                        && predicate.getChild(1).isColumnRef();
+                       && predicate.getChild(0).isColumnRef()
+                       && predicate.getChild(1).isColumnRef();
             }
         };
 
@@ -1064,7 +998,7 @@ public class MvUtils {
             return partitionPredicates;
         }
         if (scanOperatorPredicates.getSelectedPartitionIds().size() ==
-                scanOperatorPredicates.getIdToPartitionKey().size()) {
+            scanOperatorPredicates.getIdToPartitionKey().size()) {
             return partitionPredicates;
         }
         if (!supportCompensatePartitionPredicateForHiveScan(scanOperatorPredicates.getSelectedPartitionKeys())) {
@@ -1095,33 +1029,34 @@ public class MvUtils {
 
     public static final ImmutableList<OperatorType> SUPPORTED_PARTITION_COMPENSATE_SCAN_TYPES =
             ImmutableList.<OperatorType>builder()
-            .add(OperatorType.LOGICAL_OLAP_SCAN)
-            .add(OperatorType.LOGICAL_HIVE_SCAN)
-            .build();
+                    .add(OperatorType.LOGICAL_OLAP_SCAN)
+                    .add(OperatorType.LOGICAL_HIVE_SCAN)
+                    .build();
+
     /**
      * - if `isCompensate` is true, use `selectedPartitionIds` to compensate complete partition ranges
-     *  with lower and upper bound.
+     * with lower and upper bound.
      * - otherwise use original pruned partition predicates as the compensated partition
-     *  predicates.
+     * predicates.
      * NOTE: When MV has enough partitions for the query, no need to compensate anymore for both mv and the query's plan.
-     *       A query can be rewritten just by the original SQL.
+     * A query can be rewritten just by the original SQL.
      * NOTE: It's not safe if `isCompensate` is always false:
-     *      - partitionPredicate is null if olap scan operator cannot prune partitions.
-     *      - partitionPredicate is not exact even if olap scan operator has pruned partitions.
+     * - partitionPredicate is null if olap scan operator cannot prune partitions.
+     * - partitionPredicate is not exact even if olap scan operator has pruned partitions.
      * eg:
-     *      t1:
-     *       PARTITION p1 VALUES [("0000-01-01"), ("2020-01-01")), has data
-     *       PARTITION p2 VALUES [("2020-01-01"), ("2020-02-01")), has data
-     *       PARTITION p3 VALUES [("2020-02-01"), ("2020-03-01")), has data
-     *       PARTITION p4 VALUES [("2020-03-01"), ("2020-04-01")), no data
-     *       PARTITION p5 VALUES [("2020-04-01"), ("2020-05-01")), no data
-     *
-     *      query1 : SELECT k1, sum(v1) as sum_v1 FROM t1 group by k1;
-     *      `partitionPredicate` : null
-     *
-     *      query2 : SELECT k1, sum(v1) as sum_v1 FROM t1 where k1>='2020-02-01' group by k1;
-     *      `partitionPredicate` : k1>='2020-02-11'
-     *      however for mv  we need: k1>='2020-02-11' and k1 < "2020-03-01"
+     * t1:
+     * PARTITION p1 VALUES [("0000-01-01"), ("2020-01-01")), has data
+     * PARTITION p2 VALUES [("2020-01-01"), ("2020-02-01")), has data
+     * PARTITION p3 VALUES [("2020-02-01"), ("2020-03-01")), has data
+     * PARTITION p4 VALUES [("2020-03-01"), ("2020-04-01")), no data
+     * PARTITION p5 VALUES [("2020-04-01"), ("2020-05-01")), no data
+     * <p>
+     * query1 : SELECT k1, sum(v1) as sum_v1 FROM t1 group by k1;
+     * `partitionPredicate` : null
+     * <p>
+     * query2 : SELECT k1, sum(v1) as sum_v1 FROM t1 where k1>='2020-02-01' group by k1;
+     * `partitionPredicate` : k1>='2020-02-11'
+     * however for mv  we need: k1>='2020-02-11' and k1 < "2020-03-01"
      */
     public static ScalarOperator compensatePartitionPredicate(MaterializationContext mvContext,
                                                               ColumnRefFactory columnRefFactory,
@@ -1171,10 +1106,11 @@ public class MvUtils {
     /**
      * Determine whether to compensate extra partition predicates,
      * - if it needs compensate, use `selectedPartitionIds` to compensate complete partition ranges
-     *  with lower and upper bound.
+     * with lower and upper bound.
      * - if not compensate, use original pruned partition predicates as the compensated partition
-     *  predicates.
-     * @param plan : query opt expression
+     * predicates.
+     *
+     * @param plan      : query opt expression
      * @param mvContext : materialized view context
      * @return
      */
@@ -1246,7 +1182,7 @@ public class MvUtils {
             if (hiveTable.isUnPartitioned()) {
                 return Optional.of(false);
             }
-            LogicalHiveScanOperator hiveScanOperator = (LogicalHiveScanOperator)  scanOperator;
+            LogicalHiveScanOperator hiveScanOperator = (LogicalHiveScanOperator) scanOperator;
             ScanOperatorPredicates scanOperatorPredicates = hiveScanOperator.getScanOperatorPredicates();
             Collection<Long> selectPartitionIds = scanOperatorPredicates.getSelectedPartitionIds();
             if (Objects.isNull(selectPartitionIds) || selectPartitionIds.size() == 0) {
@@ -1269,8 +1205,8 @@ public class MvUtils {
     /**
      * Compensate olap table's partition predicates from olap scan operator which may be pruned by optimizer before or not.
      *
-     * @param olapScanOperator   : olap scan operator that needs to compensate partition predicates.
-     * @param columnRefFactory   : column ref factory that used to generate new partition predicate epxr.
+     * @param olapScanOperator : olap scan operator that needs to compensate partition predicates.
+     * @param columnRefFactory : column ref factory that used to generate new partition predicate epxr.
      * @return
      */
     private static List<ScalarOperator> compensatePartitionPredicateForOlapScan(LogicalOlapScanOperator olapScanOperator,
@@ -1286,7 +1222,7 @@ public class MvUtils {
 
         // compensate nothing if selected partitions are the same with the total partitions.
         if (olapScanOperator.getSelectedPartitionId() != null
-                && olapScanOperator.getSelectedPartitionId().size() == olapTable.getPartitions().size()) {
+            && olapScanOperator.getSelectedPartitionId().size() == olapTable.getPartitions().size()) {
             return partitionPredicates;
         }
 
@@ -1525,8 +1461,9 @@ public class MvUtils {
 
     /**
      * Return the updated partition key ranges of the specific table.
-     *
+     * <p>
      * NOTE: This method can be only used in query rewrite and cannot be used to insert routine.
+     *
      * @param partitionByTable          : the base table of the mv
      * @param partitionColumn           : the partition column of the base table
      * @param mv                        : the materialized view
@@ -1620,7 +1557,7 @@ public class MvUtils {
     /**
      * Return the max refresh timestamp of all partition infos.
      */
-    public static long  getMaxTablePartitionInfoRefreshTime(
+    public static long getMaxTablePartitionInfoRefreshTime(
             Collection<Map<String, MaterializedView.BasePartitionInfo>> partitionInfos) {
         return partitionInfos.stream()
                 .flatMap(x -> x.values().stream())
@@ -1650,7 +1587,7 @@ public class MvUtils {
         if (optExpression.getOp() instanceof LogicalJoinOperator) {
             LogicalJoinOperator joinOperator = optExpression.getOp().cast();
             if (onlyOuterAntiJoin &&
-                    !(joinOperator.getJoinType().isOuterJoin() || joinOperator.getJoinType().isAntiJoin())) {
+                !(joinOperator.getJoinType().isOuterJoin() || joinOperator.getJoinType().isAntiJoin())) {
                 return;
             }
             onPredicates.addAll(Utils.extractConjuncts(joinOperator.getOnPredicate()));
@@ -1662,7 +1599,7 @@ public class MvUtils {
     }
 
     public static boolean isSupportViewDelta(JoinOperator joinOperator) {
-        return  joinOperator.isLeftOuterJoin() || joinOperator.isInnerJoin();
+        return joinOperator.isLeftOuterJoin() || joinOperator.isInnerJoin();
     }
 
     public static SlotRef extractPartitionSlotRef(Expr paritionExpr) {
@@ -1677,71 +1614,70 @@ public class MvUtils {
      * modified columns have done because the modified process may be failed and in this situation
      * should not inactive mvs then.
      */
-    public static void inactiveRelatedMaterializedViews(Database db,
-                                                        OlapTable olapTable,
-                                                        Set<String> modifiedColumns) {
-        if (modifiedColumns == null || modifiedColumns.isEmpty()) {
-            return;
-        }
-        // inactive related asynchronous mvs
-        for (MvId mvId : olapTable.getRelatedMaterializedViews()) {
-            MaterializedView mv = (MaterializedView) db.getTable(mvId.getId());
-            if (mv == null) {
-                LOG.warn("Ignore materialized view {} does not exists", mvId);
-                continue;
-
-            }
-            // TODO: support more types for base table's schema change.
-            try {
-                List<MvPlanContext> mvPlanContexts = MvPlanContextBuilder.getPlanContext(mv);
-                for (MvPlanContext mvPlanContext : mvPlanContexts) {
-                    if (mvPlanContext != null) {
-                        OptExpression mvPlan = mvPlanContext.getLogicalPlan();
-                        List<ColumnRefOperator> usedColRefs = MvUtils.collectScanColumn(mvPlan, scan -> {
-                            if (scan == null) {
-                                return false;
-                            }
-                            Table table = scan.getTable();
-                            return table.getId() == olapTable.getId();
-                        });
-                        Set<String> usedColNames = usedColRefs.stream()
-                                .map(x -> x.getName())
-                                .collect(Collectors.toCollection(() -> new TreeSet<>(String.CASE_INSENSITIVE_ORDER)));
-                        for (String modifiedColumn : modifiedColumns) {
-                            if (usedColNames.contains(modifiedColumn)) {
-                                LOG.warn("Setting the materialized view {}({}) to invalid because " +
-                                                "the column {} of the table {} was modified.", mv.getName(), mv.getId(),
-                                        modifiedColumn, olapTable.getName());
-                                mv.setInactiveAndReason(
-                                        "base table schema changed for columns: " + Joiner.on(",").join(modifiedColumns));
-                            }
-                        }
-                    }
-                }
-            } catch (SemanticException e) {
-                LOG.warn("Get related materialized view {} failed:", mv.getName(), e);
-                LOG.warn("Setting the materialized view {}({}) to invalid because " +
-                                "the columns  of the table {} was modified.", mv.getName(), mv.getId(),
-                        olapTable.getName());
-                mv.setInactiveAndReason(
-                        "base table schema changed for columns: " + Joiner.on(",").join(modifiedColumns));
-            } catch (Exception e) {
-                LOG.warn("Get related materialized view {} failed:", mv.getName(), e);
-                // basic check: may lose some situations
-                for (Column mvColumn : mv.getColumns()) {
-                    if (modifiedColumns.contains(mvColumn.getName())) {
-                        LOG.warn("Setting the materialized view {}({}) to invalid because " +
-                                        "the column {} of the table {} was modified.", mv.getName(), mv.getId(),
-                                mvColumn.getName(), olapTable.getName());
-                        mv.setInactiveAndReason(
-                                "base table schema changed for columns: " + Joiner.on(",").join(modifiedColumns));
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
+//    public static void inactiveRelatedMaterializedViews(Database db,
+//                                                        OlapTable olapTable,
+//                                                        Set<String> modifiedColumns) {
+//        if (modifiedColumns == null || modifiedColumns.isEmpty()) {
+//            return;
+//        }
+//        // inactive related asynchronous mvs
+//        for (MvId mvId : olapTable.getRelatedMaterializedViews()) {
+//            MaterializedView mv = (MaterializedView) db.getTable(mvId.getId());
+//            if (mv == null) {
+//                LOG.warn("Ignore materialized view {} does not exists", mvId);
+//                continue;
+//
+//            }
+//            // TODO: support more types for base table's schema change.
+//            try {
+//                List<MvPlanContext> mvPlanContexts = MvPlanContextBuilder.getPlanContext(mv);
+//                for (MvPlanContext mvPlanContext : mvPlanContexts) {
+//                    if (mvPlanContext != null) {
+//                        OptExpression mvPlan = mvPlanContext.getLogicalPlan();
+//                        List<ColumnRefOperator> usedColRefs = MvUtils.collectScanColumn(mvPlan, scan -> {
+//                            if (scan == null) {
+//                                return false;
+//                            }
+//                            Table table = scan.getTable();
+//                            return table.getId() == olapTable.getId();
+//                        });
+//                        Set<String> usedColNames = usedColRefs.stream()
+//                                .map(x -> x.getName())
+//                                .collect(Collectors.toCollection(() -> new TreeSet<>(String.CASE_INSENSITIVE_ORDER)));
+//                        for (String modifiedColumn : modifiedColumns) {
+//                            if (usedColNames.contains(modifiedColumn)) {
+//                                LOG.warn("Setting the materialized view {}({}) to invalid because " +
+//                                                "the column {} of the table {} was modified.", mv.getName(), mv.getId(),
+//                                        modifiedColumn, olapTable.getName());
+//                                mv.setInactiveAndReason(
+//                                        "base table schema changed for columns: " + Joiner.on(",").join(modifiedColumns));
+//                            }
+//                        }
+//                    }
+//                }
+//            } catch (SemanticException e) {
+//                LOG.warn("Get related materialized view {} failed:", mv.getName(), e);
+//                LOG.warn("Setting the materialized view {}({}) to invalid because " +
+//                                "the columns  of the table {} was modified.", mv.getName(), mv.getId(),
+//                        olapTable.getName());
+//                mv.setInactiveAndReason(
+//                        "base table schema changed for columns: " + Joiner.on(",").join(modifiedColumns));
+//            } catch (Exception e) {
+//                LOG.warn("Get related materialized view {} failed:", mv.getName(), e);
+//                // basic check: may lose some situations
+//                for (Column mvColumn : mv.getColumns()) {
+//                    if (modifiedColumns.contains(mvColumn.getName())) {
+//                        LOG.warn("Setting the materialized view {}({}) to invalid because " +
+//                                        "the column {} of the table {} was modified.", mv.getName(), mv.getId(),
+//                                mvColumn.getName(), olapTable.getName());
+//                        mv.setInactiveAndReason(
+//                                "base table schema changed for columns: " + Joiner.on(",").join(modifiedColumns));
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+//    }
     public static void collectViewScanOperator(OptExpression tree, Collection<Operator> viewScanOperators) {
         if (tree.getOp() instanceof LogicalViewScanOperator) {
             viewScanOperators.add(tree.getOp());

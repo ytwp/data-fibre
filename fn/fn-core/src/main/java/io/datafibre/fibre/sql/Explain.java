@@ -119,88 +119,88 @@ public class Explain {
         }
 
         @Override
-        public OperatorStr visitPhysicalOlapScan(OptExpression optExpression, ExplainContext context) {
-            PhysicalOlapScanOperator scan = (PhysicalOlapScanOperator) optExpression.getOp();
+//        public OperatorStr visitPhysicalOlapScan(OptExpression optExpression, ExplainContext context) {
+//            PhysicalOlapScanOperator scan = (PhysicalOlapScanOperator) optExpression.getOp();
+//
+//            StringBuilder sb = new StringBuilder("- SCAN [")
+//                    .append(((OlapTable) scan.getTable()).getIndexNameById(scan.getSelectedIndexId()))
+//                    .append("]")
+//                    .append(buildOutputColumns(scan,
+//                            "[" + scan.getOutputColumns().stream().map(new ExpressionPrinter()::print)
+//                                    .collect(Collectors.joining(", ")) + "]"))
+//                    .append("\n");
+//
+//            if (scan.getTable().isMaterializedView()) {
+//                buildOperatorProperty(sb, "MaterializedView: true", context.step);
+//            }
+//            buildCostEstimate(sb, optExpression, context.step);
+//
+//            int totalTabletsNum = 0;
+//            for (Long partitionId : scan.getSelectedPartitionId()) {
+//                final Partition partition = ((OlapTable) scan.getTable()).getPartition(partitionId);
+//                final MaterializedIndex selectedTable = partition.getIndex(scan.getSelectedIndexId());
+//                totalTabletsNum += selectedTable.getTablets().size();
+//            }
+//            String partitionAndBucketInfo = "partitionRatio: " +
+//                    scan.getSelectedPartitionId().size() +
+//                    "/" +
+//                    ((OlapTable) scan.getTable()).getPartitions().size() +
+//                    ", tabletRatio: " +
+//                    scan.getSelectedTabletId().size() +
+//                    "/" +
+//                    totalTabletsNum;
+//            buildOperatorProperty(sb, partitionAndBucketInfo, context.step);
+//            buildCommonProperty(sb, scan, context.step);
+//            return new OperatorStr(sb.toString(), context.step, Collections.emptyList());
+//        }
 
-            StringBuilder sb = new StringBuilder("- SCAN [")
-                    .append(((OlapTable) scan.getTable()).getIndexNameById(scan.getSelectedIndexId()))
-                    .append("]")
-                    .append(buildOutputColumns(scan,
-                            "[" + scan.getOutputColumns().stream().map(new ExpressionPrinter()::print)
-                                    .collect(Collectors.joining(", ")) + "]"))
-                    .append("\n");
+//        @Override
+//        public OperatorStr visitPhysicalHiveScan(OptExpression optExpression, ExplainContext context) {
+//            PhysicalHiveScanOperator scan = (PhysicalHiveScanOperator) optExpression.getOp();
+//
+//            StringBuilder sb = new StringBuilder("- HIVE-SCAN [")
+//                    .append(((HiveTable) scan.getTable()).getTableName())
+//                    .append("]")
+//                    .append(buildOutputColumns(scan,
+//                            "[" + scan.getOutputColumns().stream().map(new ExpressionPrinter()::print)
+//                                    .collect(Collectors.joining(", ")) + "]"))
+//                    .append("\n");
+//            buildCostEstimate(sb, optExpression, context.step);
+//            buildCommonProperty(sb, scan, context.step);
+//            return new OperatorStr(sb.toString(), context.step, Collections.emptyList());
+//        }
 
-            if (scan.getTable().isMaterializedView()) {
-                buildOperatorProperty(sb, "MaterializedView: true", context.step);
-            }
-            buildCostEstimate(sb, optExpression, context.step);
+//        @Override
+//        public OperatorStr visitPhysicalIcebergScan(OptExpression optExpression,
+//                                                    ExplainContext context) {
+//            PhysicalIcebergScanOperator scan = (PhysicalIcebergScanOperator) optExpression.getOp();
+//
+//            StringBuilder sb = new StringBuilder("- ICEBERG-SCAN [")
+//                    .append(((IcebergTable) scan.getTable()).getRemoteTableName())
+//                    .append("]")
+//                    .append(buildOutputColumns(scan,
+//                            "[" + scan.getOutputColumns().stream().map(new ExpressionPrinter()::print)
+//                                    .collect(Collectors.joining(", ")) + "]"))
+//                    .append("\n");
+//            buildCostEstimate(sb, optExpression, context.step);
+//            buildCommonProperty(sb, scan, context.step);
+//            return new OperatorStr(sb.toString(), context.step, Collections.emptyList());
+//        }
 
-            int totalTabletsNum = 0;
-            for (Long partitionId : scan.getSelectedPartitionId()) {
-                final Partition partition = ((OlapTable) scan.getTable()).getPartition(partitionId);
-                final MaterializedIndex selectedTable = partition.getIndex(scan.getSelectedIndexId());
-                totalTabletsNum += selectedTable.getTablets().size();
-            }
-            String partitionAndBucketInfo = "partitionRatio: " +
-                    scan.getSelectedPartitionId().size() +
-                    "/" +
-                    ((OlapTable) scan.getTable()).getPartitions().size() +
-                    ", tabletRatio: " +
-                    scan.getSelectedTabletId().size() +
-                    "/" +
-                    totalTabletsNum;
-            buildOperatorProperty(sb, partitionAndBucketInfo, context.step);
-            buildCommonProperty(sb, scan, context.step);
-            return new OperatorStr(sb.toString(), context.step, Collections.emptyList());
-        }
-
-        @Override
-        public OperatorStr visitPhysicalHiveScan(OptExpression optExpression, ExplainContext context) {
-            PhysicalHiveScanOperator scan = (PhysicalHiveScanOperator) optExpression.getOp();
-
-            StringBuilder sb = new StringBuilder("- HIVE-SCAN [")
-                    .append(((HiveTable) scan.getTable()).getTableName())
-                    .append("]")
-                    .append(buildOutputColumns(scan,
-                            "[" + scan.getOutputColumns().stream().map(new ExpressionPrinter()::print)
-                                    .collect(Collectors.joining(", ")) + "]"))
-                    .append("\n");
-            buildCostEstimate(sb, optExpression, context.step);
-            buildCommonProperty(sb, scan, context.step);
-            return new OperatorStr(sb.toString(), context.step, Collections.emptyList());
-        }
-
-        @Override
-        public OperatorStr visitPhysicalIcebergScan(OptExpression optExpression,
-                                                    ExplainContext context) {
-            PhysicalIcebergScanOperator scan = (PhysicalIcebergScanOperator) optExpression.getOp();
-
-            StringBuilder sb = new StringBuilder("- ICEBERG-SCAN [")
-                    .append(((IcebergTable) scan.getTable()).getRemoteTableName())
-                    .append("]")
-                    .append(buildOutputColumns(scan,
-                            "[" + scan.getOutputColumns().stream().map(new ExpressionPrinter()::print)
-                                    .collect(Collectors.joining(", ")) + "]"))
-                    .append("\n");
-            buildCostEstimate(sb, optExpression, context.step);
-            buildCommonProperty(sb, scan, context.step);
-            return new OperatorStr(sb.toString(), context.step, Collections.emptyList());
-        }
-
-        public OperatorStr visitPhysicalHudiScan(OptExpression optExpression, ExplainContext context) {
-            PhysicalHudiScanOperator scan = (PhysicalHudiScanOperator) optExpression.getOp();
-
-            StringBuilder sb = new StringBuilder("- Hudi-SCAN [")
-                    .append(((HudiTable) scan.getTable()).getTableName())
-                    .append("]")
-                    .append(buildOutputColumns(scan,
-                            "[" + scan.getOutputColumns().stream().map(new ExpressionPrinter()::print)
-                                    .collect(Collectors.joining(", ")) + "]"))
-                    .append("\n");
-            buildCostEstimate(sb, optExpression, context.step);
-            buildCommonProperty(sb, scan, context.step);
-            return new OperatorStr(sb.toString(), context.step, Collections.emptyList());
-        }
+//        public OperatorStr visitPhysicalHudiScan(OptExpression optExpression, ExplainContext context) {
+//            PhysicalHudiScanOperator scan = (PhysicalHudiScanOperator) optExpression.getOp();
+//
+//            StringBuilder sb = new StringBuilder("- Hudi-SCAN [")
+//                    .append(((HudiTable) scan.getTable()).getTableName())
+//                    .append("]")
+//                    .append(buildOutputColumns(scan,
+//                            "[" + scan.getOutputColumns().stream().map(new ExpressionPrinter()::print)
+//                                    .collect(Collectors.joining(", ")) + "]"))
+//                    .append("\n");
+//            buildCostEstimate(sb, optExpression, context.step);
+//            buildCommonProperty(sb, scan, context.step);
+//            return new OperatorStr(sb.toString(), context.step, Collections.emptyList());
+//        }
 
         public OperatorStr visitPhysicalSchemaScan(OptExpression optExpression,
                                                    ExplainContext context) {
@@ -648,23 +648,23 @@ public class Explain {
             return new OperatorStr(sb.toString(), context.step, Arrays.asList(left, right));
         }
 
-        @Override
-        public OperatorStr visitPhysicalStreamScan(OptExpression optExpression, ExplainContext context) {
-            PhysicalStreamScanOperator scan = (PhysicalStreamScanOperator) optExpression.getOp();
-
-            StringBuilder sb = new StringBuilder("- StreamScan [")
-                    .append(((OlapTable) scan.getTable()).getName())
-                    .append("]")
-                    .append(buildOutputColumns(scan,
-                            "[" + scan.getOutputColumns().stream().map(new ExpressionPrinter()::print)
-                                    .collect(Collectors.joining(", ")) + "]"))
-                    .append("\n");
-
-            buildCostEstimate(sb, optExpression, context.step);
-            buildCommonProperty(sb, scan, context.step);
-
-            return new OperatorStr(sb.toString(), context.step, Collections.emptyList());
-        }
+//        @Override
+//        public OperatorStr visitPhysicalStreamScan(OptExpression optExpression, ExplainContext context) {
+//            PhysicalStreamScanOperator scan = (PhysicalStreamScanOperator) optExpression.getOp();
+//
+//            StringBuilder sb = new StringBuilder("- StreamScan [")
+//                    .append(((OlapTable) scan.getTable()).getName())
+//                    .append("]")
+//                    .append(buildOutputColumns(scan,
+//                            "[" + scan.getOutputColumns().stream().map(new ExpressionPrinter()::print)
+//                                    .collect(Collectors.joining(", ")) + "]"))
+//                    .append("\n");
+//
+//            buildCostEstimate(sb, optExpression, context.step);
+//            buildCommonProperty(sb, scan, context.step);
+//
+//            return new OperatorStr(sb.toString(), context.step, Collections.emptyList());
+//        }
 
         @Override
         public OperatorStr visitPhysicalTableFunctionTableScan(OptExpression optExpr, ExplainContext context) {

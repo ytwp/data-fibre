@@ -1,0 +1,999 @@
+// Copyright 2021-present StarRocks, Inc. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package io.datafibre.fibre.sql.analyzer;
+
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import io.datafibre.fibre.analysis.*;
+import io.datafibre.fibre.catalog.*;
+import io.datafibre.fibre.common.*;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.privilege.ranger.SecurityPolicyRewriteRule;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.server.MetadataMgr;
+import io.datafibre.fibre.sql.ast.*;
+import io.datafibre.fibre.sql.common.MetaUtils;
+import io.datafibre.fibre.sql.common.TypeManager;
+import io.datafibre.fibre.sql.optimizer.dump.HiveMetaStoreTableDumpInfo;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static io.datafibre.fibre.sql.common.UnsupportedException.unsupportedException;
+import static io.datafibre.fibre.thrift.PlanNodesConstants.*;
+
+public class QueryAnalyzer {
+    private final ConnectContext session;
+    private final MetadataMgr metadataMgr;
+
+    public QueryAnalyzer(ConnectContext session) {
+        this.session = session;
+        this.metadataMgr = GlobalStateMgr.getCurrentState().getMetadataMgr();
+    }
+
+    public void analyze(StatementBase node) {
+        new Visitor().process(node, new Scope(RelationId.anonymous(), new RelationFields()));
+    }
+
+    public void analyze(StatementBase node, Scope parent) {
+        new Visitor().process(node, parent);
+    }
+
+    private class Visitor extends AstVisitor<Scope, Scope> {
+        public Visitor() {
+        }
+
+        public Scope process(ParseNode node, Scope scope) {
+            return node.accept(this, scope);
+        }
+
+        @Override
+        public Scope visitQueryStatement(QueryStatement node, Scope parent) {
+            Scope scope = visitQueryRelation(node.getQueryRelation(), parent);
+            if (node.hasOutFileClause()) {
+                node.getOutFileClause().analyze(scope);
+            }
+            return scope;
+        }
+
+        @Override
+        public Scope visitQueryRelation(QueryRelation node, Scope parent) {
+            Scope scope = analyzeCTE(node, parent);
+            return process(node, scope);
+        }
+
+        private Scope analyzeCTE(QueryRelation stmt, Scope scope) {
+            Scope cteScope = new Scope(RelationId.anonymous(), new RelationFields());
+            cteScope.setParent(scope);
+
+            if (!stmt.hasWithClause()) {
+                return cteScope;
+            }
+
+            for (CTERelation withQuery : stmt.getCteRelations()) {
+                QueryRelation query = withQuery.getCteQueryStatement().getQueryRelation();
+                process(withQuery.getCteQueryStatement(), cteScope);
+                String cteName = withQuery.getName();
+                if (cteScope.containsCTE(cteName)) {
+                    ErrorReport.reportSemanticException(ErrorCode.ERR_NONUNIQ_TABLE, cteName);
+                }
+
+                if (withQuery.getColumnOutputNames() == null) {
+                    withQuery.setColumnOutputNames(new ArrayList<>(query.getColumnOutputNames()));
+                } else {
+                    if (withQuery.getColumnOutputNames().size() != query.getColumnOutputNames().size()) {
+                        ErrorReport.reportSemanticException(ErrorCode.ERR_VIEW_WRONG_LIST);
+                    }
+                }
+
+                /*
+                 * use cte column name as output scope of subquery relation fields
+                 */
+                ImmutableList.Builder<Field> outputFields = ImmutableList.builder();
+                for (int fieldIdx = 0; fieldIdx < query.getRelationFields().getAllFields().size(); ++fieldIdx) {
+                    Field originField = query.getRelationFields().getFieldByIndex(fieldIdx);
+
+                    String database = originField.getRelationAlias() == null ? session.getDatabase() :
+                            originField.getRelationAlias().getDb();
+                    TableName tableName = new TableName(database, cteName);
+                    outputFields.add(
+                            new Field(withQuery.getColumnOutputNames().get(fieldIdx), originField.getType(), tableName,
+                                    originField.getOriginExpression()));
+                }
+
+                /*
+                 *  Because the analysis of CTE is sensitive to order
+                 *  the later CTE can call the previous resolved CTE,
+                 *  and the previous CTE can rewrite the existing table name.
+                 *  So here will save an increasing AnalyzeState to add cte scope
+                 */
+                withQuery.setScope(new Scope(RelationId.of(withQuery), new RelationFields(outputFields.build())));
+                cteScope.addCteQueries(cteName, withQuery);
+            }
+
+            return cteScope;
+        }
+
+        @Override
+        public Scope visitSelect(SelectRelation selectRelation, Scope scope) {
+            AnalyzeState analyzeState = new AnalyzeState();
+            //Record aliases at this level to prevent alias conflicts
+            Set<TableName> aliasSet = new HashSet<>();
+            Relation resolvedRelation = resolveTableRef(selectRelation.getRelation(), scope, aliasSet);
+            if (resolvedRelation instanceof TableFunctionRelation) {
+                throw unsupportedException("Table function must be used with lateral join");
+            }
+            selectRelation.setRelation(resolvedRelation);
+            Scope sourceScope = process(resolvedRelation, scope);
+            sourceScope.setParent(scope);
+
+            Map<Expr, SlotRef> generatedExprToColumnRef = new HashMap<>();
+            new AstVisitor<Void, Void>() {
+                @Override
+                public Void visitTable(TableRelation tableRelation, Void context) {
+                    generatedExprToColumnRef.putAll(tableRelation.getGeneratedExprToColumnRef());
+                    return null;
+                }
+
+                @Override
+                public Void visitJoin(JoinRelation joinRelation, Void context) {
+                    visit(joinRelation.getLeft());
+                    visit(joinRelation.getRight());
+                    return null;
+                }
+            }.visit(resolvedRelation);
+            analyzeState.setGeneratedExprToColumnRef(generatedExprToColumnRef);
+
+            SelectAnalyzer selectAnalyzer = new SelectAnalyzer(session);
+            selectAnalyzer.analyze(
+                    analyzeState,
+                    selectRelation.getSelectList(),
+                    selectRelation.getRelation(),
+                    sourceScope,
+                    selectRelation.getGroupByClause(),
+                    selectRelation.getHavingClause(),
+                    selectRelation.getWhereClause(),
+                    selectRelation.getOrderBy(),
+                    selectRelation.getLimit());
+
+            selectRelation.fillResolvedAST(analyzeState);
+            return analyzeState.getOutputScope();
+        }
+
+        private Relation resolveTableRef(Relation relation, Scope scope, Set<TableName> aliasSet) {
+            if (relation instanceof JoinRelation) {
+                JoinRelation join = (JoinRelation) relation;
+                join.setLeft(resolveTableRef(join.getLeft(), scope, aliasSet));
+                Relation rightRelation = resolveTableRef(join.getRight(), scope, aliasSet);
+                join.setRight(rightRelation);
+                if (rightRelation instanceof TableFunctionRelation) {
+                    join.setLateral(true);
+                }
+                return join;
+            } else if (relation instanceof FileTableFunctionRelation) {
+                FileTableFunctionRelation tableFunctionRelation = (FileTableFunctionRelation) relation;
+                Table table = resolveTableFunctionTable(tableFunctionRelation.getProperties());
+                tableFunctionRelation.setTable(table);
+                return relation;
+            } else if (relation instanceof TableRelation) {
+                TableRelation tableRelation = (TableRelation) relation;
+                TableName tableName = tableRelation.getName();
+                if (tableName != null && Strings.isNullOrEmpty(tableName.getDb())) {
+                    Optional<CTERelation> withQuery = scope.getCteQueries(tableName.getTbl());
+                    if (withQuery.isPresent()) {
+                        CTERelation withRelation = withQuery.get();
+                        withRelation.addTableRef();
+                        RelationFields withRelationFields = withQuery.get().getRelationFields();
+                        ImmutableList.Builder<Field> outputFields = ImmutableList.builder();
+
+                        for (int fieldIdx = 0; fieldIdx < withRelationFields.getAllFields().size(); ++fieldIdx) {
+                            Field originField = withRelationFields.getAllFields().get(fieldIdx);
+                            outputFields.add(new Field(
+                                    originField.getName(), originField.getType(), tableRelation.getResolveTableName(),
+                                    originField.getOriginExpression()));
+                        }
+
+                        // The CTERelation stored in the Scope is not used directly here, but a new Relation is copied.
+                        // It is because we hope to obtain a new RelationId to distinguish multiple cte reuses.
+                        // Because the reused cte should not be considered the same relation.
+                        // eg: with w as (select * from t0) select v1,sum(v2) from w group by v1 " +
+                        //                "having v1 in (select v3 from w where v2 = 2)
+                        // cte used in outer query and sub-query can't use same relation-id and field
+                        CTERelation newCteRelation = new CTERelation(withRelation.getCteMouldId(), tableName.getTbl(),
+                                withRelation.getColumnOutputNames(),
+                                withRelation.getCteQueryStatement());
+                        newCteRelation.setAlias(tableRelation.getAlias());
+                        newCteRelation.setResolvedInFromClause(true);
+                        newCteRelation.setScope(
+                                new Scope(RelationId.of(newCteRelation), new RelationFields(outputFields.build())));
+                        return newCteRelation;
+                    }
+                }
+
+                TableName resolveTableName = relation.getResolveTableName();
+                MetaUtils.normalizationTableName(session, resolveTableName);
+                if (aliasSet.contains(resolveTableName)) {
+                    ErrorReport.reportSemanticException(ErrorCode.ERR_NONUNIQ_TABLE,
+                            relation.getResolveTableName().getTbl());
+                } else {
+                    aliasSet.add(new TableName(resolveTableName.getCatalog(),
+                            resolveTableName.getDb(),
+                            resolveTableName.getTbl()));
+                }
+
+                Table table = resolveTable(tableRelation);
+                Relation r;
+                if (table instanceof View) {
+                    View view = (View) table;
+                    QueryStatement queryStatement = view.getQueryStatement();
+                    ViewRelation viewRelation = new ViewRelation(tableName, view, queryStatement);
+                    viewRelation.setAlias(tableRelation.getAlias());
+
+                    r = viewRelation;
+                } else if (table instanceof HiveView) {
+                    HiveView hiveView = (HiveView) table;
+                    QueryStatement queryStatement = hiveView.getQueryStatement();
+                    View view = new View(hiveView.getId(), hiveView.getName(), hiveView.getFullSchema());
+                    view.setInlineViewDefWithSqlMode(hiveView.getInlineViewDef(), 0);
+                    ViewRelation viewRelation = new ViewRelation(tableName, view, queryStatement);
+                    viewRelation.setAlias(tableRelation.getAlias());
+
+                    r = viewRelation;
+                } else {
+                    if (tableRelation.getTemporalClause() != null) {
+                        if (table.getType() != Table.TableType.MYSQL) {
+                            throw unsupportedException(
+                                    "Unsupported table type for temporal clauses: " + table.getType() +
+                                            "; only external MYSQL tables support temporal clauses");
+                        }
+                    }
+
+                    if (table.isSupported()) {
+                        tableRelation.setTable(table);
+                        r = tableRelation;
+                    } else {
+                        throw unsupportedException("Unsupported scan table type: " + table.getType());
+                    }
+                }
+
+                if (r.isPolicyRewritten()) {
+                    return r;
+                }
+                assert tableName != null;
+//                QueryStatement policyRewriteQuery = SecurityPolicyRewriteRule.buildView(session, r, tableName);
+                QueryStatement policyRewriteQuery =null;
+                if (policyRewriteQuery == null) {
+                    return r;
+                } else {
+                    r.setPolicyRewritten(true);
+                    SubqueryRelation subqueryRelation = new SubqueryRelation(policyRewriteQuery);
+                    subqueryRelation.setAlias(tableName);
+                    return subqueryRelation;
+                }
+            } else {
+                if (relation.getResolveTableName() != null) {
+                    if (aliasSet.contains(relation.getResolveTableName())) {
+                        ErrorReport.reportSemanticException(ErrorCode.ERR_NONUNIQ_TABLE,
+                                relation.getResolveTableName().getTbl());
+                    } else {
+                        aliasSet.add(relation.getResolveTableName());
+                    }
+                }
+                return relation;
+            }
+        }
+
+        @Override
+        public Scope visitTable(TableRelation node, Scope outerScope) {
+            TableName tableName = node.getResolveTableName();
+            Table table = node.getTable();
+
+            ImmutableList.Builder<Field> fields = ImmutableList.builder();
+            ImmutableMap.Builder<Field, Column> columns = ImmutableMap.builder();
+
+            if (node.isSyncMVQuery()) {
+                OlapTable olapTable = (OlapTable) table;
+                List<Column> mvSchema = olapTable.getSchemaByIndexId(olapTable.getBaseIndexId());
+                for (Column column : mvSchema) {
+                    Field field = new Field(column.getName(), column.getType(), tableName,
+                            new SlotRef(tableName, column.getName(), column.getName()), true, column.isAllowNull());
+                    columns.put(field, column);
+                    fields.add(field);
+                }
+            } else {
+                List<Column> fullSchema = node.isBinlogQuery()
+                        ? appendBinlogMetaColumns(table.getFullSchema()) : table.getFullSchema();
+                Set<Column> baseSchema = new HashSet<>(node.isBinlogQuery()
+                        ? appendBinlogMetaColumns(table.getBaseSchema()) : table.getBaseSchema());
+                for (Column column : fullSchema) {
+                    // TODO: avoid analyze visible or not each time, cache it in schema
+                    boolean visible = baseSchema.contains(column);
+                    SlotRef slot = new SlotRef(tableName, column.getName(), column.getName());
+                    Field field = new Field(column.getName(), column.getType(), tableName, slot, visible,
+                            column.isAllowNull());
+                    columns.put(field, column);
+                    fields.add(field);
+                }
+            }
+
+            node.setColumns(columns.build());
+            String dbName = node.getName().getDb();
+            if (session.getDumpInfo() != null) {
+                session.getDumpInfo().addTable(dbName, table);
+
+                if (table.isHiveTable()) {
+                    HiveTable hiveTable = (HiveTable) table;
+                    session.getDumpInfo().addHMSTable(hiveTable.getResourceName(), hiveTable.getDbName(),
+                            hiveTable.getTableName());
+                    HiveMetaStoreTableDumpInfo hiveMetaStoreTableDumpInfo = session.getDumpInfo().getHMSTable(
+                            hiveTable.getResourceName(), hiveTable.getDbName(), hiveTable.getTableName());
+                    hiveMetaStoreTableDumpInfo.setPartColumnNames(hiveTable.getPartitionColumnNames());
+                    hiveMetaStoreTableDumpInfo.setDataColumnNames(hiveTable.getDataColumnNames());
+                    Resource resource = GlobalStateMgr.getCurrentState().getResourceMgr().
+                            getResource(hiveTable.getResourceName());
+                    if (resource != null) {
+                        session.getDumpInfo().addResource(resource);
+                    }
+                }
+            }
+
+            Scope scope = new Scope(RelationId.of(node), new RelationFields(fields.build()));
+            node.setScope(scope);
+
+            Map<Expr, SlotRef> generatedExprToColumnRef = new HashMap<>();
+            for (Column column : table.getBaseSchema()) {
+                if (column.generatedColumnExpr() != null) {
+                    Expr materializedExpression = column.generatedColumnExpr();
+                    ExpressionAnalyzer.analyzeExpression(materializedExpression, new AnalyzeState(), scope, session);
+                    SlotRef slotRef = new SlotRef(null, column.getName());
+                    ExpressionAnalyzer.analyzeExpression(slotRef, new AnalyzeState(), scope, session);
+                    generatedExprToColumnRef.put(materializedExpression, slotRef);
+                }
+            }
+            node.setGeneratedExprToColumnRef(generatedExprToColumnRef);
+
+            return scope;
+        }
+
+        private List<Column> appendBinlogMetaColumns(List<Column> schema) {
+            List<Column> columns = new ArrayList<>(schema);
+            columns.add(new Column(BINLOG_OP_COLUMN_NAME, Type.TINYINT));
+            columns.add(new Column(BINLOG_VERSION_COLUMN_NAME, Type.BIGINT));
+            columns.add(new Column(BINLOG_SEQ_ID_COLUMN_NAME, Type.BIGINT));
+            columns.add(new Column(BINLOG_TIMESTAMP_COLUMN_NAME, Type.BIGINT));
+            return columns;
+        }
+
+        @Override
+        public Scope visitFileTableFunction(FileTableFunctionRelation node, Scope outerScope) {
+            TableName tableName = node.getResolveTableName();
+            Table table = node.getTable();
+
+            ImmutableList.Builder<Field> fields = ImmutableList.builder();
+            ImmutableMap.Builder<Field, Column> columns = ImmutableMap.builder();
+
+            List<Column> fullSchema = table.getFullSchema();
+            for (Column column : fullSchema) {
+                Field field = new Field(column.getName(), column.getType(), tableName,
+                        new SlotRef(tableName, column.getName(), column.getName()), true);
+                columns.put(field, column);
+                fields.add(field);
+            }
+
+            node.setColumns(columns.build());
+            Scope scope = new Scope(RelationId.of(node), new RelationFields(fields.build()));
+            node.setScope(scope);
+            return scope;
+        }
+
+        @Override
+        public Scope visitCTE(CTERelation cteRelation, Scope context) {
+            QueryRelation query = cteRelation.getCteQueryStatement().getQueryRelation();
+
+            ImmutableList.Builder<Field> outputFields = ImmutableList.builder();
+            for (int fieldIdx = 0; fieldIdx < query.getRelationFields().getAllFields().size(); ++fieldIdx) {
+                Field originField = query.getRelationFields().getFieldByIndex(fieldIdx);
+                outputFields.add(new Field(cteRelation.getColumnOutputNames() == null ?
+                        originField.getName() : cteRelation.getColumnOutputNames().get(fieldIdx),
+                        originField.getType(),
+                        cteRelation.getResolveTableName(),
+                        originField.getOriginExpression()));
+            }
+            Scope scope = new Scope(RelationId.of(cteRelation), new RelationFields(outputFields.build()));
+            cteRelation.setScope(scope);
+            return scope;
+        }
+
+        @Override
+        public Scope visitJoin(JoinRelation join, Scope parentScope) {
+            Scope leftScope = process(join.getLeft(), parentScope);
+            Scope rightScope;
+            if (join.getRight() instanceof TableFunctionRelation || join.isLateral()) {
+                if (!(join.getRight() instanceof TableFunctionRelation)) {
+                    throw new SemanticException("Only support lateral join with UDTF");
+                }
+
+                if (!join.getJoinOp().isInnerJoin() && !join.getJoinOp().isCrossJoin()) {
+                    throw new SemanticException("Not support lateral join except inner or cross");
+                }
+                rightScope = process(join.getRight(), leftScope);
+            } else {
+                rightScope = process(join.getRight(), parentScope);
+            }
+
+            Expr joinEqual = join.getOnPredicate();
+            if (join.getUsingColNames() != null) {
+                Expr resolvedUsing = analyzeJoinUsing(join.getUsingColNames(), leftScope, rightScope);
+                if (joinEqual == null) {
+                    joinEqual = resolvedUsing;
+                } else {
+                    joinEqual = new CompoundPredicate(CompoundPredicate.Operator.AND, joinEqual, resolvedUsing);
+                }
+                join.setOnPredicate(joinEqual);
+            }
+
+            if (!join.getJoinHint().isEmpty()) {
+                analyzeJoinHints(join);
+            }
+
+            if (joinEqual != null) {
+                /*
+                 * sourceRelation.getRelationFields() is used to represent the column information of output.
+                 * To ensure the OnPredicate in semi/anti is correct, the relation needs to be re-assembled here
+                 * with left child and right child relationFields
+                 */
+                analyzeExpression(joinEqual, new AnalyzeState(), new Scope(RelationId.of(join),
+                        leftScope.getRelationFields().joinWith(rightScope.getRelationFields())));
+
+                AnalyzerUtils.verifyNoAggregateFunctions(joinEqual, "JOIN");
+                AnalyzerUtils.verifyNoWindowFunctions(joinEqual, "JOIN");
+                AnalyzerUtils.verifyNoGroupingFunctions(joinEqual, "JOIN");
+
+                if (!joinEqual.getType().matchesType(Type.BOOLEAN) && !joinEqual.getType().matchesType(Type.NULL)) {
+                    throw new SemanticException("WHERE clause must evaluate to a boolean: actual type %s",
+                            joinEqual.getType());
+                }
+                // check the join on predicate, example:
+                // we have col_json, we can't join on table_a.col_json = table_b.col_json,
+                // but we can join on cast(table_a.col_json->"a" as int) = cast(table_b.col_json->"a" as int)
+                // similarly, we can join on table_a.col_map['a'] = table_b.col_map['a'],
+                // and table_a.col_struct.a = table_b.col_struct.a
+                checkJoinEqual(joinEqual);
+            } else {
+                if (join.getJoinOp().isOuterJoin() || join.getJoinOp().isSemiAntiJoin()) {
+                    throw new SemanticException(join.getJoinOp() + " requires an ON or USING clause.");
+                }
+            }
+
+            /*
+             * New Scope needs to be constructed for select in semi/anti join
+             */
+            Scope scope;
+            if (join.getJoinOp().isLeftSemiAntiJoin()) {
+                scope = new Scope(RelationId.of(join), leftScope.getRelationFields());
+            } else if (join.getJoinOp().isRightSemiAntiJoin()) {
+                scope = new Scope(RelationId.of(join), rightScope.getRelationFields());
+            } else if (join.getJoinOp().isLeftOuterJoin()) {
+                List<Field> rightFields = getFieldsWithNullable(rightScope);
+                scope = new Scope(RelationId.of(join),
+                        leftScope.getRelationFields().joinWith(new RelationFields(rightFields)));
+            } else if (join.getJoinOp().isRightOuterJoin()) {
+                List<Field> leftFields = getFieldsWithNullable(leftScope);
+                scope = new Scope(RelationId.of(join),
+                        new RelationFields(leftFields).joinWith(rightScope.getRelationFields()));
+            } else if (join.getJoinOp().isFullOuterJoin()) {
+                List<Field> rightFields = getFieldsWithNullable(rightScope);
+                List<Field> leftFields = getFieldsWithNullable(leftScope);
+                scope = new Scope(RelationId.of(join),
+                        new RelationFields(leftFields).joinWith(new RelationFields(rightFields)));
+            } else {
+                scope = new Scope(RelationId.of(join),
+                        leftScope.getRelationFields().joinWith(rightScope.getRelationFields()));
+            }
+            join.setScope(scope);
+            return scope;
+        }
+
+        private List<Field> getFieldsWithNullable(Scope scope) {
+            List<Field> newFields = new ArrayList<>();
+            for (Field field : scope.getRelationFields().getAllFields()) {
+                Field newField = new Field(field);
+                newField.setNullable(true);
+                newFields.add(newField);
+            }
+            return newFields;
+        }
+
+        private Expr analyzeJoinUsing(List<String> usingColNames, Scope left, Scope right) {
+            Expr joinEqual = null;
+            for (String colName : usingColNames) {
+                TableName leftTableName =
+                        left.resolveField(new SlotRef(null, colName)).getField().getRelationAlias();
+                TableName rightTableName =
+                        right.resolveField(new SlotRef(null, colName)).getField().getRelationAlias();
+
+                // create predicate "<left>.colName = <right>.colName"
+                BinaryPredicate resolvedUsing = new BinaryPredicate(BinaryType.EQ,
+                        new SlotRef(leftTableName, colName), new SlotRef(rightTableName, colName));
+
+                if (joinEqual == null) {
+                    joinEqual = resolvedUsing;
+                } else {
+                    joinEqual = new CompoundPredicate(CompoundPredicate.Operator.AND, joinEqual, resolvedUsing);
+                }
+            }
+            return joinEqual;
+        }
+
+        private void analyzeJoinHints(JoinRelation join) {
+            if (JoinOperator.HINT_BROADCAST.equals(join.getJoinHint())) {
+                if (join.getJoinOp() == JoinOperator.RIGHT_OUTER_JOIN
+                        || join.getJoinOp() == JoinOperator.FULL_OUTER_JOIN
+                        || join.getJoinOp() == JoinOperator.RIGHT_SEMI_JOIN
+                        || join.getJoinOp() == JoinOperator.RIGHT_ANTI_JOIN) {
+                    throw new SemanticException(join.getJoinOp().toString() + " does not support BROADCAST.");
+                }
+            } else if (JoinOperator.HINT_SHUFFLE.equals(join.getJoinHint())) {
+                if (join.getJoinOp() == JoinOperator.CROSS_JOIN ||
+                        (join.getJoinOp() == JoinOperator.INNER_JOIN && join.getOnPredicate() == null)) {
+                    throw new SemanticException("CROSS JOIN does not support SHUFFLE.");
+                }
+            } else if (JoinOperator.HINT_BUCKET.equals(join.getJoinHint()) ||
+                    JoinOperator.HINT_COLOCATE.equals(join.getJoinHint())) {
+                if (join.getJoinOp() == JoinOperator.CROSS_JOIN) {
+                    throw new SemanticException("CROSS JOIN does not support " + join.getJoinHint() + ".");
+                }
+            } else if (JoinOperator.HINT_SKEW.equals(join.getJoinHint())) {
+                if (join.getJoinOp() == JoinOperator.CROSS_JOIN ||
+                        (join.getJoinOp() == JoinOperator.INNER_JOIN && join.getOnPredicate() == null)) {
+                    throw new SemanticException("CROSS JOIN does not support SKEW JOIN optimize");
+                }
+                if (join.getJoinOp().isRightJoin()) {
+                    throw new SemanticException("RIGHT JOIN does not support SKEW JOIN optimize");
+                }
+                if (join.getSkewColumn() != null) {
+                    if (!(join.getSkewColumn() instanceof SlotRef)) {
+                        throw new SemanticException("Skew join column must be a column reference");
+                    }
+                    analyzeExpression(join.getSkewColumn(), new AnalyzeState(), join.getLeft().getScope());
+                }
+                if (join.getSkewValues() != null) {
+                    if (join.getSkewValues().stream().anyMatch(expr -> !expr.isConstant())) {
+                        throw new SemanticException("skew join values must be constant");
+                    }
+                }
+            } else if (!JoinOperator.HINT_UNREORDER.equals(join.getJoinHint())) {
+                throw new SemanticException("JOIN hint not recognized: " + join.getJoinHint());
+            }
+        }
+
+        @Override
+        public Scope visitSubquery(SubqueryRelation subquery, Scope context) {
+            if (subquery.getResolveTableName() != null && subquery.getResolveTableName().getTbl() == null) {
+                ErrorReport.reportSemanticException(ErrorCode.ERR_DERIVED_MUST_HAVE_ALIAS);
+            }
+
+            Scope queryOutputScope = process(subquery.getQueryStatement(), context);
+
+            ImmutableList.Builder<Field> outputFields = ImmutableList.builder();
+
+            if (subquery.getExplicitColumnNames() != null) {
+                if (queryOutputScope.getRelationFields().getAllVisibleFields().size()
+                        != subquery.getExplicitColumnNames().size()) {
+                    throw new SemanticException("In definition of view, derived table or common table expression, " +
+                            "SELECT list and column names list have different column counts");
+                }
+            }
+
+            int explicitColumnNameIdx = 0;
+            for (Field field : queryOutputScope.getRelationFields().getAllFields()) {
+                String fieldResolveName;
+                if (subquery.getExplicitColumnNames() != null && field.isVisible()) {
+                    fieldResolveName = subquery.getExplicitColumnNames().get(explicitColumnNameIdx);
+                    explicitColumnNameIdx++;
+                } else {
+                    fieldResolveName = field.getName();
+                }
+
+                outputFields.add(new Field(fieldResolveName, field.getType(), subquery.getResolveTableName(),
+                        field.getOriginExpression()));
+
+            }
+            Scope scope = new Scope(RelationId.of(subquery), new RelationFields(outputFields.build()));
+
+            analyzeOrderByClause(subquery, scope);
+            subquery.setScope(scope);
+            return scope;
+        }
+
+        private void analyzeOrderByClause(QueryRelation query, Scope scope) {
+            if (!query.hasOrderByClause()) {
+                return;
+            }
+            List<Expr> outputExpressions = query.getOutputExpression();
+            for (OrderByElement orderByElement : query.getOrderBy()) {
+                Expr expression = orderByElement.getExpr();
+                AnalyzerUtils.verifyNoGroupingFunctions(expression, "ORDER BY");
+
+                if (expression instanceof IntLiteral) {
+                    long ordinal = ((IntLiteral) expression).getLongValue();
+                    if (ordinal < 1 || ordinal > outputExpressions.size()) {
+                        throw new SemanticException("ORDER BY position %s is not in select list", ordinal);
+                    }
+                    expression = new FieldReference((int) ordinal - 1, null);
+                }
+
+                analyzeExpression(expression, new AnalyzeState(), scope);
+
+                if (!expression.getType().canOrderBy()) {
+                    throw new SemanticException(Type.NOT_SUPPORT_ORDER_ERROR_MSG);
+                }
+
+                orderByElement.setExpr(expression);
+            }
+        }
+
+        @Override
+        public Scope visitView(ViewRelation node, Scope scope) {
+            Scope queryOutputScope;
+            try {
+                queryOutputScope = process(node.getQueryStatement(), scope);
+            } catch (SemanticException e) {
+                throw new SemanticException("View " + node.getName() + " references invalid table(s) or column(s) or " +
+                        "function(s) or definer/invoker of view lack rights to use them: " + e.getMessage(), e);
+            }
+            View view = node.getView();
+            List<Field> fields = Lists.newArrayList();
+            for (int i = 0; i < view.getBaseSchema().size(); ++i) {
+                Column column = view.getBaseSchema().get(i);
+                Field originField = queryOutputScope.getRelationFields().getFieldByIndex(i);
+                // A view can specify its column names optionally, if column names are absent,
+                // the output names of the queryRelation is used as the names of the view schema,
+                // so column names in view's schema are always correct. Using originField.getName
+                // here will gives wrong names when user-specified view column names are different
+                // from output names of the queryRelation.
+                //
+                // view created in previous use originField.getOriginExpression().type as column
+                // types in its schema, it is incorrect, so use originField.type instead.
+                Field field = new Field(column.getName(), originField.getType(), node.getResolveTableName(),
+                        originField.getOriginExpression());
+                fields.add(field);
+            }
+
+            if (session.getDumpInfo() != null) {
+                String dbName = node.getName().getDb();
+                session.getDumpInfo().addView(dbName, view);
+            }
+
+            Scope viewScope = new Scope(RelationId.of(node), new RelationFields(fields));
+            node.setScope(viewScope);
+            return viewScope;
+        }
+
+        @Override
+        public Scope visitUnion(UnionRelation node, Scope context) {
+            return analyzeSetOperation(node, context);
+        }
+
+        @Override
+        public Scope visitExcept(ExceptRelation node, Scope context) {
+            if (node.getQualifier().equals(SetQualifier.ALL)) {
+                throw new SemanticException("EXCEPT does not support ALL qualifier");
+            }
+            return analyzeSetOperation(node, context);
+        }
+
+        @Override
+        public Scope visitIntersect(IntersectRelation node, Scope context) {
+            if (node.getQualifier().equals(SetQualifier.ALL)) {
+                throw new SemanticException("INTERSECT does not support ALL qualifier");
+            }
+            return analyzeSetOperation(node, context);
+        }
+
+        private Scope analyzeSetOperation(SetOperationRelation node, Scope context) {
+            List<QueryRelation> setOpRelations = node.getRelations();
+
+            Scope leftChildScope = process(setOpRelations.get(0), context);
+            Type[] outputTypes = leftChildScope.getRelationFields().getAllFields()
+                    .stream().map(Field::getType).toArray(Type[]::new);
+            List<Boolean> nullables = leftChildScope.getRelationFields().getAllFields()
+                    .stream().map(field -> field.isNullable()).collect(Collectors.toList());
+            int outputSize = leftChildScope.getRelationFields().size();
+
+            for (int i = 1; i < setOpRelations.size(); ++i) {
+                Scope relation = process(setOpRelations.get(i), context);
+                if (relation.getRelationFields().size() != outputSize) {
+                    throw new SemanticException("Operands have unequal number of columns");
+                }
+                for (int fieldIdx = 0; fieldIdx < relation.getRelationFields().size(); ++fieldIdx) {
+                    Field field = relation.getRelationFields().getAllFields().get(fieldIdx);
+                    Type fieldType = field.getType();
+                    if (fieldType.isOnlyMetricType() &&
+                            !((node instanceof UnionRelation) &&
+                                    (node.getQualifier().equals(SetQualifier.ALL)))) {
+                        throw new SemanticException("%s not support set operation", fieldType);
+                    }
+
+                    Type commonType = TypeManager.getCommonSuperType(outputTypes[fieldIdx],
+                            relation.getRelationFields().getFieldByIndex(fieldIdx).getType());
+                    if (!commonType.isValid()) {
+                        throw new SemanticException(String.format("Incompatible return types '%s' and '%s'",
+                                outputTypes[fieldIdx],
+                                relation.getRelationFields().getFieldByIndex(fieldIdx).getType()));
+                    }
+                    outputTypes[fieldIdx] = commonType;
+                    nullables.set(fieldIdx, nullables.get(fieldIdx) | field.isNullable());
+                }
+            }
+
+            ArrayList<Field> fields = new ArrayList<>();
+            for (int fieldIdx = 0; fieldIdx < outputSize; ++fieldIdx) {
+                Field oldField = leftChildScope.getRelationFields().getFieldByIndex(fieldIdx);
+                fields.add(new Field(oldField.getName(), outputTypes[fieldIdx], oldField.getRelationAlias(),
+                        oldField.getOriginExpression(), true, nullables.get(fieldIdx)));
+            }
+
+            Scope setOpOutputScope = new Scope(RelationId.of(node), new RelationFields(fields));
+
+            analyzeOrderByClause(node, setOpOutputScope);
+            node.setScope(setOpOutputScope);
+            return setOpOutputScope;
+        }
+
+        @Override
+        public Scope visitValues(ValuesRelation node, Scope scope) {
+            AnalyzeState analyzeState = new AnalyzeState();
+
+            List<Expr> firstRow = node.getRow(0);
+            firstRow.forEach(e -> analyzeExpression(e, analyzeState, scope));
+            List<List<Expr>> rows = node.getRows();
+            Type[] outputTypes = firstRow.stream().map(Expr::getType).toArray(Type[]::new);
+            for (List<Expr> row : rows) {
+                if (row.size() != firstRow.size()) {
+                    throw new SemanticException("Values have unequal number of columns");
+                }
+                for (int fieldIdx = 0; fieldIdx < row.size(); ++fieldIdx) {
+                    analyzeExpression(row.get(fieldIdx), analyzeState, scope);
+                    Type commonType =
+                            TypeManager.getCommonSuperType(outputTypes[fieldIdx], row.get(fieldIdx).getType());
+                    if (!commonType.isValid()) {
+                        throw new SemanticException(String.format("Incompatible return types '%s' and '%s'",
+                                outputTypes[fieldIdx], row.get(fieldIdx).getType()));
+                    }
+                    outputTypes[fieldIdx] = commonType;
+                }
+            }
+            List<Field> fields = new ArrayList<>();
+            for (int fieldIdx = 0; fieldIdx < outputTypes.length; ++fieldIdx) {
+                fields.add(new Field(node.getColumnOutputNames().get(fieldIdx), outputTypes[fieldIdx],
+                        node.getResolveTableName(),
+                        rows.get(0).get(fieldIdx)));
+            }
+
+            Scope valuesScope = new Scope(RelationId.of(node), new RelationFields(fields));
+            node.setScope(valuesScope);
+            return valuesScope;
+        }
+
+        @Override
+        public Scope visitTableFunction(TableFunctionRelation node, Scope scope) {
+            AnalyzeState analyzeState = new AnalyzeState();
+            List<Expr> args = node.getFunctionParams().exprs();
+            Type[] argTypes = new Type[args.size()];
+            for (int i = 0; i < args.size(); ++i) {
+                analyzeExpression(args.get(i), analyzeState, scope);
+                argTypes[i] = args.get(i).getType();
+
+                AnalyzerUtils.verifyNoAggregateFunctions(args.get(i), "Table Function");
+                AnalyzerUtils.verifyNoWindowFunctions(args.get(i), "Table Function");
+                AnalyzerUtils.verifyNoGroupingFunctions(args.get(i), "Table Function");
+            }
+            List<String> names = node.getFunctionParams().getExprsNames();
+            String[] namesArray = null;
+            if (names != null && !names.isEmpty()) {
+                namesArray = names.toArray(String[]::new);
+            }
+            Function fn = Expr.getBuiltinFunction(node.getFunctionName().getFunction(), argTypes, namesArray,
+                    Function.CompareMode.IS_NONSTRICT_SUPERTYPE_OF);
+
+            if (fn == null) {
+                fn = AnalyzerUtils.getUdfFunction(session, node.getFunctionName(), argTypes);
+            }
+
+            if (fn == null) {
+                if (namesArray == null) {
+                    throw new SemanticException("Unknown table function '%s(%s)'", node.getFunctionName().getFunction(),
+                            Arrays.stream(argTypes).map(Object::toString).collect(Collectors.joining(",")));
+                } else {
+                    throw new SemanticException("Unknown table function '%s(%s)', the function doesn't support named " +
+                            "arguments or has invalid arguments",
+                            node.getFunctionName().getFunction(), node.getFunctionParams().getNamedArgStr());
+                }
+            }
+
+            if (namesArray != null) {
+                Preconditions.checkState(fn.hasNamedArg());
+                node.getFunctionParams().reorderNamedArgAndAppendDefaults(fn);
+            } else if (node.getFunctionParams().exprs().size() < fn.getNumArgs()) {
+                node.getFunctionParams().appendPositionalDefaultArgExprs(fn);
+            }
+            Preconditions.checkState(node.getFunctionParams().exprs().size() == fn.getNumArgs());
+
+            if (!(fn instanceof TableFunction)) {
+                throw new SemanticException("'%s(%s)' is not table function", node.getFunctionName().getFunction(),
+                        Arrays.stream(argTypes).map(Object::toString).collect(Collectors.joining(",")));
+            }
+
+            TableFunction tableFunction = (TableFunction) fn;
+            node.setTableFunction(tableFunction);
+            node.setChildExpressions(node.getFunctionParams().exprs());
+
+            if (node.getColumnOutputNames() == null) {
+                if (tableFunction.getFunctionName().getFunction().equals("unnest")) {
+                    // If the unnest variadic function does not explicitly specify column name,
+                    // all column names are `unnest`. This refers to the return column name of postgresql.
+                    List<String> columnNames = new ArrayList<>();
+                    for (int i = 0; i < tableFunction.getTableFnReturnTypes().size(); ++i) {
+                        columnNames.add("unnest");
+                    }
+                    node.setColumnOutputNames(columnNames);
+                } else {
+                    node.setColumnOutputNames(new ArrayList<>(tableFunction.getDefaultColumnNames()));
+                }
+            } else {
+                if (node.getColumnOutputNames().size() != tableFunction.getTableFnReturnTypes().size()) {
+                    throw new SemanticException("table %s has %s columns available but %s columns specified",
+                            node.getAlias().getTbl(),
+                            tableFunction.getTableFnReturnTypes().size(),
+                            node.getColumnOutputNames().size());
+                }
+            }
+
+            ImmutableList.Builder<Field> fields = ImmutableList.builder();
+            for (int i = 0; i < tableFunction.getTableFnReturnTypes().size(); ++i) {
+                String colName = node.getColumnOutputNames().get(i);
+
+                Field field = new Field(colName,
+                        tableFunction.getTableFnReturnTypes().get(i),
+                        node.getResolveTableName(),
+                        new SlotRef(node.getResolveTableName(), colName, colName));
+                fields.add(field);
+            }
+
+            Scope outputScope = new Scope(RelationId.of(node), new RelationFields(fields.build()));
+            node.setScope(outputScope);
+            return outputScope;
+        }
+
+        @Override
+        public Scope visitNormalizedTableFunction(NormalizedTableFunctionRelation node, Scope scope) {
+            Scope ignored = visitJoin(node, scope);
+            // Only the scope of the table function is visible outside.
+            node.setScope(node.getRight().getScope());
+            return node.getScope();
+        }
+
+    }
+
+    private Table resolveTable(TableRelation tableRelation) {
+        TableName tableName = tableRelation.getName();
+        try {
+            MetaUtils.normalizationTableName(session, tableName);
+            String catalogName = tableName.getCatalog();
+            String dbName = tableName.getDb();
+            String tbName = tableName.getTbl();
+            if (Strings.isNullOrEmpty(dbName)) {
+                ErrorReport.reportAnalysisException(ErrorCode.ERR_NO_DB_ERROR);
+            }
+
+            if (!GlobalStateMgr.getCurrentState().getCatalogMgr().catalogExists(catalogName)) {
+                ErrorReport.reportAnalysisException(ErrorCode.ERR_BAD_CATALOG_ERROR, catalogName);
+            }
+
+            Database db = metadataMgr.getDb(catalogName, dbName);
+            MetaUtils.checkDbNullAndReport(db, dbName);
+            Locker locker = new Locker();
+
+            Table table = null;
+            if (tableRelation.isSyncMVQuery()) {
+                Pair<Table, MaterializedIndexMeta> materializedIndex =
+                        metadataMgr.getMaterializedViewIndex(catalogName, dbName, tbName);
+                if (materializedIndex != null) {
+                    Table mvTable = materializedIndex.first;
+                    Preconditions.checkState(mvTable != null);
+                    Preconditions.checkState(mvTable instanceof OlapTable);
+                    try {
+                        // Add read lock to avoid concurrent problems.
+                        locker.lockDatabase(db, LockType.READ);
+                        OlapTable mvOlapTable = new OlapTable();
+                        ((OlapTable) mvTable).copyOnlyForQuery(mvOlapTable);
+                        // Copy the necessary olap table meta to avoid changing original meta;
+                        mvOlapTable.setBaseIndexId(materializedIndex.second.getIndexId());
+                        table = mvOlapTable;
+                    } finally {
+                        locker.unLockDatabase(db, LockType.READ);
+                    }
+                }
+            } else {
+                table = metadataMgr.getTable(catalogName, dbName, tbName);
+            }
+
+            if (table == null) {
+                ErrorReport.reportAnalysisException(ErrorCode.ERR_BAD_TABLE_ERROR, dbName + "." + tbName);
+            }
+
+            if (table.isNativeTableOrMaterializedView() &&
+                    (((OlapTable) table).getState() == OlapTable.OlapTableState.RESTORE
+                            || ((OlapTable) table).getState() == OlapTable.OlapTableState.RESTORE_WITH_LOAD)) {
+                ErrorReport.reportAnalysisException(ErrorCode.ERR_BAD_TABLE_STATE, "RESTORING");
+            }
+
+            PartitionNames partitionNamesObject = tableRelation.getPartitionNames();
+            if (table.isExternalTableWithFileSystem() && partitionNamesObject != null) {
+                throw unsupportedException("Unsupported table type for partition clause, type: " + table.getType());
+            }
+
+            if (partitionNamesObject != null && table.isNativeTable()) {
+                List<String> partitionNames = partitionNamesObject.getPartitionNames();
+                if (partitionNames != null) {
+                    boolean isTemp = partitionNamesObject.isTemp();
+                    for (String partitionName : partitionNames) {
+                        Partition partition = table.getPartition(partitionName, isTemp);
+                        if (partition == null) {
+                            throw new SemanticException("Unknown partition '%s' in table '%s'", partitionName,
+                                        table.getName());
+                        }
+                    }
+                }
+            }
+
+            return table;
+        } catch (AnalysisException e) {
+            throw new SemanticException(e.getMessage());
+        }
+    }
+
+    private Table resolveTableFunctionTable(Map<String, String> properties) {
+        try {
+            return new TableFunctionTable(properties);
+        } catch (DdlException e) {
+            throw new StorageAccessException(e);
+        }
+    }
+
+    private void analyzeExpression(Expr expr, AnalyzeState analyzeState, Scope scope) {
+        ExpressionAnalyzer.analyzeExpression(expr, analyzeState, scope, session);
+    }
+
+    public static void checkJoinEqual(Expr expr) {
+        if (expr instanceof BinaryPredicate) {
+            for (Expr child : expr.getChildren()) {
+                if (!child.getType().canJoinOn()) {
+                    throw new SemanticException(Type.NOT_SUPPORT_JOIN_ERROR_MSG);
+                }
+            }
+        } else {
+            for (Expr child : expr.getChildren()) {
+                checkJoinEqual(child);
+            }
+        }
+    }
+}

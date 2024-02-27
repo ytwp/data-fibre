@@ -19,7 +19,6 @@ package io.datafibre.fibre.sql;
 
 import io.datafibre.fibre.catalog.Column;
 import io.datafibre.fibre.catalog.KeysType;
-import io.datafibre.fibre.catalog.OlapTable;
 import io.datafibre.fibre.catalog.Table;
 import io.datafibre.fibre.sql.optimizer.OptExpression;
 import io.datafibre.fibre.sql.optimizer.Utils;
@@ -43,9 +42,9 @@ public class ShortCircuitPlannerHybrid {
         public Boolean visitLogicalTableScan(OptExpression optExpression, Void context) {
             LogicalScanOperator scanOp = optExpression.getOp().cast();
             Table table = scanOp.getTable();
-            if (!(table instanceof OlapTable) && !(((OlapTable) table).getKeysType().equals(KeysType.PRIMARY_KEYS))) {
-                return false;
-            }
+//            if (!(table instanceof OlapTable) && !(((OlapTable) table).getKeysType().equals(KeysType.PRIMARY_KEYS))) {
+//                return false;
+//            }
 
             for (Column column : table.getFullSchema()) {
                 if (IDictManager.getInstance().hasGlobalDict(table.getId(), column.getName())) {
@@ -53,10 +52,12 @@ public class ShortCircuitPlannerHybrid {
                 }
             }
 
-            List<String> keyColumns = ((OlapTable) table).getKeyColumns().stream().map(Column::getName).collect(
-                    Collectors.toList());
-            List<ScalarOperator> conjuncts = Utils.extractConjuncts(predicate);
-            return isPointScan(table, keyColumns, conjuncts);
+//            List<String> keyColumns = ((OlapTable) table).getKeyColumns().stream().map(Column::getName).collect(
+//                    Collectors.toList());
+//            List<ScalarOperator> conjuncts = Utils.extractConjuncts(predicate);
+//            return isPointScan(table, keyColumns, conjuncts);
+
+            return false;
         }
     }
 }
