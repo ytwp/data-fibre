@@ -18,9 +18,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import io.datafibre.fibre.analysis.JoinOperator;
-import io.datafibre.fibre.catalog.ColocateTableIndex;
-import io.datafibre.fibre.catalog.system.SystemTable;
-import io.datafibre.fibre.server.GlobalStateMgr;
 import io.datafibre.fibre.sql.optimizer.base.*;
 import io.datafibre.fibre.sql.optimizer.operator.Operator;
 import io.datafibre.fibre.sql.optimizer.operator.Projection;
@@ -29,7 +26,6 @@ import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
 import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -64,7 +60,7 @@ public class OutputPropertyDeriver extends PropertyDeriverBase<PhysicalPropertyS
         return result;
     }
 
-    @NotNull
+//    @NotNull
     private PhysicalPropertySet mergeCTEProperty(PhysicalPropertySet output) {
         // set cte property
         Set<Integer> cteIds = Sets.newHashSet();
@@ -99,24 +95,24 @@ public class OutputPropertyDeriver extends PropertyDeriverBase<PhysicalPropertyS
         EquivalentDescriptor rightDesc = rightScanDistributionSpec.getEquivDesc();
 
 
-        ColocateTableIndex colocateIndex = GlobalStateMgr.getCurrentState().getColocateTableIndex();
+//        ColocateTableIndex colocateIndex = GlobalStateMgr.getCurrentState().getColocateTableIndex();
         long leftTableId = leftDesc.getTableId();
         long rightTableId = rightDesc.getTableId();
 
-        if (leftTableId == rightTableId && !colocateIndex.isSameGroup(leftTableId, rightTableId)) {
+//        if (leftTableId == rightTableId && !colocateIndex.isSameGroup(leftTableId, rightTableId)) {
+//            return createPropertySetByDistribution(dominatedOutputSpec);
+//        } else {
+        Optional<HashDistributionDesc> requiredShuffleDesc = getRequiredShuffleDesc();
+        if (!requiredShuffleDesc.isPresent()) {
             return createPropertySetByDistribution(dominatedOutputSpec);
-        } else {
-            Optional<HashDistributionDesc> requiredShuffleDesc = getRequiredShuffleDesc();
-            if (!requiredShuffleDesc.isPresent()) {
-                return createPropertySetByDistribution(dominatedOutputSpec);
-            }
-
-            return createPropertySetByDistribution(
-                    new HashDistributionSpec(
-                            new HashDistributionDesc(dominatedOutputSpec.getShuffleColumns(),
-                                    HashDistributionDesc.SourceType.LOCAL),
-                            dominatedOutputSpec.getEquivDesc()));
         }
+
+        return createPropertySetByDistribution(
+                new HashDistributionSpec(
+                        new HashDistributionDesc(dominatedOutputSpec.getShuffleColumns(),
+                                HashDistributionDesc.SourceType.LOCAL),
+                        dominatedOutputSpec.getEquivDesc()));
+//        }
     }
 
     private PhysicalPropertySet computeBucketJoinDistributionProperty(JoinOperator joinType,
@@ -226,7 +222,7 @@ public class OutputPropertyDeriver extends PropertyDeriverBase<PhysicalPropertyS
                         leftOnPredicateColumns, rightOnPredicateColumns);
 
             } else if ((leftDistributionDesc.isShuffle() || leftDistributionDesc.isShuffleEnforce()) &&
-                    (rightDistributionDesc.isShuffle()) || rightDistributionDesc.isShuffleEnforce()) {
+                       (rightDistributionDesc.isShuffle()) || rightDistributionDesc.isShuffleEnforce()) {
                 // shuffle join
                 PhysicalPropertySet outputProperty = computeShuffleJoinOutputProperty(node.getJoinType(),
                         leftDistributionDesc.getDistributionCols(), rightDistributionDesc.getDistributionCols());
@@ -235,13 +231,13 @@ public class OutputPropertyDeriver extends PropertyDeriverBase<PhysicalPropertyS
 
             } else {
                 LOG.error("Children output property distribution error.left child property: {}, " +
-                                "right child property: {}, join node: {}",
+                          "right child property: {}, join node: {}",
                         leftChildDistributionProperty, rightChildDistributionProperty, node);
                 throw new IllegalStateException("Children output property distribution error.");
             }
         } else {
             LOG.error("Children output property distribution error.left child property: {}, " +
-                            "right child property: {}, join node: {}",
+                      "right child property: {}, join node: {}",
                     leftChildDistributionProperty, rightChildDistributionProperty, node);
             throw new IllegalStateException("Children output property distribution error.");
         }
@@ -457,11 +453,11 @@ public class OutputPropertyDeriver extends PropertyDeriverBase<PhysicalPropertyS
 
     @Override
     public PhysicalPropertySet visitPhysicalSchemaScan(PhysicalSchemaScanOperator node, ExpressionContext context) {
-        if (SystemTable.isBeSchemaTable(node.getTable().getName())) {
-            return PhysicalPropertySet.EMPTY;
-        } else {
+//        if (SystemTable.isBeSchemaTable(node.getTable().getName())) {
+//            return PhysicalPropertySet.EMPTY;
+//        } else {
             return createGatherPropertySet();
-        }
+//        }
     }
 
     @Override
@@ -519,7 +515,7 @@ public class OutputPropertyDeriver extends PropertyDeriverBase<PhysicalPropertyS
                                                      Map<Integer, DistributionCol> idToDistributionCol) {
         DistributionCol col;
         if (scalarOperator.isColumnRef()
-                && (col = idToDistributionCol.get(scalarOperator.getUsedColumns().getFirstId())) != null) {
+            && (col = idToDistributionCol.get(scalarOperator.getUsedColumns().getFirstId())) != null) {
             return Optional.of(col.isNullStrict());
         }
 

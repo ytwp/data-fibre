@@ -17,10 +17,8 @@ package io.datafibre.fibre.sql.optimizer;
 
 import com.google.common.collect.Lists;
 import io.datafibre.fibre.analysis.JoinOperator;
-import io.datafibre.fibre.catalog.ColocateTableIndex;
 import io.datafibre.fibre.common.Pair;
 import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.server.GlobalStateMgr;
 import io.datafibre.fibre.sql.optimizer.base.*;
 import io.datafibre.fibre.sql.optimizer.cost.CostModel;
 import io.datafibre.fibre.sql.optimizer.operator.Operator;
@@ -85,33 +83,33 @@ public class ChildOutputPropertyGuarantor extends PropertyDeriverBase<Void, Expr
         EquivalentDescriptor leftDesc = leftLocalDistributionSpec.getEquivDesc();
         EquivalentDescriptor rightDesc = rightLocalDistributionSpec.getEquivDesc();
 
-        ColocateTableIndex colocateIndex = GlobalStateMgr.getCurrentState().getColocateTableIndex();
-        long leftTableId = leftDesc.getTableId();
-        long rightTableId = rightDesc.getTableId();
-
-        // join self
-        if (leftTableId == rightTableId && !colocateIndex.isColocateTable(leftTableId)) {
-            if (!leftDesc.isSinglePartition() || !rightDesc.isSinglePartition() ||
-                    !leftDesc.getPartitionIds().equals(rightDesc.getPartitionIds())) {
-                return false;
-            }
-        } else {
-            // colocate group
-            if (!colocateIndex.isSameGroup(leftTableId, rightTableId)) {
-                return false;
-            }
-
-            ColocateTableIndex.GroupId leftGroupId = colocateIndex.getGroup(leftTableId);
-            ColocateTableIndex.GroupId rightGroupId = colocateIndex.getGroup(rightTableId);
-            if (colocateIndex.isGroupUnstable(leftGroupId) || colocateIndex.isGroupUnstable(rightGroupId)) {
-                return false;
-            }
-            checkState(leftLocalDistributionDesc.getDistributionCols().size()
-                            == rightLocalDistributionDesc.getDistributionCols().size(),
-                    "Failed to enforce the output property of children in the join operator. " +
-                            "left child distribution info %s, right child distribution info %s",
-                    leftLocalDistributionSpec, rightLocalDistributionSpec);
-        }
+//        ColocateTableIndex colocateIndex = GlobalStateMgr.getCurrentState().getColocateTableIndex();
+//        long leftTableId = leftDesc.getTableId();
+//        long rightTableId = rightDesc.getTableId();
+//
+//        // join self
+//        if (leftTableId == rightTableId && !colocateIndex.isColocateTable(leftTableId)) {
+//            if (!leftDesc.isSinglePartition() || !rightDesc.isSinglePartition() ||
+//                    !leftDesc.getPartitionIds().equals(rightDesc.getPartitionIds())) {
+//                return false;
+//            }
+//        } else {
+//            // colocate group
+//            if (!colocateIndex.isSameGroup(leftTableId, rightTableId)) {
+//                return false;
+//            }
+//
+//            ColocateTableIndex.GroupId leftGroupId = colocateIndex.getGroup(leftTableId);
+//            ColocateTableIndex.GroupId rightGroupId = colocateIndex.getGroup(rightTableId);
+//            if (colocateIndex.isGroupUnstable(leftGroupId) || colocateIndex.isGroupUnstable(rightGroupId)) {
+//                return false;
+//            }
+//            checkState(leftLocalDistributionDesc.getDistributionCols().size()
+//                            == rightLocalDistributionDesc.getDistributionCols().size(),
+//                    "Failed to enforce the output property of children in the join operator. " +
+//                            "left child distribution info %s, right child distribution info %s",
+//                    leftLocalDistributionSpec, rightLocalDistributionSpec);
+//        }
 
         for (int i = 0; i < leftLocalDistributionDesc.getDistributionCols().size(); ++i) {
             DistributionCol leftCol = leftLocalDistributionDesc.getDistributionCols().get(i);
@@ -121,7 +119,7 @@ public class ChildOutputPropertyGuarantor extends PropertyDeriverBase<Void, Expr
                 DistributionCol leftRequiredCol = leftShuffleColumns.get(idx);
                 DistributionCol rightRequiredCol = rightShuffleColumns.get(idx);
                 if (leftLocalDistributionSpec.getEquivDesc().isConnected(leftRequiredCol, leftCol)
-                        && rightLocalDistributionSpec.getEquivDesc().isConnected(rightRequiredCol, rightCol)) {
+                    && rightLocalDistributionSpec.getEquivDesc().isConnected(rightRequiredCol, rightCol)) {
                     break;
                 }
             }
@@ -357,8 +355,8 @@ public class ChildOutputPropertyGuarantor extends PropertyDeriverBase<Void, Expr
             if (leftDistributionDesc.isLocal() && rightDistributionDesc.isLocal()) {
                 // colocate join
                 if (JoinOperator.HINT_BUCKET.equals(hint) ||
-                        !canColocateJoin(leftDistributionSpec, rightDistributionSpec, leftShuffleColumns,
-                                rightShuffleColumns)) {
+                    !canColocateJoin(leftDistributionSpec, rightDistributionSpec, leftShuffleColumns,
+                            rightShuffleColumns)) {
                     transToBucketShuffleJoin(leftDistributionSpec, leftShuffleColumns, rightShuffleColumns);
                 }
                 return visitOperator(node, context);
@@ -422,7 +420,7 @@ public class ChildOutputPropertyGuarantor extends PropertyDeriverBase<Void, Expr
                 DistributionCol leftShuffleCol = leftShuffleColumns.get(idx);
                 DistributionCol rightShuffleCol = rightShuffleColumns.get(idx);
                 if (leftEquivDesc.isConnected(leftShuffleCol, leftCol) &&
-                        rightEquivDesc.isConnected(rightShuffleCol, rightCol)) {
+                    rightEquivDesc.isConnected(rightShuffleCol, rightCol)) {
                     break;
                 }
             }

@@ -18,16 +18,16 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import io.datafibre.fibre.analysis.Expr;
 import io.datafibre.fibre.analysis.TableName;
-import io.datafibre.fibre.catalog.*;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.InternalCatalog;
+import io.datafibre.fibre.catalog.Table;
 import io.datafibre.fibre.common.AnalysisException;
 import io.datafibre.fibre.common.ErrorCode;
 import io.datafibre.fibre.common.ErrorReport;
 import io.datafibre.fibre.common.util.DebugUtil;
-import io.datafibre.fibre.external.starrocks.TableMetaSyncer;
 import io.datafibre.fibre.qe.ConnectContext;
 import io.datafibre.fibre.qe.OriginStatement;
 import io.datafibre.fibre.qe.SqlModeHelper;
-import io.datafibre.fibre.server.CatalogMgr;
 import io.datafibre.fibre.server.GlobalStateMgr;
 import io.datafibre.fibre.sql.analyzer.SemanticException;
 import io.datafibre.fibre.sql.ast.CreateMaterializedViewStmt;
@@ -49,9 +49,9 @@ public class MetaUtils {
         if (catalogName == null) {
             ErrorReport.reportAnalysisException("Catalog is null");
         }
-        if (!GlobalStateMgr.getCurrentState().getCatalogMgr().catalogExists(catalogName)) {
-            ErrorReport.reportAnalysisException(ErrorCode.ERR_BAD_CATALOG_ERROR, catalogName);
-        }
+//        if (!GlobalStateMgr.getCurrentState().getCatalogMgr().catalogExists(catalogName)) {
+//            ErrorReport.reportAnalysisException(ErrorCode.ERR_BAD_CATALOG_ERROR, catalogName);
+//        }
     }
 
     public static void checkDbNullAndReport(Database db, String name) throws AnalysisException {
@@ -64,21 +64,21 @@ public class MetaUtils {
         if (catalogName == null) {
             throw new SemanticException("Catalog is null");
         }
-        if (CatalogMgr.isInternalCatalog(catalogName)) {
-            return;
-        }
+//        if (CatalogMgr.isInternalCatalog(catalogName)) {
+//            return;
+//        }
         if (operation == null) {
             throw new SemanticException("operation is null");
         }
 
-        Catalog catalog = GlobalStateMgr.getCurrentState().getCatalogMgr().getCatalogByName(catalogName);
-        if (catalog == null) {
-            throw new SemanticException("Catalog %s is not found", catalogName);
-        }
-
-        if (!operation.equals("ALTER") && catalog.getType().equalsIgnoreCase("iceberg")) {
-            throw new SemanticException("Table of iceberg catalog doesn't support [%s]", operation);
-        }
+//        Catalog catalog = GlobalStateMgr.getCurrentState().getCatalogMgr().getCatalogByName(catalogName);
+//        if (catalog == null) {
+//            throw new SemanticException("Catalog %s is not found", catalogName);
+//        }
+//
+//        if (!operation.equals("ALTER") && catalog.getType().equalsIgnoreCase("iceberg")) {
+//            throw new SemanticException("Table of iceberg catalog doesn't support [%s]", operation);
+//        }
     }
 
     public static Database getDatabase(long dbId) {
@@ -102,54 +102,59 @@ public class MetaUtils {
     }
 
     public static Database getDatabase(ConnectContext session, TableName tableName) {
-        if (Strings.isNullOrEmpty(tableName.getCatalog())) {
-            tableName.setCatalog(session.getCurrentCatalog());
-        }
-        Database db = session.getGlobalStateMgr().getMetadataMgr().getDb(tableName.getCatalog(), tableName.getDb());
-        if (db == null) {
-            throw new SemanticException("Database %s is not found", tableName.getCatalogAndDb());
-        }
-        return db;
+//        if (Strings.isNullOrEmpty(tableName.getCatalog())) {
+//            tableName.setCatalog(session.getCurrentCatalog());
+//        }
+//        Database db = session.getGlobalStateMgr().getMetadataMgr().getDb(tableName.getCatalog(), tableName.getDb());
+//        if (db == null) {
+//            throw new SemanticException("Database %s is not found", tableName.getCatalogAndDb());
+//        }
+//        return db;
+        return null;
     }
 
     public static Database getDatabase(String catalogName, String dbName) {
-        Database db = GlobalStateMgr.getCurrentState().getMetadataMgr().getDb(catalogName, dbName);
-        if (db == null) {
-            ErrorReport.reportSemanticException(ErrorCode.ERR_BAD_DB_ERROR, dbName);
-        }
-        return db;
+//        Database db = GlobalStateMgr.getCurrentState().getMetadataMgr().getDb(catalogName, dbName);
+//        if (db == null) {
+//            ErrorReport.reportSemanticException(ErrorCode.ERR_BAD_DB_ERROR, dbName);
+//        }
+//        return db;
+        return null;
     }
 
     public static Table getTable(TableName tableName) {
-        if (Strings.isNullOrEmpty(tableName.getCatalog())) {
-            tableName.setCatalog(InternalCatalog.DEFAULT_INTERNAL_CATALOG_NAME);
-        }
-        Table table = GlobalStateMgr.getCurrentState().getMetadataMgr().getTable(tableName.getCatalog(),
-                tableName.getDb(), tableName.getTbl());
-        if (table == null) {
-            throw new SemanticException("Table %s is not found", tableName);
-        }
-        return table;
+//        if (Strings.isNullOrEmpty(tableName.getCatalog())) {
+//            tableName.setCatalog(InternalCatalog.DEFAULT_INTERNAL_CATALOG_NAME);
+//        }
+//        Table table = GlobalStateMgr.getCurrentState().getMetadataMgr().getTable(tableName.getCatalog(),
+//                tableName.getDb(), tableName.getTbl());
+//        if (table == null) {
+//            throw new SemanticException("Table %s is not found", tableName);
+//        }
+//        return table;
+        return null;
     }
 
     public static Table getTable(ConnectContext session, TableName tableName) {
         if (Strings.isNullOrEmpty(tableName.getCatalog())) {
             tableName.setCatalog(session.getCurrentCatalog());
         }
-        Table table = session.getGlobalStateMgr().getMetadataMgr().getTable(tableName.getCatalog(),
-                tableName.getDb(), tableName.getTbl());
-        if (table == null) {
-            throw new SemanticException("Table %s is not found", tableName.toString());
-        }
-        return table;
+//        Table table = session.getGlobalStateMgr().getMetadataMgr().getTable(tableName.getCatalog(),
+//                tableName.getDb(), tableName.getTbl());
+//        if (table == null) {
+//            throw new SemanticException("Table %s is not found", tableName.toString());
+//        }
+//        return table;
+        return null;
     }
 
     public static Table getTable(String catalogName, String dbName, String tableName) {
-        Table table = GlobalStateMgr.getCurrentState().getMetadataMgr().getTable(catalogName, dbName, tableName);
-        if (table == null) {
-            throw new SemanticException("Table %s is not found", tableName);
-        }
-        return table;
+//        Table table = GlobalStateMgr.getCurrentState().getMetadataMgr().getTable(catalogName, dbName, tableName);
+//        if (table == null) {
+//            throw new SemanticException("Table %s is not found", tableName);
+//        }
+//        return table;
+        return null;
     }
 
     public static void normalizationTableName(ConnectContext connectContext, TableName tableName) {
@@ -182,7 +187,7 @@ public class MetaUtils {
         if (Strings.isNullOrEmpty(tableName.getDb())) {
             if (Strings.isNullOrEmpty(connectContext.getDatabase())) {
                 throw new SemanticException("No database selected. " +
-                        "You could set the database name through `<database>.<table>` or `use <database>` statement");
+                                            "You could set the database name through `<database>.<table>` or `use <database>` statement");
             }
             tableName.setDb(connectContext.getDatabase());
         }
@@ -207,7 +212,7 @@ public class MetaUtils {
 
         // suggestion
         LOG.warn("The materialized view [{}] has encountered compatibility problems. " +
-                        "It is best to delete the materialized view and rebuild it to maintain the best compatibility.",
+                 "It is best to delete the materialized view and rebuild it to maintain the best compatibility.",
                 originStmt.originStmt);
         return Maps.newConcurrentMap();
     }
@@ -224,10 +229,10 @@ public class MetaUtils {
         return "update_" + DebugUtil.printId(executionId);
     }
 
-    public static ExternalOlapTable syncOLAPExternalTableMeta(ExternalOlapTable externalOlapTable) {
-        ExternalOlapTable copiedTable = new ExternalOlapTable();
-        externalOlapTable.copyOnlyForQuery(copiedTable);
-        new TableMetaSyncer().syncTable(copiedTable);
-        return copiedTable;
-    }
+//    public static ExternalOlapTable syncOLAPExternalTableMeta(ExternalOlapTable externalOlapTable) {
+//        ExternalOlapTable copiedTable = new ExternalOlapTable();
+//        externalOlapTable.copyOnlyForQuery(copiedTable);
+//        new TableMetaSyncer().syncTable(copiedTable);
+//        return copiedTable;
+//    }
 }

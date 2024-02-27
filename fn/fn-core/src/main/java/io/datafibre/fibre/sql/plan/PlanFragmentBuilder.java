@@ -23,6 +23,7 @@ import io.datafibre.fibre.catalog.*;
 import io.datafibre.fibre.catalog.system.SystemTable;
 import io.datafibre.fibre.common.*;
 import io.datafibre.fibre.load.BrokerFileGroup;
+import io.datafibre.fibre.planner.PlanNode;
 import io.datafibre.fibre.planner.stream.StreamAggNode;
 import io.datafibre.fibre.planner.stream.StreamJoinNode;
 import io.datafibre.fibre.qe.ConnectContext;
@@ -1821,20 +1822,20 @@ public class PlanFragmentBuilder {
 
         // Check whether colocate Table exists in the same Fragment
         public boolean hasColocateOlapScanChildInFragment(PlanNode node) {
-            if (node instanceof OlapScanNode) {
-                ColocateTableIndex colocateIndex = GlobalStateMgr.getCurrentState().getColocateTableIndex();
-                OlapScanNode scanNode = (OlapScanNode) node;
-                if (colocateIndex.isColocateTable(scanNode.getOlapTable().getId())) {
-                    return true;
-                }
-            }
-            if (node instanceof ExchangeNode) {
-                return false;
-            }
+//            if (node instanceof OlapScanNode) {
+//                ColocateTableIndex colocateIndex = GlobalStateMgr.getCurrentState().getColocateTableIndex();
+//                OlapScanNode scanNode = (OlapScanNode) node;
+//                if (colocateIndex.isColocateTable(scanNode.getOlapTable().getId())) {
+//                    return true;
+//                }
+//            }
+//            if (node instanceof ExchangeNode) {
+//                return false;
+//            }
             boolean hasOlapScanChild = false;
-            for (PlanNode child : node.getChildren()) {
-                hasOlapScanChild |= hasColocateOlapScanChildInFragment(child);
-            }
+//            for (PlanNode child : node.getChildren()) {
+//                hasOlapScanChild |= hasColocateOlapScanChildInFragment(child);
+//            }
             return hasOlapScanChild;
         }
 

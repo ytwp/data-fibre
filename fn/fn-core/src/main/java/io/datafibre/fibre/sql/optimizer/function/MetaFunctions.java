@@ -14,44 +14,21 @@
 
 package io.datafibre.fibre.sql.optimizer.function;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import io.datafibre.fibre.analysis.TableName;
 import io.datafibre.fibre.catalog.Database;
 import io.datafibre.fibre.catalog.InternalCatalog;
-import io.datafibre.fibre.catalog.MaterializedView;
-import io.datafibre.fibre.catalog.MvId;
 import io.datafibre.fibre.catalog.Table;
 import io.datafibre.fibre.common.ErrorCode;
 import io.datafibre.fibre.common.ErrorReport;
-import io.datafibre.fibre.common.util.concurrent.lock.LockType;
-import io.datafibre.fibre.common.util.concurrent.lock.Locker;
-import io.datafibre.fibre.connector.PartitionInfo;
-import io.datafibre.fibre.connector.PartitionUtil;
-import io.datafibre.fibre.connector.hive.Partition;
-import io.datafibre.fibre.memory.MemoryTrackable;
-import io.datafibre.fibre.memory.MemoryUsageTracker;
-import io.datafibre.fibre.monitor.unit.ByteSizeValue;
 import io.datafibre.fibre.privilege.AccessDeniedException;
 import io.datafibre.fibre.privilege.ObjectType;
 import io.datafibre.fibre.privilege.PrivilegeType;
 import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.scheduler.TaskRunManager;
 import io.datafibre.fibre.server.GlobalStateMgr;
 import io.datafibre.fibre.sql.analyzer.Authorizer;
 import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
 import io.datafibre.fibre.sql.optimizer.rewrite.ConstantFunction;
-import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.collections4.SetUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.spark.util.SizeEstimator;
-
-import java.lang.reflect.Field;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 
 import static io.datafibre.fibre.catalog.PrimitiveType.VARCHAR;
 
@@ -60,22 +37,22 @@ import static io.datafibre.fibre.catalog.PrimitiveType.VARCHAR;
  */
 public class MetaFunctions {
 
-    public static Table inspectExternalTable(TableName tableName) {
-        Table table = GlobalStateMgr.getCurrentState().getMetadataMgr().getTable(tableName)
-                .orElseThrow(() -> ErrorReport.buildSemanticException(ErrorCode.ERR_BAD_TABLE_ERROR, tableName));
-        ConnectContext connectContext = ConnectContext.get();
-        try {
-            Authorizer.checkAnyActionOnTable(connectContext.getCurrentUserIdentity(),
-                    connectContext.getCurrentRoleIds(),
-                    tableName);
-        } catch (AccessDeniedException e) {
-            AccessDeniedException.reportAccessDenied(
-                    tableName.getCatalog(),
-                    connectContext.getCurrentUserIdentity(), connectContext.getCurrentRoleIds(),
-                    PrivilegeType.ANY.name(), ObjectType.TABLE.name(), tableName.getTbl());
-        }
-        return table;
-    }
+//    public static Table inspectExternalTable(TableName tableName) {
+//        Table table = GlobalStateMgr.getCurrentState().getMetadataMgr().getTable(tableName)
+//                .orElseThrow(() -> ErrorReport.buildSemanticException(ErrorCode.ERR_BAD_TABLE_ERROR, tableName));
+//        ConnectContext connectContext = ConnectContext.get();
+//        try {
+//            Authorizer.checkAnyActionOnTable(connectContext.getCurrentUserIdentity(),
+//                    connectContext.getCurrentRoleIds(),
+//                    tableName);
+//        } catch (AccessDeniedException e) {
+//            AccessDeniedException.reportAccessDenied(
+//                    tableName.getCatalog(),
+//                    connectContext.getCurrentUserIdentity(), connectContext.getCurrentRoleIds(),
+//                    PrivilegeType.ANY.name(), ObjectType.TABLE.name(), tableName.getTbl());
+//        }
+//        return table;
+//    }
 
     public static Pair<Database, Table> inspectTable(TableName tableName) {
         Database db = GlobalStateMgr.getCurrentState().mayGetDb(tableName.getDb())
@@ -115,63 +92,63 @@ public class MetaFunctions {
     /**
      * Return verbose metadata of a materialized-view
      */
-    @ConstantFunction(name = "inspect_mv_meta", argTypes = {VARCHAR}, returnType = VARCHAR, isMetaFunction = true)
-    public static ConstantOperator inspectMvMeta(ConstantOperator mvName) {
-        TableName tableName = TableName.fromString(mvName.getVarchar());
-        Pair<Database, Table> dbTable = inspectTable(tableName);
-        Table table = dbTable.getRight();
-        if (!table.isMaterializedView()) {
-            ErrorReport.reportSemanticException(ErrorCode.ERR_INVALID_PARAMETER,
-                    tableName + " is not materialized view");
-        }
-        Locker locker = new Locker();
-        try {
-            locker.lockDatabase(dbTable.getLeft(), LockType.READ);
-            MaterializedView mv = (MaterializedView) table;
-            String meta = mv.inspectMeta();
-            return ConstantOperator.createVarchar(meta);
-        } finally {
-            locker.unLockDatabase(dbTable.getLeft(), LockType.READ);
-        }
-    }
+//    @ConstantFunction(name = "inspect_mv_meta", argTypes = {VARCHAR}, returnType = VARCHAR, isMetaFunction = true)
+//    public static ConstantOperator inspectMvMeta(ConstantOperator mvName) {
+//        TableName tableName = TableName.fromString(mvName.getVarchar());
+//        Pair<Database, Table> dbTable = inspectTable(tableName);
+//        Table table = dbTable.getRight();
+//        if (!table.isMaterializedView()) {
+//            ErrorReport.reportSemanticException(ErrorCode.ERR_INVALID_PARAMETER,
+//                    tableName + " is not materialized view");
+//        }
+//        Locker locker = new Locker();
+//        try {
+//            locker.lockDatabase(dbTable.getLeft(), LockType.READ);
+//            MaterializedView mv = (MaterializedView) table;
+//            String meta = mv.inspectMeta();
+//            return ConstantOperator.createVarchar(meta);
+//        } finally {
+//            locker.unLockDatabase(dbTable.getLeft(), LockType.READ);
+//        }
+//    }
 
     /**
      * Return related materialized-views of a table, in JSON array format
      */
-    @ConstantFunction(name = "inspect_related_mv", argTypes = {VARCHAR}, returnType = VARCHAR, isMetaFunction = true)
-    public static ConstantOperator inspectRelatedMv(ConstantOperator name) {
-        TableName tableName = TableName.fromString(name.getVarchar());
-        Optional<Database> mayDb;
-        Table table = inspectExternalTable(tableName);
-        if (table.isNativeTableOrMaterializedView()) {
-            mayDb = GlobalStateMgr.getCurrentState().mayGetDb(tableName.getDb());
-        } else {
-            mayDb = Optional.empty();
-        }
-
-        Locker locker = new Locker();
-        try {
-            mayDb.ifPresent(database -> locker.lockDatabase(database, LockType.READ));
-
-            Set<MvId> relatedMvs = table.getRelatedMaterializedViews();
-            JsonArray array = new JsonArray();
-            for (MvId mv : SetUtils.emptyIfNull(relatedMvs)) {
-                String mvName = GlobalStateMgr.getCurrentState().mayGetTable(mv.getDbId(), mv.getId())
-                        .map(Table::getName)
-                        .orElse(null);
-                JsonObject obj = new JsonObject();
-                obj.add("id", new JsonPrimitive(mv.getId()));
-                obj.add("name", mvName != null ? new JsonPrimitive(mvName) : JsonNull.INSTANCE);
-
-                array.add(obj);
-            }
-
-            String json = array.toString();
-            return ConstantOperator.createVarchar(json);
-        } finally {
-            mayDb.ifPresent(database -> locker.unLockDatabase(database, LockType.READ));
-        }
-    }
+//    @ConstantFunction(name = "inspect_related_mv", argTypes = {VARCHAR}, returnType = VARCHAR, isMetaFunction = true)
+//    public static ConstantOperator inspectRelatedMv(ConstantOperator name) {
+//        TableName tableName = TableName.fromString(name.getVarchar());
+//        Optional<Database> mayDb;
+//        Table table = inspectExternalTable(tableName);
+//        if (table.isNativeTableOrMaterializedView()) {
+//            mayDb = GlobalStateMgr.getCurrentState().mayGetDb(tableName.getDb());
+//        } else {
+//            mayDb = Optional.empty();
+//        }
+//
+//        Locker locker = new Locker();
+//        try {
+//            mayDb.ifPresent(database -> locker.lockDatabase(database, LockType.READ));
+//
+//            Set<MvId> relatedMvs = table.getRelatedMaterializedViews();
+//            JsonArray array = new JsonArray();
+//            for (MvId mv : SetUtils.emptyIfNull(relatedMvs)) {
+//                String mvName = GlobalStateMgr.getCurrentState().mayGetTable(mv.getDbId(), mv.getId())
+//                        .map(Table::getName)
+//                        .orElse(null);
+//                JsonObject obj = new JsonObject();
+//                obj.add("id", new JsonPrimitive(mv.getId()));
+//                obj.add("name", mvName != null ? new JsonPrimitive(mvName) : JsonNull.INSTANCE);
+//
+//                array.add(obj);
+//            }
+//
+//            String json = array.toString();
+//            return ConstantOperator.createVarchar(json);
+//        } finally {
+//            mayDb.ifPresent(database -> locker.unLockDatabase(database, LockType.READ));
+//        }
+//    }
 
     /**
      * Return the content in ConnectorTblMetaInfoMgr, which contains mapping information from base table to mv
@@ -188,115 +165,116 @@ public class MetaFunctions {
                     PrivilegeType.OPERATE.name(), ObjectType.FUNCTION.name(), "inspect_mv_relationships");
         }
 
-        String json = GlobalStateMgr.getCurrentState().getConnectorTblMetaInfoMgr().inspect();
-        return ConstantOperator.createVarchar(json);
+//        String json = GlobalStateMgr.getCurrentState().getConnectorTblMetaInfoMgr().inspect();
+//        return ConstantOperator.createVarchar(json);
+        return ConstantOperator.createVarchar("{}");
     }
 
     /**
      * Return Hive partition info
      */
-    @ConstantFunction(name = "inspect_hive_part_info",
-            argTypes = {VARCHAR},
-            returnType = VARCHAR,
-            isMetaFunction = true)
-    public static ConstantOperator inspectHivePartInfo(ConstantOperator name) {
-        TableName tableName = TableName.fromString(name.getVarchar());
-        Table table = inspectExternalTable(tableName);
-
-        Map<String, PartitionInfo> info = PartitionUtil.getPartitionNameWithPartitionInfo(table);
-        JsonObject obj = new JsonObject();
-        for (Map.Entry<String, PartitionInfo> entry : MapUtils.emptyIfNull(info).entrySet()) {
-            if (entry.getValue() instanceof Partition) {
-                Partition part = (Partition) entry.getValue();
-                obj.add(entry.getKey(), part.toJson());
-            }
-        }
-        String json = obj.toString();
-        return ConstantOperator.createVarchar(json);
-    }
+//    @ConstantFunction(name = "inspect_hive_part_info",
+//            argTypes = {VARCHAR},
+//            returnType = VARCHAR,
+//            isMetaFunction = true)
+//    public static ConstantOperator inspectHivePartInfo(ConstantOperator name) {
+//        TableName tableName = TableName.fromString(name.getVarchar());
+//        Table table = inspectExternalTable(tableName);
+//
+//        Map<String, PartitionInfo> info = PartitionUtil.getPartitionNameWithPartitionInfo(table);
+//        JsonObject obj = new JsonObject();
+//        for (Map.Entry<String, PartitionInfo> entry : MapUtils.emptyIfNull(info).entrySet()) {
+//            if (entry.getValue() instanceof Partition) {
+//                Partition part = (Partition) entry.getValue();
+//                obj.add(entry.getKey(), part.toJson());
+//            }
+//        }
+//        String json = obj.toString();
+//        return ConstantOperator.createVarchar(json);
+//    }
 
     /**
      * Return meta data of all pipes in current database
      */
-    @ConstantFunction(name = "inspect_all_pipes", argTypes = {}, returnType = VARCHAR, isMetaFunction = true)
-    public static ConstantOperator inspectAllPipes() {
-        ConnectContext connectContext = ConnectContext.get();
-        authOperatorPrivilege();
-        String currentDb = connectContext.getDatabase();
-        Database db = GlobalStateMgr.getCurrentState().mayGetDb(connectContext.getDatabase())
-                .orElseThrow(() -> ErrorReport.buildSemanticException(ErrorCode.ERR_BAD_DB_ERROR, currentDb));
-        String json = GlobalStateMgr.getCurrentState().getPipeManager().getPipesOfDb(db.getId());
-        return ConstantOperator.createVarchar(json);
-    }
+//    @ConstantFunction(name = "inspect_all_pipes", argTypes = {}, returnType = VARCHAR, isMetaFunction = true)
+//    public static ConstantOperator inspectAllPipes() {
+//        ConnectContext connectContext = ConnectContext.get();
+//        authOperatorPrivilege();
+//        String currentDb = connectContext.getDatabase();
+//        Database db = GlobalStateMgr.getCurrentState().mayGetDb(connectContext.getDatabase())
+//                .orElseThrow(() -> ErrorReport.buildSemanticException(ErrorCode.ERR_BAD_DB_ERROR, currentDb));
+//        String json = GlobalStateMgr.getCurrentState().getPipeManager().getPipesOfDb(db.getId());
+//        return ConstantOperator.createVarchar(json);
+//    }
 
     /**
      * Return all status about the TaskManager
      */
-    @ConstantFunction(name = "inspect_task_runs", argTypes = {}, returnType = VARCHAR, isMetaFunction = true)
-    public static ConstantOperator inspectTaskRuns() {
-        ConnectContext connectContext = ConnectContext.get();
-        authOperatorPrivilege();
-        TaskRunManager trm = GlobalStateMgr.getCurrentState().getTaskManager().getTaskRunManager();
-        return ConstantOperator.createVarchar(trm.inspect());
-    }
+//    @ConstantFunction(name = "inspect_task_runs", argTypes = {}, returnType = VARCHAR, isMetaFunction = true)
+//    public static ConstantOperator inspectTaskRuns() {
+//        ConnectContext connectContext = ConnectContext.get();
+//        authOperatorPrivilege();
+//        TaskRunManager trm = GlobalStateMgr.getCurrentState().getTaskManager().getTaskRunManager();
+//        return ConstantOperator.createVarchar(trm.inspect());
+//    }
 
-    @ConstantFunction(name = "inspect_memory", argTypes = {VARCHAR}, returnType = VARCHAR, isMetaFunction = true)
-    public static ConstantOperator inspectMemory(ConstantOperator moduleName) {
-        Map<String, MemoryTrackable> statMap = MemoryUsageTracker.REFERENCE.get(moduleName.getVarchar());
-        if (statMap == null) {
-            ErrorReport.reportSemanticException(ErrorCode.ERR_INVALID_PARAMETER,
-                    "Module " + moduleName + " not found.");
-        }
-        long estimateSize = 0;
-        for (Map.Entry<String, MemoryTrackable> statEntry : statMap.entrySet()) {
-            MemoryTrackable tracker = statEntry.getValue();
-            estimateSize += tracker.estimateSize();
-        }
+//    @ConstantFunction(name = "inspect_memory", argTypes = {VARCHAR}, returnType = VARCHAR, isMetaFunction = true)
+//    public static ConstantOperator inspectMemory(ConstantOperator moduleName) {
+//        Map<String, MemoryTrackable> statMap = MemoryUsageTracker.REFERENCE.get(moduleName.getVarchar());
+//        if (statMap == null) {
+//            ErrorReport.reportSemanticException(ErrorCode.ERR_INVALID_PARAMETER,
+//                    "Module " + moduleName + " not found.");
+//        }
+//        long estimateSize = 0;
+//        for (Map.Entry<String, MemoryTrackable> statEntry : statMap.entrySet()) {
+//            MemoryTrackable tracker = statEntry.getValue();
+//            estimateSize += tracker.estimateSize();
+//        }
+//
+//        return ConstantOperator.createVarchar(new ByteSizeValue(estimateSize).toString());
+//    }
 
-        return ConstantOperator.createVarchar(new ByteSizeValue(estimateSize).toString());
-    }
-
-    @ConstantFunction(name = "inspect_memory_detail", argTypes = {VARCHAR, VARCHAR},
-            returnType = VARCHAR, isMetaFunction = true)
-    public static ConstantOperator inspectMemoryDetail(ConstantOperator moduleName, ConstantOperator clazzInfo) {
-        Map<String, MemoryTrackable> statMap = MemoryUsageTracker.REFERENCE.get(moduleName.getVarchar());
-        if (statMap == null) {
-            ErrorReport.reportSemanticException(ErrorCode.ERR_INVALID_PARAMETER,
-                    "Module " + moduleName + " not found.");
-        }
-        String classInfo = clazzInfo.getVarchar();
-        String clazzName;
-        String fieldName = null;
-        if (classInfo.contains(".")) {
-            clazzName = classInfo.split("\\.")[0];
-            fieldName = classInfo.split("\\.")[1];
-        } else {
-            clazzName = classInfo;
-        }
-        MemoryTrackable memoryTrackable = statMap.get(clazzName);
-        if (memoryTrackable == null) {
-            ErrorReport.reportSemanticException(ErrorCode.ERR_INVALID_PARAMETER,
-                    "In module " + moduleName + " - " + clazzName + " not found.");
-        }
-        long estimateSize = 0;
-        if (fieldName == null) {
-            estimateSize = memoryTrackable.estimateSize();
-        } else {
-            try {
-                Field field = memoryTrackable.getClass().getDeclaredField(fieldName);
-                field.setAccessible(true);
-                Object object = field.get(memoryTrackable);
-                estimateSize = SizeEstimator.estimate(object);
-            } catch (NoSuchFieldException e) {
-                ErrorReport.reportSemanticException(ErrorCode.ERR_INVALID_PARAMETER,
-                        "In module " + moduleName + " - " + clazzName + " field " + fieldName  + " not found.");
-            } catch (IllegalAccessException e) {
-                ErrorReport.reportSemanticException(ErrorCode.ERR_INVALID_PARAMETER,
-                        "Get module " + moduleName + " - " + clazzName + " field " + fieldName  + " error.");
-            }
-        }
-
-        return ConstantOperator.createVarchar(new ByteSizeValue(estimateSize).toString());
-    }
+//    @ConstantFunction(name = "inspect_memory_detail", argTypes = {VARCHAR, VARCHAR},
+//            returnType = VARCHAR, isMetaFunction = true)
+//    public static ConstantOperator inspectMemoryDetail(ConstantOperator moduleName, ConstantOperator clazzInfo) {
+//        Map<String, MemoryTrackable> statMap = MemoryUsageTracker.REFERENCE.get(moduleName.getVarchar());
+//        if (statMap == null) {
+//            ErrorReport.reportSemanticException(ErrorCode.ERR_INVALID_PARAMETER,
+//                    "Module " + moduleName + " not found.");
+//        }
+//        String classInfo = clazzInfo.getVarchar();
+//        String clazzName;
+//        String fieldName = null;
+//        if (classInfo.contains(".")) {
+//            clazzName = classInfo.split("\\.")[0];
+//            fieldName = classInfo.split("\\.")[1];
+//        } else {
+//            clazzName = classInfo;
+//        }
+//        MemoryTrackable memoryTrackable = statMap.get(clazzName);
+//        if (memoryTrackable == null) {
+//            ErrorReport.reportSemanticException(ErrorCode.ERR_INVALID_PARAMETER,
+//                    "In module " + moduleName + " - " + clazzName + " not found.");
+//        }
+//        long estimateSize = 0;
+//        if (fieldName == null) {
+//            estimateSize = memoryTrackable.estimateSize();
+//        } else {
+//            try {
+//                Field field = memoryTrackable.getClass().getDeclaredField(fieldName);
+//                field.setAccessible(true);
+//                Object object = field.get(memoryTrackable);
+//                estimateSize = SizeEstimator.estimate(object);
+//            } catch (NoSuchFieldException e) {
+//                ErrorReport.reportSemanticException(ErrorCode.ERR_INVALID_PARAMETER,
+//                        "In module " + moduleName + " - " + clazzName + " field " + fieldName  + " not found.");
+//            } catch (IllegalAccessException e) {
+//                ErrorReport.reportSemanticException(ErrorCode.ERR_INVALID_PARAMETER,
+//                        "Get module " + moduleName + " - " + clazzName + " field " + fieldName  + " error.");
+//            }
+//        }
+//
+//        return ConstantOperator.createVarchar(new ByteSizeValue(estimateSize).toString());
+//    }
 
 }

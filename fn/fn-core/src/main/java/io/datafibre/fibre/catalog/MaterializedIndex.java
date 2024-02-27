@@ -176,17 +176,17 @@ public class MaterializedIndex extends MetaObject implements Writable, GsonPostP
         tablets.clear();
     }
 
-    public void addTablet(Tablet tablet, TabletMeta tabletMeta) {
-        addTablet(tablet, tabletMeta, true);
-    }
-
-    public void addTablet(Tablet tablet, TabletMeta tabletMeta, boolean updateInvertedIndex) {
-        idToTablets.put(tablet.getId(), tablet);
-        tablets.add(tablet);
-        if (updateInvertedIndex) {
-            GlobalStateMgr.getCurrentState().getTabletInvertedIndex().addTablet(tablet.getId(), tabletMeta);
-        }
-    }
+//    public void addTablet(Tablet tablet, TabletMeta tabletMeta) {
+//        addTablet(tablet, tabletMeta, true);
+//    }
+//
+//    public void addTablet(Tablet tablet, TabletMeta tabletMeta, boolean updateInvertedIndex) {
+//        idToTablets.put(tablet.getId(), tablet);
+//        tablets.add(tablet);
+//        if (updateInvertedIndex) {
+//            GlobalStateMgr.getCurrentState().getTabletInvertedIndex().addTablet(tablet.getId(), tabletMeta);
+//        }
+//    }
 
     public void setIdForRestore(long idxId) {
         this.id = idxId;

@@ -359,7 +359,7 @@ public class CachedStatisticStorage implements StatisticStorage {
 
     @Override
     public void addColumnStatistic(Table table, String column, ColumnStatistic columnStatistic) {
-        this.cachedStatistics.synchronous().put(new ColumnStatsCacheKey(table.getId(), column), Optional.of(columnStatistic));
+//        this.cachedStatistics.synchronous().put(new ColumnStatsCacheKey(table.getId(), column), Optional.of(columnStatistic));
     }
 
     @Override

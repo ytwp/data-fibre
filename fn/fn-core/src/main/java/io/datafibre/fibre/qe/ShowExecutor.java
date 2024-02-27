@@ -647,7 +647,7 @@ public class ShowExecutor {
 
     // Show databases statement
     private void handleShowDb() {
-        GlobalStateMgr.getCurrentState().tryLock(true);
+//        GlobalStateMgr.getCurrentState().tryLock(true);
         try {
 //            ShowDbStmt showDbStmt = (ShowDbStmt) stmt;
 //            List<List<String>> rows = Lists.newArrayList();

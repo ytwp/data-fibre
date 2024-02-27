@@ -37,50 +37,30 @@ package io.datafibre.fibre.server;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import io.datafibre.fibre.authentication.AuthenticationMgr;
-import io.datafibre.fibre.backup.BackupHandler;
 import io.datafibre.fibre.catalog.*;
-import io.datafibre.fibre.clone.*;
 import io.datafibre.fibre.common.AnalysisException;
 import io.datafibre.fibre.common.Config;
 import io.datafibre.fibre.common.DdlException;
 import io.datafibre.fibre.common.FeConstants;
 import io.datafibre.fibre.common.util.*;
-import io.datafibre.fibre.common.util.concurrent.QueryableReentrantLock;
 import io.datafibre.fibre.common.util.concurrent.lock.LockManager;
-import io.datafibre.fibre.connector.ConnectorMetadata;
-import io.datafibre.fibre.connector.ConnectorMgr;
-import io.datafibre.fibre.connector.ConnectorTblMetaInfoMgr;
 import io.datafibre.fibre.ha.FrontendNodeType;
-import io.datafibre.fibre.journal.*;
-import io.datafibre.fibre.lake.compaction.CompactionMgr;
-import io.datafibre.fibre.load.*;
-import io.datafibre.fibre.load.loadv2.*;
-import io.datafibre.fibre.load.pipe.PipeManager;
-import io.datafibre.fibre.load.routineload.RoutineLoadMgr;
-import io.datafibre.fibre.load.streamload.StreamLoadMgr;
 import io.datafibre.fibre.meta.MetaContext;
-import io.datafibre.fibre.persist.metablock.*;
-import io.datafibre.fibre.plugin.PluginMgr;
-import io.datafibre.fibre.privilege.AuthorizationMgr;
 import io.datafibre.fibre.qe.AuditEventProcessor;
 import io.datafibre.fibre.qe.JournalObservable;
 import io.datafibre.fibre.qe.scheduler.slot.ResourceUsageMonitor;
 import io.datafibre.fibre.qe.scheduler.slot.SlotManager;
 import io.datafibre.fibre.qe.scheduler.slot.SlotProvider;
-import io.datafibre.fibre.scheduler.TaskManager;
-import io.datafibre.fibre.sql.optimizer.statistics.CachedStatisticStorage;
 import io.datafibre.fibre.sql.optimizer.statistics.StatisticStorage;
-import io.datafibre.fibre.statistic.AnalyzeMgr;
-import io.datafibre.fibre.system.*;
-import io.datafibre.fibre.task.PriorityLeaderTaskExecutor;
-import io.datafibre.fibre.transaction.GlobalTransactionMgr;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class GlobalStateMgr {
     private static final Logger LOG = LogManager.getLogger(GlobalStateMgr.class);
@@ -96,7 +76,7 @@ public class GlobalStateMgr {
      * Meta and Image context
      */
     private String imageDir;
-    private final MetaContext metaContext;
+    //    private final MetaContext metaContext;
     private long epoch = 0;
 
     // Lock to perform atomic modification on map like 'idToDb' and 'fullNameToDb'.
@@ -105,13 +85,13 @@ public class GlobalStateMgr {
     // We use fair ReentrantLock to avoid starvation. Do not use this lock in critical code pass
     // because fair lock has poor performance.
     // Using QueryableReentrantLock to print owner thread in debug mode.
-    private final QueryableReentrantLock lock;
+//    private final QueryableReentrantLock lock;
 
     /**
      * System Manager
      */
-    private final NodeMgr nodeMgr;
-    private final HeartbeatMgr heartbeatMgr;
+//    private final NodeMgr nodeMgr;
+//    private final HeartbeatMgr heartbeatMgr;
 
     /**
      * Alter Job Manager
@@ -122,14 +102,14 @@ public class GlobalStateMgr {
 
 //    private final Load load;
 //    private final LoadMgr loadMgr;
-    private final RoutineLoadMgr routineLoadMgr;
-    private final StreamLoadMgr streamLoadMgr;
-    private final ExportMgr exportMgr;
+//    private final RoutineLoadMgr routineLoadMgr;
+//    private final StreamLoadMgr streamLoadMgr;
+//    private final ExportMgr exportMgr;
 
     //    private final ConsistencyChecker consistencyChecker;
-    private final BackupHandler backupHandler;
+//    private final BackupHandler backupHandler;
     //    private final PublishVersionDaemon publishVersionDaemon;
-    private final DeleteMgr deleteMgr;
+//    private final DeleteMgr deleteMgr;
 //    private final UpdateDbUsedDataQuotaDaemon updateDbUsedDataQuotaDaemon;
 
     //    private FrontendDaemon labelCleaner; // To clean old LabelInfo, ExportJobInfos
@@ -164,7 +144,7 @@ public class GlobalStateMgr {
     //    private EditLog editLog;
 //    private Journal journal;
     // For checkpoint and observer memory replayed marker
-    private final AtomicLong replayedJournalId;
+//    private final AtomicLong replayedJournalId;
 
     private static GlobalStateMgr CHECKPOINT = null;
     private static long checkpointThreadId = -1;
@@ -172,38 +152,38 @@ public class GlobalStateMgr {
 
 //    private HAProtocol haProtocol = null;
 
-    private final JournalObservable journalObservable;
+//    private final JournalObservable journalObservable;
 
-    private final TabletInvertedIndex tabletInvertedIndex;
-    private ColocateTableIndex colocateTableIndex;
-
-    private final CatalogRecycleBin recycleBin;
-    private final FunctionSet functionSet;
+//    private final TabletInvertedIndex tabletInvertedIndex;
+//    private ColocateTableIndex colocateTableIndex;
+//
+//    private final CatalogRecycleBin recycleBin;
+    private final FunctionSet functionSet = new FunctionSet();
 
 //    private final MetaReplayState metaReplayState;
 
-    private final ResourceMgr resourceMgr;
-
-    private final GlobalTransactionMgr globalTransactionMgr;
-
-    private final TabletStatMgr tabletStatMgr;
-
+    //    private final ResourceMgr resourceMgr;
+//
+//    private final GlobalTransactionMgr globalTransactionMgr;
+//
+//    private final TabletStatMgr tabletStatMgr;
+//
     private AuthenticationMgr authenticationMgr;
-    private AuthorizationMgr authorizationMgr;
+//    private AuthorizationMgr authorizationMgr;
 
 //    private DomainResolver domainResolver;
 
-    private final TabletSchedulerStat stat;
+//    private final TabletSchedulerStat stat;
 
-    private final TabletScheduler tabletScheduler;
+//    private final TabletScheduler tabletScheduler;
 
 //    private final TabletChecker tabletChecker;
 
     // Thread pools for pending and loading task, separately
 //    private final LeaderTaskExecutor pendingLoadTaskScheduler;
-    private final PriorityLeaderTaskExecutor loadingLoadTaskScheduler;
-
-    private final LoadJobScheduler loadJobScheduler;
+//    private final PriorityLeaderTaskExecutor loadingLoadTaskScheduler;
+//
+//    private final LoadJobScheduler loadJobScheduler;
 
 //    private final LoadTimeoutChecker loadTimeoutChecker;
 //    private final LoadEtlChecker loadEtlChecker;
@@ -215,13 +195,13 @@ public class GlobalStateMgr {
 
 //    private final MVJobExecutor mvMVJobExecutor;
 
-    private final SmallFileMgr smallFileMgr;
+//    private final SmallFileMgr smallFileMgr;
+//
+//    private final DynamicPartitionScheduler dynamicPartitionScheduler;
+//
+//    private final PluginMgr pluginMgr;
 
-    private final DynamicPartitionScheduler dynamicPartitionScheduler;
-
-    private final PluginMgr pluginMgr;
-
-    private final AuditEventProcessor auditEventProcessor;
+//    private final AuditEventProcessor auditEventProcessor;
 
 //    private final StatisticsMetaManager statisticsMetaManager;
 
@@ -229,7 +209,7 @@ public class GlobalStateMgr {
 
 //    private final SafeModeChecker safeModeChecker;
 
-    private final AnalyzeMgr analyzeMgr;
+//    private final AnalyzeMgr analyzeMgr;
 
     private StatisticStorage statisticStorage;
 
@@ -239,22 +219,22 @@ public class GlobalStateMgr {
 
     private boolean isSafeMode = false;
 
-    private final ResourceGroupMgr resourceGroupMgr;
+//    private final ResourceGroupMgr resourceGroupMgr;
 
 //    private StarOSAgent starOSAgent;
 
 //    private final StarMgrMetaSyncer starMgrMetaSyncer;
 
-    private MetadataMgr metadataMgr;
-    private final CatalogMgr catalogMgr;
-    private final ConnectorMgr connectorMgr;
-    private final ConnectorTblMetaInfoMgr connectorTblMetaInfoMgr;
-
-    private final TaskManager taskManager;
-    private final InsertOverwriteJobMgr insertOverwriteJobMgr;
-
-    private final LocalMetastore localMetastore;
-    private final GlobalFunctionMgr globalFunctionMgr;
+//    private MetadataMgr metadataMgr;
+//    private final CatalogMgr catalogMgr;
+//    private final ConnectorMgr connectorMgr;
+//    private final ConnectorTblMetaInfoMgr connectorTblMetaInfoMgr;
+//
+//    private final TaskManager taskManager;
+//    private final InsertOverwriteJobMgr insertOverwriteJobMgr;
+//
+//    private final LocalMetastore localMetastore;
+//    private final GlobalFunctionMgr globalFunctionMgr;
 
 //    @Deprecated
 //    private final ShardManager shardManager;
@@ -266,17 +246,17 @@ public class GlobalStateMgr {
 //    private final BinlogManager binlogManager;
 
     // For LakeTable
-    private final CompactionMgr compactionMgr;
-
-    private final WarehouseManager warehouseMgr;
-
-    private final ConfigRefreshDaemon configRefreshDaemon;
-
-    private final StorageVolumeMgr storageVolumeMgr;
+//    private final CompactionMgr compactionMgr;
+//
+//    private final WarehouseManager warehouseMgr;
+//
+//    private final ConfigRefreshDaemon configRefreshDaemon;
+//
+//    private final StorageVolumeMgr storageVolumeMgr;
 
 //    private AutovacuumDaemon autovacuumDaemon;
 
-    private final PipeManager pipeManager;
+//    private final PipeManager pipeManager;
 //    private final PipeListener pipeListener;
 //    private final PipeScheduler pipeScheduler;
 //    private final MVActiveChecker mvActiveChecker;
@@ -298,9 +278,9 @@ public class GlobalStateMgr {
         return nodeMgr;
     }
 
-    public JournalObservable getJournalObservable() {
-        return journalObservable;
-    }
+//    public JournalObservable getJournalObservable() {
+//        return journalObservable;
+//    }
 
 //    public TNodesInfo createNodesInfo(Integer clusterId) {
 //        TNodesInfo nodesInfo = new TNodesInfo();
@@ -328,9 +308,9 @@ public class GlobalStateMgr {
 //        return heartbeatMgr;
 //    }
 
-    public TabletInvertedIndex getTabletInvertedIndex() {
-        return this.tabletInvertedIndex;
-    }
+//    public TabletInvertedIndex getTabletInvertedIndex() {
+//        return this.tabletInvertedIndex;
+//    }
 
     // only for test
 //    public void setColocateTableIndex(ColocateTableIndex colocateTableIndex) {
@@ -338,9 +318,9 @@ public class GlobalStateMgr {
 //        localMetastore.setColocateTableIndex(colocateTableIndex);
 //    }
 
-    public ColocateTableIndex getColocateTableIndex() {
-        return this.colocateTableIndex;
-    }
+//    public ColocateTableIndex getColocateTableIndex() {
+//        return this.colocateTableIndex;
+//    }
 
 //    public CatalogRecycleBin getRecycleBin() {
 //        return this.recycleBin;
@@ -564,9 +544,9 @@ public class GlobalStateMgr {
         if (isCheckpointThread()) {
             // only checkpoint thread itself will go here.
             // so no need to care about the thread safe.
-            if (CHECKPOINT == null) {
-                CHECKPOINT = new GlobalStateMgr(true);
-            }
+//            if (CHECKPOINT == null) {
+//                CHECKPOINT = new GlobalStateMgr(true);
+//            }
             return CHECKPOINT;
         } else {
             return SingletonHolder.INSTANCE;
@@ -619,17 +599,17 @@ public class GlobalStateMgr {
         this.authenticationMgr = authenticationMgr;
     }
 
-    public AuthorizationMgr getAuthorizationMgr() {
-        return authorizationMgr;
-    }
+//    public AuthorizationMgr getAuthorizationMgr() {
+//        return authorizationMgr;
+//    }
 
 //    public void setAuthorizationMgr(AuthorizationMgr authorizationMgr) {
 //        this.authorizationMgr = authorizationMgr;
 //    }
 
-    public ResourceGroupMgr getResourceGroupMgr() {
-        return resourceGroupMgr;
-    }
+//    public ResourceGroupMgr getResourceGroupMgr() {
+//        return resourceGroupMgr;
+//    }
 
 //    public TabletScheduler getTabletScheduler() {
 //        return tabletScheduler;
@@ -639,9 +619,9 @@ public class GlobalStateMgr {
 //        return tabletChecker;
 //    }
 
-    public AuditEventProcessor getAuditEventProcessor() {
-        return auditEventProcessor;
-    }
+//    public AuditEventProcessor getAuditEventProcessor() {
+//        return auditEventProcessor;
+//    }
 
     public static int getCurrentStateStarRocksMetaVersion() {
         return MetaContext.get().getStarRocksMetaVersion();
@@ -655,9 +635,9 @@ public class GlobalStateMgr {
         return statisticStorage;
     }
 
-    public TabletStatMgr getTabletStatMgr() {
-        return tabletStatMgr;
-    }
+//    public TabletStatMgr getTabletStatMgr() {
+//        return tabletStatMgr;
+//    }
 
     // Only used in UT
     public void setStatisticStorage(StatisticStorage statisticStorage) {
@@ -672,9 +652,9 @@ public class GlobalStateMgr {
 //        return starMgrMetaSyncer;
 //    }
 
-    public CatalogMgr getCatalogMgr() {
-        return catalogMgr;
-    }
+//    public CatalogMgr getCatalogMgr() {
+//        return catalogMgr;
+//    }
 
 //    public ConnectorMgr getConnectorMgr() {
 //        return connectorMgr;
@@ -684,9 +664,9 @@ public class GlobalStateMgr {
         return metadataMgr;
     }
 
-    public ConnectorMetadata getMetadata() {
-        return localMetastore;
-    }
+//    public ConnectorMetadata getMetadata() {
+//        return localMetastore;
+//    }
 
 //    @VisibleForTesting
 //    public void setMetadataMgr(MetadataMgr metadataMgr) {
@@ -698,29 +678,29 @@ public class GlobalStateMgr {
 //        this.starOSAgent = starOSAgent;
 //    }
 
-    public TaskManager getTaskManager() {
-        return taskManager;
-    }
+//    public TaskManager getTaskManager() {
+//        return taskManager;
+//    }
 
 //    public BinlogManager getBinlogManager() {
 //        return binlogManager;
 //    }
 
-    public InsertOverwriteJobMgr getInsertOverwriteJobMgr() {
-        return insertOverwriteJobMgr;
-    }
+//    public InsertOverwriteJobMgr getInsertOverwriteJobMgr() {
+//        return insertOverwriteJobMgr;
+//    }
 
-    public WarehouseManager getWarehouseMgr() {
-        return warehouseMgr;
-    }
+//    public WarehouseManager getWarehouseMgr() {
+//        return warehouseMgr;
+//    }
 
-    public StorageVolumeMgr getStorageVolumeMgr() {
-        return storageVolumeMgr;
-    }
+//    public StorageVolumeMgr getStorageVolumeMgr() {
+//        return storageVolumeMgr;
+//    }
 
-    public PipeManager getPipeManager() {
-        return pipeManager;
-    }
+//    public PipeManager getPipeManager() {
+//        return pipeManager;
+//    }
 
 //    public PipeScheduler getPipeScheduler() {
 //        return pipeScheduler;
@@ -734,9 +714,9 @@ public class GlobalStateMgr {
 //        return mvActiveChecker;
 //    }
 
-    public ConnectorTblMetaInfoMgr getConnectorTblMetaInfoMgr() {
-        return connectorTblMetaInfoMgr;
-    }
+//    public ConnectorTblMetaInfoMgr getConnectorTblMetaInfoMgr() {
+//        return connectorTblMetaInfoMgr;
+//    }
 
 //    public ReplicationMgr getReplicationMgr() {
 //        return replicationMgr;
@@ -751,39 +731,39 @@ public class GlobalStateMgr {
     }
 
     // Use tryLock to avoid potential deadlock
-    public boolean tryLock(boolean mustLock) {
-        while (true) {
-            try {
-                if (!lock.tryLock(Config.catalog_try_lock_timeout_ms, TimeUnit.MILLISECONDS)) {
-                    // to see which thread held this lock for long time.
-                    Thread owner = lock.getOwner();
-                    if (owner != null) {
-                        LOG.warn("globalStateMgr lock is held by: {}", Util.dumpThread(owner, 50));
-                    }
+//    public boolean tryLock(boolean mustLock) {
+//        while (true) {
+//            try {
+//                if (!lock.tryLock(Config.catalog_try_lock_timeout_ms, TimeUnit.MILLISECONDS)) {
+//                    // to see which thread held this lock for long time.
+//                    Thread owner = lock.getOwner();
+//                    if (owner != null) {
+//                        LOG.warn("globalStateMgr lock is held by: {}", Util.dumpThread(owner, 50));
+//                    }
+//
+//                    if (mustLock) {
+//                        continue;
+//                    } else {
+//                        return false;
+//                    }
+//                }
+//                return true;
+//            } catch (InterruptedException e) {
+//                LOG.warn("got exception while getting globalStateMgr lock", e);
+//                if (mustLock) {
+//                    continue;
+//                } else {
+//                    return lock.isHeldByCurrentThread();
+//                }
+//            }
+//        }
+//    }
 
-                    if (mustLock) {
-                        continue;
-                    } else {
-                        return false;
-                    }
-                }
-                return true;
-            } catch (InterruptedException e) {
-                LOG.warn("got exception while getting globalStateMgr lock", e);
-                if (mustLock) {
-                    continue;
-                } else {
-                    return lock.isHeldByCurrentThread();
-                }
-            }
-        }
-    }
-
-    public void unlock() {
-        if (lock.isHeldByCurrentThread()) {
-            this.lock.unlock();
-        }
-    }
+//    public void unlock() {
+//        if (lock.isHeldByCurrentThread()) {
+//            this.lock.unlock();
+//        }
+//    }
 
     public String getImageDir() {
         return imageDir;
@@ -1784,13 +1764,13 @@ public class GlobalStateMgr {
 //        return this.exportMgr;
 //    }
 
-    public SmallFileMgr getSmallFileMgr() {
-        return this.smallFileMgr;
-    }
+//    public SmallFileMgr getSmallFileMgr() {
+//        return this.smallFileMgr;
+//    }
 
-    public long getReplayedJournalId() {
-        return this.replayedJournalId.get();
-    }
+//    public long getReplayedJournalId() {
+//        return this.replayedJournalId.get();
+//    }
 
 //    public HAProtocol getHaProtocol() {
 //        return this.haProtocol;
@@ -2201,9 +2181,9 @@ public class GlobalStateMgr {
 //        return execution;
 //    }
 
-    public MetaContext getMetaContext() {
-        return metaContext;
-    }
+//    public MetaContext getMetaContext() {
+//        return metaContext;
+//    }
 
     public void createBuiltinStorageVolume() {
 //        try {

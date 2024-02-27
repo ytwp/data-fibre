@@ -50,7 +50,7 @@ public class ListPartitionDesc extends PartitionDesc {
     public ListPartitionDesc(List<String> partitionColNames,
                              List<PartitionDesc> partitionDescs, NodePosition pos) {
         super(pos);
-        super.type = PartitionType.LIST;
+//        super.type = PartitionType.LIST;
         this.partitionColNames = partitionColNames;
         this.singleListPartitionDescs = Lists.newArrayList();
         this.multiListPartitionDescs = Lists.newArrayList();
@@ -121,10 +121,10 @@ public class ListPartitionDesc extends PartitionDesc {
                         throw new AnalysisException(String.format("Invalid partition column '%s': %s",
                                 columnDef.getName(), "invalid data type " + columnDef.getType()));
                     }
-                    if (!columnDef.isKey() && columnDef.getAggregateType() != AggregateType.NONE) {
-                        throw new AnalysisException("The partition column could not be aggregated column"
-                                + " and unique table's partition column must be key column");
-                    }
+//                    if (!columnDef.isKey() && columnDef.getAggregateType() != AggregateType.NONE) {
+//                        throw new AnalysisException("The partition column could not be aggregated column"
+//                                + " and unique table's partition column must be key column");
+//                    }
                     found = true;
                     partitionColumns.add(columnDef);
                     break;
@@ -273,40 +273,40 @@ public class ListPartitionDesc extends PartitionDesc {
         }
     }
 
-    @Override
-    public PartitionInfo toPartitionInfo(List<Column> columns, Map<String, Long> partitionNameToId, boolean isTemp)
-            throws DdlException {
-        try {
-            List<Column> partitionColumns = this.findPartitionColumns(columns);
-            ListPartitionInfo listPartitionInfo = new ListPartitionInfo(super.type, partitionColumns);
-            for (SingleItemListPartitionDesc desc : this.singleListPartitionDescs) {
-                long partitionId = partitionNameToId.get(desc.getPartitionName());
-                listPartitionInfo.setDataProperty(partitionId, desc.getPartitionDataProperty());
-                listPartitionInfo.setIsInMemory(partitionId, desc.isInMemory());
-                listPartitionInfo.setTabletType(partitionId, desc.getTabletType());
-                listPartitionInfo.setReplicationNum(partitionId, desc.getReplicationNum());
-                listPartitionInfo.setValues(partitionId, desc.getValues());
-                listPartitionInfo.setLiteralExprValues(partitionId, desc.getValues());
-                listPartitionInfo.setIdToIsTempPartition(partitionId, isTemp);
-                listPartitionInfo.setStorageCacheInfo(partitionId, desc.getDataCacheInfo());
-            }
-            for (MultiItemListPartitionDesc desc : this.multiListPartitionDescs) {
-                long partitionId = partitionNameToId.get(desc.getPartitionName());
-                listPartitionInfo.setDataProperty(partitionId, desc.getPartitionDataProperty());
-                listPartitionInfo.setIsInMemory(partitionId, desc.isInMemory());
-                listPartitionInfo.setTabletType(partitionId, desc.getTabletType());
-                listPartitionInfo.setReplicationNum(partitionId, desc.getReplicationNum());
-                listPartitionInfo.setMultiValues(partitionId, desc.getMultiValues());
-                listPartitionInfo.setMultiLiteralExprValues(partitionId, desc.getMultiValues());
-                listPartitionInfo.setIdToIsTempPartition(partitionId, isTemp);
-                listPartitionInfo.setStorageCacheInfo(partitionId, desc.getDataCacheInfo());
-            }
-            listPartitionInfo.setAutomaticPartition(isAutoPartitionTable);
-            return listPartitionInfo;
-        } catch (AnalysisException e) {
-            throw new DdlException(e.getMessage(), e);
-        }
-    }
+//    @Override
+//    public PartitionInfo toPartitionInfo(List<Column> columns, Map<String, Long> partitionNameToId, boolean isTemp)
+//            throws DdlException {
+//        try {
+//            List<Column> partitionColumns = this.findPartitionColumns(columns);
+//            ListPartitionInfo listPartitionInfo = new ListPartitionInfo(super.type, partitionColumns);
+//            for (SingleItemListPartitionDesc desc : this.singleListPartitionDescs) {
+//                long partitionId = partitionNameToId.get(desc.getPartitionName());
+////                listPartitionInfo.setDataProperty(partitionId, desc.getPartitionDataProperty());
+//                listPartitionInfo.setIsInMemory(partitionId, desc.isInMemory());
+////                listPartitionInfo.setTabletType(partitionId, desc.getTabletType());
+//                listPartitionInfo.setReplicationNum(partitionId, desc.getReplicationNum());
+//                listPartitionInfo.setValues(partitionId, desc.getValues());
+//                listPartitionInfo.setLiteralExprValues(partitionId, desc.getValues());
+//                listPartitionInfo.setIdToIsTempPartition(partitionId, isTemp);
+////                listPartitionInfo.setStorageCacheInfo(partitionId, desc.getDataCacheInfo());
+//            }
+//            for (MultiItemListPartitionDesc desc : this.multiListPartitionDescs) {
+//                long partitionId = partitionNameToId.get(desc.getPartitionName());
+////                listPartitionInfo.setDataProperty(partitionId, desc.getPartitionDataProperty());
+//                listPartitionInfo.setIsInMemory(partitionId, desc.isInMemory());
+////                listPartitionInfo.setTabletType(partitionId, desc.getTabletType());
+//                listPartitionInfo.setReplicationNum(partitionId, desc.getReplicationNum());
+//                listPartitionInfo.setMultiValues(partitionId, desc.getMultiValues());
+//                listPartitionInfo.setMultiLiteralExprValues(partitionId, desc.getMultiValues());
+//                listPartitionInfo.setIdToIsTempPartition(partitionId, isTemp);
+////                listPartitionInfo.setStorageCacheInfo(partitionId, desc.getDataCacheInfo());
+//            }
+//            listPartitionInfo.setAutomaticPartition(isAutoPartitionTable);
+//            return listPartitionInfo;
+//        } catch (AnalysisException e) {
+//            throw new DdlException(e.getMessage(), e);
+//        }
+//    }
 
     private List<Column> findPartitionColumns(List<Column> columns) {
         List<Column> partitionColumns = Lists.newArrayList();

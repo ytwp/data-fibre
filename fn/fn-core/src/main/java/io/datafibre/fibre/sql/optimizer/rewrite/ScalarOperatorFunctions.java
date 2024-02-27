@@ -1203,13 +1203,13 @@ public class ScalarOperatorFunctions {
 
     @ConstantFunction(name = "is_role_in_session", argTypes = {VARCHAR}, returnType = BOOLEAN)
     public static ConstantOperator isRoleInSession(ConstantOperator role) {
-        AuthorizationMgr manager = GlobalStateMgr.getCurrentState().getAuthorizationMgr();
+//        AuthorizationMgr manager = GlobalStateMgr.getCurrentState().getAuthorizationMgr();
         Set<String> roleNames = new HashSet<>();
-        ConnectContext connectContext = ConnectContext.get();
-
-        for (Long roleId : connectContext.getCurrentRoleIds()) {
-            manager.getRecursiveRole(roleNames, roleId);
-        }
+//        ConnectContext connectContext = ConnectContext.get();
+//
+//        for (Long roleId : connectContext.getCurrentRoleIds()) {
+//            manager.getRecursiveRole(roleNames, roleId);
+//        }
 
         return ConstantOperator.createBoolean(roleNames.contains(role.getVarchar()));
     }

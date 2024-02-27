@@ -42,29 +42,29 @@ public class SetRoleExecutor {
     }
 
     public static void execute(SetRoleStmt stmt, ConnectContext context) throws UserException, PrivilegeException {
-        AuthorizationMgr manager = GlobalStateMgr.getCurrentState().getAuthorizationMgr();
-        UserIdentity user = context.getCurrentUserIdentity();
-        Set<Long> roleIdsForUser = manager.getRoleIdsByUser(user);
-        Set<Long> roleIds;
-
-        if (stmt.getSetRoleType().equals(SetRoleType.NONE)) {
-            roleIds = new HashSet<>();
-        } else if (stmt.getSetRoleType().equals(SetRoleType.DEFAULT)) {
-            roleIds = manager.getDefaultRoleIdsByUser(user);
-        } else if (stmt.getSetRoleType().equals(SetRoleType.ALL)) {
-            roleIds = roleIdsForUser;
-
-            // SET ROLE ALL EXCEPT
-            for (String roleName : stmt.getRoles()) {
-                roleIds.remove(getValidRoleId(manager, roleIdsForUser, roleName, user));
-            }
-        } else {
-            // set role 'role1', 'role2'
-            roleIds = new HashSet<>();
-            for (String roleName : stmt.getRoles()) {
-                roleIds.add(getValidRoleId(manager, roleIdsForUser, roleName, user));
-            }
-        }
-        context.setCurrentRoleIds(roleIds);
+//        AuthorizationMgr manager = GlobalStateMgr.getCurrentState().getAuthorizationMgr();
+//        UserIdentity user = context.getCurrentUserIdentity();
+//        Set<Long> roleIdsForUser = manager.getRoleIdsByUser(user);
+//        Set<Long> roleIds;
+//
+//        if (stmt.getSetRoleType().equals(SetRoleType.NONE)) {
+//            roleIds = new HashSet<>();
+//        } else if (stmt.getSetRoleType().equals(SetRoleType.DEFAULT)) {
+//            roleIds = manager.getDefaultRoleIdsByUser(user);
+//        } else if (stmt.getSetRoleType().equals(SetRoleType.ALL)) {
+//            roleIds = roleIdsForUser;
+//
+//            // SET ROLE ALL EXCEPT
+//            for (String roleName : stmt.getRoles()) {
+//                roleIds.remove(getValidRoleId(manager, roleIdsForUser, roleName, user));
+//            }
+//        } else {
+//            // set role 'role1', 'role2'
+//            roleIds = new HashSet<>();
+//            for (String roleName : stmt.getRoles()) {
+//                roleIds.add(getValidRoleId(manager, roleIdsForUser, roleName, user));
+//            }
+//        }
+//        context.setCurrentRoleIds(roleIds);
     }
 }

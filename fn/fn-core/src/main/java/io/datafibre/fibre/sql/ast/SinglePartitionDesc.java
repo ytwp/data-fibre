@@ -14,26 +14,12 @@
 
 package io.datafibre.fibre.sql.ast;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import io.datafibre.fibre.analysis.DateLiteral;
-import io.datafibre.fibre.catalog.DataProperty;
-import io.datafibre.fibre.catalog.Type;
 import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.common.util.DateUtils;
 import io.datafibre.fibre.common.util.PropertyAnalyzer;
-import io.datafibre.fibre.common.util.TimeUtils;
-import io.datafibre.fibre.lake.DataCacheInfo;
-import io.datafibre.fibre.server.RunMode;
 import io.datafibre.fibre.sql.parser.NodePosition;
-import io.datafibre.fibre.thrift.TStorageMedium;
-import io.datafibre.fibre.thrift.TTabletType;
-import org.apache.logging.log4j.util.Strings;
-import org.threeten.extra.PeriodDuration;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 public abstract class SinglePartitionDesc extends PartitionDesc {
@@ -41,11 +27,11 @@ public abstract class SinglePartitionDesc extends PartitionDesc {
     private boolean ifNotExists;
     private Map<String, String> properties;
     private Short replicationNum;
-    private DataProperty partitionDataProperty;
-    private TTabletType tabletType;
+    //    private DataProperty partitionDataProperty;
+//    private TTabletType tabletType;
     private Long versionInfo;
     private boolean isInMemory;
-    private DataCacheInfo dataCacheInfo;
+//    private DataCacheInfo dataCacheInfo;
 
     protected boolean isAnalyzed;
 
@@ -54,12 +40,12 @@ public abstract class SinglePartitionDesc extends PartitionDesc {
         this.partName = partName;
         this.ifNotExists = ifNotExists;
         this.properties = properties;
-        this.replicationNum = RunMode.defaultReplicationNum();
-        this.partitionDataProperty = DataProperty.getInferredDefaultDataProperty();
-        this.tabletType = TTabletType.TABLET_TYPE_DISK;
+//        this.replicationNum = RunMode.defaultReplicationNum();
+//        this.partitionDataProperty = DataProperty.getInferredDefaultDataProperty();
+//        this.tabletType = TTabletType.TABLET_TYPE_DISK;
         this.versionInfo = null;
         this.isInMemory = false;
-        this.dataCacheInfo = null;
+//        this.dataCacheInfo = null;
         this.isAnalyzed = false;
     }
 
@@ -83,30 +69,30 @@ public abstract class SinglePartitionDesc extends PartitionDesc {
         return replicationNum;
     }
 
-    @Override
-    public DataProperty getPartitionDataProperty() {
-        return partitionDataProperty;
-    }
+//    @Override
+//    public DataProperty getPartitionDataProperty() {
+//        return partitionDataProperty;
+//    }
 
     @Override
     public Long getVersionInfo() {
         return versionInfo;
     }
 
-    @Override
-    public TTabletType getTabletType() {
-        return tabletType;
-    }
+//    @Override
+//    public TTabletType getTabletType() {
+//        return tabletType;
+//    }
 
     @Override
     public boolean isInMemory() {
         return isInMemory;
     }
 
-    @Override
-    public DataCacheInfo getDataCacheInfo() {
-        return dataCacheInfo;
-    }
+//    @Override
+//    public DataCacheInfo getDataCacheInfo() {
+//        return dataCacheInfo;
+//    }
 
     public boolean isAnalyzed() {
         return isAnalyzed;
@@ -124,35 +110,35 @@ public abstract class SinglePartitionDesc extends PartitionDesc {
         }
 
         // analyze data property
-        partitionDataProperty = PropertyAnalyzer.analyzeDataProperty(partitionAndTableProperties,
-                DataProperty.getInferredDefaultDataProperty(), false);
-        Preconditions.checkNotNull(partitionDataProperty);
-
-        if (tableProperties != null && partitionKeyDesc != null
-                && tableProperties.containsKey(PropertyAnalyzer.PROPERTIES_STORAGE_COOLDOWN_TTL)) {
-            String storageCoolDownTTL = tableProperties.get(PropertyAnalyzer.PROPERTIES_STORAGE_COOLDOWN_TTL);
-            if (Strings.isNotBlank(storageCoolDownTTL)) {
-                PeriodDuration periodDuration = TimeUtils.parseHumanReadablePeriodOrDuration(storageCoolDownTTL);
-                if (partitionKeyDesc.isMax()) {
-                    partitionDataProperty = new DataProperty(TStorageMedium.SSD, DataProperty.MAX_COOLDOWN_TIME_MS);
-                } else {
-                    String stringUpperValue = partitionKeyDesc.getUpperValues().get(0).getStringValue();
-                    DateTimeFormatter dateTimeFormatter = DateUtils.probeFormat(stringUpperValue);
-                    LocalDateTime upperTime = DateUtils.parseStringWithDefaultHSM(stringUpperValue, dateTimeFormatter);
-                    LocalDateTime updatedUpperTime = upperTime.plus(periodDuration);
-                    DateLiteral dateLiteral = new DateLiteral(updatedUpperTime, Type.DATETIME);
-                    long coolDownTimeStamp = dateLiteral.unixTimestamp(TimeUtils.getTimeZone());
-                    partitionDataProperty = new DataProperty(TStorageMedium.SSD, coolDownTimeStamp);
-                }
-            }
-        }
-
-        // analyze replication num
-        replicationNum = PropertyAnalyzer
-                .analyzeReplicationNum(partitionAndTableProperties, RunMode.defaultReplicationNum());
-        if (replicationNum == null) {
-            throw new AnalysisException("Invalid replication number: " + replicationNum);
-        }
+//        partitionDataProperty = PropertyAnalyzer.analyzeDataProperty(partitionAndTableProperties,
+//                DataProperty.getInferredDefaultDataProperty(), false);
+//        Preconditions.checkNotNull(partitionDataProperty);
+//
+//        if (tableProperties != null && partitionKeyDesc != null
+//                && tableProperties.containsKey(PropertyAnalyzer.PROPERTIES_STORAGE_COOLDOWN_TTL)) {
+//            String storageCoolDownTTL = tableProperties.get(PropertyAnalyzer.PROPERTIES_STORAGE_COOLDOWN_TTL);
+//            if (Strings.isNotBlank(storageCoolDownTTL)) {
+//                PeriodDuration periodDuration = TimeUtils.parseHumanReadablePeriodOrDuration(storageCoolDownTTL);
+//                if (partitionKeyDesc.isMax()) {
+//                    partitionDataProperty = new DataProperty(TStorageMedium.SSD, DataProperty.MAX_COOLDOWN_TIME_MS);
+//                } else {
+//                    String stringUpperValue = partitionKeyDesc.getUpperValues().get(0).getStringValue();
+//                    DateTimeFormatter dateTimeFormatter = DateUtils.probeFormat(stringUpperValue);
+//                    LocalDateTime upperTime = DateUtils.parseStringWithDefaultHSM(stringUpperValue, dateTimeFormatter);
+//                    LocalDateTime updatedUpperTime = upperTime.plus(periodDuration);
+//                    DateLiteral dateLiteral = new DateLiteral(updatedUpperTime, Type.DATETIME);
+//                    long coolDownTimeStamp = dateLiteral.unixTimestamp(TimeUtils.getTimeZone());
+//                    partitionDataProperty = new DataProperty(TStorageMedium.SSD, coolDownTimeStamp);
+//                }
+//            }
+//        }
+//
+//        // analyze replication num
+//        replicationNum = PropertyAnalyzer
+//                .analyzeReplicationNum(partitionAndTableProperties, RunMode.defaultReplicationNum());
+//        if (replicationNum == null) {
+//            throw new AnalysisException("Invalid replication number: " + replicationNum);
+//        }
 
         // analyze version info
         versionInfo = PropertyAnalyzer.analyzeVersionInfo(partitionAndTableProperties);
@@ -161,9 +147,9 @@ public abstract class SinglePartitionDesc extends PartitionDesc {
         isInMemory = PropertyAnalyzer
                 .analyzeBooleanProp(partitionAndTableProperties, PropertyAnalyzer.PROPERTIES_INMEMORY, false);
 
-        tabletType = PropertyAnalyzer.analyzeTabletType(partitionAndTableProperties);
+//        tabletType = PropertyAnalyzer.analyzeTabletType(partitionAndTableProperties);
 
-        dataCacheInfo = PropertyAnalyzer.analyzeDataCacheInfo(partitionAndTableProperties);
+//        dataCacheInfo = PropertyAnalyzer.analyzeDataCacheInfo(partitionAndTableProperties);
 
         if (properties != null) {
             // check unknown properties

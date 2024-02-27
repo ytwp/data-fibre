@@ -117,11 +117,11 @@ public class AdminStmtAnalyzer {
             }
             adminShowReplicaStatusStmt.setDbName(dbName);
 
-            try {
-                CatalogUtils.checkIsLakeTable(dbName, tblName);
-            } catch (AnalysisException e) {
-                throw new SemanticException(e.getMessage(), pos);
-            }
+//            try {
+//                CatalogUtils.checkIsLakeTable(dbName, tblName);
+//            } catch (AnalysisException e) {
+//                throw new SemanticException(e.getMessage(), pos);
+//            }
 
             List<String> partitions = Lists.newArrayList();
             PartitionNames partitionNames = adminShowReplicaStatusStmt.getTblRef().getPartitionNames();

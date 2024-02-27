@@ -45,28 +45,28 @@ public class AccessDeniedException extends Exception {
             ErrorReportException.report(ErrorCode.ERR_ACCESS_DENIED_FOR_EXTERNAL_ACCESS_CONTROLLER,
                     privilegeType, objectType, object == null ? "" : " " + object);
         } else {
-            AuthorizationMgr authorizationMgr = GlobalStateMgr.getCurrentState().getAuthorizationMgr();
-            List<String> activatedRoles = new ArrayList<>();
-            if (roleIds != null) {
-                for (Long roleId : roleIds) {
-                    RolePrivilegeCollectionV2 roleCollection = authorizationMgr.getRolePrivilegeCollection(roleId);
-                    if (roleCollection != null) {
-                        activatedRoles.add(roleCollection.getName());
-                    }
-                }
-            }
-
-            List<String> inactivatedRoles;
-            try {
-                inactivatedRoles = authorizationMgr.getRoleNamesByUser(userIdentity);
-            } catch (PrivilegeException e) {
-                //ignore exception
-            }
-            inactivatedRoles.removeAll(activatedRoles);
-
-            ErrorReportException.report(ErrorCode.ERR_ACCESS_DENIED, privilegeType, objectType,
-                    object == null ? "" : " " + object,
-                    activatedRoles.isEmpty() ? "NONE" : activatedRoles, inactivatedRoles.isEmpty() ? "NONE" : inactivatedRoles);
+//            AuthorizationMgr authorizationMgr = GlobalStateMgr.getCurrentState().getAuthorizationMgr();
+//            List<String> activatedRoles = new ArrayList<>();
+//            if (roleIds != null) {
+//                for (Long roleId : roleIds) {
+//                    RolePrivilegeCollectionV2 roleCollection = authorizationMgr.getRolePrivilegeCollection(roleId);
+//                    if (roleCollection != null) {
+//                        activatedRoles.add(roleCollection.getName());
+//                    }
+//                }
+//            }
+//
+//            List<String> inactivatedRoles;
+//            try {
+//                inactivatedRoles = authorizationMgr.getRoleNamesByUser(userIdentity);
+//            } catch (PrivilegeException e) {
+//                //ignore exception
+//            }
+//            inactivatedRoles.removeAll(activatedRoles);
+//
+//            ErrorReportException.report(ErrorCode.ERR_ACCESS_DENIED, privilegeType, objectType,
+//                    object == null ? "" : " " + object,
+//                    activatedRoles.isEmpty() ? "NONE" : activatedRoles, inactivatedRoles.isEmpty() ? "NONE" : inactivatedRoles);
         }
     }
 }
