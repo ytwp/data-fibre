@@ -22,7 +22,7 @@ import io.datafibre.fibre.common.Config;
 import io.datafibre.fibre.common.UserException;
 import io.datafibre.fibre.common.util.DebugUtil;
 import io.datafibre.fibre.common.util.TimeUtils;
-import io.datafibre.fibre.planner.*;
+import io.datafibre.fibre.planner.PlanFragmentId;
 import io.datafibre.fibre.qe.scheduler.DefaultWorkerProvider;
 import io.datafibre.fibre.qe.scheduler.TFragmentInstanceFactory;
 import io.datafibre.fibre.qe.scheduler.WorkerProvider;
@@ -36,7 +36,7 @@ import io.datafibre.fibre.sql.common.ErrorType;
 import io.datafibre.fibre.sql.common.StarRocksPlannerException;
 import io.datafibre.fibre.statistic.StatisticUtils;
 import io.datafibre.fibre.system.ComputeNode;
-import io.datafibre.fibre.thrift.*;
+import io.datafibre.fibre.thrift.TUniqueId;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -238,7 +238,7 @@ public class CoordinatorPreprocessor {
             }
 
             if (sink instanceof TableFunctionTableSink && (((TableFunctionTableSink) sink).isWriteSingleFile())
-                    && execFragment.getInstances().size() > 1) {
+                && execFragment.getInstances().size() > 1) {
                 throw new StarRocksPlannerException(
                         "This sql plan has multi table function table sinks, but set to write single file",
                         ErrorType.INTERNAL_ERROR);

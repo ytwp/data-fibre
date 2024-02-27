@@ -55,10 +55,7 @@ import io.datafibre.fibre.sql.optimizer.statistics.StatisticStorage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -90,7 +87,7 @@ public class GlobalStateMgr {
     /**
      * System Manager
      */
-//    private final NodeMgr nodeMgr;
+    private final NodeMgr nodeMgr;
 //    private final HeartbeatMgr heartbeatMgr;
 
     /**
@@ -154,7 +151,7 @@ public class GlobalStateMgr {
 
 //    private final JournalObservable journalObservable;
 
-//    private final TabletInvertedIndex tabletInvertedIndex;
+    //    private final TabletInvertedIndex tabletInvertedIndex;
 //    private ColocateTableIndex colocateTableIndex;
 //
 //    private final CatalogRecycleBin recycleBin;
@@ -225,7 +222,7 @@ public class GlobalStateMgr {
 
 //    private final StarMgrMetaSyncer starMgrMetaSyncer;
 
-//    private MetadataMgr metadataMgr;
+    private MetadataMgr metadataMgr;
 //    private final CatalogMgr catalogMgr;
 //    private final ConnectorMgr connectorMgr;
 //    private final ConnectorTblMetaInfoMgr connectorTblMetaInfoMgr;
@@ -368,22 +365,21 @@ public class GlobalStateMgr {
 //        this(false, nodeMgr);
 //    }
 
-//    private GlobalStateMgr(boolean isCkptGlobalState) {
-//        this(isCkptGlobalState, new NodeMgr());
-//    }
+    private GlobalStateMgr(boolean isCkptGlobalState) {
+        this(isCkptGlobalState, new NodeMgr());
+    }
 
     // if isCkptGlobalState is true, it means that we should not collect thread pool metric
-//    private GlobalStateMgr(boolean isCkptGlobalState, NodeMgr nodeMgr) {
-//        if (!isCkptGlobalState) {
-//            RunMode.detectRunMode();
+    private GlobalStateMgr(boolean isCkptGlobalState, NodeMgr nodeMgr) {
+        if (!isCkptGlobalState) {
+            RunMode.detectRunMode();
+        }
+//        if (RunMode.isSharedDataMode()) {
+//            this.starOSAgent = new StarOSAgent();
 //        }
-//
-////        if (RunMode.isSharedDataMode()) {
-////            this.starOSAgent = new StarOSAgent();
-////        }
-//
-//        // System Manager
-////        this.nodeMgr = Objects.requireNonNullElseGet(nodeMgr, NodeMgr::new);
+
+        // System Manager
+        this.nodeMgr = Objects.requireNonNullElseGet(nodeMgr, NodeMgr::new);
 //        this.heartbeatMgr = new HeartbeatMgr(!isCkptGlobalState);
 ////        this.portConnectivityChecker = new PortConnectivityChecker();
 //
@@ -474,7 +470,7 @@ public class GlobalStateMgr {
 //        this.warehouseMgr = new WarehouseManager();
 //        this.connectorMgr = new ConnectorMgr();
 //        this.connectorTblMetaInfoMgr = new ConnectorTblMetaInfoMgr();
-//        this.metadataMgr = new MetadataMgr(localMetastore, connectorMgr, connectorTblMetaInfoMgr);
+        this.metadataMgr = new MetadataMgr(localMetastore, connectorMgr, connectorTblMetaInfoMgr);
 //        this.catalogMgr = new CatalogMgr(connectorMgr);
 //
 //        this.taskManager = new TaskManager();
@@ -532,7 +528,7 @@ public class GlobalStateMgr {
 //        nodeMgr.registerLeaderChangeListener(slotProvider::leaderChangeListener);
 //
 ////        this.memoryUsageTracker = new MemoryUsageTracker();
-//    }
+    }
 
     public static void destroyCheckpoint() {
         if (CHECKPOINT != null) {
@@ -544,9 +540,9 @@ public class GlobalStateMgr {
         if (isCheckpointThread()) {
             // only checkpoint thread itself will go here.
             // so no need to care about the thread safe.
-//            if (CHECKPOINT == null) {
-//                CHECKPOINT = new GlobalStateMgr(true);
-//            }
+            if (CHECKPOINT == null) {
+                CHECKPOINT = new GlobalStateMgr(true);
+            }
             return CHECKPOINT;
         } else {
             return SingletonHolder.INSTANCE;

@@ -15,28 +15,16 @@
 package io.datafibre.fibre.qe;
 
 import com.google.common.collect.ImmutableSet;
-import io.datafibre.fibre.catalog.HiveTable;
-import io.datafibre.fibre.common.Config;
 import io.datafibre.fibre.common.UserException;
 import io.datafibre.fibre.common.profile.Tracers;
-import io.datafibre.fibre.common.util.DebugUtil;
-import io.datafibre.fibre.connector.ConnectorMetadata;
 import io.datafibre.fibre.connector.exception.RemoteFileNotFoundException;
-import io.datafibre.fibre.planner.HdfsScanNode;
-import io.datafibre.fibre.planner.ScanNode;
 import io.datafibre.fibre.rpc.RpcException;
-import io.datafibre.fibre.server.CatalogMgr;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.sql.StatementPlanner;
 import io.datafibre.fibre.sql.ast.QueryStatement;
 import io.datafibre.fibre.sql.ast.StatementBase;
 import io.datafibre.fibre.sql.plan.ExecPlan;
-import io.datafibre.fibre.thrift.TExplainLevel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 public class ExecuteExceptionHandler {
@@ -64,42 +52,42 @@ public class ExecuteExceptionHandler {
     // To handle this exception, we perform a retry. Before initiating the retry, we need to
     // refresh the metadata cache for the table and clear the query-level metadata cache.
     private static void handleRemoteFileNotFound(RemoteFileNotFoundException e, RetryContext context) {
-        List<ScanNode> scanNodes = context.execPlan.getScanNodes();
-        boolean existExternalCatalog = false;
-        for (ScanNode scanNode : scanNodes) {
-            if (scanNode instanceof HdfsScanNode) {
-                HiveTable hiveTable = ((HdfsScanNode) scanNode).getHiveTable();
-                String catalogName = hiveTable.getCatalogName();
-                if (CatalogMgr.isExternalCatalog(catalogName)) {
-                    existExternalCatalog = true;
-                    ConnectorMetadata metadata = GlobalStateMgr.getCurrentState().getMetadataMgr()
-                            .getOptionalMetadata(hiveTable.getCatalogName()).get();
-                    // refresh catalog level metadata cache
-                    metadata.refreshTable(hiveTable.getDbName(), hiveTable, new ArrayList<>(), true);
-                    // clear query level metadata cache
-                    metadata.clear();
-                }
-            }
-        }
-        if (!existExternalCatalog) {
-            throw e;
-        }
+//        List<ScanNode> scanNodes = context.execPlan.getScanNodes();
+//        boolean existExternalCatalog = false;
+//        for (ScanNode scanNode : scanNodes) {
+//            if (scanNode instanceof HdfsScanNode) {
+//                HiveTable hiveTable = ((HdfsScanNode) scanNode).getHiveTable();
+//                String catalogName = hiveTable.getCatalogName();
+//                if (CatalogMgr.isExternalCatalog(catalogName)) {
+//                    existExternalCatalog = true;
+//                    ConnectorMetadata metadata = GlobalStateMgr.getCurrentState().getMetadataMgr()
+//                            .getOptionalMetadata(hiveTable.getCatalogName()).get();
+//                    // refresh catalog level metadata cache
+//                    metadata.refreshTable(hiveTable.getDbName(), hiveTable, new ArrayList<>(), true);
+//                    // clear query level metadata cache
+//                    metadata.clear();
+//                }
+//            }
+//        }
+//        if (!existExternalCatalog) {
+//            throw e;
+//        }
         Tracers.record(Tracers.Module.EXTERNAL, "HMS.RETRY", String.valueOf(context.retryTime + 1));
     }
 
     private static void handleRpcException(RpcException e, RetryContext context) {
         // When enable_collect_query_detail_info is set to true, the plan will be recorded in the query detail,
         // and hence there is no need to log it here.
-        ConnectContext connectContext = context.connectContext;
-        if (context.retryTime == 0 && connectContext.getQueryDetail() == null &&
-                Config.log_plan_cancelled_by_crash_be) {
-            LOG.warn(
-                    "Query cancelled by crash of backends or RpcException, [QueryId={}] [SQL={}] [Plan={}]",
-                    DebugUtil.printId(connectContext.getExecutionId()),
-                    context.parsedStmt.getOrigStmt() == null ? "" : context.parsedStmt.getOrigStmt().originStmt,
-                    context.execPlan == null ? "" : context.execPlan.getExplainString(TExplainLevel.COSTS),
-                    e);
-        }
+//        ConnectContext connectContext = context.connectContext;
+//        if (context.retryTime == 0 && connectContext.getQueryDetail() == null &&
+//                Config.log_plan_cancelled_by_crash_be) {
+//            LOG.warn(
+//                    "Query cancelled by crash of backends or RpcException, [QueryId={}] [SQL={}] [Plan={}]",
+//                    DebugUtil.printId(connectContext.getExecutionId()),
+//                    context.parsedStmt.getOrigStmt() == null ? "" : context.parsedStmt.getOrigStmt().originStmt,
+//                    context.execPlan == null ? "" : context.execPlan.getExplainString(TExplainLevel.COSTS),
+//                    e);
+//        }
     }
 
     private static void handleUserException(UserException e, RetryContext context) throws Exception {
@@ -107,22 +95,22 @@ public class ExecuteExceptionHandler {
         if (context.parsedStmt instanceof QueryStatement) {
             for (String errMsg : SCHEMA_NOT_MATCH_ERROR) {
                 if (msg.contains(errMsg)) {
-                    try {
-                        ExecPlan execPlan = StatementPlanner.plan(context.parsedStmt, context.connectContext);
-                        context.execPlan = execPlan;
-                        return;
-                    } catch (Exception e1) {
-                        // encounter exception when re-plan, just log the new error but throw the original cause.
-                        if (LOG.isDebugEnabled()) {
-                            ConnectContext connectContext = context.connectContext;
-                            LOG.debug("encounter exception when retry, [QueryId={}] [SQL={}], ",
-                                    DebugUtil.printId(connectContext.getExecutionId()),
-                                    context.parsedStmt.getOrigStmt() == null ? "" :
-                                            context.parsedStmt.getOrigStmt().originStmt,
-                                    e1);
-                        }
-                        throw e;
-                    }
+//                    try {
+//                        ExecPlan execPlan = StatementPlanner.plan(context.parsedStmt, context.connectContext);
+//                        context.execPlan = execPlan;
+//                        return;
+//                    } catch (Exception e1) {
+//                        // encounter exception when re-plan, just log the new error but throw the original cause.
+//                        if (LOG.isDebugEnabled()) {
+//                            ConnectContext connectContext = context.connectContext;
+//                            LOG.debug("encounter exception when retry, [QueryId={}] [SQL={}], ",
+//                                    DebugUtil.printId(connectContext.getExecutionId()),
+//                                    context.parsedStmt.getOrigStmt() == null ? "" :
+//                                            context.parsedStmt.getOrigStmt().originStmt,
+//                                    e1);
+//                        }
+//                        throw e;
+//                    }
                 }
             }
         }

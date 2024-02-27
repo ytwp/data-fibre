@@ -57,14 +57,14 @@ public class UniqueConstraint {
     // foreignKeys must be in lower case for case-insensitive
     public boolean isMatch(Table parentTable, Set<String> foreignKeys) {
         if (catalogName != null && dbName != null && tableName != null) {
-            Table uniqueTable = GlobalStateMgr.getCurrentState().getMetadataMgr().getTable(catalogName, dbName, tableName);
-            if (uniqueTable == null) {
-                LOG.warn("can not find unique constraint table: {}.{}.{}", catalogName, dbName, tableName);
-                return false;
-            }
-            if (!uniqueTable.equals(parentTable)) {
-                return false;
-            }
+//            Table uniqueTable = GlobalStateMgr.getCurrentState().getMetadataMgr().getTable(catalogName, dbName, tableName);
+//            if (uniqueTable == null) {
+//                LOG.warn("can not find unique constraint table: {}.{}.{}", catalogName, dbName, tableName);
+//                return false;
+//            }
+//            if (!uniqueTable.equals(parentTable)) {
+//                return false;
+//            }
         }
         Set<String> uniqueColumnSet = uniqueColumns.stream().map(String::toLowerCase).collect(Collectors.toSet());
         return uniqueColumnSet.equals(foreignKeys);
