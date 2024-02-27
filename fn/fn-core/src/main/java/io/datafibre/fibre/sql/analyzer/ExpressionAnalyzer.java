@@ -21,14 +21,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.re2j.Pattern;
 import io.datafibre.fibre.analysis.*;
-import io.datafibre.fibre.catalog.Dictionary;
 import io.datafibre.fibre.catalog.*;
-import io.datafibre.fibre.cluster.ClusterNamespace;
 import io.datafibre.fibre.common.AnalysisException;
 import io.datafibre.fibre.common.DdlException;
-import io.datafibre.fibre.privilege.AuthorizationMgr;
-import io.datafibre.fibre.privilege.PrivilegeException;
-import io.datafibre.fibre.privilege.RolePrivilegeCollectionV2;
 import io.datafibre.fibre.qe.ConnectContext;
 import io.datafibre.fibre.qe.SessionVariable;
 import io.datafibre.fibre.qe.SqlModeHelper;
@@ -41,15 +36,12 @@ import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
 import io.datafibre.fibre.sql.optimizer.rewrite.ScalarOperatorEvaluator;
 import io.datafibre.fibre.sql.optimizer.transformer.ExpressionMapping;
 import io.datafibre.fibre.sql.optimizer.transformer.SqlToScalarOperatorTranslator;
-import io.datafibre.fibre.thrift.TDictQueryExpr;
-import io.datafibre.fibre.thrift.TFunctionBinaryType;
 
 import java.math.BigInteger;
 import java.util.*;
 import java.util.regex.PatternSyntaxException;
 import java.util.stream.Collectors;
 
-import static io.datafibre.fibre.sql.analyzer.AnalyticAnalyzer.verifyAnalyticExpression;
 import static io.datafibre.fibre.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
 
 public class ExpressionAnalyzer {
@@ -87,10 +79,10 @@ public class ExpressionAnalyzer {
     private boolean isArrayHighOrderFunction(Expr expr) {
         if (expr instanceof FunctionCallExpr) {
             if (((FunctionCallExpr) expr).getFnName().getFunction().equals(FunctionSet.ARRAY_MAP) ||
-                    ((FunctionCallExpr) expr).getFnName().getFunction().equals(FunctionSet.ARRAY_FILTER) ||
-                    ((FunctionCallExpr) expr).getFnName().getFunction().equals(FunctionSet.ANY_MATCH) ||
-                    ((FunctionCallExpr) expr).getFnName().getFunction().equals(FunctionSet.ALL_MATCH) ||
-                    ((FunctionCallExpr) expr).getFnName().getFunction().equals(FunctionSet.ARRAY_SORTBY)) {
+                ((FunctionCallExpr) expr).getFnName().getFunction().equals(FunctionSet.ARRAY_FILTER) ||
+                ((FunctionCallExpr) expr).getFnName().getFunction().equals(FunctionSet.ANY_MATCH) ||
+                ((FunctionCallExpr) expr).getFnName().getFunction().equals(FunctionSet.ALL_MATCH) ||
+                ((FunctionCallExpr) expr).getFnName().getFunction().equals(FunctionSet.ARRAY_SORTBY)) {
                 return true;
             } else if (((FunctionCallExpr) expr).getFnName().getFunction().equals(FunctionSet.TRANSFORM)) {
                 // transform just a alias of array_map
@@ -104,9 +96,9 @@ public class ExpressionAnalyzer {
     private boolean isMapHighOrderFunction(Expr expr) {
         if (expr instanceof FunctionCallExpr) {
             if (((FunctionCallExpr) expr).getFnName().getFunction().equals(FunctionSet.MAP_FILTER) ||
-                    ((FunctionCallExpr) expr).getFnName().getFunction().equals(FunctionSet.TRANSFORM_VALUES) ||
-                    ((FunctionCallExpr) expr).getFnName().getFunction().equals(FunctionSet.TRANSFORM_KEYS) ||
-                    ((FunctionCallExpr) expr).getFnName().getFunction().equals(FunctionSet.MAP_APPLY)) {
+                ((FunctionCallExpr) expr).getFnName().getFunction().equals(FunctionSet.TRANSFORM_VALUES) ||
+                ((FunctionCallExpr) expr).getFnName().getFunction().equals(FunctionSet.TRANSFORM_KEYS) ||
+                ((FunctionCallExpr) expr).getFnName().getFunction().equals(FunctionSet.MAP_APPLY)) {
                 return true;
             }
         }
@@ -185,7 +177,7 @@ public class ExpressionAnalyzer {
                 funcName = expression.toString();
             }
             throw new SemanticException(funcName + " can't use lambda functions, " +
-                    "as it is not a supported high-order function");
+                                        "as it is not a supported high-order function");
         }
         int childSize = expression.getChildren().size();
         // move the lambda function to the first if it is at the last.
@@ -210,7 +202,7 @@ public class ExpressionAnalyzer {
                 }
                 if (!expr.getType().isArrayType()) {
                     throw new SemanticException(i + "-th lambda input ( " + expr + " ) should be arrays, " +
-                            "but real type is " + expr.getType().toSql());
+                                                "but real type is " + expr.getType().toSql());
                 }
                 Type itemType = ((ArrayType) expr.getType()).getItemType();
                 scope.putLambdaInput(new PlaceHolderExpr(-1, expr.isNullable(), itemType));
@@ -222,21 +214,21 @@ public class ExpressionAnalyzer {
             if (functionCallExpr.getFnName().getFunction().equals(FunctionSet.MAP_APPLY)) {
                 if (!(expression.getChild(0).getChild(0) instanceof MapExpr)) {
                     throw new SemanticException("Map lambda function (" +
-                            expression.getChild(0).toSql() + ") should be like (k,v) -> (f(k),f(v))",
+                                                expression.getChild(0).toSql() + ") should be like (k,v) -> (f(k),f(v))",
                             expression.getChild(0).getPos());
                 }
             } else {
                 if (expression.getChild(0).getChild(0) instanceof MapExpr) {
                     throw new SemanticException("Map lambda function (" +
-                            expression.getChild(0).toSql() + ") should be like (k,v) -> f(k,v)",
+                                                expression.getChild(0).toSql() + ") should be like (k,v) -> f(k,v)",
                             expression.getChild(0).getPos());
                 }
             }
             if (expression.getChild(0).getChildren().size() != 3) {
                 Expr child = expression.getChild(0);
                 throw new SemanticException("The left part of map lambda function (" +
-                        child.toSql() + ") should have 2 arguments, but there are "
-                        + (child.getChildren().size() - 1) + " arguments", child.getPos());
+                                            child.toSql() + ") should have 2 arguments, but there are "
+                                            + (child.getChildren().size() - 1) + " arguments", child.getPos());
             }
             Expr expr = expression.getChild(1);
             bottomUpAnalyze(visitor, expr, scope);
@@ -245,7 +237,7 @@ public class ExpressionAnalyzer {
             }
             if (!expr.getType().isMapType()) {
                 throw new SemanticException("Lambda input ( " + expr.toSql() + " ) should be a map, but real type is "
-                        + expr.getType().toSql());
+                                            + expr.getType().toSql());
             }
             Type keyType = ((MapType) expr.getType()).getKeyType();
             Type valueType = ((MapType) expr.getType()).getValueType();
@@ -253,7 +245,7 @@ public class ExpressionAnalyzer {
             scope.putLambdaInput(new PlaceHolderExpr(-2, true, valueType));
             // lambda functions should be rewritten before visited
             if ((functionCallExpr.getFnName().getFunction().equals(FunctionSet.MAP_FILTER)) ||
-                    functionCallExpr.getFnName().getFunction().equals(FunctionSet.TRANSFORM_VALUES)) {
+                functionCallExpr.getFnName().getFunction().equals(FunctionSet.TRANSFORM_VALUES)) {
                 // (k,v) -> expr => (k,v) -> (k,expr)
                 Expr lambdaFunc = functionCallExpr.getChild(0);
                 LambdaArgument larg = (LambdaArgument) lambdaFunc.getChild(1);
@@ -451,7 +443,7 @@ public class ExpressionAnalyzer {
             } else if (expr.getType().isMapType()) {
                 try {
                     if (subscript.getType().getPrimitiveType() !=
-                            ((MapType) expr.getType()).getKeyType().getPrimitiveType()) {
+                        ((MapType) expr.getType()).getKeyType().getPrimitiveType()) {
                         node.castChild(((MapType) expr.getType()).getKeyType(), 1);
                     }
                     node.setType(((MapType) expr.getType()).getValueType());
@@ -475,7 +467,7 @@ public class ExpressionAnalyzer {
                 node.setType(structField.getType());
             } else {
                 throw new SemanticException("cannot subscript type " + expr.getType()
-                        + " because it is not an array or a map or a struct", expr.getPos());
+                                            + " because it is not an array or a map or a struct", expr.getPos());
             }
 
             return null;
@@ -485,7 +477,7 @@ public class ExpressionAnalyzer {
         public Void visitArraySliceExpr(ArraySliceExpr node, Scope scope) {
             if (!node.getChild(0).getType().isArrayType()) {
                 throw new SemanticException("cannot subscript type" +
-                        node.getChild(0).getType() + " because it is not an array", node.getChild(0).getPos());
+                                            node.getChild(0).getType() + " because it is not an array", node.getChild(0).getPos());
             }
             node.setType(node.getChild(0).getType());
             return null;
@@ -550,7 +542,7 @@ public class ExpressionAnalyzer {
                 if (child.getType().isBoolean() || child.getType().isNull()) {
                     // do nothing
                 } else if (!session.getSessionVariable().isEnableStrictType() &&
-                        Type.canCastTo(child.getType(), Type.BOOLEAN)) {
+                           Type.canCastTo(child.getType(), Type.BOOLEAN)) {
                     node.getChildren().set(i, new CastExpr(Type.BOOLEAN, child));
                 } else {
                     throw new SemanticException(child.toSql() + " can not be converted to boolean type.");
@@ -570,7 +562,7 @@ public class ExpressionAnalyzer {
                 if (!Type.canCastTo(type, compatibleType)) {
                     throw new SemanticException(
                             "between predicate type " + type.toSql() + " with type " + compatibleType.toSql()
-                                    + " is invalid", node.getPos());
+                            + " is invalid", node.getPos());
                 }
             }
 
@@ -680,16 +672,16 @@ public class ExpressionAnalyzer {
                 if (!Type.NULL.equals(node.getChild(0).getType()) && !Type.canCastTo(t1, lhsType)) {
                     throw new SemanticException(
                             "cast type " + node.getChild(0).getType().toSql() + " with type " + lhsType.toSql()
-                                    + " is invalid", node.getPos());
+                            + " is invalid", node.getPos());
                 }
 
                 if (!Type.NULL.equals(node.getChild(1).getType()) && !Type.canCastTo(t2, rhsType)) {
                     throw new SemanticException(
                             "cast type " + node.getChild(1).getType().toSql() + " with type " + rhsType.toSql()
-                                    + " is invalid", node.getPos());
+                            + " is invalid", node.getPos());
                 }
 
-                Function fn = Expr.getBuiltinFunction(op.getName(), new Type[] {lhsType, rhsType},
+                Function fn = Expr.getBuiltinFunction(op.getName(), new Type[]{lhsType, rhsType},
                         Function.CompareMode.IS_SUPERTYPE_OF);
 
                 if (fn == null) {
@@ -707,7 +699,7 @@ public class ExpressionAnalyzer {
             } else if (node.getOp().getPos() == ArithmeticExpr.OperatorPosition.UNARY_PREFIX) {
 
                 Function fn = Expr.getBuiltinFunction(
-                        node.getOp().getName(), new Type[] {Type.BIGINT}, Function.CompareMode.IS_SUPERTYPE_OF);
+                        node.getOp().getName(), new Type[]{Type.BIGINT}, Function.CompareMode.IS_SUPERTYPE_OF);
 
                 node.setType(Type.BIGINT);
                 node.setFn(fn);
@@ -788,51 +780,51 @@ public class ExpressionAnalyzer {
                 if (!Type.canCastTo(type, compatibleType)) {
                     throw new SemanticException(
                             "in predicate type " + type.toSql() + " with type " + compatibleType.toSql()
-                                    + " is invalid", child.getPos());
+                            + " is invalid", child.getPos());
                 }
             }
 
             return null;
         }
 
-        @Override
-        public Void visitMultiInPredicate(MultiInPredicate node, Scope scope) {
-            predicateBaseAndCheck(node);
-            List<Type> leftTypes =
-                    node.getChildren().stream().limit(node.getNumberOfColumns()).map(Expr::getType)
-                            .collect(Collectors.toList());
-
-            Subquery inSubquery = (Subquery) node.getChild(node.getNumberOfColumns());
-            List<Type> rightTypes =
-                    inSubquery.getQueryStatement().getQueryRelation().getOutputExpression().stream().map(Expr::getType).
-                            collect(Collectors.toList());
-            if (leftTypes.size() != rightTypes.size()) {
-                throw new SemanticException(
-                        "subquery must return the same number of columns as provided by the IN predicate",
-                        node.getPos());
-            }
-
-            for (int i = 0; i < rightTypes.size(); ++i) {
-                if (leftTypes.get(i).isJsonType() || rightTypes.get(i).isJsonType() || leftTypes.get(i).isMapType() ||
-                        rightTypes.get(i).isMapType() || leftTypes.get(i).isStructType() ||
-                        rightTypes.get(i).isStructType()) {
-                    throw new SemanticException("InPredicate of JSON, Map, Struct types is not supported");
-                }
-                if (!Type.canCastTo(leftTypes.get(i), rightTypes.get(i))) {
-                    throw new SemanticException(
-                            "in predicate type " + leftTypes.get(i).toSql() + " with type " + rightTypes.get(i).toSql()
-                                    + " is invalid");
-                }
-            }
-            return null;
-        }
+//        @Override
+//        public Void visitMultiInPredicate(MultiInPredicate node, Scope scope) {
+//            predicateBaseAndCheck(node);
+//            List<Type> leftTypes =
+//                    node.getChildren().stream().limit(node.getNumberOfColumns()).map(Expr::getType)
+//                            .collect(Collectors.toList());
+//
+//            Subquery inSubquery = (Subquery) node.getChild(node.getNumberOfColumns());
+//            List<Type> rightTypes =
+//                    inSubquery.getQueryStatement().getQueryRelation().getOutputExpression().stream().map(Expr::getType).
+//                            collect(Collectors.toList());
+//            if (leftTypes.size() != rightTypes.size()) {
+//                throw new SemanticException(
+//                        "subquery must return the same number of columns as provided by the IN predicate",
+//                        node.getPos());
+//            }
+//
+//            for (int i = 0; i < rightTypes.size(); ++i) {
+//                if (leftTypes.get(i).isJsonType() || rightTypes.get(i).isJsonType() || leftTypes.get(i).isMapType() ||
+//                        rightTypes.get(i).isMapType() || leftTypes.get(i).isStructType() ||
+//                        rightTypes.get(i).isStructType()) {
+//                    throw new SemanticException("InPredicate of JSON, Map, Struct types is not supported");
+//                }
+//                if (!Type.canCastTo(leftTypes.get(i), rightTypes.get(i))) {
+//                    throw new SemanticException(
+//                            "in predicate type " + leftTypes.get(i).toSql() + " with type " + rightTypes.get(i).toSql()
+//                                    + " is invalid");
+//                }
+//            }
+//            return null;
+//        }
 
         @Override
         public Void visitLiteral(LiteralExpr node, Scope scope) {
             if (node instanceof LargeIntLiteral) {
                 BigInteger value = ((LargeIntLiteral) node).getValue();
                 if (value.compareTo(LargeIntLiteral.LARGE_INT_MIN) < 0 ||
-                        value.compareTo(LargeIntLiteral.LARGE_INT_MAX) > 0) {
+                    value.compareTo(LargeIntLiteral.LARGE_INT_MAX) > 0) {
                     throw new SemanticException(PARSER_ERROR_MSG.numOverflow(value.toString()), node.getPos());
                 }
             }
@@ -855,13 +847,13 @@ public class ExpressionAnalyzer {
             if (!type1.isStringType() && !type1.isNull()) {
                 throw new SemanticException(
                         "left operand of " + node.getOp().toString() + " must be of type STRING: " +
-                                AstToStringBuilder.toString(node), node.getPos());
+                        AstToStringBuilder.toString(node), node.getPos());
             }
 
             if (!type2.isStringType() && !type2.isNull()) {
                 throw new SemanticException(
                         "right operand of " + node.getOp().toString() + " must be of type STRING: " +
-                                AstToStringBuilder.toString(node), node.getPos());
+                        AstToStringBuilder.toString(node), node.getPos());
             }
 
             // check pattern
@@ -884,8 +876,8 @@ public class ExpressionAnalyzer {
 
             for (Expr expr : node.getChildren()) {
                 if (expr.getType().isOnlyMetricType() ||
-                        (expr.getType().isComplexType() && !(node instanceof IsNullPredicate) &&
-                                !(node instanceof InPredicate))) {
+                    (expr.getType().isComplexType() && !(node instanceof IsNullPredicate) &&
+                     !(node instanceof InPredicate))) {
                     throw new SemanticException(
                             "HLL, BITMAP, PERCENTILE and ARRAY, MAP, STRUCT type couldn't as Predicate", node.getPos());
                 }
@@ -903,8 +895,8 @@ public class ExpressionAnalyzer {
             }
             if (!Type.canCastTo(cast.getChild(0).getType(), castType)) {
                 throw new SemanticException("Invalid type cast from " + cast.getChild(0).getType().toSql() + " to "
-                        + castType.toSql() + " in sql `" +
-                        AstToStringBuilder.toString(cast.getChild(0)).replace("%", "%%") + "`",
+                                            + castType.toSql() + " in sql `" +
+                                            AstToStringBuilder.toString(cast.getChild(0)).replace("%", "%%") + "`",
                         cast.getPos());
             }
 
@@ -921,7 +913,7 @@ public class ExpressionAnalyzer {
                 node.setNondeterministicId(exprId);
             }
 
-            Function fn;
+            Function fn = null;
             String fnName = node.getFnName().getFunction();
 
             // throw exception direct
@@ -930,7 +922,7 @@ public class ExpressionAnalyzer {
             if (fnName.equals(FunctionSet.COUNT) && node.getParams().isDistinct()) {
                 // Compatible with the logic of the original search function "count distinct"
                 // TODO: fix how we equal count distinct.
-                fn = Expr.getBuiltinFunction(FunctionSet.COUNT, new Type[] {argumentTypes[0]},
+                fn = Expr.getBuiltinFunction(FunctionSet.COUNT, new Type[]{argumentTypes[0]},
                         Function.CompareMode.IS_NONSTRICT_SUPERTYPE_OF);
             } else if (fnName.equals(FunctionSet.EXCHANGE_BYTES) || fnName.equals(FunctionSet.EXCHANGE_SPEED)) {
                 fn = Expr.getBuiltinFunction(fnName, argumentTypes, Function.CompareMode.IS_NONSTRICT_SUPERTYPE_OF);
@@ -939,7 +931,7 @@ public class ExpressionAnalyzer {
                 fn.setIsNullable(false);
             } else if (fnName.equals(FunctionSet.ARRAY_AGG) || fnName.equals(FunctionSet.GROUP_CONCAT)) {
                 // move order by expr to node child, and extract is_asc and null_first information.
-                fn = Expr.getBuiltinFunction(fnName, new Type[] {argumentTypes[0]},
+                fn = Expr.getBuiltinFunction(fnName, new Type[]{argumentTypes[0]},
                         Function.CompareMode.IS_NONSTRICT_SUPERTYPE_OF);
                 fn = fn.copy();
                 List<OrderByElement> orderByElements = node.getParams().getOrderByElements();
@@ -981,7 +973,7 @@ public class ExpressionAnalyzer {
                 }
                 // need to distinct output columns in finalize phase
                 ((AggregateFunction) fn).setIsDistinct(node.getParams().isDistinct() &&
-                        (!isAscOrder.isEmpty() || outputConst));
+                                                       (!isAscOrder.isEmpty() || outputConst));
             } else if (FunctionSet.PERCENTILE_DISC.equals(fnName)) {
                 argumentTypes[1] = Type.DOUBLE;
                 fn = Expr.getBuiltinFunction(fnName, argumentTypes, Function.CompareMode.IS_IDENTICAL);
@@ -1022,12 +1014,12 @@ public class ExpressionAnalyzer {
 
                 argumentTypes = node.getChildren().stream().map(Expr::getType).toArray(Type[]::new);
                 node.resetFnName(null, FunctionSet.ARRAY_CONCAT);
-                if (DecimalV3FunctionAnalyzer.argumentTypeContainDecimalV3(FunctionSet.ARRAY_CONCAT, argumentTypes)) {
-                    fn = DecimalV3FunctionAnalyzer.getDecimalV3Function(session, node, argumentTypes);
-                } else {
-                    fn = Expr.getBuiltinFunction(FunctionSet.ARRAY_CONCAT, argumentTypes,
-                            Function.CompareMode.IS_NONSTRICT_SUPERTYPE_OF);
-                }
+//                if (DecimalV3FunctionAnalyzer.argumentTypeContainDecimalV3(FunctionSet.ARRAY_CONCAT, argumentTypes)) {
+//                    fn = DecimalV3FunctionAnalyzer.getDecimalV3Function(session, node, argumentTypes);
+//                } else {
+//                    fn = Expr.getBuiltinFunction(FunctionSet.ARRAY_CONCAT, argumentTypes,
+//                            Function.CompareMode.IS_NONSTRICT_SUPERTYPE_OF);
+//                }
             } else if (FunctionSet.NAMED_STRUCT.equals(fnName)) {
                 // deriver struct type
                 fn = Expr.getBuiltinFunction(FunctionSet.NAMED_STRUCT, argumentTypes,
@@ -1039,13 +1031,13 @@ public class ExpressionAnalyzer {
                     sf.add(new StructField(literal.getStringValue(), node.getChild(i + 1).getType()));
                 }
                 fn.setRetType(new StructType(sf));
-            } else if (DecimalV3FunctionAnalyzer.argumentTypeContainDecimalV3(fnName, argumentTypes)) {
+//            } else if (DecimalV3FunctionAnalyzer.argumentTypeContainDecimalV3(fnName, argumentTypes)) {
                 // Since the priority of decimal version is higher than double version (according functionId),
                 // and in `Function.CompareMode.IS_NONSTRICT_SUPERTYPE_OF` mode, `Expr.getBuiltinFunction` always
                 // return decimal version even if the input parameters are not decimal, such as (INT, INT),
                 // lacking of specific decimal type process defined in `getDecimalV3Function`. So we force round functions
                 // to go through `getDecimalV3Function` here
-                fn = DecimalV3FunctionAnalyzer.getDecimalV3Function(session, node, argumentTypes);
+//                fn = DecimalV3FunctionAnalyzer.getDecimalV3Function(session, node, argumentTypes);
             } else if (Arrays.stream(argumentTypes).anyMatch(arg -> arg.matchesType(Type.TIME))) {
                 fn = Expr.getBuiltinFunction(fnName, argumentTypes, Function.CompareMode.IS_NONSTRICT_SUPERTYPE_OF);
                 if (fn instanceof AggregateFunction) {
@@ -1056,12 +1048,12 @@ public class ExpressionAnalyzer {
             } else if (FunctionSet.ARRAY_GENERATE.equals(fnName)) {
                 fn = getArrayGenerateFunction(node);
                 argumentTypes = node.getChildren().stream().map(Expr::getType).toArray(Type[]::new);
-            } else if (DecimalV3FunctionAnalyzer.argumentTypeContainDecimalV2(fnName, argumentTypes)) {
-                fn = DecimalV3FunctionAnalyzer.getDecimalV2Function(node, argumentTypes);
+//            } else if (DecimalV3FunctionAnalyzer.argumentTypeContainDecimalV2(fnName, argumentTypes)) {
+//                fn = DecimalV3FunctionAnalyzer.getDecimalV2Function(node, argumentTypes);
             } else if (FunctionSet.BITMAP_UNION.equals(fnName)) {
                 fn = Expr.getBuiltinFunction(fnName, argumentTypes, Function.CompareMode.IS_IDENTICAL);
                 if (session.getSessionVariable().isEnableRewriteBitmapUnionToBitmapAgg() &&
-                        node.getChild(0) instanceof FunctionCallExpr) {
+                    node.getChild(0) instanceof FunctionCallExpr) {
                     FunctionCallExpr arg0Func = (FunctionCallExpr) node.getChild(0);
                     // Convert bitmap_union(to_bitmap(v1)) to bitmap_agg(v1) when v1's type
                     // is a numeric type.
@@ -1069,7 +1061,7 @@ public class ExpressionAnalyzer {
                         Expr toBitmapArg0 = arg0Func.getChild(0);
                         Type toBitmapArg0Type = toBitmapArg0.getType();
                         if (toBitmapArg0Type.isIntegerType() || toBitmapArg0Type.isBoolean()
-                                || toBitmapArg0Type.isLargeIntType()) {
+                            || toBitmapArg0Type.isLargeIntType()) {
                             node.setChild(0, toBitmapArg0);
                             node.resetFnName("", FunctionSet.BITMAP_AGG);
                         }
@@ -1100,7 +1092,7 @@ public class ExpressionAnalyzer {
 
             for (int i = 0; i < fn.getNumArgs(); i++) {
                 if (!argumentTypes[i].matchesType(fn.getArgs()[i]) &&
-                        !Type.canCastTo(argumentTypes[i], fn.getArgs()[i])) {
+                    !Type.canCastTo(argumentTypes[i], fn.getArgs()[i])) {
                     String msg = String.format("No matching function with signature: %s(%s)", fnName,
                             node.getParams().isStar() ? "*" :
                                     Arrays.stream(argumentTypes).map(Type::toSql).collect(Collectors.joining(", ")));
@@ -1112,7 +1104,7 @@ public class ExpressionAnalyzer {
                 Type varType = fn.getArgs()[fn.getNumArgs() - 1];
                 for (int i = fn.getNumArgs(); i < argumentTypes.length; i++) {
                     if (!argumentTypes[i].matchesType(varType) &&
-                            !Type.canCastTo(argumentTypes[i], varType)) {
+                        !Type.canCastTo(argumentTypes[i], varType)) {
                         String msg = String.format("Variadic function %s(%s) can't support type: %s", fnName,
                                 Arrays.stream(fn.getArgs()).map(Type::toSql).collect(Collectors.joining(", ")),
                                 argumentTypes[i]);
@@ -1123,7 +1115,7 @@ public class ExpressionAnalyzer {
 
             node.setFn(fn);
             node.setType(fn.getReturnType());
-            FunctionAnalyzer.analyze(node);
+//            FunctionAnalyzer.analyze(node);
             return null;
         }
 
@@ -1143,23 +1135,23 @@ public class ExpressionAnalyzer {
                 case FunctionSet.ARRAY_FILTER:
                     if (node.getChildren().size() != 2) {
                         throw new SemanticException(fnName + " should have 2 array inputs or lambda functions, " +
-                                "but really have " + node.getChildren().size() + " inputs",
+                                                    "but really have " + node.getChildren().size() + " inputs",
                                 node.getPos());
                     }
                     if (!node.getChild(0).getType().isArrayType() && !node.getChild(0).getType().isNull()) {
                         throw new SemanticException(fnName + "'s first input " + node.getChild(0).toSql() +
-                                " should be an array or a lambda function, but real type is " +
-                                node.getChild(0).getType().toSql(), node.getPos());
+                                                    " should be an array or a lambda function, but real type is " +
+                                                    node.getChild(0).getType().toSql(), node.getPos());
                     }
                     if (!node.getChild(1).getType().isArrayType() && !node.getChild(1).getType().isNull()) {
                         throw new SemanticException(fnName + "'s second input " + node.getChild(1).toSql() +
-                                " should be an array or a lambda function, but real type is " +
-                                node.getChild(1).getType().toSql(), node.getPos());
+                                                    " should be an array or a lambda function, but real type is " +
+                                                    node.getChild(1).getType().toSql(), node.getPos());
                     }
                     // force the second array be of Type.ARRAY_BOOLEAN
                     if (!Type.canCastTo(node.getChild(1).getType(), Type.ARRAY_BOOLEAN)) {
                         throw new SemanticException(fnName + "'s second input " + node.getChild(1).toSql() +
-                                " can't cast from " + node.getChild(1).getType().toSql() + " to ARRAY<BOOL>",
+                                                    " can't cast from " + node.getChild(1).getType().toSql() + " to ARRAY<BOOL>",
                                 node.getPos());
                     }
                     break;
@@ -1170,30 +1162,30 @@ public class ExpressionAnalyzer {
                     }
                     if (!node.getChild(0).getType().isArrayType() && !node.getChild(0).getType().isNull()) {
                         throw new SemanticException(fnName + "'s input " + node.getChild(0).toSql() + " should be " +
-                                "an array, but real type is " + node.getChild(0).getType().toSql(), node.getPos());
+                                                    "an array, but real type is " + node.getChild(0).getType().toSql(), node.getPos());
                     }
                     // force the input array be of Type.ARRAY_BOOLEAN
                     if (!Type.canCastTo(node.getChild(0).getType(), Type.ARRAY_BOOLEAN)) {
                         throw new SemanticException(fnName + "'s input " +
-                                node.getChild(0).toSql() + " can't cast from " +
-                                node.getChild(0).getType().toSql() + " to ARRAY<BOOL>", node.getPos());
+                                                    node.getChild(0).toSql() + " can't cast from " +
+                                                    node.getChild(0).getType().toSql() + " to ARRAY<BOOL>", node.getPos());
                     }
                     break;
                 case FunctionSet.ARRAY_SORTBY:
                     if (node.getChildren().size() != 2) {
                         throw new SemanticException(fnName + " should have 2 array inputs or lambda functions, " +
-                                "but really have " + node.getChildren().size() + " inputs",
+                                                    "but really have " + node.getChildren().size() + " inputs",
                                 node.getPos());
                     }
                     if (!node.getChild(0).getType().isArrayType() && !node.getChild(0).getType().isNull()) {
                         throw new SemanticException(fnName + "'s first input " + node.getChild(0).toSql() +
-                                " should be an array or a lambda function, but real type is " +
-                                node.getChild(0).getType().toSql(), node.getPos());
+                                                    " should be an array or a lambda function, but real type is " +
+                                                    node.getChild(0).getType().toSql(), node.getPos());
                     }
                     if (!node.getChild(1).getType().isArrayType() && !node.getChild(1).getType().isNull()) {
                         throw new SemanticException(fnName + "'s second input " + node.getChild(1).toSql() +
-                                " should be an array or a lambda function, but real type is " +
-                                node.getChild(1).getType().toSql(), node.getPos());
+                                                    " should be an array or a lambda function, but real type is " +
+                                                    node.getChild(1).getType().toSql(), node.getPos());
                     }
                     break;
                 case FunctionSet.ARRAY_GENERATE:
@@ -1205,7 +1197,7 @@ public class ExpressionAnalyzer {
                             throw new SemanticException(fnName + " with IntColumn doesn't support default parameters");
                         }
                         if (!(expr instanceof IntLiteral) && !(expr instanceof LargeIntLiteral) &&
-                                !(expr instanceof SlotRef) && !(expr instanceof NullLiteral)) {
+                            !(expr instanceof SlotRef) && !(expr instanceof NullLiteral)) {
                             throw new SemanticException(fnName + "'s parameter only support Integer");
                         }
                     }
@@ -1213,22 +1205,22 @@ public class ExpressionAnalyzer {
                 case FunctionSet.MAP_FILTER:
                     if (node.getChildren().size() != 2) {
                         throw new SemanticException(fnName + " should have 2 inputs, " +
-                                "but there are just " + node.getChildren().size() + " inputs");
+                                                    "but there are just " + node.getChildren().size() + " inputs");
                     }
                     if (!node.getChild(0).getType().isMapType() && !node.getChild(0).getType().isNull()) {
                         throw new SemanticException(fnName + "'s first input " + node.getChild(0).toSql() +
-                                " should be a map or a lambda function, but real type is " +
-                                node.getChild(0).getType().toSql());
+                                                    " should be a map or a lambda function, but real type is " +
+                                                    node.getChild(0).getType().toSql());
                     }
                     if (!node.getChild(1).getType().isArrayType() && !node.getChild(1).getType().isNull()) {
                         throw new SemanticException(fnName + "'s second input " + node.getChild(1).toSql() +
-                                " should be an array or a lambda function, but real type is " +
-                                node.getChild(1).getType().toSql());
+                                                    " should be an array or a lambda function, but real type is " +
+                                                    node.getChild(1).getType().toSql());
                     }
                     // force the second array be of Type.ARRAY_BOOLEAN
                     if (!Type.canCastTo(node.getChild(1).getType(), Type.ARRAY_BOOLEAN)) {
                         throw new SemanticException(fnName + "'s second input " + node.getChild(1).toSql() +
-                                " can't cast from " + node.getChild(1).getType().toSql() + " to ARRAY<BOOL>");
+                                                    " can't cast from " + node.getChild(1).getType().toSql() + " to ARRAY<BOOL>");
                     }
                     break;
                 case FunctionSet.GROUP_CONCAT:
@@ -1248,12 +1240,12 @@ public class ExpressionAnalyzer {
 
                     } else if (fnName.equals(FunctionSet.ARRAY_AGG) && start != 1) {
                         throw new SemanticException(fnName + " should have exact one output expressions before" +
-                                " [ORDER BY]", node.getPos());
+                                                    " [ORDER BY]", node.getPos());
                     }
                     for (int i = start; i < argumentTypes.length; ++i) {
                         if (!argumentTypes[i].canOrderBy()) {
                             throw new SemanticException(fnName + " can't support order by the " + i +
-                                    "-th input with type of " + argumentTypes[i].toSql(), node.getPos());
+                                                        "-th input with type of " + argumentTypes[i].toSql(), node.getPos());
                         }
                     }
                     break;
@@ -1277,7 +1269,7 @@ public class ExpressionAnalyzer {
                         String name = ((StringLiteral) node.getChild(i)).getValue();
                         if (check.contains(name.toLowerCase())) {
                             throw new SemanticException("named_struct contains duplicate subfield name: " +
-                                    name + " at " + (i + 1) + "-th input", node.getPos());
+                                                        name + " at " + (i + 1) + "-th input", node.getPos());
                         }
                         check.add(name.toLowerCase());
                     }
@@ -1304,7 +1296,7 @@ public class ExpressionAnalyzer {
                     }
                     if (!node.getChild(0).getType().isArrayType() && !node.getChild(0).getType().isNull()) {
                         throw new SemanticException("The only one input of " + fnName +
-                                " should be an array, rather than " + node.getChild(0).getType().toSql(),
+                                                    " should be an array, rather than " + node.getChild(0).getType().toSql(),
                                 node.getPos());
                     }
 
@@ -1318,7 +1310,7 @@ public class ExpressionAnalyzer {
                     for (int i = 0; i < node.getChildren().size(); ++i) {
                         if (!node.getChild(i).getType().isArrayType() && !node.getChild(i).getType().isNull()) {
                             throw new SemanticException((i + 1) + "-th input of " + fnName +
-                                    " should be an array, rather than " + node.getChild(i).getType().toSql(),
+                                                        " should be an array, rather than " + node.getChild(i).getType().toSql(),
                                     node.getPos());
                         }
                     }
@@ -1332,7 +1324,7 @@ public class ExpressionAnalyzer {
                     for (int i = 0; i < node.getChildren().size(); ++i) {
                         if (!node.getChild(i).getType().isArrayType() && !node.getChild(i).getType().isNull()) {
                             throw new SemanticException((i + 1) + "-th input of " + fnName +
-                                    " should be an array, rather than " + node.getChild(i).getType().toSql(),
+                                                        " should be an array, rather than " + node.getChild(i).getType().toSql(),
                                     node.getPos());
                         }
                     }
@@ -1349,7 +1341,7 @@ public class ExpressionAnalyzer {
                     }
                     if (!node.getChild(0).getType().isArrayType() && !node.getChild(0).getType().isNull()) {
                         throw new SemanticException("The first input of " + fnName +
-                                " should be an array", node.getPos());
+                                                    " should be an array", node.getPos());
                     }
                     break;
                 }
@@ -1494,7 +1486,7 @@ public class ExpressionAnalyzer {
             for (Type type : whenTypes) {
                 if (!Type.canCastTo(type, compatibleType)) {
                     throw new SemanticException("Invalid when type cast " + type.toSql()
-                            + " to " + compatibleType.toSql(), node.getPos());
+                                                + " to " + compatibleType.toSql(), node.getPos());
                 }
             }
 
@@ -1514,7 +1506,7 @@ public class ExpressionAnalyzer {
             for (Type type : thenTypes) {
                 if (!Type.canCastTo(type, returnType)) {
                     throw new SemanticException("Invalid then type cast " + type.toSql()
-                            + " to " + returnType.toSql(), node.getPos());
+                                                + " to " + returnType.toSql(), node.getPos());
                 }
             }
 
@@ -1524,9 +1516,9 @@ public class ExpressionAnalyzer {
 
         @Override
         public Void visitSubquery(Subquery node, Scope context) {
-            QueryAnalyzer queryAnalyzer = new QueryAnalyzer(session);
-            queryAnalyzer.analyze(node.getQueryStatement(), context);
-            node.setType(node.getQueryStatement().getQueryRelation().getRelationFields().getFieldByIndex(0).getType());
+//            QueryAnalyzer queryAnalyzer = new QueryAnalyzer(session);
+//            queryAnalyzer.analyze(node.getQueryStatement(), context);
+//            node.setType(node.getQueryStatement().getQueryRelation().getRelationFields().getFieldByIndex(0).getType());
             return null;
         }
 
@@ -1536,66 +1528,66 @@ public class ExpressionAnalyzer {
             node.setType(node.getFnCall().getType());
             if (node.getWindow() != null) {
                 if (node.getWindow().getLeftBoundary() != null &&
-                        node.getWindow().getLeftBoundary().getExpr() != null) {
+                    node.getWindow().getLeftBoundary().getExpr() != null) {
                     visit(node.getWindow().getLeftBoundary().getExpr(), context);
                 }
                 if (node.getWindow().getRightBoundary() != null &&
-                        node.getWindow().getRightBoundary().getExpr() != null) {
+                    node.getWindow().getRightBoundary().getExpr() != null) {
                     visit(node.getWindow().getRightBoundary().getExpr(), context);
                 }
             }
             node.getPartitionExprs().forEach(e -> visit(e, context));
             node.getOrderByElements().stream().map(OrderByElement::getExpr).forEach(e -> visit(e, context));
-            verifyAnalyticExpression(node);
+//            verifyAnalyticExpression(node);
             return null;
         }
 
         @Override
         public Void visitInformationFunction(InformationFunction node, Scope context) {
             String funcType = node.getFuncType();
-            if (funcType.equalsIgnoreCase(FunctionSet.DATABASE) || funcType.equalsIgnoreCase(FunctionSet.SCHEMA)) {
-                node.setType(Type.VARCHAR);
-                node.setStrValue(ClusterNamespace.getNameFromFullName(session.getDatabase()));
-            } else if (funcType.equalsIgnoreCase(FunctionSet.USER)) {
-                node.setType(Type.VARCHAR);
-
-                String user = session.getQualifiedUser();
-                String remoteIP = session.getRemoteIP();
-
-                node.setStrValue(new UserIdentity(user, remoteIP).toString());
-            } else if (funcType.equalsIgnoreCase(FunctionSet.CURRENT_USER)) {
-                node.setType(Type.VARCHAR);
-                node.setStrValue(session.getCurrentUserIdentity().toString());
-            } else if (funcType.equalsIgnoreCase(FunctionSet.CURRENT_ROLE)) {
-                node.setType(Type.VARCHAR);
-                AuthorizationMgr manager = GlobalStateMgr.getCurrentState().getAuthorizationMgr();
-                List<String> roleName = new ArrayList<>();
-
-                try {
-                    for (Long roleId : session.getCurrentRoleIds()) {
-                        RolePrivilegeCollectionV2 rolePrivilegeCollection =
-                                manager.getRolePrivilegeCollectionUnlocked(roleId, false);
-                        if (rolePrivilegeCollection != null) {
-                            roleName.add(rolePrivilegeCollection.getName());
-                        }
-                    }
-                } catch (PrivilegeException e) {
-                    throw new SemanticException(e.getMessage());
-                }
-
-                if (roleName.isEmpty()) {
-                    node.setStrValue("NONE");
-                } else {
-                    node.setStrValue(Joiner.on(", ").join(roleName));
-                }
-            } else if (funcType.equalsIgnoreCase(FunctionSet.CONNECTION_ID)) {
-                node.setType(Type.BIGINT);
-                node.setIntValue(session.getConnectionId());
-                node.setStrValue("");
-            } else if (funcType.equalsIgnoreCase(FunctionSet.CATALOG)) {
-                node.setType(Type.VARCHAR);
-                node.setStrValue(session.getCurrentCatalog());
-            }
+//            if (funcType.equalsIgnoreCase(FunctionSet.DATABASE) || funcType.equalsIgnoreCase(FunctionSet.SCHEMA)) {
+//                node.setType(Type.VARCHAR);
+//                node.setStrValue(ClusterNamespace.getNameFromFullName(session.getDatabase()));
+//            } else if (funcType.equalsIgnoreCase(FunctionSet.USER)) {
+//                node.setType(Type.VARCHAR);
+//
+//                String user = session.getQualifiedUser();
+//                String remoteIP = session.getRemoteIP();
+//
+//                node.setStrValue(new UserIdentity(user, remoteIP).toString());
+//            } else if (funcType.equalsIgnoreCase(FunctionSet.CURRENT_USER)) {
+//                node.setType(Type.VARCHAR);
+//                node.setStrValue(session.getCurrentUserIdentity().toString());
+//            } else if (funcType.equalsIgnoreCase(FunctionSet.CURRENT_ROLE)) {
+//                node.setType(Type.VARCHAR);
+//                AuthorizationMgr manager = GlobalStateMgr.getCurrentState().getAuthorizationMgr();
+//                List<String> roleName = new ArrayList<>();
+//
+//                try {
+//                    for (Long roleId : session.getCurrentRoleIds()) {
+//                        RolePrivilegeCollectionV2 rolePrivilegeCollection =
+//                                manager.getRolePrivilegeCollectionUnlocked(roleId, false);
+//                        if (rolePrivilegeCollection != null) {
+//                            roleName.add(rolePrivilegeCollection.getName());
+//                        }
+//                    }
+//                } catch (PrivilegeException e) {
+//                    throw new SemanticException(e.getMessage());
+//                }
+//
+//                if (roleName.isEmpty()) {
+//                    node.setStrValue("NONE");
+//                } else {
+//                    node.setStrValue(Joiner.on(", ").join(roleName));
+//                }
+//            } else if (funcType.equalsIgnoreCase(FunctionSet.CONNECTION_ID)) {
+//                node.setType(Type.BIGINT);
+//                node.setIntValue(session.getConnectionId());
+//                node.setStrValue("");
+//            } else if (funcType.equalsIgnoreCase(FunctionSet.CATALOG)) {
+//                node.setType(Type.VARCHAR);
+//                node.setStrValue(session.getCurrentCatalog());
+//            }
             return null;
         }
 
@@ -1622,7 +1614,7 @@ public class ExpressionAnalyzer {
                 } else {
                     VariableMgr.fillValue(session.getSessionVariable(), node);
                     if (!Strings.isNullOrEmpty(node.getName()) &&
-                            node.getName().equalsIgnoreCase(SessionVariable.SQL_MODE)) {
+                        node.getName().equalsIgnoreCase(SessionVariable.SQL_MODE)) {
                         node.setType(Type.VARCHAR);
                         node.setValue(SqlModeHelper.decode((long) node.getValue()));
                     }
@@ -1669,131 +1661,131 @@ public class ExpressionAnalyzer {
             if (table == null) {
                 throw new SemanticException("dict table %s is not found", tableName.getTbl());
             }
-            if (!(table instanceof OlapTable)) {
-                throw new SemanticException("dict table type is not OlapTable, type=" + table.getClass());
-            }
-            if (table instanceof MaterializedView) {
-                throw new SemanticException("dict table can't be materialized view");
-            }
-            OlapTable dictTable = (OlapTable) table;
-
-            if (dictTable.getKeysType() != KeysType.PRIMARY_KEYS) {
-                throw new SemanticException("dict table " + tableName + " should be primary key table");
-            }
-
-            // verify keys length and type
-            List<Column> keyColumns = new ArrayList<>();
-            Column valueColumn = null;
-            for (Column column : dictTable.getBaseSchema()) {
-                if (column.isKey()) {
-                    keyColumns.add(column);
-                }
-                if (column.isAutoIncrement()) {
-                    valueColumn = column;
-                }
-            }
+//            if (!(table instanceof OlapTable)) {
+//                throw new SemanticException("dict table type is not OlapTable, type=" + table.getClass());
+//            }
+//            if (table instanceof MaterializedView) {
+//                throw new SemanticException("dict table can't be materialized view");
+//            }
+//            OlapTable dictTable = (OlapTable) table;
+//
+//            if (dictTable.getKeysType() != KeysType.PRIMARY_KEYS) {
+//                throw new SemanticException("dict table " + tableName + " should be primary key table");
+//            }
+//
+//            // verify keys length and type
+//            List<Column> keyColumns = new ArrayList<>();
+//            Column valueColumn = null;
+//            for (Column column : dictTable.getBaseSchema()) {
+//                if (column.isKey()) {
+//                    keyColumns.add(column);
+//                }
+//                if (column.isAutoIncrement()) {
+//                    valueColumn = column;
+//                }
+//            }
             // (table, keys..., value_column, strict_mode)
-            int valueColumnIdx;
-            int strictModeIdx;
-            if (params.size() == keyColumns.size() + 1) {
-                valueColumnIdx = -1;
-                strictModeIdx = -1;
-            } else if (params.size() == keyColumns.size() + 2) {
-                if (params.get(params.size() - 1).getType().getPrimitiveType().isStringType()) {
-                    valueColumnIdx = params.size() - 1;
-                    strictModeIdx = -1;
-                } else {
-                    strictModeIdx = params.size() - 1;
-                    valueColumnIdx = -1;
-                }
-            } else if (params.size() == keyColumns.size() + 3) {
-                valueColumnIdx = params.size() - 2;
-                strictModeIdx = params.size() - 1;
-            } else {
-                throw new SemanticException(String.format("dict_mapping function param size should be %d - %d",
-                    keyColumns.size() + 1, keyColumns.size() + 3));
-            }
+//            int valueColumnIdx;
+//            int strictModeIdx;
+//            if (params.size() == keyColumns.size() + 1) {
+//                valueColumnIdx = -1;
+//                strictModeIdx = -1;
+//            } else if (params.size() == keyColumns.size() + 2) {
+//                if (params.get(params.size() - 1).getType().getPrimitiveType().isStringType()) {
+//                    valueColumnIdx = params.size() - 1;
+//                    strictModeIdx = -1;
+//                } else {
+//                    strictModeIdx = params.size() - 1;
+//                    valueColumnIdx = -1;
+//                }
+//            } else if (params.size() == keyColumns.size() + 3) {
+//                valueColumnIdx = params.size() - 2;
+//                strictModeIdx = params.size() - 1;
+//            } else {
+//                throw new SemanticException(String.format("dict_mapping function param size should be %d - %d",
+//                    keyColumns.size() + 1, keyColumns.size() + 3));
+//            }
 
             String valueField;
-            if (valueColumnIdx >= 0) {
-                Expr valueFieldExpr = params.get(valueColumnIdx);
-                if (!(valueFieldExpr instanceof StringLiteral)) {
-                    throw new SemanticException("dict_mapping function value_column param should be STRING constant");
-                }
-                valueField = ((StringLiteral) valueFieldExpr).getStringValue();
-                valueColumn = dictTable.getBaseColumn(valueField);
-                if (valueColumn == null) {
-                    throw new SemanticException("dict_mapping function can't find value column " + valueField + " in dict table");
-                }
-            } else {
-                if (valueColumn == null) {
-                    throw new SemanticException("dict_mapping function can't find auto increment column in dict table");
-                }
-                valueField = valueColumn.getName();
-            }
+//            if (valueColumnIdx >= 0) {
+//                Expr valueFieldExpr = params.get(valueColumnIdx);
+//                if (!(valueFieldExpr instanceof StringLiteral)) {
+//                    throw new SemanticException("dict_mapping function value_column param should be STRING constant");
+//                }
+//                valueField = ((StringLiteral) valueFieldExpr).getStringValue();
+//                valueColumn = dictTable.getBaseColumn(valueField);
+//                if (valueColumn == null) {
+//                    throw new SemanticException("dict_mapping function can't find value column " + valueField + " in dict table");
+//                }
+//            } else {
+//                if (valueColumn == null) {
+//                    throw new SemanticException("dict_mapping function can't find auto increment column in dict table");
+//                }
+//                valueField = valueColumn.getName();
+//            }
 
-            boolean strictMode = false;
-            if (strictModeIdx >= 0) {
-                Expr strictModeExpr = params.get(strictModeIdx);
-                if (!(strictModeExpr instanceof BoolLiteral)) {
-                    throw new SemanticException("dict_mapping function strict_mode param should be bool constant");
-                }
-                strictMode = ((BoolLiteral) strictModeExpr).getValue();
-            }
+//            boolean strictMode = false;
+//            if (strictModeIdx >= 0) {
+//                Expr strictModeExpr = params.get(strictModeIdx);
+//                if (!(strictModeExpr instanceof BoolLiteral)) {
+//                    throw new SemanticException("dict_mapping function strict_mode param should be bool constant");
+//                }
+//                strictMode = ((BoolLiteral) strictModeExpr).getValue();
+//            }
+//
+//            List<Type> expectTypes = new ArrayList<>();
+//            expectTypes.add(Type.VARCHAR);
+//            for (Column keyColumn : keyColumns) {
+//                expectTypes.add(ScalarType.createType(keyColumn.getType().getPrimitiveType()));
+//            }
+//            if (valueColumnIdx >= 0) {
+//                expectTypes.add(Type.VARCHAR);
+//            }
+//            if (strictModeIdx >= 0) {
+//                expectTypes.add(Type.BOOLEAN);
+//            }
+//
+//            List<Type> actualTypes = node.getChildren().stream()
+//                    .map(expr -> ScalarType.createType(expr.getType().getPrimitiveType())).collect(Collectors.toList());
+//            if (!Objects.equals(expectTypes, actualTypes)) {
+//                List<String> expectTypeNames = new ArrayList<>();
+//                expectTypeNames.add("VARCHAR dict_table");
+//                for (int i = 0; i < keyColumns.size(); i++) {
+//                    expectTypeNames.add(expectTypes.get(i + 1).canonicalName() + " " + keyColumns.get(i).getName());
+//                }
+//                if (valueColumnIdx >= 0) {
+//                    expectTypeNames.add("VARCHAR value_field_name");
+//                }
+//                if (strictModeIdx >= 0) {
+//                    expectTypeNames.add("BOOLEAN strict_mode");
+//                }
+//                List<String> actualTypeNames = actualTypes.stream().map(Type::canonicalName).collect(Collectors.toList());
+//                throw new SemanticException(
+//                        String.format("dict_mapping function params not match expected,\nExpect: %s\nActual: %s",
+//                            String.join(", ", expectTypeNames), String.join(", ", actualTypeNames)));
+//            }
+//
+//            Type valueType = ScalarType.createType(valueColumn.getType().getPrimitiveType());
 
-            List<Type> expectTypes = new ArrayList<>();
-            expectTypes.add(Type.VARCHAR);
-            for (Column keyColumn : keyColumns) {
-                expectTypes.add(ScalarType.createType(keyColumn.getType().getPrimitiveType()));
-            }
-            if (valueColumnIdx >= 0) {
-                expectTypes.add(Type.VARCHAR);
-            }
-            if (strictModeIdx >= 0) {
-                expectTypes.add(Type.BOOLEAN);
-            }
-
-            List<Type> actualTypes = node.getChildren().stream()
-                    .map(expr -> ScalarType.createType(expr.getType().getPrimitiveType())).collect(Collectors.toList());
-            if (!Objects.equals(expectTypes, actualTypes)) {
-                List<String> expectTypeNames = new ArrayList<>();
-                expectTypeNames.add("VARCHAR dict_table");
-                for (int i = 0; i < keyColumns.size(); i++) {
-                    expectTypeNames.add(expectTypes.get(i + 1).canonicalName() + " " + keyColumns.get(i).getName());
-                }
-                if (valueColumnIdx >= 0) {
-                    expectTypeNames.add("VARCHAR value_field_name");
-                }
-                if (strictModeIdx >= 0) {
-                    expectTypeNames.add("BOOLEAN strict_mode");
-                }
-                List<String> actualTypeNames = actualTypes.stream().map(Type::canonicalName).collect(Collectors.toList());
-                throw new SemanticException(
-                        String.format("dict_mapping function params not match expected,\nExpect: %s\nActual: %s",
-                            String.join(", ", expectTypeNames), String.join(", ", actualTypeNames)));
-            }
-
-            Type valueType = ScalarType.createType(valueColumn.getType().getPrimitiveType());
-
-            final TDictQueryExpr dictQueryExpr = new TDictQueryExpr();
-            dictQueryExpr.setDb_name(tableName.getDb());
-            dictQueryExpr.setTbl_name(tableName.getTbl());
-
-            Map<Long, Long> partitionVersion = new HashMap<>();
-            dictTable.getPartitions().forEach(p -> partitionVersion.put(p.getId(), p.getVisibleVersion()));
-            dictQueryExpr.setPartition_version(partitionVersion);
-
-            List<String> keyFields = keyColumns.stream().map(Column::getName).collect(Collectors.toList());
-            dictQueryExpr.setKey_fields(keyFields);
-            dictQueryExpr.setValue_field(valueField);
-            dictQueryExpr.setStrict_mode(strictMode);
-            node.setType(valueType);
-
-            Function fn = new Function(FunctionName.createFnName(FunctionSet.DICT_MAPPING), actualTypes, valueType, false);
-            fn.setBinaryType(TFunctionBinaryType.BUILTIN);
-            node.setFn(fn);
-
-            node.setDictQueryExpr(dictQueryExpr);
+//            final TDictQueryExpr dictQueryExpr = new TDictQueryExpr();
+//            dictQueryExpr.setDb_name(tableName.getDb());
+//            dictQueryExpr.setTbl_name(tableName.getTbl());
+//
+//            Map<Long, Long> partitionVersion = new HashMap<>();
+//            dictTable.getPartitions().forEach(p -> partitionVersion.put(p.getId(), p.getVisibleVersion()));
+//            dictQueryExpr.setPartition_version(partitionVersion);
+//
+//            List<String> keyFields = keyColumns.stream().map(Column::getName).collect(Collectors.toList());
+//            dictQueryExpr.setKey_fields(keyFields);
+//            dictQueryExpr.setValue_field(valueField);
+//            dictQueryExpr.setStrict_mode(strictMode);
+//            node.setType(valueType);
+//
+//            Function fn = new Function(FunctionName.createFnName(FunctionSet.DICT_MAPPING), actualTypes, valueType, false);
+//            fn.setBinaryType(TFunctionBinaryType.BUILTIN);
+//            node.setFn(fn);
+//
+//            node.setDictQueryExpr(dictQueryExpr);
             return null;
         }
 
@@ -1813,93 +1805,93 @@ public class ExpressionAnalyzer {
                 throw new SemanticException("dictionary_get function first param dictionary_name should be string literal");
             }
 
-            String dictionaryName = ((StringLiteral) params.get(0)).getValue();
-            if (!GlobalStateMgr.getCurrentState().getDictionaryMgr().isExist(dictionaryName)) {
-                throw new SemanticException("dictionary: " + dictionaryName + " does not exist");
-            }
-            Dictionary dictionary = GlobalStateMgr.getCurrentState().getDictionaryMgr().getDictionaryByName(dictionaryName);
+//            String dictionaryName = ((StringLiteral) params.get(0)).getValue();
+//            if (!GlobalStateMgr.getCurrentState().getDictionaryMgr().isExist(dictionaryName)) {
+//                throw new SemanticException("dictionary: " + dictionaryName + " does not exist");
+//            }
+//            Dictionary dictionary = GlobalStateMgr.getCurrentState().getDictionaryMgr().getDictionaryByName(dictionaryName);
+//
+//            if (!node.getSkipStateCheck()) {
+//                if (dictionary.getState() == Dictionary.DictionaryState.CANCELLED) {
+//                    throw new SemanticException("dictionary: " + dictionaryName + " is in CANCELLED state");
+//                }
+//
+//                if (dictionary.getState() == Dictionary.DictionaryState.UNINITIALIZED) {
+//                    throw new SemanticException("dictionary: " + dictionaryName + " is in UNINITIALIZED state");
+//                }
+//
+//                if (dictionary.getReadLatest() && dictionary.getState() == Dictionary.DictionaryState.REFRESHING) {
+//                    throw new SemanticException("dictionary_read_latest is ON, dictionary: " +
+//                            dictionaryName + " is in REFRESHING state");
+//                }
+//            }
+//
+//            List<String> dictionaryKeys = dictionary.getKeys();
+//            int dictionaryKeysSize = dictionaryKeys.size();
+//            int paramDictionaryKeysSize = params.size() - 1;
+//            if (paramDictionaryKeysSize != dictionaryKeysSize) {
+//                throw new SemanticException("dictionary: " + dictionaryName + " has keys size: " +
+//                                            Integer.toString(dictionaryKeysSize) +
+//                                            " but param give: " + Integer.toString(paramDictionaryKeysSize));
+//            }
 
-            if (!node.getSkipStateCheck()) {
-                if (dictionary.getState() == Dictionary.DictionaryState.CANCELLED) {
-                    throw new SemanticException("dictionary: " + dictionaryName + " is in CANCELLED state");
-                }
+//            Database db = GlobalStateMgr.getCurrentState().getLocalMetastore().getFullNameToDb().get(dictionary.getDbName());
+//            Table table = db.getTable(dictionary.getQueryableObject());
+//            if (table == null) {
+//                throw new SemanticException("dict table %s is not found", table.getName());
+//            }
 
-                if (dictionary.getState() == Dictionary.DictionaryState.UNINITIALIZED) {
-                    throw new SemanticException("dictionary: " + dictionaryName + " is in UNINITIALIZED state");
-                }
+//            List<Column> schema = table.getFullSchema();
+//            List<Type> paramType = new ArrayList<>();
+//            List<Column> keysColumn = new ArrayList<>();
+//            paramType.add(Type.VARCHAR);
+//            for (String key : dictionaryKeys) {
+//                for (int i = 0; i < schema.size(); ++i) {
+//                    if (key.equals(schema.get(i).getName())) {
+//                        keysColumn.add(schema.get(i));
+//                        paramType.add(schema.get(i).getType());
+//                    }
+//                }
+//            }
 
-                if (dictionary.getReadLatest() && dictionary.getState() == Dictionary.DictionaryState.REFRESHING) {
-                    throw new SemanticException("dictionary_read_latest is ON, dictionary: " +
-                            dictionaryName + " is in REFRESHING state");
-                }
-            }
+//            List<String> dictionaryValues = dictionary.getValues();
+//            List<Column> valuesColumn = new ArrayList<>();
+//            for (String value : dictionaryValues) {
+//                for (int i = 0; i < schema.size(); ++i) {
+//                    if (value.equals(schema.get(i).getName())) {
+//                        valuesColumn.add(schema.get(i));
+//                    }
+//                }
+//            }
 
-            List<String> dictionaryKeys = dictionary.getKeys();
-            int dictionaryKeysSize = dictionaryKeys.size();
-            int paramDictionaryKeysSize = params.size() - 1;
-            if (paramDictionaryKeysSize != dictionaryKeysSize) {
-                throw new SemanticException("dictionary: " + dictionaryName + " has keys size: " +
-                                            Integer.toString(dictionaryKeysSize) +
-                                            " but param give: " + Integer.toString(paramDictionaryKeysSize));
-            }
+//            for (int i = 0; i < keysColumn.size(); ++i) {
+//                Expr parmExpr = params.get(i + 1);
+//                Column column = keysColumn.get(i);
+//                if (!column.getType().equals(parmExpr.getType())) {
+//                    if (!Type.canCastTo(column.getType(), parmExpr.getType())) {
+//                        throw new SemanticException("column type " + column.getType().toSql()
+//                                + " cast from " + parmExpr.getType().toSql() + " is invalid.");
+//                    } else {
+//                        parmExpr = new CastExpr(column.getType(), parmExpr);
+//                        params.set(i + 1, parmExpr);
+//                        node.getChildren().set(i + 1, parmExpr);
+//                    }
+//                }
+//            }
 
-            Database db = GlobalStateMgr.getCurrentState().getLocalMetastore().getFullNameToDb().get(dictionary.getDbName());
-            Table table = db.getTable(dictionary.getQueryableObject());
-            if (table == null) {
-                throw new SemanticException("dict table %s is not found", table.getName());
-            }
-
-            List<Column> schema = table.getFullSchema();
-            List<Type> paramType = new ArrayList<>();
-            List<Column> keysColumn = new ArrayList<>();
-            paramType.add(Type.VARCHAR);
-            for (String key : dictionaryKeys) {
-                for (int i = 0; i < schema.size(); ++i) {
-                    if (key.equals(schema.get(i).getName())) {
-                        keysColumn.add(schema.get(i));
-                        paramType.add(schema.get(i).getType());
-                    }
-                }
-            }
-
-            List<String> dictionaryValues = dictionary.getValues();
-            List<Column> valuesColumn = new ArrayList<>();
-            for (String value : dictionaryValues) {
-                for (int i = 0; i < schema.size(); ++i) {
-                    if (value.equals(schema.get(i).getName())) {
-                        valuesColumn.add(schema.get(i));
-                    }
-                }
-            }
-
-            for (int i = 0; i < keysColumn.size(); ++i) {
-                Expr parmExpr = params.get(i + 1);
-                Column column = keysColumn.get(i);
-                if (!column.getType().equals(parmExpr.getType())) {
-                    if (!Type.canCastTo(column.getType(), parmExpr.getType())) {
-                        throw new SemanticException("column type " + column.getType().toSql()
-                                + " cast from " + parmExpr.getType().toSql() + " is invalid.");
-                    } else {
-                        parmExpr = new CastExpr(column.getType(), parmExpr);
-                        params.set(i + 1, parmExpr);
-                        node.getChildren().set(i + 1, parmExpr);
-                    }
-                }
-            }
-
-            node.setDictionaryId(dictionary.getDictionaryId());
-            node.setDictionaryTxnId(GlobalStateMgr.getCurrentState().getDictionaryMgr().
-                    getLastSuccessTxnId(dictionary.getDictionaryId()));
-            node.setKeySize(dictionary.getKeys().size());
-
-            ArrayList<StructField> structFields = new ArrayList<>(valuesColumn.size());
-            for (Column column : valuesColumn) {
-                String fieldName = column.getName();
-                Type fieldType = column.getType();
-                structFields.add(new StructField(fieldName, fieldType));
-            }
-            StructType returnType = new StructType(structFields);
-            node.setType(returnType);
+//            node.setDictionaryId(dictionary.getDictionaryId());
+//            node.setDictionaryTxnId(GlobalStateMgr.getCurrentState().getDictionaryMgr().
+//                    getLastSuccessTxnId(dictionary.getDictionaryId()));
+//            node.setKeySize(dictionary.getKeys().size());
+//
+//            ArrayList<StructField> structFields = new ArrayList<>(valuesColumn.size());
+//            for (Column column : valuesColumn) {
+//                String fieldName = column.getName();
+//                Type fieldType = column.getType();
+//                structFields.add(new StructField(fieldName, fieldType));
+//            }
+//            StructType returnType = new StructType(structFields);
+//            node.setType(returnType);
             return null;
         }
 

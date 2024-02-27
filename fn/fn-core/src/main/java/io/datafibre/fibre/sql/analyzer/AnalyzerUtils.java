@@ -1006,42 +1006,42 @@ public class AnalyzerUtils {
         }
     }
 
-    public static Set<TableName> getAllTableNamesForAnalyzeJobStmt(long dbId, long tableId) {
-        Set<TableName> tableNames = Sets.newHashSet();
-        if (StatsConstants.DEFAULT_ALL_ID != tableId && StatsConstants.DEFAULT_ALL_ID != dbId) {
-            Database db = GlobalStateMgr.getCurrentState().getDb(dbId);
-            if (db != null && !db.isSystemDatabase()) {
-                Table table = db.getTable(tableId);
-                if (table != null && table.isOlapOrCloudNativeTable()) {
-                    tableNames.add(new TableName(InternalCatalog.DEFAULT_INTERNAL_CATALOG_NAME,
-                            db.getFullName(), table.getName()));
-                }
-            }
-        } else if (StatsConstants.DEFAULT_ALL_ID == tableId && StatsConstants.DEFAULT_ALL_ID != dbId) {
-            getTableNamesInDb(tableNames, dbId);
-        } else {
-            List<Long> dbIds = GlobalStateMgr.getCurrentState().getLocalMetastore().getDbIds();
-            for (Long id : dbIds) {
-                getTableNamesInDb(tableNames, id);
-            }
-        }
+//    public static Set<TableName> getAllTableNamesForAnalyzeJobStmt(long dbId, long tableId) {
+//        Set<TableName> tableNames = Sets.newHashSet();
+//        if (StatsConstants.DEFAULT_ALL_ID != tableId && StatsConstants.DEFAULT_ALL_ID != dbId) {
+//            Database db = GlobalStateMgr.getCurrentState().getDb(dbId);
+//            if (db != null && !db.isSystemDatabase()) {
+//                Table table = db.getTable(tableId);
+//                if (table != null && table.isOlapOrCloudNativeTable()) {
+//                    tableNames.add(new TableName(InternalCatalog.DEFAULT_INTERNAL_CATALOG_NAME,
+//                            db.getFullName(), table.getName()));
+//                }
+//            }
+//        } else if (StatsConstants.DEFAULT_ALL_ID == tableId && StatsConstants.DEFAULT_ALL_ID != dbId) {
+//            getTableNamesInDb(tableNames, dbId);
+//        } else {
+//            List<Long> dbIds = GlobalStateMgr.getCurrentState().getLocalMetastore().getDbIds();
+//            for (Long id : dbIds) {
+//                getTableNamesInDb(tableNames, id);
+//            }
+//        }
+//
+//        return tableNames;
+//    }
 
-        return tableNames;
-    }
-
-    private static void getTableNamesInDb(Set<TableName> tableNames, Long id) {
-        Database db = GlobalStateMgr.getCurrentState().getDb(id);
-        if (db != null && !db.isSystemDatabase()) {
-            for (Table table : db.getTables()) {
-                if (table == null || !table.isOlapOrCloudNativeTable()) {
-                    continue;
-                }
-                TableName tableNameNew = new TableName(InternalCatalog.DEFAULT_INTERNAL_CATALOG_NAME,
-                        db.getFullName(), table.getName());
-                tableNames.add(tableNameNew);
-            }
-        }
-    }
+//    private static void getTableNamesInDb(Set<TableName> tableNames, Long id) {
+//        Database db = GlobalStateMgr.getCurrentState().getDb(id);
+//        if (db != null && !db.isSystemDatabase()) {
+//            for (Table table : db.getTables()) {
+//                if (table == null || !table.isOlapOrCloudNativeTable()) {
+//                    continue;
+//                }
+//                TableName tableNameNew = new TableName(InternalCatalog.DEFAULT_INTERNAL_CATALOG_NAME,
+//                        db.getFullName(), table.getName());
+//                tableNames.add(tableNameNew);
+//            }
+//        }
+//    }
 
     public static Type transformTableColumnType(Type srcType) {
         return transformTableColumnType(srcType, true);

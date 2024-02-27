@@ -39,20 +39,17 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.annotations.SerializedName;
 import io.datafibre.fibre.catalog.Table.TableType;
-import io.datafibre.fibre.catalog.system.information.InfoSchemaDb;
-import io.datafibre.fibre.catalog.system.sys.SysDb;
-import io.datafibre.fibre.cluster.ClusterNamespace;
-import io.datafibre.fibre.common.*;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.FeConstants;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.UserException;
 import io.datafibre.fibre.common.io.Text;
 import io.datafibre.fibre.common.io.Writable;
 import io.datafibre.fibre.common.util.DebugUtil;
 import io.datafibre.fibre.common.util.concurrent.QueryableReentrantReadWriteLock;
 import io.datafibre.fibre.common.util.concurrent.lock.LockType;
 import io.datafibre.fibre.common.util.concurrent.lock.Locker;
-import io.datafibre.fibre.persist.DropInfo;
-import io.datafibre.fibre.server.CatalogMgr;
 import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.system.SystemInfoService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -64,7 +61,6 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.stream.Collectors;
 import java.util.zip.Adler32;
 
 /**
@@ -160,9 +156,9 @@ public class Database extends MetaObject implements Writable {
      * @return unique id of database in string format
      */
     public String getUUID() {
-        if (CatalogMgr.isExternalCatalog(catalogName)) {
-            return catalogName + "." + fullQualifiedName;
-        }
+//        if (CatalogMgr.isExternalCatalog(catalogName)) {
+//            return catalogName + "." + fullQualifiedName;
+//        }
         return Long.toString(id);
     }
 
@@ -213,8 +209,8 @@ public class Database extends MetaObject implements Writable {
                     continue;
                 }
 
-                OlapTable olapTable = (OlapTable) table;
-                usedDataQuota = usedDataQuota + olapTable.getDataSize();
+//                OlapTable olapTable = (OlapTable) table;
+//                usedDataQuota = usedDataQuota + olapTable.getDataSize();
             }
             return usedDataQuota;
         } finally {
@@ -225,20 +221,20 @@ public class Database extends MetaObject implements Writable {
     public void checkDataSizeQuota() throws DdlException {
         Pair<Double, String> quotaUnitPair = DebugUtil.getByteUint(dataQuotaBytes);
         String readableQuota = DebugUtil.DECIMAL_FORMAT_SCALE_3.format(quotaUnitPair.first) + " "
-                + quotaUnitPair.second;
+                               + quotaUnitPair.second;
         long usedDataQuota = getUsedDataQuotaWithLock();
         long leftDataQuota = Math.max(dataQuotaBytes - usedDataQuota, 0);
 
         Pair<Double, String> leftQuotaUnitPair = DebugUtil.getByteUint(leftDataQuota);
         String readableLeftQuota = DebugUtil.DECIMAL_FORMAT_SCALE_3.format(leftQuotaUnitPair.first) + " "
-                + leftQuotaUnitPair.second;
+                                   + leftQuotaUnitPair.second;
 
         LOG.info("database[{}] data quota: left bytes: {} / total: {}",
                 fullQualifiedName, readableLeftQuota, readableQuota);
 
         if (leftDataQuota == 0L) {
             throw new DdlException("Database[" + fullQualifiedName
-                    + "] data size exceeds quota[" + readableQuota + "]");
+                                   + "] data size exceeds quota[" + readableQuota + "]");
         }
     }
 
@@ -252,8 +248,8 @@ public class Database extends MetaObject implements Writable {
                     continue;
                 }
 
-                OlapTable olapTable = (OlapTable) table;
-                usedReplicaQuota = usedReplicaQuota + olapTable.getReplicaCount();
+//                OlapTable olapTable = (OlapTable) table;
+//                usedReplicaQuota = usedReplicaQuota + olapTable.getReplicaCount();
             }
         } finally {
             locker.unLockDatabase(this, LockType.READ);
@@ -265,7 +261,7 @@ public class Database extends MetaObject implements Writable {
 
         if (leftReplicaQuota == 0L) {
             throw new DdlException("Database[" + fullQualifiedName
-                    + "] replica number exceeds quota[" + replicaQuotaSize + "]");
+                                   + "] replica number exceeds quota[" + replicaQuotaSize + "]");
         }
     }
 
@@ -379,12 +375,12 @@ public class Database extends MetaObject implements Writable {
         return views;
     }
 
-    public List<MaterializedView> getMaterializedViews() {
-        return idToTable.values().stream()
-                .filter(Table::isMaterializedView)
-                .map(x -> (MaterializedView) x)
-                .collect(Collectors.toList());
-    }
+//    public List<MaterializedView> getMaterializedViews() {
+//        return idToTable.values().stream()
+//                .filter(Table::isMaterializedView)
+//                .map(x -> (MaterializedView) x)
+//                .collect(Collectors.toList());
+//    }
 
     public Set<String> getTableNamesViewWithLock() {
         Locker locker = new Locker();
@@ -412,24 +408,24 @@ public class Database extends MetaObject implements Writable {
         return Optional.ofNullable(nameToTable.get(tableName));
     }
 
-    public Pair<Table, MaterializedIndexMeta> getMaterializedViewIndex(String mvName) {
-        // TODO: add an index to speed it up.
-        for (Table table : idToTable.values()) {
-            if (table instanceof OlapTable) {
-                OlapTable olapTable = (OlapTable) table;
-                for (MaterializedIndexMeta mvMeta : olapTable.getVisibleIndexMetas()) {
-                    String indexName = olapTable.getIndexNameById(mvMeta.getIndexId());
-                    if (indexName == null) {
-                        continue;
-                    }
-                    if (indexName.equals(mvName)) {
-                        return Pair.create(table, mvMeta);
-                    }
-                }
-            }
-        }
-        return null;
-    }
+//    public Pair<Table, MaterializedIndexMeta> getMaterializedViewIndex(String mvName) {
+//        // TODO: add an index to speed it up.
+//        for (Table table : idToTable.values()) {
+//            if (table instanceof OlapTable) {
+//                OlapTable olapTable = (OlapTable) table;
+//                for (MaterializedIndexMeta mvMeta : olapTable.getVisibleIndexMetas()) {
+//                    String indexName = olapTable.getIndexNameById(mvMeta.getIndexId());
+//                    if (indexName == null) {
+//                        continue;
+//                    }
+//                    if (indexName.equals(mvName)) {
+//                        return Pair.create(table, mvMeta);
+//                    }
+//                }
+//            }
+//        }
+//        return null;
+//    }
 
     /**
      * This is a thread-safe method when idToTable is a concurrent hash map
@@ -469,7 +465,7 @@ public class Database extends MetaObject implements Writable {
         if (fullQualifiedName.isEmpty()) {
             Text.writeString(out, fullQualifiedName);
         } else {
-            Text.writeString(out, ClusterNamespace.getFullName(fullQualifiedName));
+//            Text.writeString(out, ClusterNamespace.getFullName(fullQualifiedName));
         }
         // write tables
         int numTables = nameToTable.size();
@@ -479,7 +475,7 @@ public class Database extends MetaObject implements Writable {
         }
 
         out.writeLong(dataQuotaBytes);
-        Text.writeString(out, SystemInfoService.DEFAULT_CLUSTER);
+//        Text.writeString(out, SystemInfoService.DEFAULT_CLUSTER);
         // compatible for dbState
         Text.writeString(out, "NORMAL");
         // NOTE: compatible attachDbName
@@ -502,7 +498,7 @@ public class Database extends MetaObject implements Writable {
         super.readFields(in);
 
         id = in.readLong();
-        fullQualifiedName = ClusterNamespace.getNameFromFullName(Text.readString(in));
+//        fullQualifiedName = ClusterNamespace.getNameFromFullName(Text.readString(in));
         // read groups
         int numTables = in.readInt();
         for (int i = 0; i < numTables; ++i) {
@@ -566,7 +562,7 @@ public class Database extends MetaObject implements Writable {
         }
 
         return (id == database.id) && (fullQualifiedName.equals(database.fullQualifiedName)
-                && dataQuotaBytes == database.dataQuotaBytes);
+                                       && dataQuotaBytes == database.dataQuotaBytes);
     }
 
     public void setName(String name) {
@@ -581,10 +577,10 @@ public class Database extends MetaObject implements Writable {
         return catalogName;
     }
 
-    public synchronized void addFunction(Function function) throws UserException {
-        addFunctionImpl(function, false);
-        GlobalStateMgr.getCurrentState().getEditLog().logAddFunction(function);
-    }
+//    public synchronized void addFunction(Function function) throws UserException {
+//        addFunctionImpl(function, false);
+//        GlobalStateMgr.getCurrentState().getEditLog().logAddFunction(function);
+//    }
 
     public synchronized void replayAddFunction(Function function) {
         try {
@@ -630,68 +626,68 @@ public class Database extends MetaObject implements Writable {
         name2Function.put(functionName, functions);
     }
 
-    public synchronized void dropFunction(FunctionSearchDesc function) throws UserException {
-        dropFunctionImpl(function);
-        GlobalStateMgr.getCurrentState().getEditLog().logDropFunction(function);
-    }
+//    public synchronized void dropFunction(FunctionSearchDesc function) throws UserException {
+//        dropFunctionImpl(function);
+//        GlobalStateMgr.getCurrentState().getEditLog().logDropFunction(function);
+//    }
 
-    public synchronized void replayDropFunction(FunctionSearchDesc functionSearchDesc) {
-        try {
-            dropFunctionImpl(functionSearchDesc);
-        } catch (UserException e) {
-            Preconditions.checkArgument(false);
-        }
-    }
+//    public synchronized void replayDropFunction(FunctionSearchDesc functionSearchDesc) {
+//        try {
+//            dropFunctionImpl(functionSearchDesc);
+//        } catch (UserException e) {
+//            Preconditions.checkArgument(false);
+//        }
+//    }
 
-    public static void replayDropFunctionLog(FunctionSearchDesc functionSearchDesc) {
-        String dbName = functionSearchDesc.getName().getDb();
-        Database db = GlobalStateMgr.getCurrentState().getDb(dbName);
-        if (db == null) {
-            throw new Error("unknown database when replay log, db=" + dbName);
-        }
-        db.replayDropFunction(functionSearchDesc);
-    }
+//    public static void replayDropFunctionLog(FunctionSearchDesc functionSearchDesc) {
+//        String dbName = functionSearchDesc.getName().getDb();
+//        Database db = GlobalStateMgr.getCurrentState().getDb(dbName);
+//        if (db == null) {
+//            throw new Error("unknown database when replay log, db=" + dbName);
+//        }
+//        db.replayDropFunction(functionSearchDesc);
+//    }
 
-    public Function getFunction(FunctionSearchDesc function) {
-        String functionName = function.getName().getFunction();
-        List<Function> existFuncs = name2Function.get(functionName);
-        if (existFuncs == null) {
-            return null;
-        }
-        Function func = null;
-        for (Function existFunc : existFuncs) {
-            if (function.isIdentical(existFunc)) {
-                func = existFunc;
-                break;
-            }
-        }
-        return func;
-    }
+//    public Function getFunction(FunctionSearchDesc function) {
+//        String functionName = function.getName().getFunction();
+//        List<Function> existFuncs = name2Function.get(functionName);
+//        if (existFuncs == null) {
+//            return null;
+//        }
+//        Function func = null;
+//        for (Function existFunc : existFuncs) {
+//            if (function.isIdentical(existFunc)) {
+//                func = existFunc;
+//                break;
+//            }
+//        }
+//        return func;
+//    }
 
-    private void dropFunctionImpl(FunctionSearchDesc function) throws UserException {
-        String functionName = function.getName().getFunction();
-        List<Function> existFuncs = name2Function.get(functionName);
-        if (existFuncs == null) {
-            throw new UserException("Unknown function, function=" + function.toString());
-        }
-        boolean isFound = false;
-        List<Function> newFunctions = new ArrayList<>();
-        for (Function existFunc : existFuncs) {
-            if (function.isIdentical(existFunc)) {
-                isFound = true;
-            } else {
-                newFunctions.add(existFunc);
-            }
-        }
-        if (!isFound) {
-            throw new UserException("Unknown function, function=" + function.toString());
-        }
-        if (newFunctions.isEmpty()) {
-            name2Function.remove(functionName);
-        } else {
-            name2Function.put(functionName, newFunctions);
-        }
-    }
+//    private void dropFunctionImpl(FunctionSearchDesc function) throws UserException {
+//        String functionName = function.getName().getFunction();
+//        List<Function> existFuncs = name2Function.get(functionName);
+//        if (existFuncs == null) {
+//            throw new UserException("Unknown function, function=" + function.toString());
+//        }
+//        boolean isFound = false;
+//        List<Function> newFunctions = new ArrayList<>();
+//        for (Function existFunc : existFuncs) {
+//            if (function.isIdentical(existFunc)) {
+//                isFound = true;
+//            } else {
+//                newFunctions.add(existFunc);
+//            }
+//        }
+//        if (!isFound) {
+//            throw new UserException("Unknown function, function=" + function.toString());
+//        }
+//        if (newFunctions.isEmpty()) {
+//            name2Function.remove(functionName);
+//        } else {
+//            name2Function.put(functionName, newFunctions);
+//        }
+//    }
 
     public synchronized Function getFunction(Function desc, Function.CompareMode mode) {
         List<Function> fns = name2Function.get(desc.getFunctionName().getFunction());
@@ -709,10 +705,10 @@ public class Database extends MetaObject implements Writable {
         return functions;
     }
 
-    public boolean isSystemDatabase() {
-        return fullQualifiedName.equalsIgnoreCase(InfoSchemaDb.DATABASE_NAME) ||
-                fullQualifiedName.equalsIgnoreCase(SysDb.DATABASE_NAME);
-    }
+//    public boolean isSystemDatabase() {
+//        return fullQualifiedName.equalsIgnoreCase(InfoSchemaDb.DATABASE_NAME) ||
+//                fullQualifiedName.equalsIgnoreCase(SysDb.DATABASE_NAME);
+//    }
 
     // the invoker should hold db's writeLock
     public void setExist(boolean exist) {
