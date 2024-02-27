@@ -12,124 +12,129 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.statistics;
+package com.starrocks.sql.optimizer.statistics;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
-import io.datafibre.fibre.analysis.DateLiteral;
-import io.datafibre.fibre.analysis.JoinOperator;
-import io.datafibre.fibre.analysis.LiteralExpr;
-import io.datafibre.fibre.analysis.MaxLiteral;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.HiveMetaStoreTable;
-import io.datafibre.fibre.catalog.OlapTable;
-import io.datafibre.fibre.catalog.PaimonTable;
-import io.datafibre.fibre.catalog.Partition;
-import io.datafibre.fibre.catalog.PartitionInfo;
-import io.datafibre.fibre.catalog.PartitionKey;
-import io.datafibre.fibre.catalog.RangePartitionInfo;
-import io.datafibre.fibre.catalog.Table;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.common.Pair;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.sql.common.ErrorType;
-import io.datafibre.fibre.sql.common.StarRocksPlannerException;
-import io.datafibre.fibre.sql.optimizer.ExpressionContext;
-import io.datafibre.fibre.sql.optimizer.Group;
-import io.datafibre.fibre.sql.optimizer.JoinHelper;
-import io.datafibre.fibre.sql.optimizer.OptimizerContext;
-import io.datafibre.fibre.sql.optimizer.Utils;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefFactory;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
-import io.datafibre.fibre.sql.optimizer.operator.Operator;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorVisitor;
-import io.datafibre.fibre.sql.optimizer.operator.Projection;
-import io.datafibre.fibre.sql.optimizer.operator.ScanOperatorPredicates;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalAggregationOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalAssertOneRowOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalCTEAnchorOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalCTEConsumeOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalCTEProduceOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalDeltaLakeScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalEsScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalExceptOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalFileScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalFilterOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalHiveScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalHudiScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalIcebergScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalIntersectOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalJDBCScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalJoinOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalLimitOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalMetaScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalMysqlScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalOdpsScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalOlapScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalPaimonScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalProjectOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalRepeatOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalSchemaScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalTableFunctionOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalTableFunctionTableScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalTopNOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalUnionOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalValuesOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalViewScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalWindowOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalAssertOneRowOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalCTEAnchorOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalCTEConsumeOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalCTEProduceOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalDeltaLakeScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalEsScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalExceptOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalFileScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalFilterOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalHashAggregateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalHashJoinOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalHiveScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalHudiScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalIcebergScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalIntersectOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalJDBCScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalLimitOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalMergeJoinOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalMetaScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalMysqlScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalNestLoopJoinOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalNoCTEOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalOdpsScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalOlapScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalPaimonScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalProjectOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalRepeatOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalSchemaScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalTableFunctionOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalTopNOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalUnionOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalValuesOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalWindowOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.BinaryPredicateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.CallOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.CastOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.InPredicateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.PredicateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
-import io.datafibre.fibre.sql.optimizer.operator.stream.LogicalBinlogScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.stream.PhysicalStreamScanOperator;
-import io.datafibre.fibre.statistic.StatisticUtils;
+import com.starrocks.analysis.DateLiteral;
+import com.starrocks.analysis.JoinOperator;
+import com.starrocks.analysis.LiteralExpr;
+import com.starrocks.analysis.MaxLiteral;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.HiveMetaStoreTable;
+import com.starrocks.catalog.OlapTable;
+import com.starrocks.catalog.PaimonTable;
+import com.starrocks.catalog.Partition;
+import com.starrocks.catalog.PartitionInfo;
+import com.starrocks.catalog.PartitionKey;
+import com.starrocks.catalog.RangePartitionInfo;
+import com.starrocks.catalog.Table;
+import com.starrocks.catalog.Type;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.common.Pair;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.qe.SessionVariable;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.sql.common.ErrorType;
+import com.starrocks.sql.common.StarRocksPlannerException;
+import com.starrocks.sql.optimizer.ExpressionContext;
+import com.starrocks.sql.optimizer.Group;
+import com.starrocks.sql.optimizer.JoinHelper;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.OptimizerContext;
+import com.starrocks.sql.optimizer.UKFKConstraintsCollector;
+import com.starrocks.sql.optimizer.Utils;
+import com.starrocks.sql.optimizer.base.ColumnRefFactory;
+import com.starrocks.sql.optimizer.base.ColumnRefSet;
+import com.starrocks.sql.optimizer.operator.Operator;
+import com.starrocks.sql.optimizer.operator.OperatorVisitor;
+import com.starrocks.sql.optimizer.operator.Projection;
+import com.starrocks.sql.optimizer.operator.ScanOperatorPredicates;
+import com.starrocks.sql.optimizer.operator.UKFKConstraints;
+import com.starrocks.sql.optimizer.operator.logical.LogicalAggregationOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalAssertOneRowOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalCTEAnchorOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalCTEConsumeOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalCTEProduceOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalDeltaLakeScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalEsScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalExceptOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalFileScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalFilterOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalHiveScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalHudiScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalIcebergScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalIntersectOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalJDBCScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalJoinOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalLimitOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalMetaScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalMysqlScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalOdpsScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalOlapScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalPaimonScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalProjectOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalRepeatOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalSchemaScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalTableFunctionOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalTableFunctionTableScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalTopNOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalUnionOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalValuesOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalViewScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalWindowOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalAssertOneRowOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalCTEAnchorOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalCTEConsumeOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalCTEProduceOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalDeltaLakeScanOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalEsScanOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalExceptOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalFileScanOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalFilterOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalHashAggregateOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalHashJoinOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalHiveScanOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalHudiScanOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalIcebergScanOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalIntersectOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalJDBCScanOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalLimitOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalMergeJoinOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalMetaScanOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalMysqlScanOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalNestLoopJoinOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalNoCTEOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalOdpsScanOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalOlapScanOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalPaimonScanOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalProjectOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalRepeatOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalScanOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalSchemaScanOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalTableFunctionOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalTopNOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalUnionOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalValuesOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalWindowOperator;
+import com.starrocks.sql.optimizer.operator.scalar.BinaryPredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CastOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ConstantOperator;
+import com.starrocks.sql.optimizer.operator.scalar.InPredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.PredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.sql.optimizer.operator.stream.LogicalBinlogScanOperator;
+import com.starrocks.sql.optimizer.operator.stream.PhysicalStreamScanOperator;
+import com.starrocks.statistic.StatisticUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -148,8 +153,8 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.datafibre.fibre.sql.optimizer.statistics.ColumnStatistic.buildFrom;
-import static io.datafibre.fibre.sql.optimizer.statistics.StatisticsEstimateCoefficient.PREDICATE_UNKNOWN_FILTER_COEFFICIENT;
+import static com.starrocks.sql.optimizer.statistics.ColumnStatistic.buildFrom;
+import static com.starrocks.sql.optimizer.statistics.StatisticsEstimateCoefficient.PREDICATE_UNKNOWN_FILTER_COEFFICIENT;
 import static java.lang.Double.POSITIVE_INFINITY;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -560,6 +565,9 @@ public class StatisticsCalculator extends OperatorVisitor<Void, ExpressionContex
      * return new partition column statistics or else null
      */
     private ColumnStatistic adjustPartitionStatistic(Collection<Long> selectedPartitionId, OlapTable olapTable) {
+        if (CollectionUtils.isEmpty(selectedPartitionId)) {
+            return null;
+        }
         int selectedPartitionsSize = selectedPartitionId.size();
         int allNoEmptyPartitionsSize = (int) olapTable.getPartitions().stream().filter(Partition::hasData).count();
         if (selectedPartitionsSize != allNoEmptyPartitionsSize) {
@@ -801,6 +809,19 @@ public class StatisticsCalculator extends OperatorVisitor<Void, ExpressionContex
         Statistics innerJoinStats;
         if (innerRowCount == -1) {
             innerJoinStats = estimateInnerJoinStatistics(crossJoinStats, eqOnPredicates);
+
+            OptExpression optExpression = context.getOptExpression();
+            SessionVariable sessionVariable = ConnectContext.get().getSessionVariable();
+
+            if (optExpression != null && sessionVariable.isEnableUKFKOpt()) {
+                UKFKConstraintsCollector.collectColumnConstraints(optExpression);
+                UKFKConstraints constraints = optExpression.getConstraints();
+                Statistics ukfkJoinStat = buildStatisticsForUKFKJoin(joinType, constraints,
+                        leftRowCount, rightRowCount, crossBuilder);
+                if (ukfkJoinStat.getOutputRowCount() < innerJoinStats.getOutputRowCount()) {
+                    innerJoinStats = ukfkJoinStat;
+                }
+            }
             innerRowCount = innerJoinStats.getOutputRowCount();
         } else {
             innerJoinStats = Statistics.buildFrom(crossJoinStats).setOutputRowCount(innerRowCount).build();
@@ -881,6 +902,40 @@ public class StatisticsCalculator extends OperatorVisitor<Void, ExpressionContex
 
         context.setStatistics(estimateStatistics);
         return visitOperator(context.getOp(), context);
+    }
+
+    private Statistics buildStatisticsForUKFKJoin(JoinOperator joinType, UKFKConstraints constraints,
+                                                  double leftRowCount, double rightRowCount,
+                                                  Statistics.Builder builder) {
+        UKFKConstraints.JoinProperty joinProperty = constraints.getJoinProperty();
+        if (joinProperty == null) {
+            return builder.build();
+        }
+        if (joinType.isInnerJoin()) {
+            if (joinProperty.isLeftUK) {
+                builder.setOutputRowCount(rightRowCount);
+            } else {
+                builder.setOutputRowCount(leftRowCount);
+            }
+        } else if (joinType.isLeftOuterJoin()) {
+            if (!joinProperty.isLeftUK) {
+                builder.setOutputRowCount(leftRowCount);
+            }
+        } else if (joinType.isRightOuterJoin()) {
+            if (joinProperty.isLeftUK) {
+                builder.setOutputRowCount(rightRowCount);
+            }
+        } else if (joinType.isLeftSemiJoin()) {
+            if (joinProperty.isLeftUK) {
+                builder.setOutputRowCount(leftRowCount);
+            }
+        } else if (joinType.isRightSemiJoin()) {
+            if (!joinProperty.isLeftUK) {
+                builder.setOutputRowCount(rightRowCount);
+            }
+        }
+
+        return builder.build();
     }
 
     private void computeNullFractionForOuterJoin(double outerTableRowCount, double innerJoinRowCount,

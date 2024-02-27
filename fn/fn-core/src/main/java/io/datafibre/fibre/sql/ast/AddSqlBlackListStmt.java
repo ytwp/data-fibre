@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
-import io.datafibre.fibre.analysis.RedirectStatus;
-import io.datafibre.fibre.sql.analyzer.SemanticException;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.analysis.RedirectStatus;
+import com.starrocks.sql.analyzer.SemanticException;
+import com.starrocks.sql.parser.NodePosition;
 
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;

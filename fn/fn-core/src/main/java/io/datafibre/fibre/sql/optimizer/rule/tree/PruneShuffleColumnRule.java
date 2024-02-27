@@ -13,27 +13,27 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.rule.tree;
+package com.starrocks.sql.optimizer.rule.tree;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.analysis.JoinOperator;
-import io.datafibre.fibre.qe.SessionVariable;
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.OptExpressionVisitor;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefFactory;
-import io.datafibre.fibre.sql.optimizer.base.DistributionCol;
-import io.datafibre.fibre.sql.optimizer.base.DistributionSpec;
-import io.datafibre.fibre.sql.optimizer.base.HashDistributionDesc;
-import io.datafibre.fibre.sql.optimizer.base.HashDistributionSpec;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalDistributionOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalJoinOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
-import io.datafibre.fibre.sql.optimizer.statistics.ColumnStatistic;
-import io.datafibre.fibre.sql.optimizer.statistics.Statistics;
-import io.datafibre.fibre.sql.optimizer.statistics.StatisticsEstimateCoefficient;
-import io.datafibre.fibre.sql.optimizer.task.TaskContext;
+import com.starrocks.analysis.JoinOperator;
+import com.starrocks.qe.SessionVariable;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.OptExpressionVisitor;
+import com.starrocks.sql.optimizer.base.ColumnRefFactory;
+import com.starrocks.sql.optimizer.base.DistributionCol;
+import com.starrocks.sql.optimizer.base.DistributionSpec;
+import com.starrocks.sql.optimizer.base.HashDistributionDesc;
+import com.starrocks.sql.optimizer.base.HashDistributionSpec;
+import com.starrocks.sql.optimizer.operator.OperatorType;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalDistributionOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalJoinOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.statistics.ColumnStatistic;
+import com.starrocks.sql.optimizer.statistics.Statistics;
+import com.starrocks.sql.optimizer.statistics.StatisticsEstimateCoefficient;
+import com.starrocks.sql.optimizer.task.TaskContext;
 
 import java.util.List;
 import java.util.stream.Collectors;

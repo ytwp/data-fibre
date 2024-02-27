@@ -32,11 +32,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.service;
+package com.starrocks.service;
 
-
-import io.datafibre.fibre.common.Config;
-import io.datafibre.fibre.qe.ConnectScheduler;
+import com.starrocks.common.Config;
+import com.starrocks.qe.ConnectScheduler;
 
 // Execute environment, used to save other module, need to singleton
 public class ExecuteEnv {

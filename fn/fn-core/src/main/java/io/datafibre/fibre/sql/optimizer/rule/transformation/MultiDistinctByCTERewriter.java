@@ -12,49 +12,49 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.rule.transformation;
+package com.starrocks.sql.optimizer.rule.transformation;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.datafibre.fibre.analysis.BinaryType;
-import io.datafibre.fibre.analysis.FunctionName;
-import io.datafibre.fibre.analysis.JoinOperator;
-import io.datafibre.fibre.catalog.Function;
-import io.datafibre.fibre.catalog.FunctionSet;
-import io.datafibre.fibre.catalog.ScalarType;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.sql.analyzer.DecimalV3FunctionAnalyzer;
-import io.datafibre.fibre.sql.optimizer.ExpressionContext;
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.OptimizerContext;
-import io.datafibre.fibre.sql.optimizer.Utils;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefFactory;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
-import io.datafibre.fibre.sql.optimizer.operator.Operator;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorBuilderFactory;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalAggregationOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalCTEAnchorOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalCTEConsumeOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalCTEProduceOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalFilterOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalJoinOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalProjectOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.BinaryPredicateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.CallOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.CastOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
-import io.datafibre.fibre.sql.optimizer.rewrite.ReplaceColumnRefRewriter;
-import io.datafibre.fibre.sql.optimizer.rewrite.ScalarOperatorRewriter;
-import io.datafibre.fibre.sql.optimizer.rewrite.scalar.ImplicitCastRule;
+import com.starrocks.analysis.BinaryType;
+import com.starrocks.analysis.FunctionName;
+import com.starrocks.analysis.JoinOperator;
+import com.starrocks.catalog.Function;
+import com.starrocks.catalog.FunctionSet;
+import com.starrocks.catalog.ScalarType;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.sql.analyzer.DecimalV3FunctionAnalyzer;
+import com.starrocks.sql.optimizer.ExpressionContext;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.OptimizerContext;
+import com.starrocks.sql.optimizer.Utils;
+import com.starrocks.sql.optimizer.base.ColumnRefFactory;
+import com.starrocks.sql.optimizer.base.ColumnRefSet;
+import com.starrocks.sql.optimizer.operator.Operator;
+import com.starrocks.sql.optimizer.operator.OperatorBuilderFactory;
+import com.starrocks.sql.optimizer.operator.logical.LogicalAggregationOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalCTEAnchorOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalCTEConsumeOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalCTEProduceOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalFilterOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalJoinOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalProjectOperator;
+import com.starrocks.sql.optimizer.operator.scalar.BinaryPredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CastOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.sql.optimizer.rewrite.ReplaceColumnRefRewriter;
+import com.starrocks.sql.optimizer.rewrite.ScalarOperatorRewriter;
+import com.starrocks.sql.optimizer.rewrite.scalar.ImplicitCastRule;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static io.datafibre.fibre.catalog.Function.CompareMode.IS_NONSTRICT_SUPERTYPE_OF;
+import static com.starrocks.catalog.Function.CompareMode.IS_NONSTRICT_SUPERTYPE_OF;
 
 /*
  *

@@ -32,10 +32,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.catalog;
+package com.starrocks.catalog;
 
 import com.google.common.base.Preconditions;
-import io.datafibre.fibre.common.io.Text;
+import com.starrocks.common.io.Text;
 
 import java.io.DataInput;
 import java.io.DataOutput;

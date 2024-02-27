@@ -12,38 +12,39 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.rule;
+package com.starrocks.sql.optimizer.rule.transformation.materialization.rule;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.catalog.MaterializedView;
-import io.datafibre.fibre.catalog.Table;
-import io.datafibre.fibre.common.profile.Tracers;
-import io.datafibre.fibre.metric.MaterializedViewMetricsEntity;
-import io.datafibre.fibre.metric.MaterializedViewMetricsRegistry;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.sql.optimizer.MaterializationContext;
-import io.datafibre.fibre.sql.optimizer.MvRewriteContext;
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.OptimizerContext;
-import io.datafibre.fibre.sql.optimizer.QueryMaterializationContext;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefFactory;
-import io.datafibre.fibre.sql.optimizer.operator.Operator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalAggregationOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalOlapScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.pattern.Pattern;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
-import io.datafibre.fibre.sql.optimizer.rewrite.ReplaceColumnRefRewriter;
-import io.datafibre.fibre.sql.optimizer.rule.RuleType;
-import io.datafibre.fibre.sql.optimizer.rule.transformation.TransformationRule;
-import io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.BestMvSelector;
-import io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.MVColumnPruner;
-import io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.MVPartitionPruner;
-import io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.MaterializedViewRewriter;
-import io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.MvUtils;
-import io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.PredicateSplit;
+import com.starrocks.catalog.MaterializedView;
+import com.starrocks.catalog.Table;
+import com.starrocks.common.profile.Tracers;
+import com.starrocks.metric.MaterializedViewMetricsEntity;
+import com.starrocks.metric.MaterializedViewMetricsRegistry;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.sql.optimizer.MaterializationContext;
+import com.starrocks.sql.optimizer.MvRewriteContext;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.OptimizerContext;
+import com.starrocks.sql.optimizer.QueryMaterializationContext;
+import com.starrocks.sql.optimizer.base.ColumnRefFactory;
+import com.starrocks.sql.optimizer.operator.Operator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalAggregationOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalOlapScanOperator;
+import com.starrocks.sql.optimizer.operator.pattern.Pattern;
+import com.starrocks.sql.optimizer.operator.scalar.ConstantOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.sql.optimizer.rewrite.ReplaceColumnRefRewriter;
+import com.starrocks.sql.optimizer.rule.RuleType;
+import com.starrocks.sql.optimizer.rule.transformation.TransformationRule;
+import com.starrocks.sql.optimizer.rule.transformation.materialization.BestMvSelector;
+import com.starrocks.sql.optimizer.rule.transformation.materialization.MVColumnPruner;
+import com.starrocks.sql.optimizer.rule.transformation.materialization.MVPartitionPruner;
+import com.starrocks.sql.optimizer.rule.transformation.materialization.MaterializedViewRewriter;
+import com.starrocks.sql.optimizer.rule.transformation.materialization.MvPartitionCompensator;
+import com.starrocks.sql.optimizer.rule.transformation.materialization.MvUtils;
+import com.starrocks.sql.optimizer.rule.transformation.materialization.PredicateSplit;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
@@ -51,8 +52,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.datafibre.fibre.metric.MaterializedViewMetricsEntity.isUpdateMaterializedViewMetrics;
-import static io.datafibre.fibre.sql.optimizer.OptimizerTraceUtil.logMVRewrite;
+import static com.starrocks.metric.MaterializedViewMetricsEntity.isUpdateMaterializedViewMetrics;
+import static com.starrocks.sql.optimizer.OptimizerTraceUtil.logMVRewrite;
 
 public abstract class BaseMaterializedViewRewriteRule extends TransformationRule {
 
@@ -218,18 +219,17 @@ public abstract class BaseMaterializedViewRewriteRule extends TransformationRule
                                                   ReplaceColumnRefRewriter queryColumnRefRewriter) {
         // Cache partition predicate predicates because it's expensive time costing if there are too many materialized views or
         // query expressions are too complex.
-        final ScalarOperator queryPartitionPredicate = MvUtils.compensatePartitionPredicate(mvContext,
-                queryColumnRefFactory, queryExpression);
+        final ScalarOperator queryPartitionPredicate = MvPartitionCompensator.compensateQueryPartitionPredicate(
+                mvContext, queryColumnRefFactory, queryExpression);
         if (queryPartitionPredicate == null) {
             logMVRewrite(mvContext.getOptimizerContext(), this, "Compensate query expression's partition " +
                     "predicates from pruned partitions failed.");
             return null;
         }
-        // only add valid predicates into query split predicate
+
         Set<ScalarOperator> queryConjuncts = MvUtils.getPredicateForRewrite(queryExpression);
+        // only add valid predicates into query split predicate
         if (!ConstantOperator.TRUE.equals(queryPartitionPredicate)) {
-            logMVRewrite(mvContext.getOptimizerContext(), this, "Query compensate partition predicate:{}",
-                    queryPartitionPredicate);
             queryConjuncts.addAll(MvUtils.getAllValidPredicates(queryPartitionPredicate));
         }
 

@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.parser;
+package com.starrocks.sql.parser;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import javax.validation.constraints.NotNull;
 
 // Used to record element position in the sql. ParserRuleContext records the input start and end token,
 // and we can transform their line and col info to NodePosition.

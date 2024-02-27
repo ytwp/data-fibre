@@ -32,13 +32,15 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
 import com.google.common.base.Preconditions;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.sql.parser.NodePosition;
-import io.datafibre.fibre.thrift.TAnalyticWindowBoundaryType;
-import io.datafibre.fibre.thrift.TAnalyticWindowType;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.sql.parser.NodePosition;
+import com.starrocks.thrift.TAnalyticWindow;
+import com.starrocks.thrift.TAnalyticWindowBoundary;
+import com.starrocks.thrift.TAnalyticWindowBoundaryType;
+import com.starrocks.thrift.TAnalyticWindowType;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -53,13 +55,13 @@ public class AnalyticWindow implements ParseNode {
             new Boundary(BoundaryType.UNBOUNDED_PRECEDING, null),
             new Boundary(BoundaryType.CURRENT_ROW, null));
 
-    public static final AnalyticWindow DEFAULT_ROWS_WINDOW = new AnalyticWindow(Type.ROWS,
-            new Boundary(BoundaryType.UNBOUNDED_PRECEDING, null),
-            new Boundary(BoundaryType.CURRENT_ROW, null));
+    public static final AnalyticWindow DEFAULT_ROWS_WINDOW = new AnalyticWindow(AnalyticWindow.Type.ROWS,
+            new AnalyticWindow.Boundary(AnalyticWindow.BoundaryType.UNBOUNDED_PRECEDING, null),
+            new AnalyticWindow.Boundary(AnalyticWindow.BoundaryType.CURRENT_ROW, null));
 
-    public static final AnalyticWindow DEFAULT_UNBOUNDED_WINDOW = new AnalyticWindow(Type.ROWS,
-            new Boundary(BoundaryType.UNBOUNDED_PRECEDING, null),
-            new Boundary(BoundaryType.UNBOUNDED_FOLLOWING, null));
+    public static final AnalyticWindow DEFAULT_UNBOUNDED_WINDOW = new AnalyticWindow(AnalyticWindow.Type.ROWS,
+            new AnalyticWindow.Boundary(AnalyticWindow.BoundaryType.UNBOUNDED_PRECEDING, null),
+            new AnalyticWindow.Boundary(AnalyticWindow.BoundaryType.UNBOUNDED_FOLLOWING, null));
 
     public enum Type {
         ROWS("ROWS"),
@@ -181,7 +183,7 @@ public class AnalyticWindow implements ParseNode {
         public Boundary(BoundaryType type, Expr e, BigDecimal offsetValue, NodePosition pos) {
             Preconditions.checkState(
                     (type.isOffset() && e != null)
-                    || (!type.isOffset() && e == null));
+                            || (!type.isOffset() && e == null));
             this.pos = pos;
             this.type = type;
             this.expr = e;
@@ -204,16 +206,16 @@ public class AnalyticWindow implements ParseNode {
             return pos;
         }
 
-//        public TAnalyticWindowBoundary toThrift(Type windowType) {
-//            TAnalyticWindowBoundary result = new TAnalyticWindowBoundary(type.toThrift());
-//
-//            if (type.isOffset() && windowType == Type.ROWS) {
-//                result.setRows_offset_value(offsetValue.longValue());
-//            }
-//
-//            // TODO: range windows need range_offset_predicate
-//            return result;
-//        }
+        public TAnalyticWindowBoundary toThrift(Type windowType) {
+            TAnalyticWindowBoundary result = new TAnalyticWindowBoundary(type.toThrift());
+
+            if (type.isOffset() && windowType == Type.ROWS) {
+                result.setRows_offset_value(offsetValue.longValue());
+            }
+
+            // TODO: range windows need range_offset_predicate
+            return result;
+        }
 
         @Override
         public boolean equals(Object obj) {
@@ -363,21 +365,21 @@ public class AnalyticWindow implements ParseNode {
         return pos;
     }
 
-//    public TAnalyticWindow toThrift() {
-//        TAnalyticWindow result = new TAnalyticWindow(type_.toThrift());
-//
-//        if (leftBoundary_.getType() != BoundaryType.UNBOUNDED_PRECEDING) {
-//            result.setWindow_start(leftBoundary_.toThrift(type_));
-//        }
-//
-//        Preconditions.checkNotNull(rightBoundary_);
-//
-//        if (rightBoundary_.getType() != BoundaryType.UNBOUNDED_FOLLOWING) {
-//            result.setWindow_end(rightBoundary_.toThrift(type_));
-//        }
-//
-//        return result;
-//    }
+    public TAnalyticWindow toThrift() {
+        TAnalyticWindow result = new TAnalyticWindow(type_.toThrift());
+
+        if (leftBoundary_.getType() != BoundaryType.UNBOUNDED_PRECEDING) {
+            result.setWindow_start(leftBoundary_.toThrift(type_));
+        }
+
+        Preconditions.checkNotNull(rightBoundary_);
+
+        if (rightBoundary_.getType() != BoundaryType.UNBOUNDED_FOLLOWING) {
+            result.setWindow_end(rightBoundary_.toThrift(type_));
+        }
+
+        return result;
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -398,8 +400,8 @@ public class AnalyticWindow implements ParseNode {
         }
 
         return type_ == o.type_
-               && leftBoundary_.equals(o.leftBoundary_)
-               && rightBoundaryEqual;
+                && leftBoundary_.equals(o.leftBoundary_)
+                && rightBoundaryEqual;
     }
 
     @Override
@@ -439,7 +441,7 @@ public class AnalyticWindow implements ParseNode {
             if (!e.isConstant() || !e.getType().isFixedPointType() || !isPos) {
                 throw new AnalysisException(
                         "For ROWS window, the value of a PRECEDING/FOLLOWING offset must be a "
-                        + "constant positive integer: " + boundary.toSql());
+                                + "constant positive integer: " + boundary.toSql());
             }
 
             Preconditions.checkNotNull(val);
@@ -448,7 +450,7 @@ public class AnalyticWindow implements ParseNode {
             if (!e.isConstant() || !e.getType().isNumericType() || !isPos) {
                 throw new AnalysisException(
                         "For RANGE window, the value of a PRECEDING/FOLLOWING offset must be a "
-                        + "constant positive number: " + boundary.toSql());
+                                + "constant positive number: " + boundary.toSql());
             }
 
             boundary.offsetValue = BigDecimal.valueOf(val);
@@ -494,26 +496,26 @@ public class AnalyticWindow implements ParseNode {
         if (leftBoundary_.getType() == BoundaryType.UNBOUNDED_FOLLOWING) {
             throw new AnalysisException(
                     leftBoundary_.getType().toString() + " is only allowed for upper bound of "
-                    + "BETWEEN");
+                            + "BETWEEN");
         }
 
         if (rightBoundary_ != null
-            && rightBoundary_.getType() == BoundaryType.UNBOUNDED_PRECEDING) {
+                && rightBoundary_.getType() == BoundaryType.UNBOUNDED_PRECEDING) {
             throw new AnalysisException(
                     rightBoundary_.getType().toString() + " is only allowed for lower bound of "
-                    + "BETWEEN");
+                            + "BETWEEN");
         }
 
         // TODO: Remove when RANGE windows with offset boundaries are supported.
         if (type_ == Type.RANGE) {
             if (leftBoundary_.type.isOffset()
-                || (rightBoundary_ != null && rightBoundary_.type.isOffset())
-                || (leftBoundary_.type == BoundaryType.CURRENT_ROW
+                    || (rightBoundary_ != null && rightBoundary_.type.isOffset())
+                    || (leftBoundary_.type == BoundaryType.CURRENT_ROW
                     && (rightBoundary_ == null
-                        || rightBoundary_.type == BoundaryType.CURRENT_ROW))) {
+                    || rightBoundary_.type == BoundaryType.CURRENT_ROW))) {
                 throw new AnalysisException(
                         "RANGE is only supported with both the lower and upper bounds UNBOUNDED or"
-                        + " one UNBOUNDED and the other CURRENT ROW.");
+                                + " one UNBOUNDED and the other CURRENT ROW.");
             }
         }
 
@@ -540,11 +542,11 @@ public class AnalyticWindow implements ParseNode {
 
         if (leftBoundary_.getType() == BoundaryType.FOLLOWING) {
             if (rightBoundary_.getType() != BoundaryType.FOLLOWING
-                && rightBoundary_.getType() != BoundaryType.UNBOUNDED_FOLLOWING) {
+                    && rightBoundary_.getType() != BoundaryType.UNBOUNDED_FOLLOWING) {
                 throw new AnalysisException(
                         "A lower window bound of " + BoundaryType.FOLLOWING.toString()
-                        + " requires that the upper bound also be "
-                        + BoundaryType.FOLLOWING.toString());
+                                + " requires that the upper bound also be "
+                                + BoundaryType.FOLLOWING.toString());
             }
 
             if (rightBoundary_.getType() != BoundaryType.UNBOUNDED_FOLLOWING) {
@@ -554,11 +556,11 @@ public class AnalyticWindow implements ParseNode {
 
         if (rightBoundary_.getType() == BoundaryType.PRECEDING) {
             if (leftBoundary_.getType() != BoundaryType.PRECEDING
-                && leftBoundary_.getType() != BoundaryType.UNBOUNDED_PRECEDING) {
+                    && leftBoundary_.getType() != BoundaryType.UNBOUNDED_PRECEDING) {
                 throw new AnalysisException(
                         "An upper window bound of " + BoundaryType.PRECEDING.toString()
-                        + " requires that the lower bound also be "
-                        + BoundaryType.PRECEDING.toString());
+                                + " requires that the lower bound also be "
+                                + BoundaryType.PRECEDING.toString());
             }
 
             if (leftBoundary_.getType() != BoundaryType.UNBOUNDED_PRECEDING) {

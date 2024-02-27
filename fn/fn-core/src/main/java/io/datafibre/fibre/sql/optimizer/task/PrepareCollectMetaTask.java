@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.task;
+package com.starrocks.sql.optimizer.task;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import io.datafibre.fibre.common.profile.Timer;
-import io.datafibre.fibre.common.profile.Tracers;
-import io.datafibre.fibre.connector.MetaPreparationItem;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.server.MetadataMgr;
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.Utils;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalScanOperator;
+import com.starrocks.common.profile.Timer;
+import com.starrocks.common.profile.Tracers;
+import com.starrocks.connector.MetaPreparationItem;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.server.MetadataMgr;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.Utils;
+import com.starrocks.sql.optimizer.operator.logical.LogicalScanOperator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
-import static io.datafibre.fibre.common.profile.Tracers.Module.EXTERNAL;
+import static com.starrocks.common.profile.Tracers.Module.EXTERNAL;
 
 public class PrepareCollectMetaTask extends OptimizerTask {
 

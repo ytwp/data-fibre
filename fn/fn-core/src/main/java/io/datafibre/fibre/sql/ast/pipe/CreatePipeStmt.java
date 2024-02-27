@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.ast.pipe;
+package com.starrocks.sql.ast.pipe;
 
-import io.datafibre.fibre.analysis.TableName;
-//import io.datafibre.fibre.load.pipe.FilePipeSource;
-import io.datafibre.fibre.sql.ast.AstVisitor;
-import io.datafibre.fibre.sql.ast.DdlStmt;
-import io.datafibre.fibre.sql.ast.InsertStmt;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.analysis.TableName;
+import com.starrocks.load.pipe.FilePipeSource;
+import com.starrocks.sql.ast.AstVisitor;
+import com.starrocks.sql.ast.DdlStmt;
+import com.starrocks.sql.ast.InsertStmt;
+import com.starrocks.sql.parser.NodePosition;
 
 import java.util.Map;
 
@@ -33,7 +33,7 @@ public class CreatePipeStmt extends DdlStmt {
     private final InsertStmt insertStmt;
     private String insertSql;
     private TableName targetTable;
-//    private FilePipeSource pipeSource;
+    private FilePipeSource pipeSource;
 
     public CreatePipeStmt(boolean ifNotExists, boolean orReplace,
                           PipeName pipeName, int insertSqlStartIndex, InsertStmt insertStmt,
@@ -83,13 +83,13 @@ public class CreatePipeStmt extends DdlStmt {
         this.targetTable = targetTable;
     }
 
-//    public void setDataSource(FilePipeSource source) {
-//        this.pipeSource = source;
-//    }
-//
-//    public FilePipeSource getDataSource() {
-//        return pipeSource;
-//    }
+    public void setDataSource(FilePipeSource source) {
+        this.pipeSource = source;
+    }
+
+    public FilePipeSource getDataSource() {
+        return pipeSource;
+    }
 
     public Map<String, String> getProperties() {
         return properties;

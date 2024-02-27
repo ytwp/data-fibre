@@ -32,11 +32,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
-import io.datafibre.fibre.sql.analyzer.SemanticException;
-import io.datafibre.fibre.sql.ast.AstVisitor;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.sql.analyzer.SemanticException;
+import com.starrocks.sql.ast.AstVisitor;
+import com.starrocks.sql.parser.NodePosition;
+import com.starrocks.thrift.TExprNode;
 
 /**
  * Class describing between predicates. After successful analysis, we equal
@@ -73,11 +74,11 @@ public class BetweenPredicate extends Predicate {
         return isNotBetween;
     }
 
-//    @Override
-//    protected void toThrift(TExprNode msg) {
-//        throw new IllegalStateException(
-//                "BetweenPredicate needs to be rewritten into a CompoundPredicate.");
-//    }
+    @Override
+    protected void toThrift(TExprNode msg) {
+        throw new IllegalStateException(
+                "BetweenPredicate needs to be rewritten into a CompoundPredicate.");
+    }
 
     @Override
     public String toSqlImpl() {

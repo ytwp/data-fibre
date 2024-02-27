@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.common.util;
+package com.starrocks.common.util;
 
-import io.datafibre.fibre.common.proc.BaseProcResult;
+import com.starrocks.common.proc.BaseProcResult;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -32,25 +32,55 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.qe;
+package com.starrocks.qe;
 
 import com.google.common.base.Strings;
-import io.datafibre.fibre.analysis.Expr;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.common.Config;
-import io.datafibre.fibre.common.ErrorCode;
-import io.datafibre.fibre.common.ErrorReport;
-import io.datafibre.fibre.common.profile.Tracers;
-import io.datafibre.fibre.common.util.DebugUtil;
-import io.datafibre.fibre.common.util.UUIDUtil;
-import io.datafibre.fibre.common.util.concurrent.lock.Locker;
-import io.datafibre.fibre.mysql.*;
-import io.datafibre.fibre.rpc.RpcException;
-import io.datafibre.fibre.sql.ast.ExecuteStmt;
-import io.datafibre.fibre.sql.ast.PrepareStmt;
-import io.datafibre.fibre.sql.ast.QueryStatement;
-import io.datafibre.fibre.sql.ast.StatementBase;
-import io.datafibre.fibre.sql.parser.ParsingException;
+import com.starrocks.analysis.Expr;
+import com.starrocks.analysis.LiteralExpr;
+import com.starrocks.analysis.NullLiteral;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.Database;
+import com.starrocks.catalog.Table;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.common.Config;
+import com.starrocks.common.ErrorCode;
+import com.starrocks.common.ErrorReport;
+import com.starrocks.common.profile.Tracers;
+import com.starrocks.common.util.AuditStatisticsUtil;
+import com.starrocks.common.util.DebugUtil;
+import com.starrocks.common.util.LogUtil;
+import com.starrocks.common.util.UUIDUtil;
+import com.starrocks.common.util.concurrent.lock.LockType;
+import com.starrocks.common.util.concurrent.lock.Locker;
+import com.starrocks.connector.exception.StarRocksConnectorException;
+import com.starrocks.metric.MetricRepo;
+import com.starrocks.metric.ResourceGroupMetricMgr;
+import com.starrocks.mysql.MysqlChannel;
+import com.starrocks.mysql.MysqlCommand;
+import com.starrocks.mysql.MysqlPacket;
+import com.starrocks.mysql.MysqlProto;
+import com.starrocks.mysql.MysqlSerializer;
+import com.starrocks.mysql.MysqlServerStatusFlag;
+import com.starrocks.plugin.AuditEvent.EventType;
+import com.starrocks.proto.PQueryStatistics;
+import com.starrocks.rpc.RpcException;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.server.WarehouseManager;
+import com.starrocks.service.FrontendOptions;
+import com.starrocks.sql.analyzer.AstToSQLBuilder;
+import com.starrocks.sql.ast.ExecuteStmt;
+import com.starrocks.sql.ast.PrepareStmt;
+import com.starrocks.sql.ast.QueryStatement;
+import com.starrocks.sql.ast.StatementBase;
+import com.starrocks.sql.ast.UserIdentity;
+import com.starrocks.sql.common.SqlDigestBuilder;
+import com.starrocks.sql.parser.ParsingException;
+import com.starrocks.thrift.TMasterOpRequest;
+import com.starrocks.thrift.TMasterOpResult;
+import com.starrocks.thrift.TQueryOptions;
+import com.starrocks.thrift.TWorkGroup;
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -59,8 +89,12 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.AsynchronousCloseException;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 /**
@@ -87,11 +121,11 @@ public class ConnectProcessor {
                 if (parts[0].equalsIgnoreCase("catalog")) {
                     ctx.changeCatalog(parts[1]);
                 } else if (parts[0].equalsIgnoreCase("warehouse")) {
-//                    WarehouseManager warehouseMgr = GlobalStateMgr.getCurrentState().getWarehouseMgr();
+                    WarehouseManager warehouseMgr = GlobalStateMgr.getCurrentState().getWarehouseMgr();
                     String newWarehouseName = parts[1];
-//                    if (!warehouseMgr.warehouseExists(newWarehouseName)) {
-//                        ErrorReport.reportAnalysisException(ErrorCode.ERR_BAD_WAREHOUSE_ERROR, newWarehouseName);
-//                    }
+                    if (!warehouseMgr.warehouseExists(newWarehouseName)) {
+                        ErrorReport.reportAnalysisException(ErrorCode.ERR_BAD_WAREHOUSE_ERROR, newWarehouseName);
+                    }
                     ctx.setCurrentWarehouse(newWarehouseName);
                 } else {
                     ctx.getState().setError("not supported command");
@@ -141,97 +175,97 @@ public class ConnectProcessor {
         ctx.resetSessionVariable();
     }
 
-//    public void auditAfterExec(String origStmt, StatementBase parsedStmt, PQueryStatistics statistics) {
-//        // slow query
-//        long endTime = System.currentTimeMillis();
-//        long elapseMs = endTime - ctx.getStartTime();
-//
-//        boolean isForwardToLeader = (executor != null) ? executor.getIsForwardToLeaderOrInit(false) : false;
-//
-//        // ignore recording some failed stmt like kill connection
-//        if (ctx.getState().getErrType() == QueryState.ErrType.IGNORE_ERR) {
-//            return;
-//        }
-//
-//        // TODO how to unify TStatusCode, ErrorCode, ErrType, ConnectContext.errorCode
-//        String errorCode = StringUtils.isNotEmpty(ctx.getErrorCode()) ? ctx.getErrorCode() : ctx.getState().getErrType().name();
-//        ctx.getAuditEventBuilder().setEventType(EventType.AFTER_QUERY)
-//                .setState(ctx.getState().toString())
-//                .setErrorCode(errorCode)
-//                .setQueryTime(elapseMs)
-//                .setReturnRows(ctx.getReturnRows())
-//                .setStmtId(ctx.getStmtId())
-//                .setIsForwardToLeader(isForwardToLeader)
-//                .setQueryId(ctx.getQueryId() == null ? "NaN" : ctx.getQueryId().toString());
-//        if (statistics != null) {
-//            ctx.getAuditEventBuilder().setScanBytes(statistics.scanBytes);
-//            ctx.getAuditEventBuilder().setScanRows(statistics.scanRows);
-//            ctx.getAuditEventBuilder().setCpuCostNs(statistics.cpuCostNs == null ? -1 : statistics.cpuCostNs);
-//            ctx.getAuditEventBuilder().setMemCostBytes(statistics.memCostBytes == null ? -1 : statistics.memCostBytes);
-//            ctx.getAuditEventBuilder().setSpilledBytes(statistics.spillBytes == null ? -1 : statistics.spillBytes);
-//            ctx.getAuditEventBuilder().setReturnRows(statistics.returnedRows == null ? 0 : statistics.returnedRows);
-//        }
-//
-//        if (ctx.getState().isQuery()) {
-//            MetricRepo.COUNTER_QUERY_ALL.increase(1L);
-//            ResourceGroupMetricMgr.increaseQuery(ctx, 1L);
-//            if (ctx.getState().getStateType() == QueryState.MysqlStateType.ERR) {
-//                // err query
-//                MetricRepo.COUNTER_QUERY_ERR.increase(1L);
-//                ResourceGroupMetricMgr.increaseQueryErr(ctx, 1L);
-//            } else {
-//                // ok query
-//                MetricRepo.COUNTER_QUERY_SUCCESS.increase(1L);
-//                MetricRepo.HISTO_QUERY_LATENCY.update(elapseMs);
-//                ResourceGroupMetricMgr.updateQueryLatency(ctx, elapseMs);
-//                if (elapseMs > Config.qe_slow_log_ms || ctx.getSessionVariable().isEnableSQLDigest()) {
-//                    MetricRepo.COUNTER_SLOW_QUERY.increase(1L);
-//                    ctx.getAuditEventBuilder().setDigest(computeStatementDigest(parsedStmt));
-//                }
-//            }
-//            ctx.getAuditEventBuilder().setIsQuery(true);
-//            if (ctx.getSessionVariable().isEnableBigQueryLog()) {
-//                ctx.getAuditEventBuilder().setBigQueryLogCPUSecondThreshold(
-//                        ctx.getSessionVariable().getBigQueryLogCPUSecondThreshold());
-//                ctx.getAuditEventBuilder().setBigQueryLogScanBytesThreshold(
-//                        ctx.getSessionVariable().getBigQueryLogScanBytesThreshold());
-//                ctx.getAuditEventBuilder().setBigQueryLogScanRowsThreshold(
-//                        ctx.getSessionVariable().getBigQueryLogScanRowsThreshold());
-//            }
-//        } else {
-//            ctx.getAuditEventBuilder().setIsQuery(false);
-//        }
-//
-//        ctx.getAuditEventBuilder().setFeIp(FrontendOptions.getLocalHostAddress());
-//
-//        if (!ctx.getState().isQuery() && (parsedStmt != null && parsedStmt.needAuditEncryption())) {
-//            // Some information like username, password in the stmt should not be printed.
-//            ctx.getAuditEventBuilder().setStmt(AstToSQLBuilder.toSQL(parsedStmt));
-//        } else if (parsedStmt == null) {
-//            // invalid sql, record the original statement to avoid audit log can't replay
-//            ctx.getAuditEventBuilder().setStmt(origStmt);
-//        } else {
-//            ctx.getAuditEventBuilder().setStmt(LogUtil.removeLineSeparator(origStmt));
-//        }
-//
-//        GlobalStateMgr.getCurrentState().getAuditEventProcessor().handleAuditEvent(ctx.getAuditEventBuilder().build());
-//    }
+    public void auditAfterExec(String origStmt, StatementBase parsedStmt, PQueryStatistics statistics) {
+        // slow query
+        long endTime = System.currentTimeMillis();
+        long elapseMs = endTime - ctx.getStartTime();
 
-//    public String computeStatementDigest(StatementBase queryStmt) {
-//        if (queryStmt == null) {
-//            return "";
-//        }
-//
-//        String digest = SqlDigestBuilder.build(queryStmt);
-//        try {
-//            MessageDigest md = MessageDigest.getInstance("MD5");
-//            md.reset();
-//            md.update(digest.getBytes());
-//            return Hex.encodeHexString(md.digest());
-//        } catch (NoSuchAlgorithmException e) {
-//            return "";
-//        }
-//    }
+        boolean isForwardToLeader = (executor != null) ? executor.getIsForwardToLeaderOrInit(false) : false;
+
+        // ignore recording some failed stmt like kill connection
+        if (ctx.getState().getErrType() == QueryState.ErrType.IGNORE_ERR) {
+            return;
+        }
+
+        // TODO how to unify TStatusCode, ErrorCode, ErrType, ConnectContext.errorCode
+        String errorCode = StringUtils.isNotEmpty(ctx.getErrorCode()) ? ctx.getErrorCode() : ctx.getState().getErrType().name();
+        ctx.getAuditEventBuilder().setEventType(EventType.AFTER_QUERY)
+                .setState(ctx.getState().toString())
+                .setErrorCode(errorCode)
+                .setQueryTime(elapseMs)
+                .setReturnRows(ctx.getReturnRows())
+                .setStmtId(ctx.getStmtId())
+                .setIsForwardToLeader(isForwardToLeader)
+                .setQueryId(ctx.getQueryId() == null ? "NaN" : ctx.getQueryId().toString());
+        if (statistics != null) {
+            ctx.getAuditEventBuilder().setScanBytes(statistics.scanBytes);
+            ctx.getAuditEventBuilder().setScanRows(statistics.scanRows);
+            ctx.getAuditEventBuilder().setCpuCostNs(statistics.cpuCostNs == null ? -1 : statistics.cpuCostNs);
+            ctx.getAuditEventBuilder().setMemCostBytes(statistics.memCostBytes == null ? -1 : statistics.memCostBytes);
+            ctx.getAuditEventBuilder().setSpilledBytes(statistics.spillBytes == null ? -1 : statistics.spillBytes);
+            ctx.getAuditEventBuilder().setReturnRows(statistics.returnedRows == null ? 0 : statistics.returnedRows);
+        }
+
+        if (ctx.getState().isQuery()) {
+            MetricRepo.COUNTER_QUERY_ALL.increase(1L);
+            ResourceGroupMetricMgr.increaseQuery(ctx, 1L);
+            if (ctx.getState().getStateType() == QueryState.MysqlStateType.ERR) {
+                // err query
+                MetricRepo.COUNTER_QUERY_ERR.increase(1L);
+                ResourceGroupMetricMgr.increaseQueryErr(ctx, 1L);
+            } else {
+                // ok query
+                MetricRepo.COUNTER_QUERY_SUCCESS.increase(1L);
+                MetricRepo.HISTO_QUERY_LATENCY.update(elapseMs);
+                ResourceGroupMetricMgr.updateQueryLatency(ctx, elapseMs);
+                if (elapseMs > Config.qe_slow_log_ms || ctx.getSessionVariable().isEnableSQLDigest()) {
+                    MetricRepo.COUNTER_SLOW_QUERY.increase(1L);
+                    ctx.getAuditEventBuilder().setDigest(computeStatementDigest(parsedStmt));
+                }
+            }
+            ctx.getAuditEventBuilder().setIsQuery(true);
+            if (ctx.getSessionVariable().isEnableBigQueryLog()) {
+                ctx.getAuditEventBuilder().setBigQueryLogCPUSecondThreshold(
+                        ctx.getSessionVariable().getBigQueryLogCPUSecondThreshold());
+                ctx.getAuditEventBuilder().setBigQueryLogScanBytesThreshold(
+                        ctx.getSessionVariable().getBigQueryLogScanBytesThreshold());
+                ctx.getAuditEventBuilder().setBigQueryLogScanRowsThreshold(
+                        ctx.getSessionVariable().getBigQueryLogScanRowsThreshold());
+            }
+        } else {
+            ctx.getAuditEventBuilder().setIsQuery(false);
+        }
+
+        ctx.getAuditEventBuilder().setFeIp(FrontendOptions.getLocalHostAddress());
+
+        if (!ctx.getState().isQuery() && (parsedStmt != null && parsedStmt.needAuditEncryption())) {
+            // Some information like username, password in the stmt should not be printed.
+            ctx.getAuditEventBuilder().setStmt(AstToSQLBuilder.toSQL(parsedStmt));
+        } else if (parsedStmt == null) {
+            // invalid sql, record the original statement to avoid audit log can't replay
+            ctx.getAuditEventBuilder().setStmt(origStmt);
+        } else {
+            ctx.getAuditEventBuilder().setStmt(LogUtil.removeLineSeparator(origStmt));
+        }
+
+        GlobalStateMgr.getCurrentState().getAuditEventProcessor().handleAuditEvent(ctx.getAuditEventBuilder().build());
+    }
+
+    public String computeStatementDigest(StatementBase queryStmt) {
+        if (queryStmt == null) {
+            return "";
+        }
+
+        String digest = SqlDigestBuilder.build(queryStmt);
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.reset();
+            md.update(digest.getBytes());
+            return Hex.encodeHexString(md.digest());
+        } catch (NoSuchAlgorithmException e) {
+            return "";
+        }
+    }
 
     private boolean containsComment(String sql) {
         return (sql.contains("--")) || sql.contains("#");
@@ -257,18 +291,18 @@ public class ConnectProcessor {
         }
         queryDetail.setEndTime(endTime);
         queryDetail.setLatency(elapseMs);
-//        queryDetail.setResourceGroupName(ctx.getResourceGroup() != null ? ctx.getResourceGroup().getName() : "");
+        queryDetail.setResourceGroupName(ctx.getResourceGroup() != null ? ctx.getResourceGroup().getName() : "");
         // add execution statistics into queryDetail
         queryDetail.setReturnRows(ctx.getReturnRows());
         queryDetail.setDigest(ctx.getAuditEventBuilder().build().digest);
-//        PQueryStatistics statistics = executor.getQueryStatisticsForAuditLog();
-//        if (statistics != null) {
-//            queryDetail.setScanBytes(statistics.scanBytes);
-//            queryDetail.setScanRows(statistics.scanRows);
-//            queryDetail.setCpuCostNs(statistics.cpuCostNs == null ? -1 : statistics.cpuCostNs);
-//            queryDetail.setMemCostBytes(statistics.memCostBytes == null ? -1 : statistics.memCostBytes);
-//            queryDetail.setSpillBytes(statistics.spillBytes == null ? -1 : statistics.spillBytes);
-//        }
+        PQueryStatistics statistics = executor.getQueryStatisticsForAuditLog();
+        if (statistics != null) {
+            queryDetail.setScanBytes(statistics.scanBytes);
+            queryDetail.setScanRows(statistics.scanRows);
+            queryDetail.setCpuCostNs(statistics.cpuCostNs == null ? -1 : statistics.cpuCostNs);
+            queryDetail.setMemCostBytes(statistics.memCostBytes == null ? -1 : statistics.memCostBytes);
+            queryDetail.setSpillBytes(statistics.spillBytes == null ? -1 : statistics.spillBytes);
+        }
 
         QueryDetailQueue.addQueryDetail(queryDetail);
     }
@@ -279,32 +313,32 @@ public class ConnectProcessor {
         }
         String sql;
         if (!ctx.getState().isQuery() && parsedStmt.needAuditEncryption()) {
-//            sql = AstToSQLBuilder.toSQL(parsedStmt);
+            sql = AstToSQLBuilder.toSQL(parsedStmt);
         } else {
             sql = parsedStmt.getOrigStmt().originStmt;
         }
 
         boolean isQuery = parsedStmt instanceof QueryStatement;
-//        QueryDetail queryDetail = new QueryDetail(
-//                DebugUtil.printId(ctx.getQueryId()),
-//                isQuery,
-//                ctx.connectionId,
-//                ctx.getMysqlChannel() != null ?
-//                        ctx.getMysqlChannel().getRemoteIp() : "System",
-//                ctx.getStartTime(), -1, -1,
-//                QueryDetail.QueryMemState.RUNNING,
-//                ctx.getDatabase(),
-//                sql,
-//                ctx.getQualifiedUser(),
-//                Optional.ofNullable(ctx.getResourceGroup()).map(TWorkGroup::getName).orElse(""));
-//        ctx.setQueryDetail(queryDetail);
-//        // copy queryDetail, cause some properties can be changed in future
-//        QueryDetailQueue.addQueryDetail(queryDetail.copy());
+        QueryDetail queryDetail = new QueryDetail(
+                DebugUtil.printId(ctx.getQueryId()),
+                isQuery,
+                ctx.connectionId,
+                ctx.getMysqlChannel() != null ?
+                        ctx.getMysqlChannel().getRemoteIp() : "System",
+                ctx.getStartTime(), -1, -1,
+                QueryDetail.QueryMemState.RUNNING,
+                ctx.getDatabase(),
+                sql,
+                ctx.getQualifiedUser(),
+                Optional.ofNullable(ctx.getResourceGroup()).map(TWorkGroup::getName).orElse(""));
+        ctx.setQueryDetail(queryDetail);
+        // copy queryDetail, cause some properties can be changed in future
+        QueryDetailQueue.addQueryDetail(queryDetail.copy());
     }
 
     // process COM_QUERY statement,
     protected void handleQuery() {
-//        MetricRepo.COUNTER_REQUEST_ALL.increase(1L);
+        MetricRepo.COUNTER_REQUEST_ALL.increase(1L);
         // convert statement to Java string
         String originStmt = null;
         byte[] bytes = packetBuf.array();
@@ -330,7 +364,7 @@ public class ConnectProcessor {
             ctx.setQueryId(UUIDUtil.genUUID());
             List<StatementBase> stmts;
             try {
-                stmts = io.datafibre.fibre.sql.parser.SqlParser.parse(originStmt, ctx.getSessionVariable());
+                stmts = com.starrocks.sql.parser.SqlParser.parse(originStmt, ctx.getSessionVariable());
             } catch (ParsingException parsingException) {
                 throw new AnalysisException(parsingException.getMessage());
             }
@@ -401,10 +435,10 @@ public class ConnectProcessor {
         // TODO(cmy): when user send multi-statement, the executor is the last statement's executor.
         // We may need to find some way to resolve this.
         if (executor != null) {
-//            auditAfterExec(originStmt, executor.getParsedStmt(), executor.getQueryStatisticsForAuditLog());
+            auditAfterExec(originStmt, executor.getParsedStmt(), executor.getQueryStatisticsForAuditLog());
         } else {
             // executor can be null if we encounter analysis error.
-//            auditAfterExec(originStmt, null, null);
+            auditAfterExec(originStmt, null, null);
         }
 
         addFinishedQueryDetail();
@@ -418,38 +452,38 @@ public class ConnectProcessor {
             ctx.getState().setError("Empty tableName");
             return;
         }
-//        Database db = ctx.getGlobalStateMgr().getMetadataMgr().getDb(ctx.getCurrentCatalog(), ctx.getDatabase());
-//        if (db == null) {
-//            ctx.getState().setError("Unknown database(" + ctx.getDatabase() + ")");
-//            return;
-//        }
+        Database db = ctx.getGlobalStateMgr().getMetadataMgr().getDb(ctx.getCurrentCatalog(), ctx.getDatabase());
+        if (db == null) {
+            ctx.getState().setError("Unknown database(" + ctx.getDatabase() + ")");
+            return;
+        }
         Locker locker = new Locker();
-//        locker.lockDatabase(db, LockType.READ);
-//        try {
-        // we should get table through metadata manager
-//            Table table = ctx.getGlobalStateMgr().getMetadataMgr().getTable(
-//                    ctx.getCurrentCatalog(), ctx.getDatabase(), tableName);
-//            if (table == null) {
-//                ctx.getState().setError("Unknown table(" + tableName + ")");
-//                return;
-//            }
+        locker.lockDatabase(db, LockType.READ);
+        try {
+            // we should get table through metadata manager
+            Table table = ctx.getGlobalStateMgr().getMetadataMgr().getTable(
+                    ctx.getCurrentCatalog(), ctx.getDatabase(), tableName);
+            if (table == null) {
+                ctx.getState().setError("Unknown table(" + tableName + ")");
+                return;
+            }
 
-//            MysqlSerializer serializer = ctx.getSerializer();
-//            MysqlChannel channel = ctx.getMysqlChannel();
+            MysqlSerializer serializer = ctx.getSerializer();
+            MysqlChannel channel = ctx.getMysqlChannel();
 
-        // Send fields
-        // NOTE: Field list doesn't send number of fields
-//            List<Column> baseSchema = table.getBaseSchema();
-//            for (Column column : baseSchema) {
-//                serializer.reset();
-//                serializer.writeField(db.getOriginName(), table.getName(), column, true);
-//                channel.sendOnePacket(serializer.toByteBuffer());
-//            }
-//        } catch (StarRocksConnectorException e) {
-//            LOG.error("errors happened when getting table {}", tableName, e);
-//        } finally {
-//            locker.unLockDatabase(db, LockType.READ);
-//        }
+            // Send fields
+            // NOTE: Field list doesn't send number of fields
+            List<Column> baseSchema = table.getBaseSchema();
+            for (Column column : baseSchema) {
+                serializer.reset();
+                serializer.writeField(db.getOriginName(), table.getName(), column, true);
+                channel.sendOnePacket(serializer.toByteBuffer());
+            }
+        } catch (StarRocksConnectorException e) {
+            LOG.error("errors happened when getting table {}", tableName, e);
+        } finally {
+            locker.unLockDatabase(db, LockType.READ);
+        }
         ctx.getState().setEof();
     }
 
@@ -495,13 +529,13 @@ public class ConnectProcessor {
             // gene exprs
             List<Expr> exprs = new ArrayList<>();
             for (int i = 0; i < numParams; ++i) {
-//                if (isNull(nullBitmap, i)) {
-//                    exprs.add(new NullLiteral());
-//                    continue;
-//                }
-//                LiteralExpr l = LiteralExpr.parseLiteral(mysqlTypeCodes[i]);
-//                l.parseMysqlParam(packetBuf);
-//                exprs.add(l);
+                if (isNull(nullBitmap, i)) {
+                    exprs.add(new NullLiteral());
+                    continue;
+                }
+                LiteralExpr l = LiteralExpr.parseLiteral(mysqlTypeCodes[i]);
+                l.parseMysqlParam(packetBuf);
+                exprs.add(l);
             }
             ExecuteStmt executeStmt = new ExecuteStmt(String.valueOf(stmtId), exprs);
             // audit will affect performance
@@ -514,7 +548,7 @@ public class ConnectProcessor {
             executor.execute();
 
             if (enableAudit) {
-//                auditAfterExec(originStmt, executor.getParsedStmt(), executor.getQueryStatisticsForAuditLog());
+                auditAfterExec(originStmt, executor.getParsedStmt(), executor.getQueryStatisticsForAuditLog());
             }
         } catch (Throwable e) {
             // Catch all throwable.
@@ -549,7 +583,7 @@ public class ConnectProcessor {
         }
         ctx.setCommand(command);
         ctx.setStartTime();
-//        ctx.setResourceGroup(null);
+        ctx.setResourceGroup(null);
         ctx.setErrorCode("");
 
         switch (command) {
@@ -666,173 +700,173 @@ public class ConnectProcessor {
         }
     }
 
-//    public TMasterOpResult proxyExecute(TMasterOpRequest request) {
-//        ctx.setCurrentCatalog(request.catalog);
-//        if (ctx.getCurrentCatalog() == null) {
-//            // if we upgrade Master FE first, the request from old FE does not set "catalog".
-//            // so ctx.getCurrentCatalog() will get null,
-//            // return error directly.
-//            TMasterOpResult result = new TMasterOpResult();
-//            ctx.getState().setError(
-//                    "Missing current catalog. You need to upgrade this Frontend to the same version as Leader Frontend.");
-//            result.setMaxJournalId(GlobalStateMgr.getCurrentState().getMaxJournalId());
-//            result.setPacket(getResultPacket());
-//            return result;
-//        }
-//        ctx.setDatabase(request.db);
-//        ctx.setQualifiedUser(request.user);
-//        ctx.setGlobalStateMgr(GlobalStateMgr.getCurrentState());
-//        ctx.getState().reset();
-//        if (request.isSetResourceInfo()) {
-//            ctx.getSessionVariable().setResourceGroup(request.getResourceInfo().getGroup());
-//        }
-//        if (request.isSetUser_ip()) {
-//            ctx.setRemoteIP(request.getUser_ip());
-//        }
-//        if (request.isSetTime_zone()) {
-//            ctx.getSessionVariable().setTimeZone(request.getTime_zone());
-//        }
-//        if (request.isSetStmt_id()) {
-//            ctx.setForwardedStmtId(request.getStmt_id());
-//        }
-//        if (request.isSetSqlMode()) {
-//            ctx.getSessionVariable().setSqlMode(request.sqlMode);
-//        }
-//        if (request.isSetEnableStrictMode()) {
-//            ctx.getSessionVariable().setEnableInsertStrict(request.enableStrictMode);
-//        }
-//        if (request.isSetCurrent_user_ident()) {
-//            UserIdentity currentUserIdentity = UserIdentity.fromThrift(request.getCurrent_user_ident());
-//            ctx.setCurrentUserIdentity(currentUserIdentity);
-//        }
-//
-//        if (request.isSetUser_roles()) {
-//            List<Long> roleIds = request.getUser_roles().getRole_id_list();
-//            ctx.setCurrentRoleIds(new HashSet<>(roleIds));
-//        } else {
-//            ctx.setCurrentRoleIds(new HashSet<>());
-//        }
-//
-//        if (request.isSetIsLastStmt()) {
-//            ctx.setIsLastStmt(request.isIsLastStmt());
-//        } else {
-//            // if the caller is lower version fe, request.isSetIsLastStmt() may return false.
-//            // in this case, set isLastStmt to true, because almost stmt is single stmt
-//            // but when the original stmt is multi stmt the caller will encounter mysql error: Packet sequence number wrong
-//            ctx.setIsLastStmt(true);
-//        }
-//
-//        if (request.isSetQuery_options()) {
-//            TQueryOptions queryOptions = request.getQuery_options();
-//            if (queryOptions.isSetMem_limit()) {
-//                ctx.getSessionVariable().setMaxExecMemByte(queryOptions.getMem_limit());
-//            }
-//            if (queryOptions.isSetQuery_timeout()) {
-//                ctx.getSessionVariable().setQueryTimeoutS(queryOptions.getQuery_timeout());
-//            }
-//            if (queryOptions.isSetLoad_mem_limit()) {
-//                ctx.getSessionVariable().setLoadMemLimit(queryOptions.getLoad_mem_limit());
-//            }
-//            if (queryOptions.isSetMax_scan_key_num()) {
-//                ctx.getSessionVariable().setMaxScanKeyNum(queryOptions.getMax_scan_key_num());
-//            }
-//            if (queryOptions.isSetMax_pushdown_conditions_per_column()) {
-//                ctx.getSessionVariable().setMaxPushdownConditionsPerColumn(
-//                        queryOptions.getMax_pushdown_conditions_per_column());
-//            }
-//        } else {
-//            // for compatibility, all following variables are moved to TQueryOptions.
-//            if (request.isSetExecMemLimit()) {
-//                ctx.getSessionVariable().setMaxExecMemByte(request.getExecMemLimit());
-//            }
-//            if (request.isSetQueryTimeout()) {
-//                ctx.getSessionVariable().setQueryTimeoutS(request.getQueryTimeout());
-//            }
-//            if (request.isSetLoadMemLimit()) {
-//                ctx.getSessionVariable().setLoadMemLimit(request.loadMemLimit);
-//            }
-//        }
-//
-//        if (request.isSetQueryId()) {
-//            ctx.setQueryId(UUIDUtil.fromTUniqueid(request.getQueryId()));
-//        }
-//
-//        if (request.isSetForward_times()) {
-//            ctx.setForwardTimes(request.getForward_times());
-//        }
-//
-//        ctx.setThreadLocalInfo();
-//
-//        if (ctx.getCurrentUserIdentity() == null) {
-//            // if we upgrade Master FE first, the request from old FE does not set "current_user_ident".
-//            // so ctx.getCurrentUserIdentity() will get null, and causing NullPointerException after using it.
-//            // return error directly.
-//            TMasterOpResult result = new TMasterOpResult();
-//            ctx.getState().setError(
-//                    "Missing current user identity. You need to upgrade this Frontend to the same version as Leader Frontend.");
-//            result.setMaxJournalId(GlobalStateMgr.getCurrentState().getMaxJournalId());
-//            result.setPacket(getResultPacket());
-//            return result;
-//        }
-//
-//        StmtExecutor executor = null;
-//        try {
-//            // set session variables first
-//            if (request.isSetModified_variables_sql()) {
-//                LOG.info("Set session variables first: {}", request.modified_variables_sql);
-//                new StmtExecutor(ctx, new OriginStatement(request.modified_variables_sql, 0), true).execute();
-//            }
-//            // 0 for compatibility.
-//            int idx = request.isSetStmtIdx() ? request.getStmtIdx() : 0;
-//            executor = new StmtExecutor(ctx, new OriginStatement(request.getSql(), idx), true);
-//            executor.execute();
-//        } catch (IOException e) {
-//            // Client failed.
-//            LOG.warn("Process one query failed because IOException: ", e);
-//            ctx.getState().setError("StarRocks process failed: " + e.getMessage());
-//        } catch (Throwable e) {
-//            // Catch all throwable.
-//            // If reach here, maybe StarRocks bug.
-//            LOG.warn("Process one query failed because unknown reason: ", e);
-//            ctx.getState().setError("Unexpected exception: " + e.getMessage());
-//        }
-//
-//        // If stmt is also forwarded during execution, just return the forward result.
-//        if (executor != null && executor.getIsForwardToLeaderOrInit(false)) {
-//            return executor.getLeaderOpExecutor().getResult();
-//        }
-//
-//        // no matter the master execute success or fail, the master must transfer the result to follower
-//        // and tell the follower the current jounalID.
-//        TMasterOpResult result = new TMasterOpResult();
-//        result.setMaxJournalId(GlobalStateMgr.getCurrentState().getMaxJournalId());
-//        // following stmt will not be executed, when current stmt is failed,
-//        // so only set SERVER_MORE_RESULTS_EXISTS Flag when stmt executed successfully
-//        if (!ctx.getIsLastStmt()
-//                && ctx.getState().getStateType() != QueryState.MysqlStateType.ERR) {
-//            ctx.getState().serverStatus |= MysqlServerStatusFlag.SERVER_MORE_RESULTS_EXISTS;
-//        }
-//        result.setPacket(getResultPacket());
-//        result.setState(ctx.getState().getStateType().toString());
-//        if (executor != null) {
-//            if (executor.getProxyResultSet() != null) {  // show statement
-//                result.setResultSet(executor.getProxyResultSet().tothrift());
-//            } else if (executor.getProxyResultBuffer() != null) {  // query statement
-//                result.setChannelBufferList(executor.getProxyResultBuffer());
-//            }
-//
-//            String resourceGroupName = ctx.getAuditEventBuilder().build().resourceGroup;
-//            if (StringUtils.isNotEmpty(resourceGroupName)) {
-//                result.setResource_group_name(resourceGroupName);
-//            }
-//
-//            PQueryStatistics audit = executor.getQueryStatisticsForAuditLog();
-//            if (audit != null) {
-//                result.setAudit_statistics(AuditStatisticsUtil.toThrift(audit));
-//            }
-//        }
-//        return result;
-//    }
+    public TMasterOpResult proxyExecute(TMasterOpRequest request) {
+        ctx.setCurrentCatalog(request.catalog);
+        if (ctx.getCurrentCatalog() == null) {
+            // if we upgrade Master FE first, the request from old FE does not set "catalog".
+            // so ctx.getCurrentCatalog() will get null,
+            // return error directly.
+            TMasterOpResult result = new TMasterOpResult();
+            ctx.getState().setError(
+                    "Missing current catalog. You need to upgrade this Frontend to the same version as Leader Frontend.");
+            result.setMaxJournalId(GlobalStateMgr.getCurrentState().getMaxJournalId());
+            result.setPacket(getResultPacket());
+            return result;
+        }
+        ctx.setDatabase(request.db);
+        ctx.setQualifiedUser(request.user);
+        ctx.setGlobalStateMgr(GlobalStateMgr.getCurrentState());
+        ctx.getState().reset();
+        if (request.isSetResourceInfo()) {
+            ctx.getSessionVariable().setResourceGroup(request.getResourceInfo().getGroup());
+        }
+        if (request.isSetUser_ip()) {
+            ctx.setRemoteIP(request.getUser_ip());
+        }
+        if (request.isSetTime_zone()) {
+            ctx.getSessionVariable().setTimeZone(request.getTime_zone());
+        }
+        if (request.isSetStmt_id()) {
+            ctx.setForwardedStmtId(request.getStmt_id());
+        }
+        if (request.isSetSqlMode()) {
+            ctx.getSessionVariable().setSqlMode(request.sqlMode);
+        }
+        if (request.isSetEnableStrictMode()) {
+            ctx.getSessionVariable().setEnableInsertStrict(request.enableStrictMode);
+        }
+        if (request.isSetCurrent_user_ident()) {
+            UserIdentity currentUserIdentity = UserIdentity.fromThrift(request.getCurrent_user_ident());
+            ctx.setCurrentUserIdentity(currentUserIdentity);
+        }
+
+        if (request.isSetUser_roles()) {
+            List<Long> roleIds = request.getUser_roles().getRole_id_list();
+            ctx.setCurrentRoleIds(new HashSet<>(roleIds));
+        } else {
+            ctx.setCurrentRoleIds(new HashSet<>());
+        }
+
+        if (request.isSetIsLastStmt()) {
+            ctx.setIsLastStmt(request.isIsLastStmt());
+        } else {
+            // if the caller is lower version fe, request.isSetIsLastStmt() may return false.
+            // in this case, set isLastStmt to true, because almost stmt is single stmt
+            // but when the original stmt is multi stmt the caller will encounter mysql error: Packet sequence number wrong
+            ctx.setIsLastStmt(true);
+        }
+
+        if (request.isSetQuery_options()) {
+            TQueryOptions queryOptions = request.getQuery_options();
+            if (queryOptions.isSetMem_limit()) {
+                ctx.getSessionVariable().setMaxExecMemByte(queryOptions.getMem_limit());
+            }
+            if (queryOptions.isSetQuery_timeout()) {
+                ctx.getSessionVariable().setQueryTimeoutS(queryOptions.getQuery_timeout());
+            }
+            if (queryOptions.isSetLoad_mem_limit()) {
+                ctx.getSessionVariable().setLoadMemLimit(queryOptions.getLoad_mem_limit());
+            }
+            if (queryOptions.isSetMax_scan_key_num()) {
+                ctx.getSessionVariable().setMaxScanKeyNum(queryOptions.getMax_scan_key_num());
+            }
+            if (queryOptions.isSetMax_pushdown_conditions_per_column()) {
+                ctx.getSessionVariable().setMaxPushdownConditionsPerColumn(
+                        queryOptions.getMax_pushdown_conditions_per_column());
+            }
+        } else {
+            // for compatibility, all following variables are moved to TQueryOptions.
+            if (request.isSetExecMemLimit()) {
+                ctx.getSessionVariable().setMaxExecMemByte(request.getExecMemLimit());
+            }
+            if (request.isSetQueryTimeout()) {
+                ctx.getSessionVariable().setQueryTimeoutS(request.getQueryTimeout());
+            }
+            if (request.isSetLoadMemLimit()) {
+                ctx.getSessionVariable().setLoadMemLimit(request.loadMemLimit);
+            }
+        }
+
+        if (request.isSetQueryId()) {
+            ctx.setQueryId(UUIDUtil.fromTUniqueid(request.getQueryId()));
+        }
+
+        if (request.isSetForward_times()) {
+            ctx.setForwardTimes(request.getForward_times());
+        }
+
+        ctx.setThreadLocalInfo();
+
+        if (ctx.getCurrentUserIdentity() == null) {
+            // if we upgrade Master FE first, the request from old FE does not set "current_user_ident".
+            // so ctx.getCurrentUserIdentity() will get null, and causing NullPointerException after using it.
+            // return error directly.
+            TMasterOpResult result = new TMasterOpResult();
+            ctx.getState().setError(
+                    "Missing current user identity. You need to upgrade this Frontend to the same version as Leader Frontend.");
+            result.setMaxJournalId(GlobalStateMgr.getCurrentState().getMaxJournalId());
+            result.setPacket(getResultPacket());
+            return result;
+        }
+
+        StmtExecutor executor = null;
+        try {
+            // set session variables first
+            if (request.isSetModified_variables_sql()) {
+                LOG.info("Set session variables first: {}", request.modified_variables_sql);
+                new StmtExecutor(ctx, new OriginStatement(request.modified_variables_sql, 0), true).execute();
+            }
+            // 0 for compatibility.
+            int idx = request.isSetStmtIdx() ? request.getStmtIdx() : 0;
+            executor = new StmtExecutor(ctx, new OriginStatement(request.getSql(), idx), true);
+            executor.execute();
+        } catch (IOException e) {
+            // Client failed.
+            LOG.warn("Process one query failed because IOException: ", e);
+            ctx.getState().setError("StarRocks process failed: " + e.getMessage());
+        } catch (Throwable e) {
+            // Catch all throwable.
+            // If reach here, maybe StarRocks bug.
+            LOG.warn("Process one query failed because unknown reason: ", e);
+            ctx.getState().setError("Unexpected exception: " + e.getMessage());
+        }
+
+        // If stmt is also forwarded during execution, just return the forward result.
+        if (executor != null && executor.getIsForwardToLeaderOrInit(false)) {
+            return executor.getLeaderOpExecutor().getResult();
+        }
+
+        // no matter the master execute success or fail, the master must transfer the result to follower
+        // and tell the follower the current jounalID.
+        TMasterOpResult result = new TMasterOpResult();
+        result.setMaxJournalId(GlobalStateMgr.getCurrentState().getMaxJournalId());
+        // following stmt will not be executed, when current stmt is failed,
+        // so only set SERVER_MORE_RESULTS_EXISTS Flag when stmt executed successfully
+        if (!ctx.getIsLastStmt()
+                && ctx.getState().getStateType() != QueryState.MysqlStateType.ERR) {
+            ctx.getState().serverStatus |= MysqlServerStatusFlag.SERVER_MORE_RESULTS_EXISTS;
+        }
+        result.setPacket(getResultPacket());
+        result.setState(ctx.getState().getStateType().toString());
+        if (executor != null) {
+            if (executor.getProxyResultSet() != null) {  // show statement
+                result.setResultSet(executor.getProxyResultSet().tothrift());
+            } else if (executor.getProxyResultBuffer() != null) {  // query statement
+                result.setChannelBufferList(executor.getProxyResultBuffer());
+            }
+
+            String resourceGroupName = ctx.getAuditEventBuilder().build().resourceGroup;
+            if (StringUtils.isNotEmpty(resourceGroupName)) {
+                result.setResource_group_name(resourceGroupName);
+            }
+
+            PQueryStatistics audit = executor.getQueryStatisticsForAuditLog();
+            if (audit != null) {
+                result.setAudit_statistics(AuditStatisticsUtil.toThrift(audit));
+            }
+        }
+        return result;
+    }
 
     // handle one process
     public void processOnce() throws IOException {

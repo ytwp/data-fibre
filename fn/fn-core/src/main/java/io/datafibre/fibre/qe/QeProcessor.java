@@ -15,11 +15,18 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.qe;
+package com.starrocks.qe;
 
-import io.datafibre.fibre.common.UserException;
-import io.datafibre.fibre.qe.scheduler.Coordinator;
-import io.datafibre.fibre.thrift.*;
+import com.starrocks.common.UserException;
+import com.starrocks.qe.scheduler.Coordinator;
+import com.starrocks.thrift.TBatchReportExecStatusParams;
+import com.starrocks.thrift.TBatchReportExecStatusResult;
+import com.starrocks.thrift.TNetworkAddress;
+import com.starrocks.thrift.TReportAuditStatisticsParams;
+import com.starrocks.thrift.TReportAuditStatisticsResult;
+import com.starrocks.thrift.TReportExecStatusParams;
+import com.starrocks.thrift.TReportExecStatusResult;
+import com.starrocks.thrift.TUniqueId;
 
 import java.util.List;
 import java.util.Map;

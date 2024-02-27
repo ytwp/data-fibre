@@ -15,10 +15,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.qe;
+package com.starrocks.qe;
 
-import io.datafibre.fibre.proto.PQueryStatistics;
-import io.datafibre.fibre.thrift.TResultBatch;
+import com.starrocks.proto.PQueryStatistics;
+import com.starrocks.thrift.TResultBatch;
 
 public final class RowBatch {
     private TResultBatch batch;

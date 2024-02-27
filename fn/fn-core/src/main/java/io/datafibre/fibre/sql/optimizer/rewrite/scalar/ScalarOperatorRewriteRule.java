@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.rewrite.scalar;
+package com.starrocks.sql.optimizer.rewrite.scalar;
 
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
-import io.datafibre.fibre.sql.optimizer.rewrite.ScalarOperatorRewriteContext;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.sql.optimizer.rewrite.ScalarOperatorRewriteContext;
 
 public interface ScalarOperatorRewriteRule {
     boolean isBottomUp();

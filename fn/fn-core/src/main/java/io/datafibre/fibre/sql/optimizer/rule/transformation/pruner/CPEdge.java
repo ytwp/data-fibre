@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.rule.transformation.pruner;
+package com.starrocks.sql.optimizer.rule.transformation.pruner;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
 
 import java.util.Map;
 import java.util.Objects;

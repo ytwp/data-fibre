@@ -13,18 +13,22 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
 import com.google.common.base.Strings;
-import io.datafibre.fibre.analysis.*;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.ScalarType;
-import io.datafibre.fibre.common.UserException;
-import io.datafibre.fibre.common.proc.LoadProcDir;
-import io.datafibre.fibre.common.util.OrderByPair;
-import io.datafibre.fibre.load.loadv2.JobState;
-import io.datafibre.fibre.qe.ShowResultSetMetaData;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.analysis.Analyzer;
+import com.starrocks.analysis.Expr;
+import com.starrocks.analysis.LimitElement;
+import com.starrocks.analysis.OrderByElement;
+import com.starrocks.analysis.RedirectStatus;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.ScalarType;
+import com.starrocks.common.UserException;
+import com.starrocks.common.proc.LoadProcDir;
+import com.starrocks.common.util.OrderByPair;
+import com.starrocks.load.loadv2.JobState;
+import com.starrocks.qe.ShowResultSetMetaData;
+import com.starrocks.sql.parser.NodePosition;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -15,10 +15,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.common;
+package com.starrocks.common;
 
-import io.datafibre.fibre.sql.analyzer.SemanticException;
-import org.apache.commons.lang3.StringUtils;
+import com.google.common.base.Strings;
+import com.starrocks.sql.analyzer.SemanticException;
 
 import java.util.regex.Pattern;
 
@@ -138,7 +138,7 @@ public class PatternMatcher {
         PatternMatcher matcher = new PatternMatcher();
 
         // Match nothing
-        String newMysqlPattern = StringUtils.defaultString(mysqlPattern);
+        String newMysqlPattern = Strings.nullToEmpty(mysqlPattern);
 
         String javaPattern = convertMysqlPattern(newMysqlPattern);
         try {

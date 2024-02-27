@@ -32,13 +32,18 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.catalog;
+package com.starrocks.catalog;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.google.gson.annotations.SerializedName;
-import io.datafibre.fibre.common.DdlException;
-import io.datafibre.fibre.common.io.Text;
+import com.starrocks.analysis.DescriptorTable.ReferencedPartitionInfo;
+import com.starrocks.common.DdlException;
+import com.starrocks.common.io.Text;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.thrift.TMySQLTable;
+import com.starrocks.thrift.TTableDescriptor;
+import com.starrocks.thrift.TTableType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -91,27 +96,27 @@ public class MysqlTable extends Table {
     private void validate(Map<String, String> properties) throws DdlException {
         if (properties == null) {
             throw new DdlException("Please set properties of mysql table, "
-                                   + "they are: host, port, user, password, database and table");
+                    + "they are: host, port, user, password, database and table");
         }
 
         // Set up
         host = properties.get(MYSQL_HOST);
         if (Strings.isNullOrEmpty(host)) {
             throw new DdlException("Host of MySQL table is null. "
-                                   + "Please add properties('host'='xxx.xxx.xxx.xxx') when create table");
+                    + "Please add properties('host'='xxx.xxx.xxx.xxx') when create table");
         }
 
         port = properties.get(MYSQL_PORT);
         if (Strings.isNullOrEmpty(port)) {
             // Maybe null pointer or number convert
             throw new DdlException("Port of MySQL table is null. "
-                                   + "Please add properties('port'='3306') when create table");
+                    + "Please add properties('port'='3306') when create table");
         } else {
             try {
                 Integer.valueOf(port);
             } catch (Exception e) {
                 throw new DdlException("Port of MySQL table must be a number."
-                                       + "Please add properties('port'='3306') when create table");
+                        + "Please add properties('port'='3306') when create table");
 
             }
         }
@@ -119,42 +124,41 @@ public class MysqlTable extends Table {
         userName = properties.get(MYSQL_USER);
         if (Strings.isNullOrEmpty(userName)) {
             throw new DdlException("User of MySQL table is null. "
-                                   + "Please add properties('user'='root') when create table");
+                    + "Please add properties('user'='root') when create table");
         }
 
         passwd = properties.get(MYSQL_PASSWORD);
         if (passwd == null) {
             throw new DdlException("Password of MySQL table is null. "
-                                   + "Please add properties('password'='xxxx') when create table");
+                    + "Please add properties('password'='xxxx') when create table");
         }
 
         mysqlDatabaseName = properties.get(MYSQL_DATABASE);
         if (Strings.isNullOrEmpty(mysqlDatabaseName)) {
             throw new DdlException("Database of MySQL table is null. "
-                                   + "Please add properties('database'='xxxx') when create table");
+                    + "Please add properties('database'='xxxx') when create table");
         }
 
         mysqlTableName = properties.get(MYSQL_TABLE);
         if (Strings.isNullOrEmpty(mysqlTableName)) {
             throw new DdlException("Database of MySQL table is null. "
-                                   + "Please add properties('table'='xxxx') when create table");
+                    + "Please add properties('table'='xxxx') when create table");
         }
     }
 
     private String getPropertyFromResource(String propertyName) {
-//        OdbcCatalogResource odbcCatalogResource = (OdbcCatalogResource)
-//                (GlobalStateMgr.getCurrentState().getResourceMgr().getResource(odbcCatalogResourceName));
-//        if (odbcCatalogResource == null) {
-//            throw new RuntimeException("Resource does not exist. name: " + odbcCatalogResourceName);
-//        }
+        OdbcCatalogResource odbcCatalogResource = (OdbcCatalogResource)
+                (GlobalStateMgr.getCurrentState().getResourceMgr().getResource(odbcCatalogResourceName));
+        if (odbcCatalogResource == null) {
+            throw new RuntimeException("Resource does not exist. name: " + odbcCatalogResourceName);
+        }
 
-//        String property = odbcCatalogResource.getProperties(propertyName);
-//        if (property == null) {
-//            throw new RuntimeException(
-//                    "The property:" + propertyName + " do not set in resource " + odbcCatalogResourceName);
-//        }
-//        return property;
-        return "";
+        String property = odbcCatalogResource.getProperties(propertyName);
+        if (property == null) {
+            throw new RuntimeException(
+                    "The property:" + propertyName + " do not set in resource " + odbcCatalogResourceName);
+        }
+        return property;
     }
 
     public String getHost() {
@@ -193,15 +197,15 @@ public class MysqlTable extends Table {
         return mysqlTableName;
     }
 
-//    @Override
-//    public TTableDescriptor toThrift(List<ReferencedPartitionInfo> partitions) {
-//        TMySQLTable tMySQLTable =
-//                new TMySQLTable(getHost(), getPort(), getUserName(), getPasswd(), mysqlDatabaseName, mysqlTableName);
-//        TTableDescriptor tTableDescriptor = new TTableDescriptor(getId(), TTableType.MYSQL_TABLE,
-//                fullSchema.size(), 0, getName(), "");
-//        tTableDescriptor.setMysqlTable(tMySQLTable);
-//        return tTableDescriptor;
-//    }
+    @Override
+    public TTableDescriptor toThrift(List<ReferencedPartitionInfo> partitions) {
+        TMySQLTable tMySQLTable =
+                new TMySQLTable(getHost(), getPort(), getUserName(), getPasswd(), mysqlDatabaseName, mysqlTableName);
+        TTableDescriptor tTableDescriptor = new TTableDescriptor(getId(), TTableType.MYSQL_TABLE,
+                fullSchema.size(), 0, getName(), "");
+        tTableDescriptor.setMysqlTable(tMySQLTable);
+        return tTableDescriptor;
+    }
 
     @Override
     public int getSignature(int signatureVersion) {

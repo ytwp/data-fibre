@@ -13,11 +13,11 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.meta;
+package com.starrocks.meta;
 
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.common.ErrorCode;
-import io.datafibre.fibre.common.ErrorReport;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.common.ErrorCode;
+import com.starrocks.common.ErrorReport;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

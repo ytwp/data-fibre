@@ -13,19 +13,19 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.analysis.Expr;
-import io.datafibre.fibre.analysis.IndexDef;
-import io.datafibre.fibre.analysis.TableName;
-import io.datafibre.fibre.catalog.BaseTableInfo;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.Index;
-import io.datafibre.fibre.catalog.KeysType;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefFactory;
-import io.datafibre.fibre.sql.parser.NodePosition;
-import io.datafibre.fibre.sql.plan.ExecPlan;
+import com.starrocks.analysis.Expr;
+import com.starrocks.analysis.IndexDef;
+import com.starrocks.analysis.TableName;
+import com.starrocks.catalog.BaseTableInfo;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.Index;
+import com.starrocks.catalog.KeysType;
+import com.starrocks.sql.optimizer.base.ColumnRefFactory;
+import com.starrocks.sql.parser.NodePosition;
+import com.starrocks.sql.plan.ExecPlan;
 
 import java.util.List;
 import java.util.Map;

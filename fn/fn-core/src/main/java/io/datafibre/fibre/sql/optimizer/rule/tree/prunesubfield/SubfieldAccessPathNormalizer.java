@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.rule.tree.prunesubfield;
+package com.starrocks.sql.optimizer.rule.tree.prunesubfield;
 
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.catalog.ColumnAccessPath;
-import io.datafibre.fibre.catalog.FunctionSet;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.CallOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.CollectionElementOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperatorVisitor;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.SubfieldOperator;
-import io.datafibre.fibre.thrift.TAccessPathType;
+import com.starrocks.catalog.ColumnAccessPath;
+import com.starrocks.catalog.FunctionSet;
+import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CollectionElementOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ConstantOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperatorVisitor;
+import com.starrocks.sql.optimizer.operator.scalar.SubfieldOperator;
+import com.starrocks.thrift.TAccessPathType;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrTokenizer;
 
@@ -44,7 +44,7 @@ public class SubfieldAccessPathNormalizer {
     // todo: BE only support one-layer json path, supported more layer in future
     public static int JSON_FLATTEN_DEPTH = 1;
     // simple json patten, same as BE's JsonPathPiece, match: abc[1][2], group: (abc)([1][2])
-    private static final Pattern JSON_ARRAY_PATTEN = Pattern.compile("^([\\w#.]*)((?:\\[[\\d:*]+])*)");
+    private static final Pattern JSON_ARRAY_PATTEN = Pattern.compile("^([\\w#.]+)((?:\\[[\\d:*]+])*)");
 
     private final Deque<AccessPath> allAccessPaths = Lists.newLinkedList();
 
@@ -231,6 +231,9 @@ public class SubfieldAccessPathNormalizer {
                 }
                 // only extract name, don't needed index
                 String name = matcher.group(1);
+                if (StringUtils.isBlank(name)) {
+                    break;
+                }
                 result.add(name);
                 if (tokens[i].replaceFirst(name, "").contains("[")) {
                     // can't support flatten array index

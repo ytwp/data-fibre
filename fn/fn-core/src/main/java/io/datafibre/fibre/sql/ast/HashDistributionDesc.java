@@ -13,19 +13,19 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.catalog.AggregateType;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.DistributionInfo;
-import io.datafibre.fibre.catalog.DistributionInfo.DistributionInfoType;
-import io.datafibre.fibre.catalog.HashDistributionInfo;
-import io.datafibre.fibre.common.DdlException;
-import io.datafibre.fibre.common.io.Text;
-import io.datafibre.fibre.sql.analyzer.SemanticException;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.catalog.AggregateType;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.DistributionInfo;
+import com.starrocks.catalog.DistributionInfo.DistributionInfoType;
+import com.starrocks.catalog.HashDistributionInfo;
+import com.starrocks.common.DdlException;
+import com.starrocks.common.io.Text;
+import com.starrocks.sql.analyzer.SemanticException;
+import com.starrocks.sql.parser.NodePosition;
 
 import java.io.DataInput;
 import java.io.DataOutput;

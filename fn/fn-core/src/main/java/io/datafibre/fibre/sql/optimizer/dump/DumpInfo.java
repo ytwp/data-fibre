@@ -13,13 +13,13 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.dump;
+package com.starrocks.sql.optimizer.dump;
 
-import io.datafibre.fibre.catalog.Resource;
-import io.datafibre.fibre.catalog.Table;
-import io.datafibre.fibre.catalog.View;
-import io.datafibre.fibre.sql.ast.StatementBase;
-import io.datafibre.fibre.sql.optimizer.statistics.ColumnStatistic;
+import com.starrocks.catalog.Resource;
+import com.starrocks.catalog.Table;
+import com.starrocks.catalog.View;
+import com.starrocks.sql.ast.StatementBase;
+import com.starrocks.sql.optimizer.statistics.ColumnStatistic;
 
 import java.util.Map;
 

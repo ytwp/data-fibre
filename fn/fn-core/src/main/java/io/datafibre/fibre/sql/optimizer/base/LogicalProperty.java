@@ -12,23 +12,45 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.base;
+package com.starrocks.sql.optimizer.base;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.sql.optimizer.ExpressionContext;
-import io.datafibre.fibre.sql.optimizer.operator.Operator;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorVisitor;
-import io.datafibre.fibre.sql.optimizer.operator.logical.*;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.catalog.Column;
+import com.starrocks.sql.optimizer.ExpressionContext;
+import com.starrocks.sql.optimizer.operator.Operator;
+import com.starrocks.sql.optimizer.operator.OperatorType;
+import com.starrocks.sql.optimizer.operator.OperatorVisitor;
+import com.starrocks.sql.optimizer.operator.logical.LogicalAggregationOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalCTEAnchorOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalCTEConsumeOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalExceptOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalIntersectOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalJDBCScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalJoinOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalMysqlScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalOlapScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalTableFunctionOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalUnionOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalValuesOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalViewScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalWindowOperator;
+import com.starrocks.sql.optimizer.operator.logical.MockOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.datafibre.fibre.sql.optimizer.operator.OperatorType.*;
+import static com.starrocks.sql.optimizer.operator.OperatorType.LOGICAL_CTE_ANCHOR;
+import static com.starrocks.sql.optimizer.operator.OperatorType.LOGICAL_CTE_CONSUME;
+import static com.starrocks.sql.optimizer.operator.OperatorType.LOGICAL_CTE_PRODUCE;
 
 public class LogicalProperty implements Property {
     // Operator's output columns

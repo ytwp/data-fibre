@@ -12,31 +12,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.qe;
+package com.starrocks.qe;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
-import io.datafibre.fibre.catalog.ResourceGroup;
-import io.datafibre.fibre.catalog.ResourceGroupClassifier;
-import io.datafibre.fibre.common.Config;
-import io.datafibre.fibre.common.UserException;
-import io.datafibre.fibre.common.util.DebugUtil;
-import io.datafibre.fibre.common.util.TimeUtils;
-import io.datafibre.fibre.planner.PlanFragmentId;
-import io.datafibre.fibre.qe.scheduler.DefaultWorkerProvider;
-import io.datafibre.fibre.qe.scheduler.TFragmentInstanceFactory;
-import io.datafibre.fibre.qe.scheduler.WorkerProvider;
-import io.datafibre.fibre.qe.scheduler.assignment.FragmentAssignmentStrategyFactory;
-import io.datafibre.fibre.qe.scheduler.dag.ExecutionDAG;
-import io.datafibre.fibre.qe.scheduler.dag.ExecutionFragment;
-import io.datafibre.fibre.qe.scheduler.dag.JobSpec;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.service.FrontendOptions;
-import io.datafibre.fibre.sql.common.ErrorType;
-import io.datafibre.fibre.sql.common.StarRocksPlannerException;
-import io.datafibre.fibre.statistic.StatisticUtils;
-import io.datafibre.fibre.system.ComputeNode;
-import io.datafibre.fibre.thrift.TUniqueId;
+import com.starrocks.catalog.ResourceGroup;
+import com.starrocks.catalog.ResourceGroupClassifier;
+import com.starrocks.common.Config;
+import com.starrocks.common.UserException;
+import com.starrocks.common.util.DebugUtil;
+import com.starrocks.common.util.TimeUtils;
+import com.starrocks.planner.DataPartition;
+import com.starrocks.planner.DataSink;
+import com.starrocks.planner.PlanFragment;
+import com.starrocks.planner.PlanFragmentId;
+import com.starrocks.planner.ResultSink;
+import com.starrocks.planner.ScanNode;
+import com.starrocks.planner.TableFunctionTableSink;
+import com.starrocks.qe.scheduler.DefaultWorkerProvider;
+import com.starrocks.qe.scheduler.TFragmentInstanceFactory;
+import com.starrocks.qe.scheduler.WorkerProvider;
+import com.starrocks.qe.scheduler.assignment.FragmentAssignmentStrategyFactory;
+import com.starrocks.qe.scheduler.dag.ExecutionDAG;
+import com.starrocks.qe.scheduler.dag.ExecutionFragment;
+import com.starrocks.qe.scheduler.dag.JobSpec;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.service.FrontendOptions;
+import com.starrocks.sql.common.ErrorType;
+import com.starrocks.sql.common.StarRocksPlannerException;
+import com.starrocks.statistic.StatisticUtils;
+import com.starrocks.system.ComputeNode;
+import com.starrocks.thrift.TDescriptorTable;
+import com.starrocks.thrift.TNetworkAddress;
+import com.starrocks.thrift.TQueryGlobals;
+import com.starrocks.thrift.TUniqueId;
+import com.starrocks.thrift.TWorkGroup;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -238,7 +248,7 @@ public class CoordinatorPreprocessor {
             }
 
             if (sink instanceof TableFunctionTableSink && (((TableFunctionTableSink) sink).isWriteSingleFile())
-                && execFragment.getInstances().size() > 1) {
+                    && execFragment.getInstances().size() > 1) {
                 throw new StarRocksPlannerException(
                         "This sql plan has multi table function table sinks, but set to write single file",
                         ErrorType.INTERNAL_ERROR);
@@ -299,7 +309,7 @@ public class CoordinatorPreprocessor {
 
         if (resourceGroup != null) {
             connect.getAuditEventBuilder().setResourceGroup(resourceGroup.getName());
-//            connect.setResourceGroup(resourceGroup);
+            connect.setResourceGroup(resourceGroup);
         } else {
             connect.getAuditEventBuilder().setResourceGroup(ResourceGroup.DEFAULT_RESOURCE_GROUP_NAME);
         }

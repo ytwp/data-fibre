@@ -13,11 +13,11 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
-import io.datafibre.fibre.analysis.RedirectStatus;
-import io.datafibre.fibre.plugin.DynamicPluginLoader;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.analysis.RedirectStatus;
+import com.starrocks.plugin.DynamicPluginLoader;
+import com.starrocks.sql.parser.NodePosition;
 
 import java.util.Map;
 

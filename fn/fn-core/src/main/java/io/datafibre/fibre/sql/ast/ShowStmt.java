@@ -13,13 +13,13 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
-import io.datafibre.fibre.analysis.Predicate;
-import io.datafibre.fibre.analysis.RedirectStatus;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.qe.ShowResultSetMetaData;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.analysis.Predicate;
+import com.starrocks.analysis.RedirectStatus;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.qe.ShowResultSetMetaData;
+import com.starrocks.sql.parser.NodePosition;
 
 public abstract class ShowStmt extends StatementBase {
     protected Predicate predicate;

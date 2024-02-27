@@ -32,19 +32,28 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.common;
+package com.starrocks.common;
 
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import io.datafibre.fibre.metric.GaugeMetric;
-import io.datafibre.fibre.metric.Metric.MetricUnit;
-import io.datafibre.fibre.metric.MetricLabel;
-import io.datafibre.fibre.metric.MetricRepo;
+import com.starrocks.metric.GaugeMetric;
+import com.starrocks.metric.Metric.MetricUnit;
+import com.starrocks.metric.MetricLabel;
+import com.starrocks.metric.MetricRepo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * ThreadPoolManager is a helper class for construct daemon thread pool with limit thread and memory resource.

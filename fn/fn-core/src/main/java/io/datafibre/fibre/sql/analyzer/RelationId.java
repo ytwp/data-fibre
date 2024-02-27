@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.analyzer;
+package com.starrocks.sql.analyzer;
 
-import io.datafibre.fibre.sql.ast.Relation;
+import com.starrocks.sql.ast.Relation;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 import static java.lang.String.format;

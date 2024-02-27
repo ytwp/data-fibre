@@ -13,19 +13,19 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.mysql.security;
+package com.starrocks.mysql.security;
 
-import io.datafibre.fibre.common.Config;
+import com.starrocks.common.Config;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Hashtable;
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
-import java.util.Hashtable;
 
 public class LdapSecurity {
     private static final Logger LOG = LogManager.getLogger(LdapSecurity.class);

@@ -12,13 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.qe.scheduler.assignment;
+package com.starrocks.qe.scheduler.assignment;
 
-import io.datafibre.fibre.planner.*;
-import io.datafibre.fibre.qe.*;
-import io.datafibre.fibre.qe.scheduler.WorkerProvider;
-import io.datafibre.fibre.qe.scheduler.dag.ExecutionFragment;
-import io.datafibre.fibre.thrift.TScanRangeLocations;
+import com.starrocks.planner.DeltaLakeScanNode;
+import com.starrocks.planner.FileTableScanNode;
+import com.starrocks.planner.HdfsScanNode;
+import com.starrocks.planner.HudiScanNode;
+import com.starrocks.planner.IcebergScanNode;
+import com.starrocks.planner.OdpsScanNode;
+import com.starrocks.planner.OlapScanNode;
+import com.starrocks.planner.PaimonScanNode;
+import com.starrocks.planner.ScanNode;
+import com.starrocks.planner.SchemaScanNode;
+import com.starrocks.qe.BackendSelector;
+import com.starrocks.qe.ColocatedBackendSelector;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.qe.FragmentScanRangeAssignment;
+import com.starrocks.qe.HDFSBackendSelector;
+import com.starrocks.qe.NoopBackendSelector;
+import com.starrocks.qe.NormalBackendSelector;
+import com.starrocks.qe.ReplicatedBackendSelector;
+import com.starrocks.qe.SessionVariable;
+import com.starrocks.qe.scheduler.WorkerProvider;
+import com.starrocks.qe.scheduler.dag.ExecutionFragment;
+import com.starrocks.thrift.TScanRangeLocations;
 
 import java.util.List;
 import java.util.Set;

@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.analyzer;
+package com.starrocks.sql.analyzer;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.datafibre.fibre.analysis.PlaceHolderExpr;
-import io.datafibre.fibre.analysis.SlotRef;
-import io.datafibre.fibre.analysis.TableName;
-import io.datafibre.fibre.catalog.PrimitiveType;
-import io.datafibre.fibre.sql.ast.CTERelation;
-import io.datafibre.fibre.sql.ast.LambdaArgument;
+import com.starrocks.analysis.PlaceHolderExpr;
+import com.starrocks.analysis.SlotRef;
+import com.starrocks.analysis.TableName;
+import com.starrocks.catalog.PrimitiveType;
+import com.starrocks.sql.ast.CTERelation;
+import com.starrocks.sql.ast.LambdaArgument;
 
 import java.util.List;
 import java.util.Map;

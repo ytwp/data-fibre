@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.catalog;
+package com.starrocks.catalog;
 
 import com.google.common.base.Preconditions;
-import io.datafibre.fibre.thrift.TTypeDesc;
+import com.starrocks.thrift.TTypeDesc;
 
 /**
  * A pseudo-type cannot be used as a column data type, but it can be used to declare a function's argument or

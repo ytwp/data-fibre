@@ -12,22 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.operator.scalar;
+package com.starrocks.sql.optimizer.operator.scalar;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.analysis.Expr;
-import io.datafibre.fibre.analysis.FunctionName;
-import io.datafibre.fibre.catalog.Function;
-import io.datafibre.fibre.catalog.FunctionSet;
-import io.datafibre.fibre.catalog.ScalarType;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.sql.optimizer.rewrite.ScalarOperatorRewriter;
+import com.starrocks.analysis.Expr;
+import com.starrocks.analysis.FunctionName;
+import com.starrocks.catalog.Function;
+import com.starrocks.catalog.FunctionSet;
+import com.starrocks.catalog.ScalarType;
+import com.starrocks.catalog.Type;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.sql.optimizer.rewrite.ScalarOperatorRewriter;
 
-import static io.datafibre.fibre.catalog.Function.CompareMode.IS_IDENTICAL;
-import static io.datafibre.fibre.catalog.Function.CompareMode.IS_NONSTRICT_SUPERTYPE_OF;
-import static io.datafibre.fibre.sql.optimizer.rewrite.ScalarOperatorRewriter.DEFAULT_TYPE_CAST_RULE;
+import static com.starrocks.catalog.Function.CompareMode.IS_IDENTICAL;
+import static com.starrocks.catalog.Function.CompareMode.IS_NONSTRICT_SUPERTYPE_OF;
+import static com.starrocks.sql.optimizer.rewrite.ScalarOperatorRewriter.DEFAULT_TYPE_CAST_RULE;
 
 public class ScalarOperatorUtil {
     public static CallOperator buildMultiCountDistinct(CallOperator oldFunctionCall) {

@@ -12,13 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.common.util;
+package com.starrocks.common.util;
 
 import java.time.Duration;
 import java.time.format.DateTimeParseException;
 import java.util.Objects;
 
-import static org.joda.time.DateTimeConstants.*;
+import static org.joda.time.DateTimeConstants.SECONDS_PER_DAY;
+import static org.joda.time.DateTimeConstants.SECONDS_PER_HOUR;
+import static org.joda.time.DateTimeConstants.SECONDS_PER_MINUTE;
 
 public abstract class DurationStyle {
     public static final DurationStyle LONG = new LongStyle();

@@ -13,11 +13,11 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
 import com.google.common.base.Strings;
-import io.datafibre.fibre.common.util.ParseUtil;
-import io.datafibre.fibre.sql.analyzer.SemanticException;
+import com.starrocks.common.util.ParseUtil;
+import com.starrocks.sql.analyzer.SemanticException;
 
 import java.io.StringWriter;
 

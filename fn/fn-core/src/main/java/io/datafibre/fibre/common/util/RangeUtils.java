@@ -15,14 +15,14 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.common.util;
+package com.starrocks.common.util;
 
 import com.google.common.collect.BoundType;
 import com.google.common.collect.Range;
 import com.google.common.collect.RangeMap;
 import com.google.common.collect.TreeRangeMap;
-import io.datafibre.fibre.catalog.PartitionKey;
-import io.datafibre.fibre.common.DdlException;
+import com.starrocks.catalog.PartitionKey;
+import com.starrocks.common.DdlException;
 
 import java.io.DataInput;
 import java.io.DataOutput;

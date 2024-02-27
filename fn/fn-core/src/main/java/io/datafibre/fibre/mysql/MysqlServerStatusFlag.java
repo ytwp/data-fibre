@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.mysql;
+package com.starrocks.mysql;
 
 // MySQL server status flag.
 // Only SERVER_MORE_RESULTS_EXISTS is used now.

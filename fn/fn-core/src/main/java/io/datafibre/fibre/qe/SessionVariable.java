@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.qe;
+package com.starrocks.qe;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
@@ -41,19 +41,28 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.ToNumberPolicy;
-import io.datafibre.fibre.common.io.Text;
-import io.datafibre.fibre.common.io.Writable;
-import io.datafibre.fibre.common.util.CompressionUtils;
-import io.datafibre.fibre.common.util.TimeUtils;
-import io.datafibre.fibre.monitor.unit.TimeValue;
-import io.datafibre.fibre.qe.VariableMgr.VarAttr;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.server.StorageVolumeMgr;
-import io.datafibre.fibre.sql.analyzer.SemanticException;
-import io.datafibre.fibre.sql.common.QueryDebugOptions;
-import io.datafibre.fibre.storagevolume.StorageVolume;
-import io.datafibre.fibre.system.BackendCoreStat;
-import io.datafibre.fibre.thrift.*;
+import com.starrocks.catalog.InternalCatalog;
+import com.starrocks.common.io.Text;
+import com.starrocks.common.io.Writable;
+import com.starrocks.common.util.CompressionUtils;
+import com.starrocks.common.util.TimeUtils;
+import com.starrocks.monitor.unit.TimeValue;
+import com.starrocks.qe.VariableMgr.VarAttr;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.server.StorageVolumeMgr;
+import com.starrocks.sql.analyzer.SemanticException;
+import com.starrocks.sql.common.QueryDebugOptions;
+import com.starrocks.storagevolume.StorageVolume;
+import com.starrocks.system.BackendCoreStat;
+import com.starrocks.thrift.TCloudConfiguration;
+import com.starrocks.thrift.TCompressionType;
+import com.starrocks.thrift.TOverflowMode;
+import com.starrocks.thrift.TPipelineProfileLevel;
+import com.starrocks.thrift.TQueryOptions;
+import com.starrocks.thrift.TSpillMode;
+import com.starrocks.thrift.TSpillToRemoteStorageOptions;
+import com.starrocks.thrift.TTabletInternalParallelMode;
+import com.starrocks.thrift.TTimeUnit;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -146,6 +155,8 @@ public class SessionVariable implements Serializable, Writable, Cloneable {
     public static final String INTERACTIVE_TIMEOUT = "interactive_timeout";
     public static final String WAIT_TIMEOUT = "wait_timeout";
     public static final String WAREHOUSE = "warehouse";
+
+    public static final String CATALOG = "catalog";
     public static final String NET_WRITE_TIMEOUT = "net_write_timeout";
     public static final String NET_READ_TIMEOUT = "net_read_timeout";
     public static final String TIME_ZONE = "time_zone";
@@ -176,6 +187,11 @@ public class SessionVariable implements Serializable, Writable, Cloneable {
 
     // Table pruning on update statement is risky, so turn off in default.
     public static final String ENABLE_TABLE_PRUNE_ON_UPDATE = "enable_table_prune_on_update";
+
+    public static final String ENABLE_UKFK_OPT = "enable_ukfk_opt";
+    public static final String ENABLE_UKFK_JOIN_REORDER = "enable_ukfk_join_reorder";
+    public static final String MAX_UKFK_JOIN_REORDER_SCALE_RATIO = "max_ukfk_join_reorder_scale_ratio";
+    public static final String MAX_UKFK_JOIN_REORDER_FK_ROWS = "max_ukfk_join_reorder_fk_rows";
 
     // if set to true, some of stmt will be forwarded to leader FE to get result
 
@@ -457,6 +473,10 @@ public class SessionVariable implements Serializable, Writable, Cloneable {
     public static final String ENABLE_STRICT_ORDER_BY = "enable_strict_order_by";
     private static final String CBO_SPLIT_SCAN_PREDICATE_WITH_DATE = "enable_split_scan_predicate_with_date";
 
+    private static final String ENABLE_RESULT_SINK_ACCUMULATE = "enable_result_sink_accumulate";
+
+    public static final String ENABLE_WAIT_DEPENDENT_EVENT = "enable_wait_dependent_event";
+
     // Flag to control whether to proxy follower's query statement to leader/follower.
     public enum FollowerQueryForwardMode {
         DEFAULT,    // proxy queries by the follower's replay progress (default)
@@ -494,7 +514,7 @@ public class SessionVariable implements Serializable, Writable, Cloneable {
     public static final String ENABLE_RULE_BASED_MATERIALIZED_VIEW_REWRITE =
             "enable_rule_based_materialized_view_rewrite";
     public static final String ENABLE_FORCE_RULE_BASED_MV_REWRITE =
-            "eable_force_rule_based_mv_rewrite";
+            "enable_force_rule_based_mv_rewrite";
 
     public static final String ENABLE_MATERIALIZED_VIEW_VIEW_DELTA_REWRITE =
             "enable_materialized_view_view_delta_rewrite";
@@ -991,13 +1011,13 @@ public class SessionVariable implements Serializable, Writable, Cloneable {
     // see more details in the comment above transmissionEncodeLevel
     @VarAttr(name = SPILL_ENCODE_LEVEL)
     private int spillEncodeLevel = 7;
-    
+
     @VarAttr(name = SPILL_ENABLE_DIRECT_IO)
     private boolean spillEnableDirectIO = false;
 
     @VarAttr(name = SPILL_STORAGE_VOLUME)
     private String spillStorageVolume = "";
-    
+
     @VarAttr(name = SPILL_RAND_RATIO, flag = VariableMgr.INVISIBLE)
     private double spillRandRatio = 0.1;
 
@@ -1012,6 +1032,19 @@ public class SessionVariable implements Serializable, Writable, Cloneable {
 
     @VarAttr(name = ENABLE_TABLE_PRUNE_ON_UPDATE)
     private boolean enableTablePruneOnUpdate = false;
+
+    @VarAttr(name = ENABLE_UKFK_OPT)
+    private boolean enableUKFKOpt = false;
+
+    @VarAttr(name = ENABLE_UKFK_JOIN_REORDER)
+    private boolean enableUKFKJoinReorder = false;
+
+    @VarAttr(name = MAX_UKFK_JOIN_REORDER_SCALE_RATIO, flag = VariableMgr.INVISIBLE)
+    private int maxUKFKJoinReorderScaleRatio = 100;
+
+    @VarAttr(name = MAX_UKFK_JOIN_REORDER_FK_ROWS, flag = VariableMgr.INVISIBLE)
+    private int maxUKFKJoinReorderFKRows = 100000000;
+
     @VariableMgr.VarAttr(name = FORWARD_TO_LEADER, alias = FORWARD_TO_MASTER)
     private boolean forwardToLeader = false;
 
@@ -1373,6 +1406,17 @@ public class SessionVariable implements Serializable, Writable, Cloneable {
     @VariableMgr.VarAttr(name = ENABLE_POPULATE_DATACACHE, alias = ENABLE_POPULATE_BLOCK_CACHE)
     private boolean enablePopulateDataCache = true;
 
+    @VariableMgr.VarAttr(name = CATALOG, flag = VariableMgr.SESSION_ONLY)
+    private String catalog = InternalCatalog.DEFAULT_INTERNAL_CATALOG_NAME;
+
+    public void setCatalog(String catalog) {
+        this.catalog = catalog;
+    }
+
+    public String getCatalog() {
+        return this.catalog;
+    }
+
     @VariableMgr.VarAttr(name = ENABLE_DYNAMIC_PRUNE_SCAN_RANGE)
     private boolean enableDynamicPruneScanRange = true;
 
@@ -1709,6 +1753,9 @@ public class SessionVariable implements Serializable, Writable, Cloneable {
     @VarAttr(name = CBO_EQ_BASE_TYPE, flag = VariableMgr.INVISIBLE)
     private String cboEqBaseType = SessionVariableConstants.VARCHAR;
 
+    @VariableMgr.VarAttr(name = ENABLE_RESULT_SINK_ACCUMULATE)
+    private boolean enableResultSinkAccumulate = true;
+
     public boolean isCboDecimalCastStringStrict() {
         return cboDecimalCastStringStrict;
     }
@@ -1759,6 +1806,15 @@ public class SessionVariable implements Serializable, Writable, Cloneable {
 
     @VarAttr(name = ENABLE_STRICT_ORDER_BY)
     private boolean enableStrictOrderBy = true;
+
+    // enable wait dependent event in plan fragment
+    // the operators will wait for the dependent event to be completed before executing
+    // all of the probe side operators will wait for the build side operators to complete.
+    // Scenarios where AGG is present in the probe side will reduce peak memory usage, 
+    // but in some cases will result in increased latency for individual queries.
+    // 
+    @VarAttr(name = ENABLE_WAIT_DEPENDENT_EVENT)
+    private boolean enableWaitDependentEvent = false;
 
     public void setFollowerQueryForwardMode(String mode) {
         this.followerForwardMode = mode;
@@ -2157,6 +2213,38 @@ public class SessionVariable implements Serializable, Writable, Cloneable {
 
     public boolean isEnableTablePruneOnUpdate() {
         return enableTablePruneOnUpdate;
+    }
+
+    public boolean isEnableUKFKOpt() {
+        return enableUKFKOpt;
+    }
+
+    public void setEnableUKFKOpt(boolean enableUKFKOpt) {
+        this.enableUKFKOpt = enableUKFKOpt;
+    }
+
+    public boolean isEnableUKFKJoinReorder() {
+        return enableUKFKJoinReorder;
+    }
+
+    public void setEnableUKFKJoinReorder(boolean enableUKFKJoinReorder) {
+        this.enableUKFKJoinReorder = enableUKFKJoinReorder;
+    }
+
+    public int getMaxUKFKJoinReorderScaleRatio() {
+        return maxUKFKJoinReorderScaleRatio;
+    }
+
+    public void setMaxUKFKJoinReorderScaleRatio(int maxUKFKJoinReorderScaleRatio) {
+        this.maxUKFKJoinReorderScaleRatio = maxUKFKJoinReorderScaleRatio;
+    }
+
+    public int getMaxUKFKJoinReorderFKRows() {
+        return maxUKFKJoinReorderFKRows;
+    }
+
+    public void setMaxUKFKJoinReorderFKRows(int maxUKFKJoinReorderFKRows) {
+        this.maxUKFKJoinReorderFKRows = maxUKFKJoinReorderFKRows;
     }
 
     public int getSpillMemTableSize() {
@@ -3261,123 +3349,125 @@ public class SessionVariable implements Serializable, Writable, Cloneable {
 
     // Serialize to thrift object
     // used for rest api
-//    public TQueryOptions toThrift() {
-//        TQueryOptions tResult = new TQueryOptions();
-//        tResult.setMem_limit(maxExecMemByte);
-//        tResult.setQuery_mem_limit(queryMemLimit);
-//        tResult.setSql_dialect(sqlDialect.toLowerCase());
-//
-//        // Avoid integer overflow
-//        tResult.setQuery_timeout(Math.min(Integer.MAX_VALUE / 1000, queryTimeoutS));
-//        tResult.setQuery_delivery_timeout(Math.min(Integer.MAX_VALUE / 1000, queryDeliveryTimeoutS));
-//        tResult.setEnable_profile(enableProfile);
-//        tResult.setBig_query_profile_threshold(TimeValue.parseTimeValue(bigQueryProfileThreshold).getMillis());
-//        tResult.setBig_query_profile_threshold_unit(TTimeUnit.MILLISECOND);
-//        tResult.setRuntime_profile_report_interval(runtimeProfileReportInterval);
-//        tResult.setBatch_size(chunkSize);
-//        tResult.setLoad_mem_limit(loadMemLimit);
-//
-//        if (maxScanKeyNum > -1) {
-//            tResult.setMax_scan_key_num(maxScanKeyNum);
-//        }
-//        if (maxPushdownConditionsPerColumn > -1) {
-//            tResult.setMax_pushdown_conditions_per_column(maxPushdownConditionsPerColumn);
-//        }
-//
-//        if (SqlModeHelper.check(sqlMode, SqlModeHelper.MODE_ERROR_IF_OVERFLOW)) {
-//            tResult.setOverflow_mode(TOverflowMode.REPORT_ERROR);
-//        }
-//
-//        tResult.setEnable_spill(enableSpill);
-//        if (enableSpill) {
-//            tResult.setSpill_mem_table_size(spillMemTableSize);
-//            tResult.setSpill_mem_table_num(spillMemTableNum);
-//            tResult.setSpill_mem_limit_threshold(spillMemLimitThreshold);
-//            tResult.setSpill_operator_min_bytes(spillOperatorMinBytes);
-//            tResult.setSpill_operator_max_bytes(spillOperatorMaxBytes);
-//            tResult.setSpill_revocable_max_bytes(spillRevocableMaxBytes);
-//            tResult.setSpill_encode_level(spillEncodeLevel);
-//            tResult.setSpillable_operator_mask(spillableOperatorMask);
-//            tResult.setEnable_agg_spill_preaggregation(enableAggSpillPreaggregation);
-//            tResult.setSpill_enable_direct_io(spillEnableDirectIO);
-//            tResult.setSpill_rand_ratio(spillRandRatio);
-//            if (enableSpillToRemoteStorage && !spillStorageVolume.isEmpty()) {
-//                // find storage volume config
-//                GlobalStateMgr globalStateMgr = GlobalStateMgr.getCurrentState();
-//                StorageVolumeMgr storageVolumeMgr = globalStateMgr.getStorageVolumeMgr();
-//                StorageVolume sv = storageVolumeMgr.getStorageVolumeByName(spillStorageVolume);
-//                if (sv != null) {
-//                    tResult.setEnable_spill_to_remote_storage(true);
-//                    TSpillToRemoteStorageOptions options = new TSpillToRemoteStorageOptions();
-//                    options.setRemote_storage_paths(sv.getLocations());
-//                    TCloudConfiguration tCloudConfiguration = new TCloudConfiguration();
-//                    sv.getCloudConfiguration().toThrift(tCloudConfiguration);
-//                    options.setRemote_storage_conf(tCloudConfiguration);
-//                    options.setDisable_spill_to_local_disk(disableSpillToLocalDisk);
-//                    tResult.setSpill_to_remote_storage_options(options);
-//                }
-//            }
-//        }
-//
-//        // Compression Type
-//        TCompressionType compressionType = CompressionUtils.findTCompressionByName(transmissionCompressionType);
-//        if (compressionType != null) {
-//            tResult.setTransmission_compression_type(compressionType);
-//        }
-//
-//        tResult.setTransmission_encode_level(transmissionEncodeLevel);
-//        tResult.setGroup_concat_max_len(groupConcatMaxLen);
-//        tResult.setRpc_http_min_size(rpcHttpMinSize);
-//        tResult.setInterleaving_group_size(interleavingGroupSize);
-//
-//        TCompressionType loadCompressionType =
-//                CompressionUtils.findTCompressionByName(loadTransmissionCompressionType);
-//        if (loadCompressionType != null) {
-//            tResult.setLoad_transmission_compression_type(loadCompressionType);
-//        }
-//
-//        tResult.setRuntime_join_filter_pushdown_limit(runtimeJoinFilterPushDownLimit);
-//        tResult.setGlobal_runtime_filter_build_max_size(globalRuntimeFilterBuildMaxSize);
-//        tResult.setRuntime_filter_wait_timeout_ms(globalRuntimeFilterWaitTimeout);
-//        tResult.setRuntime_filter_send_timeout_ms(globalRuntimeFilterRpcTimeout);
-//        tResult.setRuntime_filter_scan_wait_time_ms(runtimeFilterScanWaitTime);
-//        tResult.setRuntime_filter_rpc_http_min_size(globalRuntimeFilterRpcHttpMinSize);
-//        tResult.setPipeline_dop(pipelineDop);
-//        if (pipelineProfileLevel == 2) {
-//            tResult.setPipeline_profile_level(TPipelineProfileLevel.DETAIL);
-//        } else {
-//            tResult.setPipeline_profile_level(TPipelineProfileLevel.MERGE);
-//        }
-//
-//        tResult.setEnable_tablet_internal_parallel(enableTabletInternalParallel);
-//        tResult.setTablet_internal_parallel_mode(
-//                TTabletInternalParallelMode.valueOf(tabletInternalParallelMode.toUpperCase()));
-//        tResult.setSpill_mode(TSpillMode.valueOf(spillMode.toUpperCase()));
-//        tResult.setEnable_query_debug_trace(enableQueryDebugTrace);
-//        tResult.setEnable_pipeline_query_statistic(true);
-//        tResult.setRuntime_filter_early_return_selectivity(runtimeFilterEarlyReturnSelectivity);
-//
-//        tResult.setAllow_throw_exception((sqlMode & SqlModeHelper.MODE_ALLOW_THROW_EXCEPTION) != 0);
-//
-//        tResult.setEnable_scan_datacache(enableScanDataCache);
-//        tResult.setEnable_populate_datacache(enablePopulateDataCache);
-//        tResult.setEnable_file_metacache(enableFileMetaCache);
-//        tResult.setHudi_mor_force_jni_reader(hudiMORForceJNIReader);
-//        tResult.setIo_tasks_per_scan_operator(ioTasksPerScanOperator);
-//        tResult.setConnector_io_tasks_per_scan_operator(connectorIoTasksPerScanOperator);
-//        tResult.setEnable_dynamic_prune_scan_range(enableDynamicPruneScanRange);
-//        tResult.setUse_page_cache(usePageCache);
-//
-//        tResult.setEnable_connector_adaptive_io_tasks(enableConnectorAdaptiveIoTasks);
-//        tResult.setConnector_io_tasks_slow_io_latency_ms(connectorIoTasksSlowIoLatency);
-//        tResult.setConnector_scan_use_query_mem_ratio(connectorScanUseQueryMemRatio);
-//        tResult.setScan_use_query_mem_ratio(scanUseQueryMemRatio);
-//        tResult.setEnable_collect_table_level_scan_stats(enableCollectTableLevelScanStats);
-//        tResult.setEnable_pipeline_level_shuffle(enablePipelineLevelShuffle);
-//        tResult.setEnable_hyperscan_vec(enableHyperscanVec);
-//        tResult.setEnable_jit(enableJit);
-//        return tResult;
-//    }
+    public TQueryOptions toThrift() {
+        TQueryOptions tResult = new TQueryOptions();
+        tResult.setMem_limit(maxExecMemByte);
+        tResult.setQuery_mem_limit(queryMemLimit);
+        tResult.setSql_dialect(sqlDialect.toLowerCase());
+
+        // Avoid integer overflow
+        tResult.setQuery_timeout(Math.min(Integer.MAX_VALUE / 1000, queryTimeoutS));
+        tResult.setQuery_delivery_timeout(Math.min(Integer.MAX_VALUE / 1000, queryDeliveryTimeoutS));
+        tResult.setEnable_profile(enableProfile);
+        tResult.setBig_query_profile_threshold(TimeValue.parseTimeValue(bigQueryProfileThreshold).getMillis());
+        tResult.setBig_query_profile_threshold_unit(TTimeUnit.MILLISECOND);
+        tResult.setRuntime_profile_report_interval(runtimeProfileReportInterval);
+        tResult.setBatch_size(chunkSize);
+        tResult.setLoad_mem_limit(loadMemLimit);
+
+        if (maxScanKeyNum > -1) {
+            tResult.setMax_scan_key_num(maxScanKeyNum);
+        }
+        if (maxPushdownConditionsPerColumn > -1) {
+            tResult.setMax_pushdown_conditions_per_column(maxPushdownConditionsPerColumn);
+        }
+
+        if (SqlModeHelper.check(sqlMode, SqlModeHelper.MODE_ERROR_IF_OVERFLOW)) {
+            tResult.setOverflow_mode(TOverflowMode.REPORT_ERROR);
+        }
+
+        tResult.setEnable_spill(enableSpill);
+        if (enableSpill) {
+            tResult.setSpill_mem_table_size(spillMemTableSize);
+            tResult.setSpill_mem_table_num(spillMemTableNum);
+            tResult.setSpill_mem_limit_threshold(spillMemLimitThreshold);
+            tResult.setSpill_operator_min_bytes(spillOperatorMinBytes);
+            tResult.setSpill_operator_max_bytes(spillOperatorMaxBytes);
+            tResult.setSpill_revocable_max_bytes(spillRevocableMaxBytes);
+            tResult.setSpill_encode_level(spillEncodeLevel);
+            tResult.setSpillable_operator_mask(spillableOperatorMask);
+            tResult.setEnable_agg_spill_preaggregation(enableAggSpillPreaggregation);
+            tResult.setSpill_enable_direct_io(spillEnableDirectIO);
+            tResult.setSpill_rand_ratio(spillRandRatio);
+            if (enableSpillToRemoteStorage && !spillStorageVolume.isEmpty()) {
+                // find storage volume config
+                GlobalStateMgr globalStateMgr = GlobalStateMgr.getCurrentState();
+                StorageVolumeMgr storageVolumeMgr = globalStateMgr.getStorageVolumeMgr();
+                StorageVolume sv = storageVolumeMgr.getStorageVolumeByName(spillStorageVolume);
+                if (sv != null) {
+                    tResult.setEnable_spill_to_remote_storage(true);
+                    TSpillToRemoteStorageOptions options = new TSpillToRemoteStorageOptions();
+                    options.setRemote_storage_paths(sv.getLocations());
+                    TCloudConfiguration tCloudConfiguration = new TCloudConfiguration();
+                    sv.getCloudConfiguration().toThrift(tCloudConfiguration);
+                    options.setRemote_storage_conf(tCloudConfiguration);
+                    options.setDisable_spill_to_local_disk(disableSpillToLocalDisk);
+                    tResult.setSpill_to_remote_storage_options(options);
+                }
+            }
+        }
+
+        // Compression Type
+        TCompressionType compressionType = CompressionUtils.findTCompressionByName(transmissionCompressionType);
+        if (compressionType != null) {
+            tResult.setTransmission_compression_type(compressionType);
+        }
+
+        tResult.setTransmission_encode_level(transmissionEncodeLevel);
+        tResult.setGroup_concat_max_len(groupConcatMaxLen);
+        tResult.setRpc_http_min_size(rpcHttpMinSize);
+        tResult.setInterleaving_group_size(interleavingGroupSize);
+
+        TCompressionType loadCompressionType =
+                CompressionUtils.findTCompressionByName(loadTransmissionCompressionType);
+        if (loadCompressionType != null) {
+            tResult.setLoad_transmission_compression_type(loadCompressionType);
+        }
+
+        tResult.setRuntime_join_filter_pushdown_limit(runtimeJoinFilterPushDownLimit);
+        tResult.setGlobal_runtime_filter_build_max_size(globalRuntimeFilterBuildMaxSize);
+        tResult.setRuntime_filter_wait_timeout_ms(globalRuntimeFilterWaitTimeout);
+        tResult.setRuntime_filter_send_timeout_ms(globalRuntimeFilterRpcTimeout);
+        tResult.setRuntime_filter_scan_wait_time_ms(runtimeFilterScanWaitTime);
+        tResult.setRuntime_filter_rpc_http_min_size(globalRuntimeFilterRpcHttpMinSize);
+        tResult.setPipeline_dop(pipelineDop);
+        if (pipelineProfileLevel == 2) {
+            tResult.setPipeline_profile_level(TPipelineProfileLevel.DETAIL);
+        } else {
+            tResult.setPipeline_profile_level(TPipelineProfileLevel.MERGE);
+        }
+
+        tResult.setEnable_tablet_internal_parallel(enableTabletInternalParallel);
+        tResult.setTablet_internal_parallel_mode(
+                TTabletInternalParallelMode.valueOf(tabletInternalParallelMode.toUpperCase()));
+        tResult.setSpill_mode(TSpillMode.valueOf(spillMode.toUpperCase()));
+        tResult.setEnable_query_debug_trace(enableQueryDebugTrace);
+        tResult.setEnable_pipeline_query_statistic(true);
+        tResult.setRuntime_filter_early_return_selectivity(runtimeFilterEarlyReturnSelectivity);
+
+        tResult.setAllow_throw_exception((sqlMode & SqlModeHelper.MODE_ALLOW_THROW_EXCEPTION) != 0);
+
+        tResult.setEnable_scan_datacache(enableScanDataCache);
+        tResult.setEnable_populate_datacache(enablePopulateDataCache);
+        tResult.setEnable_file_metacache(enableFileMetaCache);
+        tResult.setHudi_mor_force_jni_reader(hudiMORForceJNIReader);
+        tResult.setIo_tasks_per_scan_operator(ioTasksPerScanOperator);
+        tResult.setConnector_io_tasks_per_scan_operator(connectorIoTasksPerScanOperator);
+        tResult.setEnable_dynamic_prune_scan_range(enableDynamicPruneScanRange);
+        tResult.setUse_page_cache(usePageCache);
+
+        tResult.setEnable_connector_adaptive_io_tasks(enableConnectorAdaptiveIoTasks);
+        tResult.setConnector_io_tasks_slow_io_latency_ms(connectorIoTasksSlowIoLatency);
+        tResult.setConnector_scan_use_query_mem_ratio(connectorScanUseQueryMemRatio);
+        tResult.setScan_use_query_mem_ratio(scanUseQueryMemRatio);
+        tResult.setEnable_collect_table_level_scan_stats(enableCollectTableLevelScanStats);
+        tResult.setEnable_pipeline_level_shuffle(enablePipelineLevelShuffle);
+        tResult.setEnable_hyperscan_vec(enableHyperscanVec);
+        tResult.setEnable_jit(enableJit);
+        tResult.setEnable_result_sink_accumulate(enableResultSinkAccumulate);
+        tResult.setEnable_wait_dependent_event(enableWaitDependentEvent);
+        return tResult;
+    }
 
     public String getJsonString() throws IOException {
         JSONObject root = new JSONObject();

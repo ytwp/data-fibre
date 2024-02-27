@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.plugin;
+package com.starrocks.plugin;
 
 import com.google.common.base.Joiner;
 

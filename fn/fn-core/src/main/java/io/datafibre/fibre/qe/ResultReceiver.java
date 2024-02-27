@@ -32,20 +32,20 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.qe;
+package com.starrocks.qe;
 
-import io.datafibre.fibre.common.Status;
-import io.datafibre.fibre.common.util.DebugUtil;
-import io.datafibre.fibre.metric.MetricRepo;
-import io.datafibre.fibre.proto.PFetchDataResult;
-import io.datafibre.fibre.proto.PUniqueId;
-import io.datafibre.fibre.rpc.BackendServiceClient;
-import io.datafibre.fibre.rpc.PFetchDataRequest;
-import io.datafibre.fibre.rpc.RpcException;
-import io.datafibre.fibre.thrift.TNetworkAddress;
-import io.datafibre.fibre.thrift.TResultBatch;
-import io.datafibre.fibre.thrift.TStatusCode;
-import io.datafibre.fibre.thrift.TUniqueId;
+import com.starrocks.common.Status;
+import com.starrocks.common.util.DebugUtil;
+import com.starrocks.metric.MetricRepo;
+import com.starrocks.proto.PFetchDataResult;
+import com.starrocks.proto.PUniqueId;
+import com.starrocks.rpc.BackendServiceClient;
+import com.starrocks.rpc.PFetchDataRequest;
+import com.starrocks.rpc.RpcException;
+import com.starrocks.thrift.TNetworkAddress;
+import com.starrocks.thrift.TResultBatch;
+import com.starrocks.thrift.TStatusCode;
+import com.starrocks.thrift.TUniqueId;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.thrift.TDeserializer;
@@ -151,7 +151,7 @@ public class ResultReceiver {
             status.setInternalErrorStatus(String.format("Query exceeded time limit of %d seconds",
                     ConnectContext.get().getSessionVariable().getQueryTimeoutS()));
             if (MetricRepo.hasInit) {
-//                MetricRepo.COUNTER_QUERY_TIMEOUT.increase(1L);
+                MetricRepo.COUNTER_QUERY_TIMEOUT.increase(1L);
             }
         } finally {
             synchronized (this) {

@@ -32,22 +32,26 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import io.datafibre.fibre.catalog.*;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.common.io.Text;
-import io.datafibre.fibre.planner.FragmentNormalizer;
-import io.datafibre.fibre.sql.analyzer.SemanticException;
-import io.datafibre.fibre.sql.ast.AstVisitor;
-import io.datafibre.fibre.sql.ast.QualifiedName;
-//import io.datafibre.fibre.thrift.TExprNode;
-//import io.datafibre.fibre.thrift.TExprNodeType;
-//import io.datafibre.fibre.thrift.TSlotRef;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.StructField;
+import com.starrocks.catalog.StructType;
+import com.starrocks.catalog.Table;
+import com.starrocks.catalog.Type;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.common.io.Text;
+import com.starrocks.planner.FragmentNormalizer;
+import com.starrocks.sql.analyzer.SemanticException;
+import com.starrocks.sql.ast.AstVisitor;
+import com.starrocks.sql.ast.QualifiedName;
+import com.starrocks.thrift.TExprNode;
+import com.starrocks.thrift.TExprNodeType;
+import com.starrocks.thrift.TSlotRef;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -331,37 +335,37 @@ public class SlotRef extends Expr {
         return tblName;
     }
 
-//    @Override
-//    protected void toThrift(TExprNode msg) {
-//        msg.node_type = TExprNodeType.SLOT_REF;
-//        if (desc != null) {
-//            if (desc.getParent() != null) {
-//                msg.slot_ref = new TSlotRef(desc.getId().asInt(), desc.getParent().getId().asInt());
-//            } else {
-//                // tuple id is meaningless here
-//                msg.slot_ref = new TSlotRef(desc.getId().asInt(), 0);
-//            }
-//        } else {
-//            // slot id and tuple id are meaningless here
-//            msg.slot_ref = new TSlotRef(0, 0);
-//        }
-//
-//        msg.setOutput_column(outputColumn);
-//    }
+    @Override
+    protected void toThrift(TExprNode msg) {
+        msg.node_type = TExprNodeType.SLOT_REF;
+        if (desc != null) {
+            if (desc.getParent() != null) {
+                msg.slot_ref = new TSlotRef(desc.getId().asInt(), desc.getParent().getId().asInt());
+            } else {
+                // tuple id is meaningless here
+                msg.slot_ref = new TSlotRef(desc.getId().asInt(), 0);
+            }
+        } else {
+            // slot id and tuple id are meaningless here
+            msg.slot_ref = new TSlotRef(0, 0);
+        }
 
-//    @Override
-//    public void toNormalForm(TExprNode msg, FragmentNormalizer normalizer) {
-//        msg.node_type = TExprNodeType.SLOT_REF;
-//        if (desc != null) {
-//            SlotId slotId = normalizer.isNotRemappingSlotId() ? desc.getId() : normalizer.remapSlotId(desc.getId());
-//            // tuple id is meaningless here
-//            msg.slot_ref = new TSlotRef(slotId.asInt(), 0);
-//        } else {
-//            // slot id and tuple id are meaningless here
-//            msg.slot_ref = new TSlotRef(0, 0);
-//        }
-//        msg.setOutput_column(outputColumn);
-//    }
+        msg.setOutput_column(outputColumn);
+    }
+
+    @Override
+    public void toNormalForm(TExprNode msg, FragmentNormalizer normalizer) {
+        msg.node_type = TExprNodeType.SLOT_REF;
+        if (desc != null) {
+            SlotId slotId = normalizer.isNotRemappingSlotId() ? desc.getId() : normalizer.remapSlotId(desc.getId());
+            // tuple id is meaningless here
+            msg.slot_ref = new TSlotRef(slotId.asInt(), 0);
+        } else {
+            // slot id and tuple id are meaningless here
+            msg.slot_ref = new TSlotRef(0, 0);
+        }
+        msg.setOutput_column(outputColumn);
+    }
 
     @Override
     public int hashCode() {

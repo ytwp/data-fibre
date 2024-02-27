@@ -12,24 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.operator.physical;
+package com.starrocks.sql.optimizer.operator.physical;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.Table;
-import io.datafibre.fibre.common.Pair;
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.OptExpressionVisitor;
-import io.datafibre.fibre.sql.optimizer.base.DistributionSpec;
-import io.datafibre.fibre.sql.optimizer.base.HashDistributionDesc;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorVisitor;
-import io.datafibre.fibre.sql.optimizer.operator.Projection;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalOlapScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
-import io.datafibre.fibre.sql.optimizer.statistics.ColumnDict;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.Table;
+import com.starrocks.common.Pair;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.OptExpressionVisitor;
+import com.starrocks.sql.optimizer.base.DistributionSpec;
+import com.starrocks.sql.optimizer.base.HashDistributionDesc;
+import com.starrocks.sql.optimizer.operator.OperatorType;
+import com.starrocks.sql.optimizer.operator.OperatorVisitor;
+import com.starrocks.sql.optimizer.operator.Projection;
+import com.starrocks.sql.optimizer.operator.logical.LogicalOlapScanOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.sql.optimizer.statistics.ColumnDict;
 
 import java.util.Collections;
 import java.util.List;

@@ -15,16 +15,17 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.sql;
+package com.starrocks.sql;
 
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.KeysType;
-import io.datafibre.fibre.catalog.Table;
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.Utils;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
-import io.datafibre.fibre.sql.optimizer.statistics.IDictManager;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.KeysType;
+import com.starrocks.catalog.OlapTable;
+import com.starrocks.catalog.Table;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.Utils;
+import com.starrocks.sql.optimizer.operator.logical.LogicalScanOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.sql.optimizer.statistics.IDictManager;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,9 +43,9 @@ public class ShortCircuitPlannerHybrid {
         public Boolean visitLogicalTableScan(OptExpression optExpression, Void context) {
             LogicalScanOperator scanOp = optExpression.getOp().cast();
             Table table = scanOp.getTable();
-//            if (!(table instanceof OlapTable) && !(((OlapTable) table).getKeysType().equals(KeysType.PRIMARY_KEYS))) {
-//                return false;
-//            }
+            if (!(table instanceof OlapTable) && !(((OlapTable) table).getKeysType().equals(KeysType.PRIMARY_KEYS))) {
+                return false;
+            }
 
             for (Column column : table.getFullSchema()) {
                 if (IDictManager.getInstance().hasGlobalDict(table.getId(), column.getName())) {
@@ -52,12 +53,10 @@ public class ShortCircuitPlannerHybrid {
                 }
             }
 
-//            List<String> keyColumns = ((OlapTable) table).getKeyColumns().stream().map(Column::getName).collect(
-//                    Collectors.toList());
-//            List<ScalarOperator> conjuncts = Utils.extractConjuncts(predicate);
-//            return isPointScan(table, keyColumns, conjuncts);
-
-            return false;
+            List<String> keyColumns = ((OlapTable) table).getKeyColumns().stream().map(Column::getName).collect(
+                    Collectors.toList());
+            List<ScalarOperator> conjuncts = Utils.extractConjuncts(predicate);
+            return isPointScan(table, keyColumns, conjuncts);
         }
     }
 }

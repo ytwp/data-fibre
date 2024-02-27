@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.privilege;
+package com.starrocks.privilege;
 
 import com.google.common.collect.ImmutableSet;
 

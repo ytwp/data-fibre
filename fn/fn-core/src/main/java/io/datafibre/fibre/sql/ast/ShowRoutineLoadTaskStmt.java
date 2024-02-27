@@ -13,15 +13,20 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
 import com.google.common.collect.ImmutableList;
-import io.datafibre.fibre.analysis.*;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.ScalarType;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.qe.ShowResultSetMetaData;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.analysis.BinaryPredicate;
+import com.starrocks.analysis.BinaryType;
+import com.starrocks.analysis.Expr;
+import com.starrocks.analysis.RedirectStatus;
+import com.starrocks.analysis.SlotRef;
+import com.starrocks.analysis.StringLiteral;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.ScalarType;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.qe.ShowResultSetMetaData;
+import com.starrocks.sql.parser.NodePosition;
 
 import java.util.Arrays;
 import java.util.List;

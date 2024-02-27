@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.catalog;
+package com.starrocks.catalog;
 
 public class AnyArrayType extends PseudoType {
     @Override

@@ -12,10 +12,52 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
-import io.datafibre.fibre.analysis.*;
-import io.datafibre.fibre.sql.ast.pipe.*;
+import com.starrocks.analysis.AnalyticExpr;
+import com.starrocks.analysis.ArithmeticExpr;
+import com.starrocks.analysis.ArraySliceExpr;
+import com.starrocks.analysis.ArrowExpr;
+import com.starrocks.analysis.BetweenPredicate;
+import com.starrocks.analysis.BinaryPredicate;
+import com.starrocks.analysis.CaseExpr;
+import com.starrocks.analysis.CastExpr;
+import com.starrocks.analysis.CloneExpr;
+import com.starrocks.analysis.CollectionElementExpr;
+import com.starrocks.analysis.CompoundPredicate;
+import com.starrocks.analysis.DictQueryExpr;
+import com.starrocks.analysis.ExistsPredicate;
+import com.starrocks.analysis.Expr;
+import com.starrocks.analysis.FunctionCallExpr;
+import com.starrocks.analysis.GroupByClause;
+import com.starrocks.analysis.GroupingFunctionCallExpr;
+import com.starrocks.analysis.HintNode;
+import com.starrocks.analysis.InPredicate;
+import com.starrocks.analysis.InformationFunction;
+import com.starrocks.analysis.IsNullPredicate;
+import com.starrocks.analysis.LikePredicate;
+import com.starrocks.analysis.LimitElement;
+import com.starrocks.analysis.LiteralExpr;
+import com.starrocks.analysis.MultiInPredicate;
+import com.starrocks.analysis.NamedArgument;
+import com.starrocks.analysis.OrderByElement;
+import com.starrocks.analysis.Parameter;
+import com.starrocks.analysis.ParseNode;
+import com.starrocks.analysis.SetVarHint;
+import com.starrocks.analysis.SlotRef;
+import com.starrocks.analysis.SubfieldExpr;
+import com.starrocks.analysis.Subquery;
+import com.starrocks.analysis.TimestampArithmeticExpr;
+import com.starrocks.analysis.UserVariableHint;
+import com.starrocks.analysis.VariableExpr;
+import com.starrocks.connector.parser.trino.PlaceholderExpr;
+import com.starrocks.sql.ast.pipe.AlterPipeClause;
+import com.starrocks.sql.ast.pipe.AlterPipeStmt;
+import com.starrocks.sql.ast.pipe.CreatePipeStmt;
+import com.starrocks.sql.ast.pipe.DescPipeStmt;
+import com.starrocks.sql.ast.pipe.DropPipeStmt;
+import com.starrocks.sql.ast.pipe.PipeName;
+import com.starrocks.sql.ast.pipe.ShowPipeStmt;
 
 public abstract class AstVisitor<R, C> {
     public R visit(ParseNode node) {
@@ -375,17 +417,17 @@ public abstract class AstVisitor<R, C> {
 
     // ---------------------------------------- Cluster Management Statement -------------------------------------------
 
-//    public R visitAlterSystemStatement(AlterSystemStmt statement, C context) {
-//        return visitDDLStatement(statement, context);
-//    }
-//
-//    public R visitCancelAlterSystemStatement(CancelAlterSystemStmt statement, C context) {
-//        return visitStatement(statement, context);
-//    }
-//
-//    public R visitShowComputeNodes(ShowComputeNodesStmt statement, C context) {
-//        return visitStatement(statement, context);
-//    }
+    public R visitAlterSystemStatement(AlterSystemStmt statement, C context) {
+        return visitDDLStatement(statement, context);
+    }
+
+    public R visitCancelAlterSystemStatement(CancelAlterSystemStmt statement, C context) {
+        return visitStatement(statement, context);
+    }
+
+    public R visitShowComputeNodes(ShowComputeNodesStmt statement, C context) {
+        return visitStatement(statement, context);
+    }
 
     // ------------------------------------------- Analyze Statement ---------------------------------------------------
 
@@ -1166,9 +1208,9 @@ public abstract class AstVisitor<R, C> {
         return visitExpression(node, context);
     }
 
-//    public R visitMultiInPredicate(MultiInPredicate node, C context) {
-//        return visitExpression(node, context);
-//    }
+    public R visitMultiInPredicate(MultiInPredicate node, C context) {
+        return visitExpression(node, context);
+    }
 
     public R visitIsNullPredicate(IsNullPredicate node, C context) {
         return visitExpression(node, context);
@@ -1214,9 +1256,9 @@ public abstract class AstVisitor<R, C> {
         return visitExpression(node, context);
     }
 
-//    public R visitPlaceholderExpr(PlaceholderExpr node, C context) {
-//        return visitExpression(node, context);
-//    }
+    public R visitPlaceholderExpr(PlaceholderExpr node, C context) {
+        return visitExpression(node, context);
+    }
 
     public R visitParameterExpr(Parameter node, C context) {
         return visitExpression(node, context);
@@ -1252,11 +1294,11 @@ public abstract class AstVisitor<R, C> {
         return visitNode(node, context);
     }
 
-//    public R visitSetVarHint(SetVarHint node, C context) {
-//        return visitNode(node, context);
-//    }
+    public R visitSetVarHint(SetVarHint node, C context) {
+        return visitNode(node, context);
+    }
 
-//    public R visitUserVariableHint(UserVariableHint node, C context) {
-//        return visitNode(node, context);
-//    }
+    public R visitUserVariableHint(UserVariableHint node, C context) {
+        return visitNode(node, context);
+    }
 }

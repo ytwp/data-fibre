@@ -11,13 +11,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package io.datafibre.fibre.common.util;
+package com.starrocks.common.util;
 
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.proto.PQueryStatistics;
-import io.datafibre.fibre.proto.QueryStatisticsItemPB;
-import io.datafibre.fibre.thrift.TAuditStatistics;
-import io.datafibre.fibre.thrift.TAuditStatisticsItem;
+import com.starrocks.proto.PQueryStatistics;
+import com.starrocks.proto.QueryStatisticsItemPB;
+import com.starrocks.thrift.TAuditStatistics;
+import com.starrocks.thrift.TAuditStatisticsItem;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.Map;

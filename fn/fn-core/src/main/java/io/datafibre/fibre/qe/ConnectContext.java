@@ -32,39 +32,63 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.qe;
+package com.starrocks.qe;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import io.datafibre.fibre.catalog.InternalCatalog;
-import io.datafibre.fibre.common.DdlException;
-import io.datafibre.fibre.common.util.TimeUtils;
-import io.datafibre.fibre.http.HttpConnectContext;
-import io.datafibre.fibre.mysql.MysqlCapability;
-import io.datafibre.fibre.mysql.MysqlChannel;
-import io.datafibre.fibre.mysql.MysqlCommand;
-import io.datafibre.fibre.mysql.MysqlSerializer;
-import io.datafibre.fibre.mysql.ssl.SSLChannel;
-import io.datafibre.fibre.mysql.ssl.SSLChannelImpClassLoader;
-import io.datafibre.fibre.plugin.AuditEvent.AuditEventBuilder;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.sql.analyzer.SemanticException;
-import io.datafibre.fibre.sql.ast.*;
-import io.datafibre.fibre.sql.optimizer.dump.DumpInfo;
-import io.datafibre.fibre.sql.optimizer.dump.QueryDumpInfo;
-import io.datafibre.fibre.sql.parser.SqlParser;
-import io.datafibre.fibre.thrift.TUniqueId;
+import com.starrocks.cluster.ClusterNamespace;
+import com.starrocks.common.DdlException;
+import com.starrocks.common.ErrorCode;
+import com.starrocks.common.ErrorReport;
+import com.starrocks.common.util.TimeUtils;
+import com.starrocks.http.HttpConnectContext;
+import com.starrocks.mysql.MysqlCapability;
+import com.starrocks.mysql.MysqlChannel;
+import com.starrocks.mysql.MysqlCommand;
+import com.starrocks.mysql.MysqlSerializer;
+import com.starrocks.mysql.ssl.SSLChannel;
+import com.starrocks.mysql.ssl.SSLChannelImpClassLoader;
+import com.starrocks.plugin.AuditEvent.AuditEventBuilder;
+import com.starrocks.privilege.AccessDeniedException;
+import com.starrocks.privilege.ObjectType;
+import com.starrocks.privilege.PrivilegeException;
+import com.starrocks.privilege.PrivilegeType;
+import com.starrocks.server.CatalogMgr;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.server.MetadataMgr;
+import com.starrocks.server.WarehouseManager;
+import com.starrocks.sql.analyzer.Authorizer;
+import com.starrocks.sql.analyzer.SemanticException;
+import com.starrocks.sql.ast.SetListItem;
+import com.starrocks.sql.ast.SetStmt;
+import com.starrocks.sql.ast.SetType;
+import com.starrocks.sql.ast.StatementBase;
+import com.starrocks.sql.ast.SystemVariable;
+import com.starrocks.sql.ast.UserIdentity;
+import com.starrocks.sql.ast.UserVariable;
+import com.starrocks.sql.optimizer.dump.DumpInfo;
+import com.starrocks.sql.optimizer.dump.QueryDumpInfo;
+import com.starrocks.sql.parser.SqlParser;
+import com.starrocks.thrift.TPipelineProfileLevel;
+import com.starrocks.thrift.TUniqueId;
+import com.starrocks.thrift.TWorkGroup;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import javax.net.ssl.SSLContext;
 
 // When one client connect in, we create a connection context for it.
 // We store session information here. Meanwhile, ConnectScheduler all
@@ -91,8 +115,6 @@ public class ConnectContext {
 
     // A request will be executed multiple times because of retry or redirect.
     // This id is used to distinguish between different execution instances
-    //由于重试或重定向，请求将被执行多次。
-    //此id用于区分不同的执行实例
     protected TUniqueId executionId;
 
     // id for this connection
@@ -116,8 +138,6 @@ public class ConnectContext {
     protected MysqlCapability capability;
     // Indicate if this client is killed.
     protected volatile boolean isKilled;
-    // catalog
-    protected volatile String currentCatalog = InternalCatalog.DEFAULT_INTERNAL_CATALOG_NAME;
     // Db
     protected String currentDb = "";
     // warehouse
@@ -191,9 +211,10 @@ public class ConnectContext {
 
     protected StatementBase.ExplainLevel explainLevel;
 
-//    protected TWorkGroup resourceGroup;
+    protected TWorkGroup resourceGroup;
 
     protected volatile boolean isPending = false;
+    protected volatile boolean isForward = false;
 
     protected SSLContext sslContext;
 
@@ -345,17 +366,17 @@ public class ConnectContext {
     }
 
     public void setCurrentRoleIds(UserIdentity user) {
-//        try {
-//            Set<Long> defaultRoleIds;
-//            if (GlobalVariable.isActivateAllRolesOnLogin()) {
-//                defaultRoleIds = GlobalStateMgr.getCurrentState().getAuthorizationMgr().getRoleIdsByUser(user);
-//            } else {
-//                defaultRoleIds = GlobalStateMgr.getCurrentState().getAuthorizationMgr().getDefaultRoleIdsByUser(user);
-//            }
-//            this.currentRoleIds = defaultRoleIds;
-//        } catch (PrivilegeException e) {
-//            LOG.warn("Set current role fail : {}", e.getMessage());
-//        }
+        try {
+            Set<Long> defaultRoleIds;
+            if (GlobalVariable.isActivateAllRolesOnLogin()) {
+                defaultRoleIds = GlobalStateMgr.getCurrentState().getAuthorizationMgr().getRoleIdsByUser(user);
+            } else {
+                defaultRoleIds = GlobalStateMgr.getCurrentState().getAuthorizationMgr().getDefaultRoleIdsByUser(user);
+            }
+            this.currentRoleIds = defaultRoleIds;
+        } catch (PrivilegeException e) {
+            LOG.warn("Set current role fail : {}", e.getMessage());
+        }
     }
 
     public void setCurrentRoleIds(Set<Long> roleIds) {
@@ -403,7 +424,6 @@ public class ConnectContext {
     public Map<String, UserVariable> getUserVariables() {
         return userVariables;
     }
-
     public UserVariable getUserVariable(String variable) {
         return userVariables.get(variable);
     }
@@ -585,9 +605,8 @@ public class ConnectContext {
     }
 
     public boolean needMergeProfile() {
-        return false;
-//        return isProfileEnabled() &&
-//               sessionVariable.getPipelineProfileLevel() < TPipelineProfileLevel.DETAIL.getValue();
+        return isProfileEnabled() &&
+                sessionVariable.getPipelineProfileLevel() < TPipelineProfileLevel.DETAIL.getValue();
     }
 
     public byte[] getAuthDataSalt() {
@@ -642,28 +661,28 @@ public class ConnectContext {
         this.explainLevel = explainLevel;
     }
 
-//    public TWorkGroup getResourceGroup() {
-//        return resourceGroup;
-//    }
+    public TWorkGroup getResourceGroup() {
+        return resourceGroup;
+    }
 
-//    public void setResourceGroup(TWorkGroup resourceGroup) {
-//        this.resourceGroup = resourceGroup;
-//    }
+    public void setResourceGroup(TWorkGroup resourceGroup) {
+        this.resourceGroup = resourceGroup;
+    }
 
     public String getCurrentCatalog() {
-        return currentCatalog;
+        return this.sessionVariable.getCatalog();
     }
 
     public void setCurrentCatalog(String currentCatalog) {
-        this.currentCatalog = currentCatalog;
+        this.sessionVariable.setCatalog(currentCatalog);
     }
 
-//    public String getCurrentWarehouse() {
-//        if (currentWarehouse != null) {
-//            return currentWarehouse;
-//        }
-//        return WarehouseManager.DEFAULT_WAREHOUSE_NAME;
-//    }
+    public String getCurrentWarehouse() {
+        if (currentWarehouse != null) {
+            return currentWarehouse;
+        }
+        return WarehouseManager.DEFAULT_WAREHOUSE_NAME;
+    }
 
     public void setCurrentWarehouse(String currentWarehouse) {
         this.currentWarehouse = currentWarehouse;
@@ -799,17 +818,17 @@ public class ConnectContext {
         return threadInfo;
     }
 
-//    public int getAliveBackendNumber() {
-//        int v = sessionVariable.getCboDebugAliveBackendNumber();
-//        if (v > 0) {
-//            return v;
-//        }
-//        return globalStateMgr.getNodeMgr().getClusterInfo().getAliveBackendNumber();
-//    }
+    public int getAliveBackendNumber() {
+        int v = sessionVariable.getCboDebugAliveBackendNumber();
+        if (v > 0) {
+            return v;
+        }
+        return globalStateMgr.getNodeMgr().getClusterInfo().getAliveBackendNumber();
+    }
 
-//    public int getTotalBackendNumber() {
-//        return globalStateMgr.getNodeMgr().getClusterInfo().getTotalBackendNumber();
-//    }
+    public int getTotalBackendNumber() {
+        return globalStateMgr.getNodeMgr().getClusterInfo().getTotalBackendNumber();
+    }
 
     public void setPending(boolean pending) {
         isPending = pending;
@@ -817,6 +836,14 @@ public class ConnectContext {
 
     public boolean isPending() {
         return isPending;
+    }
+
+    public void setIsForward(boolean forward) {
+        isForward = forward;
+    }
+
+    public boolean isForward() {
+        return isForward;
     }
 
     public boolean supportSSL() {
@@ -862,21 +889,21 @@ public class ConnectContext {
     // Change current catalog of this session, and reset current database.
     // We can support "use 'catalog <catalog_name>'" from mysql client or "use catalog <catalog_name>" from jdbc.
     public void changeCatalog(String newCatalogName) throws DdlException {
-//        CatalogMgr catalogMgr = GlobalStateMgr.getCurrentState().getCatalogMgr();
-//        if (!catalogMgr.catalogExists(newCatalogName)) {
-//            ErrorReport.reportDdlException(ErrorCode.ERR_BAD_CATALOG_ERROR, newCatalogName);
-//        }
-//        if (!CatalogMgr.isInternalCatalog(newCatalogName)) {
-//            try {
-//                Authorizer.checkAnyActionOnCatalog(this.getCurrentUserIdentity(),
-//                        this.getCurrentRoleIds(), newCatalogName);
-//            } catch (AccessDeniedException e) {
-//                AccessDeniedException.reportAccessDenied(newCatalogName, this.getCurrentUserIdentity(), this.getCurrentRoleIds(),
-//                        PrivilegeType.ANY.name(), ObjectType.CATALOG.name(), newCatalogName);
-//            }
-//        }
-//        this.setCurrentCatalog(newCatalogName);
-//        this.setDatabase("");
+        CatalogMgr catalogMgr = GlobalStateMgr.getCurrentState().getCatalogMgr();
+        if (!catalogMgr.catalogExists(newCatalogName)) {
+            ErrorReport.reportDdlException(ErrorCode.ERR_BAD_CATALOG_ERROR, newCatalogName);
+        }
+        if (!CatalogMgr.isInternalCatalog(newCatalogName)) {
+            try {
+                Authorizer.checkAnyActionOnCatalog(this.getCurrentUserIdentity(),
+                        this.getCurrentRoleIds(), newCatalogName);
+            } catch (AccessDeniedException e) {
+                AccessDeniedException.reportAccessDenied(newCatalogName, this.getCurrentUserIdentity(), this.getCurrentRoleIds(),
+                        PrivilegeType.ANY.name(), ObjectType.CATALOG.name(), newCatalogName);
+            }
+        }
+        this.setCurrentCatalog(newCatalogName);
+        this.setDatabase("");
     }
 
     // Change current catalog and database of this session.
@@ -884,54 +911,54 @@ public class ConnectContext {
     // For "CATALOG.DB", we change the current catalog database.
     // For "DB", we keep the current catalog and change the current database.
     public void changeCatalogDb(String identifier) throws DdlException {
-//        CatalogMgr catalogMgr = GlobalStateMgr.getCurrentState().getCatalogMgr();
-//        MetadataMgr metadataMgr = GlobalStateMgr.getCurrentState().getMetadataMgr();
-//
-//        String dbName;
-//
-//        String[] parts = identifier.split("\\.", 2); // at most 2 parts
-//        if (parts.length != 1 && parts.length != 2) {
-//            ErrorReport.reportDdlException(ErrorCode.ERR_BAD_CATALOG_AND_DB_ERROR, identifier);
-//        }
-//
-//        if (parts.length == 1) { // use database
-//            dbName = identifier;
-//        } else { // use catalog.database
-//            String newCatalogName = parts[0];
-//            if (!catalogMgr.catalogExists(newCatalogName)) {
-//                ErrorReport.reportDdlException(ErrorCode.ERR_BAD_CATALOG_ERROR, newCatalogName);
-//            }
-//            if (!CatalogMgr.isInternalCatalog(newCatalogName)) {
-//                try {
-//                    Authorizer.checkAnyActionOnCatalog(this.getCurrentUserIdentity(),
-//                            this.getCurrentRoleIds(), newCatalogName);
-//                } catch (AccessDeniedException e) {
-//                    AccessDeniedException.reportAccessDenied(newCatalogName,
-//                            this.getCurrentUserIdentity(), this.getCurrentRoleIds(),
-//                            PrivilegeType.ANY.name(), ObjectType.CATALOG.name(), newCatalogName);
-//                }
-//            }
-//            this.setCurrentCatalog(newCatalogName);
-//            dbName = parts[1];
-//        }
-//
-//        if (!Strings.isNullOrEmpty(dbName) && metadataMgr.getDb(this.getCurrentCatalog(), dbName) == null) {
-//            LOG.debug("Unknown catalog {} and db {}", this.getCurrentCatalog(), dbName);
-//            ErrorReport.reportDdlException(ErrorCode.ERR_BAD_DB_ERROR, dbName);
-//        }
-//
-//        // Here we check the request permission that sent by the mysql client or jdbc.
-//        // So we didn't check UseDbStmt permission in PrivilegeCheckerV2.
-//        try {
-//            Authorizer.checkAnyActionOnOrInDb(this.getCurrentUserIdentity(),
-//                    this.getCurrentRoleIds(), this.getCurrentCatalog(), dbName);
-//        } catch (AccessDeniedException e) {
-//            AccessDeniedException.reportAccessDenied(this.getCurrentCatalog(),
-//                    this.getCurrentUserIdentity(), this.getCurrentRoleIds(),
-//                    PrivilegeType.ANY.name(), ObjectType.DATABASE.name(), dbName);
-//        }
-//
-//        this.setDatabase(dbName);
+        CatalogMgr catalogMgr = GlobalStateMgr.getCurrentState().getCatalogMgr();
+        MetadataMgr metadataMgr = GlobalStateMgr.getCurrentState().getMetadataMgr();
+
+        String dbName;
+
+        String[] parts = identifier.split("\\.", 2); // at most 2 parts
+        if (parts.length != 1 && parts.length != 2) {
+            ErrorReport.reportDdlException(ErrorCode.ERR_BAD_CATALOG_AND_DB_ERROR, identifier);
+        }
+
+        if (parts.length == 1) { // use database
+            dbName = identifier;
+        } else { // use catalog.database
+            String newCatalogName = parts[0];
+            if (!catalogMgr.catalogExists(newCatalogName)) {
+                ErrorReport.reportDdlException(ErrorCode.ERR_BAD_CATALOG_ERROR, newCatalogName);
+            }
+            if (!CatalogMgr.isInternalCatalog(newCatalogName)) {
+                try {
+                    Authorizer.checkAnyActionOnCatalog(this.getCurrentUserIdentity(),
+                            this.getCurrentRoleIds(), newCatalogName);
+                } catch (AccessDeniedException e) {
+                    AccessDeniedException.reportAccessDenied(newCatalogName,
+                            this.getCurrentUserIdentity(), this.getCurrentRoleIds(),
+                            PrivilegeType.ANY.name(), ObjectType.CATALOG.name(), newCatalogName);
+                }
+            }
+            this.setCurrentCatalog(newCatalogName);
+            dbName = parts[1];
+        }
+
+        if (!Strings.isNullOrEmpty(dbName) && metadataMgr.getDb(this.getCurrentCatalog(), dbName) == null) {
+            LOG.debug("Unknown catalog {} and db {}", this.getCurrentCatalog(), dbName);
+            ErrorReport.reportDdlException(ErrorCode.ERR_BAD_DB_ERROR, dbName);
+        }
+
+        // Here we check the request permission that sent by the mysql client or jdbc.
+        // So we didn't check UseDbStmt permission in PrivilegeCheckerV2.
+        try {
+            Authorizer.checkAnyActionOnOrInDb(this.getCurrentUserIdentity(),
+                    this.getCurrentRoleIds(), this.getCurrentCatalog(), dbName);
+        } catch (AccessDeniedException e) {
+            AccessDeniedException.reportAccessDenied(this.getCurrentCatalog(),
+                    this.getCurrentUserIdentity(), this.getCurrentRoleIds(),
+                    PrivilegeType.ANY.name(), ObjectType.DATABASE.name(), dbName);
+        }
+
+        this.setDatabase(dbName);
     }
 
     /**
@@ -966,7 +993,7 @@ public class ConnectContext {
         public List<String> toRow(long nowMs, boolean full) {
             List<String> row = Lists.newArrayList();
             row.add("" + connectionId);
-//            row.add(ClusterNamespace.getNameFromFullName(qualifiedUser));
+            row.add(ClusterNamespace.getNameFromFullName(qualifiedUser));
             // Ip + port
             if (ConnectContext.this instanceof HttpConnectContext) {
                 String remoteAddress = ((HttpConnectContext) (ConnectContext.this)).getRemoteAddress();
@@ -974,7 +1001,7 @@ public class ConnectContext {
             } else {
                 row.add(getMysqlChannel().getRemoteHostPortString());
             }
-//            row.add(ClusterNamespace.getNameFromFullName(currentDb));
+            row.add(ClusterNamespace.getNameFromFullName(currentDb));
             // Command
             row.add(command.toString());
             // connection start Time
@@ -995,7 +1022,13 @@ public class ConnectContext {
                 }
             }
             row.add(stmt);
-            row.add(Boolean.toString(isPending));
+            if (isForward) {
+                // if query is forward to leader, we can't know its accurate status in query queue,
+                // so isPending should not be displayed
+                row.add("");
+            } else {
+                row.add(Boolean.toString(isPending));
+            }
             return row;
         }
     }

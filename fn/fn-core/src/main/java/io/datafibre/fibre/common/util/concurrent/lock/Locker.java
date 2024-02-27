@@ -12,22 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.common.util.concurrent.lock;
+package com.starrocks.common.util.concurrent.lock;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import io.datafibre.fibre.catalog.Database;
-import io.datafibre.fibre.common.Config;
-import io.datafibre.fibre.common.ErrorCode;
-import io.datafibre.fibre.common.ErrorReportException;
-import io.datafibre.fibre.common.util.LogUtil;
-import io.datafibre.fibre.common.util.Util;
-import io.datafibre.fibre.common.util.concurrent.QueryableReentrantReadWriteLock;
-import io.datafibre.fibre.server.GlobalStateMgr;
+import com.starrocks.catalog.Database;
+import com.starrocks.common.Config;
+import com.starrocks.common.ErrorCode;
+import com.starrocks.common.ErrorReportException;
+import com.starrocks.common.util.LogUtil;
+import com.starrocks.common.util.Util;
+import com.starrocks.common.util.concurrent.QueryableReentrantReadWriteLock;
+import com.starrocks.server.GlobalStateMgr;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class Locker {

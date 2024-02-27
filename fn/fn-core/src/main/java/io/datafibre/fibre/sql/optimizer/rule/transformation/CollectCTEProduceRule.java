@@ -13,14 +13,14 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.rule.transformation;
+package com.starrocks.sql.optimizer.rule.transformation;
 
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.OptimizerContext;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalCTEProduceOperator;
-import io.datafibre.fibre.sql.optimizer.operator.pattern.Pattern;
-import io.datafibre.fibre.sql.optimizer.rule.RuleType;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.OptimizerContext;
+import com.starrocks.sql.optimizer.operator.OperatorType;
+import com.starrocks.sql.optimizer.operator.logical.LogicalCTEProduceOperator;
+import com.starrocks.sql.optimizer.operator.pattern.Pattern;
+import com.starrocks.sql.optimizer.rule.RuleType;
 
 import java.util.Collections;
 import java.util.List;

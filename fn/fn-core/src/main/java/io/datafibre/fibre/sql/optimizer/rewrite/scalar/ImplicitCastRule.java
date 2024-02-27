@@ -13,33 +13,35 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.rewrite.scalar;
+package com.starrocks.sql.optimizer.rewrite.scalar;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.analysis.ArithmeticExpr;
-import io.datafibre.fibre.analysis.BinaryType;
-import io.datafibre.fibre.catalog.Function;
-import io.datafibre.fibre.catalog.FunctionSet;
-import io.datafibre.fibre.catalog.MapType;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.sql.common.ErrorType;
-import io.datafibre.fibre.sql.common.StarRocksPlannerException;
-import io.datafibre.fibre.sql.common.TypeManager;
-import io.datafibre.fibre.sql.optimizer.Utils;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.BetweenPredicateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.BinaryPredicateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.CallOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.CaseWhenOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.CastOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.CompoundPredicateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.InPredicateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.LikePredicateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.MapOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.MultiInPredicateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
-import io.datafibre.fibre.sql.optimizer.rewrite.ScalarOperatorRewriteContext;
+import com.starrocks.analysis.ArithmeticExpr;
+import com.starrocks.analysis.BinaryType;
+import com.starrocks.catalog.Function;
+import com.starrocks.catalog.FunctionSet;
+import com.starrocks.catalog.MapType;
+import com.starrocks.catalog.Type;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.qe.SessionVariableConstants;
+import com.starrocks.sql.common.ErrorType;
+import com.starrocks.sql.common.StarRocksPlannerException;
+import com.starrocks.sql.common.TypeManager;
+import com.starrocks.sql.optimizer.Utils;
+import com.starrocks.sql.optimizer.operator.scalar.BetweenPredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.BinaryPredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CaseWhenOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CastOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CompoundPredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ConstantOperator;
+import com.starrocks.sql.optimizer.operator.scalar.InPredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.LikePredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.MapOperator;
+import com.starrocks.sql.optimizer.operator.scalar.MultiInPredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.sql.optimizer.rewrite.ScalarOperatorRewriteContext;
 
 import java.util.Arrays;
 import java.util.List;
@@ -160,27 +162,12 @@ public class ImplicitCastRule extends TopDownScalarOperatorRewriteRule {
         }
 
         // we will try cast const operator to variable operator
-        if (rightChild.isVariable() && leftChild.isConstantRef()) {
-            Optional<ScalarOperator> op = Utils.tryCastConstant(leftChild, type2);
-            if (op.isPresent()) {
-                predicate.getChildren().set(0, op.get());
-                return predicate;
-            } else if (rightChild.getType().isDateType() && !leftChild.getType().isDateType() &&
-                    Type.canCastTo(leftChild.getType(), rightChild.getType())) {
-                // For like MySQL, convert to date type as much as possible
-                addCastChild(rightChild.getType(), predicate, 0);
-                return predicate;
-            }
-        } else if (leftChild.isVariable() && rightChild.isConstantRef()) {
-            Optional<ScalarOperator> op = Utils.tryCastConstant(rightChild, type1);
-            if (op.isPresent()) {
-                predicate.getChildren().set(1, op.get());
-                return predicate;
-            } else if (leftChild.getType().isDateType() && !rightChild.getType().isDateType() &&
-                    Type.canCastTo(rightChild.getType(), leftChild.getType())) {
-                // For like MySQL, convert to date type as much as possible
-                addCastChild(leftChild.getType(), predicate, 1);
-                return predicate;
+        if (rightChild.isVariable() != leftChild.isVariable()) {
+            int constant = leftChild.isVariable() ? 1 : 0;
+            int variable = 1 - constant;
+            Optional<BinaryPredicateOperator> optional = optimizeConstantAndVariable(predicate, constant, variable);
+            if (optional.isPresent()) {
+                return optional.get();
             }
         }
 
@@ -193,6 +180,35 @@ public class ImplicitCastRule extends TopDownScalarOperatorRewriteRule {
             addCastChild(compatibleType, predicate, 1);
         }
         return predicate;
+    }
+
+    private Optional<BinaryPredicateOperator> optimizeConstantAndVariable(BinaryPredicateOperator predicate,
+                                                                          int constantIndex, int variableIndex) {
+        ScalarOperator constant = predicate.getChild(constantIndex);
+        ScalarOperator variable = predicate.getChild(variableIndex);
+        Type typeConstant = constant.getType();
+        Type typeVariable = variable.getType();
+
+        if (typeVariable.isStringType() && typeConstant.isExactNumericType()) {
+            if (ConnectContext.get() == null || SessionVariableConstants.DECIMAL.equalsIgnoreCase(
+                    ConnectContext.get().getSessionVariable().getCboEqBaseType())) {
+                // don't optimize when cbo_eq_base_type is decimal
+                return Optional.empty();
+            }
+        }
+
+        Optional<ScalarOperator> op = Utils.tryCastConstant(constant, variable.getType());
+        if (op.isPresent()) {
+            predicate.getChildren().set(constantIndex, op.get());
+            return Optional.of(predicate);
+        } else if (variable.getType().isDateType() && !constant.getType().isDateType() &&
+                Type.canCastTo(constant.getType(), variable.getType())) {
+            // For like MySQL, convert to date type as much as possible
+            addCastChild(variable.getType(), predicate, constantIndex);
+            return Optional.of(predicate);
+        }
+
+        return Optional.empty();
     }
 
     @Override

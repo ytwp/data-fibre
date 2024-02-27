@@ -13,17 +13,17 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
-import io.datafibre.fibre.analysis.Expr;
-import io.datafibre.fibre.analysis.ExprSubstitutionMap;
-import io.datafibre.fibre.analysis.SlotRef;
-import io.datafibre.fibre.analysis.TableName;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.ScalarType;
-import io.datafibre.fibre.catalog.system.information.InfoSchemaDb;
-import io.datafibre.fibre.qe.ShowResultSetMetaData;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.analysis.Expr;
+import com.starrocks.analysis.ExprSubstitutionMap;
+import com.starrocks.analysis.SlotRef;
+import com.starrocks.analysis.TableName;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.ScalarType;
+import com.starrocks.catalog.system.information.InfoSchemaDb;
+import com.starrocks.qe.ShowResultSetMetaData;
+import com.starrocks.sql.parser.NodePosition;
 
 // Show database statement.
 public class ShowDbStmt extends ShowStmt {

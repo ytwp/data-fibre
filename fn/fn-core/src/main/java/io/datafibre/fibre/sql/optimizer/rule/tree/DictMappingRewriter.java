@@ -12,29 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.rule.tree;
+package com.starrocks.sql.optimizer.rule.tree;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.BinaryPredicateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.CallOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.CaseWhenOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.CastOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.CompoundPredicateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.DictMappingOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.InPredicateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.IsNullPredicateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.LikePredicateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperatorVisitor;
+import com.starrocks.catalog.Type;
+import com.starrocks.sql.optimizer.base.ColumnRefSet;
+import com.starrocks.sql.optimizer.operator.scalar.BinaryPredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CaseWhenOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CastOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CompoundPredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ConstantOperator;
+import com.starrocks.sql.optimizer.operator.scalar.DictMappingOperator;
+import com.starrocks.sql.optimizer.operator.scalar.InPredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.IsNullPredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.LikePredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperatorVisitor;
 
 import java.util.List;
 
-import static io.datafibre.fibre.analysis.BinaryType.EQ_FOR_NULL;
+import static com.starrocks.analysis.BinaryType.EQ_FOR_NULL;
 
 // Rewrite ScalarOperator as DictMappingOperator
 // if a ScalarOperator support dictionary optimization, we will rewrite it to DictMappingOperator

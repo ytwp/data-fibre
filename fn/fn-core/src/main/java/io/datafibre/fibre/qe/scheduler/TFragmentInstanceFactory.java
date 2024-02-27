@@ -12,20 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.qe.scheduler;
+package com.starrocks.qe.scheduler;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.planner.ExportSink;
-import io.datafibre.fibre.planner.MultiCastPlanFragment;
-import io.datafibre.fibre.planner.PlanFragment;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.qe.SessionVariable;
-import io.datafibre.fibre.qe.scheduler.dag.ExecutionDAG;
-import io.datafibre.fibre.qe.scheduler.dag.ExecutionFragment;
-import io.datafibre.fibre.qe.scheduler.dag.FragmentInstance;
-import io.datafibre.fibre.qe.scheduler.dag.JobSpec;
-import io.datafibre.fibre.thrift.*;
+import com.starrocks.planner.ExportSink;
+import com.starrocks.planner.MultiCastPlanFragment;
+import com.starrocks.planner.PlanFragment;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.qe.SessionVariable;
+import com.starrocks.qe.scheduler.dag.ExecutionDAG;
+import com.starrocks.qe.scheduler.dag.ExecutionFragment;
+import com.starrocks.qe.scheduler.dag.FragmentInstance;
+import com.starrocks.qe.scheduler.dag.JobSpec;
+import com.starrocks.thrift.InternalServiceVersion;
+import com.starrocks.thrift.TAdaptiveDopParam;
+import com.starrocks.thrift.TDescriptorTable;
+import com.starrocks.thrift.TExecPlanFragmentParams;
+import com.starrocks.thrift.TFunctionVersion;
+import com.starrocks.thrift.TNetworkAddress;
+import com.starrocks.thrift.TPlanFragmentDestination;
+import com.starrocks.thrift.TPlanFragmentExecParams;
+import com.starrocks.thrift.TQueryOptions;
+import com.starrocks.thrift.TQueryQueueOptions;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.operator.logical;
+package com.starrocks.sql.optimizer.operator.logical;
 
-import io.datafibre.fibre.analysis.Expr;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.Table;
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
-import io.datafibre.fibre.sql.optimizer.operator.Operator;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorVisitor;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.analysis.Expr;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.Table;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.base.ColumnRefSet;
+import com.starrocks.sql.optimizer.operator.Operator;
+import com.starrocks.sql.optimizer.operator.OperatorType;
+import com.starrocks.sql.optimizer.operator.OperatorVisitor;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
 
 import java.util.Map;
 import java.util.Objects;
@@ -104,12 +104,12 @@ public class LogicalViewScanOperator  extends LogicalScanOperator {
         return visitor.visitLogicalViewScan(this, context);
     }
 
-    public static Builder builder() {
-        return new Builder();
+    public static LogicalViewScanOperator.Builder builder() {
+        return new LogicalViewScanOperator.Builder();
     }
 
     public static class Builder
-            extends LogicalScanOperator.Builder<LogicalViewScanOperator, Builder> {
+            extends LogicalScanOperator.Builder<LogicalViewScanOperator, LogicalViewScanOperator.Builder> {
         @Override
         protected LogicalViewScanOperator newInstance() {
             return new LogicalViewScanOperator();
@@ -121,7 +121,7 @@ public class LogicalViewScanOperator  extends LogicalScanOperator {
         }
 
         @Override
-        public Builder withOperator(LogicalViewScanOperator scanOperator) {
+        public LogicalViewScanOperator.Builder withOperator(LogicalViewScanOperator scanOperator) {
             super.withOperator(scanOperator);
             builder.relationId = scanOperator.relationId;
             builder.expressionToColumns = scanOperator.expressionToColumns;

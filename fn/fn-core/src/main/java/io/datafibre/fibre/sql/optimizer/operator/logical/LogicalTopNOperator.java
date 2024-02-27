@@ -12,25 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.operator.logical;
+package com.starrocks.sql.optimizer.operator.logical;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.sql.optimizer.ExpressionContext;
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.OptExpressionVisitor;
-import io.datafibre.fibre.sql.optimizer.RowOutputInfo;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
-import io.datafibre.fibre.sql.optimizer.base.Ordering;
-import io.datafibre.fibre.sql.optimizer.operator.ColumnOutputInfo;
-import io.datafibre.fibre.sql.optimizer.operator.Operator;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorVisitor;
-import io.datafibre.fibre.sql.optimizer.operator.Projection;
-import io.datafibre.fibre.sql.optimizer.operator.SortPhase;
-import io.datafibre.fibre.sql.optimizer.operator.TopNType;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.sql.optimizer.ExpressionContext;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.OptExpressionVisitor;
+import com.starrocks.sql.optimizer.RowOutputInfo;
+import com.starrocks.sql.optimizer.base.ColumnRefSet;
+import com.starrocks.sql.optimizer.base.Ordering;
+import com.starrocks.sql.optimizer.operator.ColumnOutputInfo;
+import com.starrocks.sql.optimizer.operator.Operator;
+import com.starrocks.sql.optimizer.operator.OperatorType;
+import com.starrocks.sql.optimizer.operator.OperatorVisitor;
+import com.starrocks.sql.optimizer.operator.Projection;
+import com.starrocks.sql.optimizer.operator.SortPhase;
+import com.starrocks.sql.optimizer.operator.TopNType;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -186,7 +186,7 @@ public class LogicalTopNOperator extends LogicalOperator {
     }
 
     public static class Builder
-            extends LogicalOperator.Builder<LogicalTopNOperator, Builder> {
+            extends LogicalOperator.Builder<LogicalTopNOperator, LogicalTopNOperator.Builder> {
 
         @Override
         protected LogicalTopNOperator newInstance() {
@@ -194,7 +194,7 @@ public class LogicalTopNOperator extends LogicalOperator {
         }
 
         @Override
-        public Builder withOperator(LogicalTopNOperator topNOperator) {
+        public LogicalTopNOperator.Builder withOperator(LogicalTopNOperator topNOperator) {
             super.withOperator(topNOperator);
             builder.orderByElements = topNOperator.orderByElements;
             builder.offset = topNOperator.offset;
@@ -206,37 +206,37 @@ public class LogicalTopNOperator extends LogicalOperator {
             return this;
         }
 
-        public Builder setPartitionByColumns(List<ColumnRefOperator> partitionByColumns) {
+        public LogicalTopNOperator.Builder setPartitionByColumns(List<ColumnRefOperator> partitionByColumns) {
             builder.partitionByColumns = partitionByColumns;
             return this;
         }
 
-        public Builder setPartitionLimit(long partitionLimit) {
+        public LogicalTopNOperator.Builder setPartitionLimit(long partitionLimit) {
             builder.partitionLimit = partitionLimit;
             return this;
         }
 
-        public Builder setOrderByElements(List<Ordering> orderByElements) {
+        public LogicalTopNOperator.Builder setOrderByElements(List<Ordering> orderByElements) {
             builder.orderByElements = orderByElements;
             return this;
         }
 
-        public Builder setOffset(int offset) {
+        public LogicalTopNOperator.Builder setOffset(int offset) {
             builder.offset = offset;
             return this;
         }
 
-        public Builder setTopNType(TopNType topNType) {
+        public LogicalTopNOperator.Builder setTopNType(TopNType topNType) {
             builder.topNType = topNType;
             return this;
         }
 
-        public Builder setSortPhase(SortPhase sortPhase) {
+        public LogicalTopNOperator.Builder setSortPhase(SortPhase sortPhase) {
             builder.sortPhase = sortPhase;
             return this;
         }
 
-        public Builder setIsSplit(boolean isSplit) {
+        public LogicalTopNOperator.Builder setIsSplit(boolean isSplit) {
             builder.isSplit = isSplit;
             return this;
         }

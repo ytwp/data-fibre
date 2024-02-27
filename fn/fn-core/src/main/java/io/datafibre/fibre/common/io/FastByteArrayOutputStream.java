@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.common.io;
+package com.starrocks.common.io;
 
 import java.io.InputStream;
 import java.io.OutputStream;

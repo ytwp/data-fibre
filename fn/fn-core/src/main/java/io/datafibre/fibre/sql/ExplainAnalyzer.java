@@ -12,29 +12,48 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql;
+package com.starrocks.sql;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import io.datafibre.fibre.common.Pair;
-import io.datafibre.fibre.common.util.Counter;
-import io.datafibre.fibre.common.util.ProfileManager;
-import io.datafibre.fibre.common.util.ProfilingExecPlan;
-import io.datafibre.fibre.common.util.RuntimeProfile;
-import io.datafibre.fibre.planner.*;
-import io.datafibre.fibre.qe.SessionVariable;
-import io.datafibre.fibre.sql.optimizer.cost.CostEstimate;
-import io.datafibre.fibre.sql.optimizer.statistics.ColumnStatistic;
-import io.datafibre.fibre.sql.optimizer.statistics.Statistics;
+import com.starrocks.common.Pair;
+import com.starrocks.common.util.Counter;
+import com.starrocks.common.util.ProfileManager;
+import com.starrocks.common.util.ProfilingExecPlan;
+import com.starrocks.common.util.RuntimeProfile;
+import com.starrocks.planner.AggregationNode;
+import com.starrocks.planner.ExchangeNode;
+import com.starrocks.planner.JoinNode;
+import com.starrocks.planner.MultiCastDataSink;
+import com.starrocks.planner.OlapTableSink;
+import com.starrocks.planner.PlanNode;
+import com.starrocks.planner.ScanNode;
+import com.starrocks.planner.UnionNode;
+import com.starrocks.qe.SessionVariable;
+import com.starrocks.sql.optimizer.cost.CostEstimate;
+import com.starrocks.sql.optimizer.statistics.ColumnStatistic;
+import com.starrocks.sql.optimizer.statistics.Statistics;
+import com.starrocks.thrift.TPartitionType;
+import com.starrocks.thrift.TUnit;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Queue;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;

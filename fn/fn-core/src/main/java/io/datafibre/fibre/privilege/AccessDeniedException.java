@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.privilege;
+package com.starrocks.privilege;
 
-import io.datafibre.fibre.catalog.InternalCatalog;
-import io.datafibre.fibre.common.ErrorCode;
-import io.datafibre.fibre.common.ErrorReportException;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.sql.analyzer.Authorizer;
-import io.datafibre.fibre.sql.ast.UserIdentity;
+import com.starrocks.catalog.InternalCatalog;
+import com.starrocks.common.ErrorCode;
+import com.starrocks.common.ErrorReportException;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.sql.analyzer.Authorizer;
+import com.starrocks.sql.ast.UserIdentity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,28 +45,28 @@ public class AccessDeniedException extends Exception {
             ErrorReportException.report(ErrorCode.ERR_ACCESS_DENIED_FOR_EXTERNAL_ACCESS_CONTROLLER,
                     privilegeType, objectType, object == null ? "" : " " + object);
         } else {
-//            AuthorizationMgr authorizationMgr = GlobalStateMgr.getCurrentState().getAuthorizationMgr();
-//            List<String> activatedRoles = new ArrayList<>();
-//            if (roleIds != null) {
-//                for (Long roleId : roleIds) {
-//                    RolePrivilegeCollectionV2 roleCollection = authorizationMgr.getRolePrivilegeCollection(roleId);
-//                    if (roleCollection != null) {
-//                        activatedRoles.add(roleCollection.getName());
-//                    }
-//                }
-//            }
-//
-//            List<String> inactivatedRoles;
-//            try {
-//                inactivatedRoles = authorizationMgr.getRoleNamesByUser(userIdentity);
-//            } catch (PrivilegeException e) {
-//                //ignore exception
-//            }
-//            inactivatedRoles.removeAll(activatedRoles);
-//
-//            ErrorReportException.report(ErrorCode.ERR_ACCESS_DENIED, privilegeType, objectType,
-//                    object == null ? "" : " " + object,
-//                    activatedRoles.isEmpty() ? "NONE" : activatedRoles, inactivatedRoles.isEmpty() ? "NONE" : inactivatedRoles);
+            AuthorizationMgr authorizationMgr = GlobalStateMgr.getCurrentState().getAuthorizationMgr();
+            List<String> activatedRoles = new ArrayList<>();
+            if (roleIds != null) {
+                for (Long roleId : roleIds) {
+                    RolePrivilegeCollectionV2 roleCollection = authorizationMgr.getRolePrivilegeCollection(roleId);
+                    if (roleCollection != null) {
+                        activatedRoles.add(roleCollection.getName());
+                    }
+                }
+            }
+
+            List<String> inactivatedRoles = new ArrayList<>();
+            try {
+                inactivatedRoles = authorizationMgr.getRoleNamesByUser(userIdentity);
+            } catch (PrivilegeException e) {
+                //ignore exception
+            }
+            inactivatedRoles.removeAll(activatedRoles);
+
+            ErrorReportException.report(ErrorCode.ERR_ACCESS_DENIED, privilegeType, objectType,
+                    object == null ? "" : " " + object,
+                    activatedRoles.isEmpty() ? "NONE" : activatedRoles, inactivatedRoles.isEmpty() ? "NONE" : inactivatedRoles);
         }
     }
 }

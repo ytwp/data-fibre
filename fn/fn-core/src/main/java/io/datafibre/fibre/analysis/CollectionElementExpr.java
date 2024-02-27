@@ -32,12 +32,14 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.sql.ast.AstVisitor;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.catalog.Type;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.sql.ast.AstVisitor;
+import com.starrocks.sql.parser.NodePosition;
+import com.starrocks.thrift.TExprNode;
+import com.starrocks.thrift.TExprNodeType;
 
 public class CollectionElementExpr extends Expr {
 
@@ -80,15 +82,15 @@ public class CollectionElementExpr extends Expr {
         return expr.toSqlImpl() + "[" + subscript.toSqlImpl() + "]";
     }
 
-//    @Override
-//    protected void toThrift(TExprNode msg) {
-//        if (getChild(0).getType().isArrayType()){
-//            msg.setNode_type(TExprNodeType.ARRAY_ELEMENT_EXPR);
-//        } else {
-//            msg.setNode_type(TExprNodeType.MAP_ELEMENT_EXPR);
-//        }
-//        msg.setCheck_is_out_of_bounds(checkIsOutOfBounds);
-//    }
+    @Override
+    protected void toThrift(TExprNode msg) {
+        if (getChild(0).getType().isArrayType()){
+            msg.setNode_type(TExprNodeType.ARRAY_ELEMENT_EXPR);
+        } else {
+            msg.setNode_type(TExprNodeType.MAP_ELEMENT_EXPR);
+        }
+        msg.setCheck_is_out_of_bounds(checkIsOutOfBounds);
+    }
 
     @Override
     public Expr clone() {

@@ -13,18 +13,43 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.server;
+package com.starrocks.server;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.google.common.cache.*;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import com.google.common.cache.RemovalCause;
+import com.google.common.cache.RemovalListener;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.starrocks.analysis.TableName;
-import com.starrocks.catalog.*;
-import com.starrocks.common.*;
+import com.starrocks.catalog.BasicTable;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.Database;
+import com.starrocks.catalog.ExternalCatalogTableBasicInfo;
+import com.starrocks.catalog.MaterializedIndexMeta;
+import com.starrocks.catalog.PartitionKey;
+import com.starrocks.catalog.Table;
+import com.starrocks.common.AlreadyExistsException;
+import com.starrocks.common.Config;
+import com.starrocks.common.DdlException;
+import com.starrocks.common.ErrorCode;
+import com.starrocks.common.ErrorReport;
+import com.starrocks.common.FeConstants;
+import com.starrocks.common.MetaNotFoundException;
+import com.starrocks.common.Pair;
+import com.starrocks.common.UserException;
 import com.starrocks.common.profile.Tracers;
-import com.starrocks.connector.*;
+import com.starrocks.connector.CatalogConnector;
+import com.starrocks.connector.ConnectorMetadata;
+import com.starrocks.connector.ConnectorMgr;
+import com.starrocks.connector.ConnectorTableColumnStats;
+import com.starrocks.connector.ConnectorTblMetaInfoMgr;
+import com.starrocks.connector.MetaPreparationItem;
+import com.starrocks.connector.PartitionInfo;
+import com.starrocks.connector.RemoteFileInfo;
 import com.starrocks.connector.exception.StarRocksConnectorException;
 import com.starrocks.qe.ConnectContext;
 import com.starrocks.sql.ast.AlterTableStmt;
@@ -41,7 +66,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 

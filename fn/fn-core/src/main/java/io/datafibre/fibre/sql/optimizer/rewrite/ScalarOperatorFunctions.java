@@ -32,23 +32,23 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.sql.optimizer.rewrite;
+package com.starrocks.sql.optimizer.rewrite;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.re2j.Pattern;
-import io.datafibre.fibre.analysis.DecimalLiteral;
-import io.datafibre.fibre.catalog.ScalarType;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.common.Config;
-import io.datafibre.fibre.common.util.DateUtils;
-import io.datafibre.fibre.common.util.TimeUtils;
-import io.datafibre.fibre.privilege.AuthorizationMgr;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
+import com.starrocks.analysis.DecimalLiteral;
+import com.starrocks.catalog.ScalarType;
+import com.starrocks.catalog.Type;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.common.Config;
+import com.starrocks.common.util.DateUtils;
+import com.starrocks.common.util.TimeUtils;
+import com.starrocks.privilege.AuthorizationMgr;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.sql.optimizer.operator.scalar.ConstantOperator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -80,26 +80,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static io.datafibre.fibre.catalog.PrimitiveType.BIGINT;
-import static io.datafibre.fibre.catalog.PrimitiveType.BITMAP;
-import static io.datafibre.fibre.catalog.PrimitiveType.BOOLEAN;
-import static io.datafibre.fibre.catalog.PrimitiveType.DATE;
-import static io.datafibre.fibre.catalog.PrimitiveType.DATETIME;
-import static io.datafibre.fibre.catalog.PrimitiveType.DECIMAL128;
-import static io.datafibre.fibre.catalog.PrimitiveType.DECIMAL32;
-import static io.datafibre.fibre.catalog.PrimitiveType.DECIMAL64;
-import static io.datafibre.fibre.catalog.PrimitiveType.DECIMALV2;
-import static io.datafibre.fibre.catalog.PrimitiveType.DOUBLE;
-import static io.datafibre.fibre.catalog.PrimitiveType.FLOAT;
-import static io.datafibre.fibre.catalog.PrimitiveType.HLL;
-import static io.datafibre.fibre.catalog.PrimitiveType.INT;
-import static io.datafibre.fibre.catalog.PrimitiveType.JSON;
-import static io.datafibre.fibre.catalog.PrimitiveType.LARGEINT;
-import static io.datafibre.fibre.catalog.PrimitiveType.PERCENTILE;
-import static io.datafibre.fibre.catalog.PrimitiveType.SMALLINT;
-import static io.datafibre.fibre.catalog.PrimitiveType.TIME;
-import static io.datafibre.fibre.catalog.PrimitiveType.TINYINT;
-import static io.datafibre.fibre.catalog.PrimitiveType.VARCHAR;
+import static com.starrocks.catalog.PrimitiveType.BIGINT;
+import static com.starrocks.catalog.PrimitiveType.BITMAP;
+import static com.starrocks.catalog.PrimitiveType.BOOLEAN;
+import static com.starrocks.catalog.PrimitiveType.DATE;
+import static com.starrocks.catalog.PrimitiveType.DATETIME;
+import static com.starrocks.catalog.PrimitiveType.DECIMAL128;
+import static com.starrocks.catalog.PrimitiveType.DECIMAL32;
+import static com.starrocks.catalog.PrimitiveType.DECIMAL64;
+import static com.starrocks.catalog.PrimitiveType.DECIMALV2;
+import static com.starrocks.catalog.PrimitiveType.DOUBLE;
+import static com.starrocks.catalog.PrimitiveType.FLOAT;
+import static com.starrocks.catalog.PrimitiveType.HLL;
+import static com.starrocks.catalog.PrimitiveType.INT;
+import static com.starrocks.catalog.PrimitiveType.JSON;
+import static com.starrocks.catalog.PrimitiveType.LARGEINT;
+import static com.starrocks.catalog.PrimitiveType.PERCENTILE;
+import static com.starrocks.catalog.PrimitiveType.SMALLINT;
+import static com.starrocks.catalog.PrimitiveType.TIME;
+import static com.starrocks.catalog.PrimitiveType.TINYINT;
+import static com.starrocks.catalog.PrimitiveType.VARCHAR;
 
 /**
  * Constant Functions List
@@ -174,6 +174,12 @@ public class ScalarOperatorFunctions {
         }
     }
 
+    @ConstantFunction(name = "quarters_add", argTypes = {DATETIME, INT}, returnType = DATETIME, isMonotonic = true)
+    public static ConstantOperator quartersAdd(ConstantOperator date, ConstantOperator quarter) {
+        return ConstantOperator.createDatetimeOrNull(
+                date.getDatetime().plus(quarter.getInt(), IsoFields.QUARTER_YEARS));
+    }
+
     @ConstantFunction.List(list = {
             @ConstantFunction(name = "months_add", argTypes = {DATETIME,
                     INT}, returnType = DATETIME, isMonotonic = true),
@@ -188,6 +194,11 @@ public class ScalarOperatorFunctions {
         } else {
             return ConstantOperator.createDatetimeOrNull(date.getDatetime().plusMonths(month.getInt()));
         }
+    }
+
+    @ConstantFunction(name = "weeks_add", argTypes = {DATETIME, INT}, returnType = DATETIME, isMonotonic = true)
+    public static ConstantOperator weeksAdd(ConstantOperator date, ConstantOperator week) {
+        return ConstantOperator.createDatetimeOrNull(date.getDatetime().plusWeeks(week.getInt()));
     }
 
     @ConstantFunction.List(list = {
@@ -212,6 +223,11 @@ public class ScalarOperatorFunctions {
     @ConstantFunction(name = "seconds_add", argTypes = {DATETIME, INT}, returnType = DATETIME, isMonotonic = true)
     public static ConstantOperator secondsAdd(ConstantOperator date, ConstantOperator second) {
         return ConstantOperator.createDatetimeOrNull(date.getDatetime().plusSeconds(second.getInt()));
+    }
+
+    @ConstantFunction(name = "milliseconds_add", argTypes = {DATETIME, INT}, returnType = DATETIME, isMonotonic = true)
+    public static ConstantOperator millisecondsAdd(ConstantOperator date, ConstantOperator millisecond) {
+        return ConstantOperator.createDatetimeOrNull(date.getDatetime().plus(millisecond.getInt(), ChronoUnit.MILLIS));
     }
 
     @ConstantFunction.List(list = {
@@ -340,13 +356,19 @@ public class ScalarOperatorFunctions {
     @ConstantFunction(name = "to_date", argTypes = {DATETIME}, returnType = DATE, isMonotonic = true)
     public static ConstantOperator toDate(ConstantOperator dateTime) {
         LocalDateTime dt = dateTime.getDatetime();
-        dt.truncatedTo(ChronoUnit.DAYS);
-        return ConstantOperator.createDateOrNull(dt);
+        LocalDateTime newDt = dt.truncatedTo(ChronoUnit.DAYS);
+        return ConstantOperator.createDateOrNull(newDt);
     }
 
     @ConstantFunction(name = "years_sub", argTypes = {DATETIME, INT}, returnType = DATETIME, isMonotonic = true)
     public static ConstantOperator yearsSub(ConstantOperator date, ConstantOperator year) {
         return ConstantOperator.createDatetimeOrNull(date.getDatetime().minusYears(year.getInt()));
+    }
+
+    @ConstantFunction(name = "quarters_sub", argTypes = {DATETIME, INT}, returnType = DATETIME, isMonotonic = true)
+    public static ConstantOperator quartersSub(ConstantOperator date, ConstantOperator quarter) {
+        return ConstantOperator.createDatetimeOrNull(
+                date.getDatetime().minus(quarter.getInt(), IsoFields.QUARTER_YEARS));
     }
 
     @ConstantFunction(name = "months_sub", argTypes = {DATETIME, INT}, returnType = DATETIME, isMonotonic = true)
@@ -363,6 +385,11 @@ public class ScalarOperatorFunctions {
         return ConstantOperator.createDatetimeOrNull(date.getDatetime().minusDays(day.getInt()));
     }
 
+    @ConstantFunction(name = "weeks_sub", argTypes = {DATETIME, INT}, returnType = DATETIME, isMonotonic = true)
+    public static ConstantOperator weeksSub(ConstantOperator date, ConstantOperator week) {
+        return ConstantOperator.createDatetimeOrNull(date.getDatetime().minusWeeks(week.getInt()));
+    }
+
     @ConstantFunction(name = "hours_sub", argTypes = {DATETIME, INT}, returnType = DATETIME, isMonotonic = true)
     public static ConstantOperator hoursSub(ConstantOperator date, ConstantOperator hour) {
         return ConstantOperator.createDatetimeOrNull(date.getDatetime().minusHours(hour.getInt()));
@@ -376,6 +403,11 @@ public class ScalarOperatorFunctions {
     @ConstantFunction(name = "seconds_sub", argTypes = {DATETIME, INT}, returnType = DATETIME, isMonotonic = true)
     public static ConstantOperator secondsSub(ConstantOperator date, ConstantOperator second) {
         return ConstantOperator.createDatetimeOrNull(date.getDatetime().minusSeconds(second.getInt()));
+    }
+
+    @ConstantFunction(name = "milliseconds_sub", argTypes = {DATETIME, INT}, returnType = DATETIME, isMonotonic = true)
+    public static ConstantOperator millisecondsSub(ConstantOperator date, ConstantOperator millisecond) {
+        return ConstantOperator.createDatetimeOrNull(date.getDatetime().minus(millisecond.getInt(), ChronoUnit.MILLIS));
     }
 
     @ConstantFunction.List(list = {
@@ -1203,13 +1235,13 @@ public class ScalarOperatorFunctions {
 
     @ConstantFunction(name = "is_role_in_session", argTypes = {VARCHAR}, returnType = BOOLEAN)
     public static ConstantOperator isRoleInSession(ConstantOperator role) {
-//        AuthorizationMgr manager = GlobalStateMgr.getCurrentState().getAuthorizationMgr();
+        AuthorizationMgr manager = GlobalStateMgr.getCurrentState().getAuthorizationMgr();
         Set<String> roleNames = new HashSet<>();
-//        ConnectContext connectContext = ConnectContext.get();
-//
-//        for (Long roleId : connectContext.getCurrentRoleIds()) {
-//            manager.getRecursiveRole(roleNames, roleId);
-//        }
+        ConnectContext connectContext = ConnectContext.get();
+
+        for (Long roleId : connectContext.getCurrentRoleIds()) {
+            manager.getRecursiveRole(roleNames, roleId);
+        }
 
         return ConstantOperator.createBoolean(roleNames.contains(role.getVarchar()));
     }

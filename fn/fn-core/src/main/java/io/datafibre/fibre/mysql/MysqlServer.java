@@ -32,22 +32,22 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.mysql;
+package com.starrocks.mysql;
 
-import io.datafibre.fibre.common.ThreadPoolManager;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.qe.ConnectScheduler;
-import io.datafibre.fibre.server.GlobalStateMgr;
+import com.starrocks.common.ThreadPoolManager;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.qe.ConnectScheduler;
+import com.starrocks.server.GlobalStateMgr;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
+import javax.net.ssl.SSLContext;
 
 // MySQL protocol network service
 public class MysqlServer {
@@ -118,9 +118,6 @@ public class MysqlServer {
         }
     }
 
-    /**
-     * mysql 监听 处理
-     */
     private class Listener implements Runnable {
         @Override
         public void run() {
@@ -135,7 +132,6 @@ public class MysqlServer {
                     ConnectContext context = new ConnectContext(clientChannel, sslContext);
                     // Set globalStateMgr here.
                     context.setGlobalStateMgr(GlobalStateMgr.getCurrentState());
-                    // 提交给调度程序
                     if (!scheduler.submit(context)) {
                         LOG.warn("Submit one connect request failed. Client=" + clientChannel.toString());
                         // clear up context

@@ -12,30 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.rewrite.scalar;
+package com.starrocks.sql.optimizer.rewrite.scalar;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import io.datafibre.fibre.analysis.BinaryType;
-import io.datafibre.fibre.analysis.Expr;
-import io.datafibre.fibre.catalog.Function;
-import io.datafibre.fibre.catalog.FunctionSet;
-import io.datafibre.fibre.catalog.ScalarFunction;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.BinaryPredicateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.CallOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.CaseWhenOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.CompoundPredicateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.InPredicateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.LambdaFunctionOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.LikePredicateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.SubqueryOperator;
-import io.datafibre.fibre.sql.optimizer.rewrite.EliminateNegationsRewriter;
-import io.datafibre.fibre.sql.optimizer.rewrite.ScalarOperatorRewriteContext;
+import com.starrocks.analysis.BinaryType;
+import com.starrocks.analysis.Expr;
+import com.starrocks.catalog.Function;
+import com.starrocks.catalog.FunctionSet;
+import com.starrocks.catalog.ScalarFunction;
+import com.starrocks.catalog.Type;
+import com.starrocks.sql.optimizer.operator.scalar.BinaryPredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CaseWhenOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CompoundPredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ConstantOperator;
+import com.starrocks.sql.optimizer.operator.scalar.InPredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.LambdaFunctionOperator;
+import com.starrocks.sql.optimizer.operator.scalar.LikePredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.sql.optimizer.operator.scalar.SubqueryOperator;
+import com.starrocks.sql.optimizer.rewrite.EliminateNegationsRewriter;
+import com.starrocks.sql.optimizer.rewrite.ScalarOperatorRewriteContext;
 
 import java.util.Arrays;
 import java.util.List;
@@ -364,6 +364,8 @@ public class SimplifiedPredicateRule extends BottomUpScalarOperatorRewriteRule {
             return simplifiedTimeFns(call);
         } else if (FunctionSet.DATE_TRUNC.equalsIgnoreCase(call.getFnName())) {
             return simplifiedDateTrunc(call);
+        } else if (FunctionSet.COALESCE.equalsIgnoreCase(call.getFnName())) {
+            return simplifiedCoalesce(call);
         }
         return call;
     }
@@ -448,6 +450,40 @@ public class SimplifiedPredicateRule extends BottomUpScalarOperatorRewriteRule {
         if ("day".equalsIgnoreCase(child.toString())) {
             return call.getChild(1);
         }
+        return call;
+    }
+
+    private ScalarOperator simplifiedCoalesce(CallOperator call) {
+        return simplifiedCoalesce(call, false);
+    }
+
+    public static ScalarOperator simplifiedCoalesce(CallOperator call, boolean asFilter) {
+        ScalarOperator first = call.getChild(0);
+
+        // Find first not null arg.
+        int i = 1;
+        while (i < call.getChildren().size()) {
+            ScalarOperator child = call.getChild(i);
+            if (!ConstantOperator.NULL.equals(child)) {
+                break;
+            }
+            i++;
+        }
+
+        // All args from 1 to end is null
+        // coalesce(x, null, null, ...) equals to x.
+        if (i >= call.getChildren().size()) {
+            return first;
+        }
+
+        if (asFilter) {
+            // coalesce(x, false)/coalesce(x, null, ..., false) equals to x.
+            ScalarOperator notNull = call.getChild(i);
+            if (ConstantOperator.FALSE.equals(notNull)) {
+                return first;
+            }
+        }
+
         return call;
     }
 

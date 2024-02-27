@@ -13,11 +13,11 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
-import io.datafibre.fibre.alter.AlterOpType;
-import io.datafibre.fibre.common.Pair;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.alter.AlterOpType;
+import com.starrocks.common.Pair;
+import com.starrocks.sql.parser.NodePosition;
 import org.apache.commons.lang.NotImplementedException;
 
 import java.util.LinkedList;

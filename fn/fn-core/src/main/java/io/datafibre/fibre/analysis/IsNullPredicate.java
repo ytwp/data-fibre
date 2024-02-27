@@ -32,24 +32,25 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import io.datafibre.fibre.catalog.Function;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.sql.analyzer.SemanticException;
-import io.datafibre.fibre.sql.ast.AstVisitor;
-import io.datafibre.fibre.sql.parser.NodePosition;
-import io.datafibre.fibre.thrift.TFunctionBinaryType;
+import com.starrocks.catalog.Function;
+import com.starrocks.catalog.Type;
+import com.starrocks.sql.analyzer.SemanticException;
+import com.starrocks.sql.ast.AstVisitor;
+import com.starrocks.sql.parser.NodePosition;
+import com.starrocks.thrift.TExprNode;
+import com.starrocks.thrift.TExprNodeType;
+import com.starrocks.thrift.TFunctionBinaryType;
 
 public class IsNullPredicate extends Predicate {
 
     static Function isNullFN = new Function(new FunctionName("is_null_pred"),
-            new Type[]{Type.INVALID}, Type.BOOLEAN, false);
+            new Type[] {Type.INVALID}, Type.BOOLEAN, false);
     static Function isNotNullFN = new Function(new FunctionName("is_not_null_pred"),
-            new Type[]{Type.INVALID}, Type.BOOLEAN, false);
-
+            new Type[] {Type.INVALID}, Type.BOOLEAN, false);
     {
         isNullFN.setBinaryType(TFunctionBinaryType.BUILTIN);
         isNotNullFN.setBinaryType(TFunctionBinaryType.BUILTIN);
@@ -86,7 +87,6 @@ public class IsNullPredicate extends Predicate {
     public int hashCode() {
         return Objects.hashCode(super.hashCode(), isNotNull);
     }
-
     @Override
     public boolean equals(Object obj) {
         if (!super.equals(obj)) {
@@ -103,10 +103,10 @@ public class IsNullPredicate extends Predicate {
     public boolean isSlotRefChildren() {
         return (children.get(0) instanceof SlotRef);
     }
-//    @Override
-//    protected void toThrift(TExprNode msg) {
-//        msg.node_type = TExprNodeType.FUNCTION_CALL;
-//    }
+    @Override
+    protected void toThrift(TExprNode msg) {
+        msg.node_type = TExprNodeType.FUNCTION_CALL;
+    }
 
     /**
      * Negates an IsNullPredicate.

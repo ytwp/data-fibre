@@ -32,12 +32,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.catalog;
+package com.starrocks.catalog;
 
 import com.google.gson.annotations.SerializedName;
-import io.datafibre.fibre.common.io.Text;
-import io.datafibre.fibre.common.io.Writable;
-import io.datafibre.fibre.sql.ast.DistributionDesc;
+import com.starrocks.common.io.Text;
+import com.starrocks.common.io.Writable;
+import com.starrocks.sql.ast.DistributionDesc;
 import org.apache.commons.lang.NotImplementedException;
 
 import java.io.DataInput;

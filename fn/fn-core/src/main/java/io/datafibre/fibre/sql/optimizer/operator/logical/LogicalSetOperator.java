@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.operator.logical;
+package com.starrocks.sql.optimizer.operator.logical;
 
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.sql.optimizer.ExpressionContext;
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.RowOutputInfo;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
-import io.datafibre.fibre.sql.optimizer.operator.ColumnOutputInfo;
-import io.datafibre.fibre.sql.optimizer.operator.Operator;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
-import io.datafibre.fibre.sql.optimizer.operator.Projection;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.ExpressionContext;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.RowOutputInfo;
+import com.starrocks.sql.optimizer.base.ColumnRefSet;
+import com.starrocks.sql.optimizer.operator.ColumnOutputInfo;
+import com.starrocks.sql.optimizer.operator.Operator;
+import com.starrocks.sql.optimizer.operator.OperatorType;
+import com.starrocks.sql.optimizer.operator.Projection;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +88,7 @@ public abstract class LogicalSetOperator extends LogicalOperator {
         return Objects.hash(super.hashCode(), outputColumnRefOp);
     }
 
-    public abstract static class Builder<O extends LogicalSetOperator, B extends Builder>
+    public abstract static class Builder<O extends LogicalSetOperator, B extends LogicalSetOperator.Builder>
             extends Operator.Builder<O, B> {
         @Override
         public B withOperator(O setOperator) {

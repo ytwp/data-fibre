@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.operator.scalar;
+package com.starrocks.sql.optimizer.operator.scalar;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.sql.optimizer.Utils;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
+import com.starrocks.sql.optimizer.Utils;
+import com.starrocks.sql.optimizer.operator.OperatorType;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.Arrays;
@@ -163,19 +163,19 @@ public class CompoundPredicateOperator extends PredicateOperator {
     }
 
     public static ScalarOperator or(Collection<ScalarOperator> nodes) {
-        return Utils.createCompound(CompoundType.OR, nodes);
+        return Utils.createCompound(CompoundPredicateOperator.CompoundType.OR, nodes);
     }
 
     public static ScalarOperator or(ScalarOperator... nodes) {
-        return Utils.createCompound(CompoundType.OR, Arrays.asList(nodes));
+        return Utils.createCompound(CompoundPredicateOperator.CompoundType.OR, Arrays.asList(nodes));
     }
 
     public static ScalarOperator and(Collection<ScalarOperator> nodes) {
-        return Utils.createCompound(CompoundType.AND, nodes);
+        return Utils.createCompound(CompoundPredicateOperator.CompoundType.AND, nodes);
     }
 
     public static ScalarOperator and(ScalarOperator... nodes) {
-        return Utils.createCompound(CompoundType.AND, Arrays.asList(nodes));
+        return Utils.createCompound(CompoundPredicateOperator.CompoundType.AND, Arrays.asList(nodes));
     }
 
     public static ScalarOperator not(ScalarOperator node) {

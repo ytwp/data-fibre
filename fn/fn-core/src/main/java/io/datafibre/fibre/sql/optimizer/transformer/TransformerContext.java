@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.transformer;
+package com.starrocks.sql.optimizer.transformer;
 
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.sql.analyzer.RelationFields;
-import io.datafibre.fibre.sql.analyzer.RelationId;
-import io.datafibre.fibre.sql.analyzer.Scope;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefFactory;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.sql.analyzer.RelationFields;
+import com.starrocks.sql.analyzer.RelationId;
+import com.starrocks.sql.analyzer.Scope;
+import com.starrocks.sql.optimizer.base.ColumnRefFactory;
 
 public class TransformerContext {
     private final ColumnRefFactory columnRefFactory;

@@ -12,12 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.common.util;
+package com.starrocks.common.util;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 // UnionFind support equivalence inferring based on equivalence classes
 // TODO(by satanson): There are many UnionFind utilities, in future, all of them will be

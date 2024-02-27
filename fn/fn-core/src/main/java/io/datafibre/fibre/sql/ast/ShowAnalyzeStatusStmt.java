@@ -13,25 +13,25 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.analysis.Predicate;
-import io.datafibre.fibre.analysis.RedirectStatus;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.ScalarType;
-import io.datafibre.fibre.catalog.Table;
-import io.datafibre.fibre.common.MetaNotFoundException;
-import io.datafibre.fibre.privilege.AccessDeniedException;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.qe.ShowResultSetMetaData;
-import io.datafibre.fibre.sql.analyzer.Authorizer;
-import io.datafibre.fibre.sql.analyzer.SemanticException;
-import io.datafibre.fibre.sql.common.MetaUtils;
-import io.datafibre.fibre.sql.parser.NodePosition;
-import io.datafibre.fibre.statistic.AnalyzeStatus;
-import io.datafibre.fibre.statistic.StatisticUtils;
-import io.datafibre.fibre.statistic.StatsConstants;
+import com.starrocks.analysis.Predicate;
+import com.starrocks.analysis.RedirectStatus;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.ScalarType;
+import com.starrocks.catalog.Table;
+import com.starrocks.common.MetaNotFoundException;
+import com.starrocks.privilege.AccessDeniedException;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.qe.ShowResultSetMetaData;
+import com.starrocks.sql.analyzer.Authorizer;
+import com.starrocks.sql.analyzer.SemanticException;
+import com.starrocks.sql.common.MetaUtils;
+import com.starrocks.sql.parser.NodePosition;
+import com.starrocks.statistic.AnalyzeStatus;
+import com.starrocks.statistic.StatisticUtils;
+import com.starrocks.statistic.StatsConstants;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;

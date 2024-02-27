@@ -12,28 +12,54 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.common.util;
+package com.starrocks.common.util;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.Gson;
-import io.datafibre.fibre.analysis.*;
-import io.datafibre.fibre.common.Pair;
-import io.datafibre.fibre.planner.*;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.qe.SessionVariable;
-import io.datafibre.fibre.sql.optimizer.ExpressionContext;
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.cost.CostEstimate;
-import io.datafibre.fibre.sql.optimizer.cost.CostModel;
-import io.datafibre.fibre.sql.optimizer.statistics.Statistics;
-import io.datafibre.fibre.sql.plan.ExecPlan;
+import com.starrocks.analysis.AggregateInfo;
+import com.starrocks.analysis.Expr;
+import com.starrocks.analysis.OrderByElement;
+import com.starrocks.analysis.SlotId;
+import com.starrocks.analysis.SortInfo;
+import com.starrocks.common.Pair;
+import com.starrocks.planner.AggregationNode;
+import com.starrocks.planner.AnalyticEvalNode;
+import com.starrocks.planner.DataPartition;
+import com.starrocks.planner.DataSink;
+import com.starrocks.planner.DataStreamSink;
+import com.starrocks.planner.ExchangeNode;
+import com.starrocks.planner.JoinNode;
+import com.starrocks.planner.MultiCastDataSink;
+import com.starrocks.planner.OlapScanNode;
+import com.starrocks.planner.OlapTableSink;
+import com.starrocks.planner.PlanFragment;
+import com.starrocks.planner.PlanNode;
+import com.starrocks.planner.ProjectNode;
+import com.starrocks.planner.ResultSink;
+import com.starrocks.planner.ScanNode;
+import com.starrocks.planner.SelectNode;
+import com.starrocks.planner.SortNode;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.qe.SessionVariable;
+import com.starrocks.sql.optimizer.ExpressionContext;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.cost.CostEstimate;
+import com.starrocks.sql.optimizer.cost.CostModel;
+import com.starrocks.sql.optimizer.statistics.Statistics;
+import com.starrocks.sql.plan.ExecPlan;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 

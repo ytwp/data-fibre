@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.rule;
+package com.starrocks.sql.optimizer.rule;
 
 public enum RuleSetType {
     LOGICAL_TRANSFORMATION,
@@ -29,6 +29,7 @@ public enum RuleSetType {
     MULTI_DISTINCT_REWRITE,
     AGGREGATE_REWRITE,
     PRUNE_PROJECT,
+    PRUNE_UKFK_JOIN,
     COLLECT_CTE,
     INLINE_CTE,
     INTERSECT_REWRITE,

@@ -32,19 +32,19 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.gson.annotations.SerializedName;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.common.ErrorCode;
-import io.datafibre.fibre.common.ErrorReport;
-import io.datafibre.fibre.common.UserException;
-import io.datafibre.fibre.common.io.Text;
-import io.datafibre.fibre.common.io.Writable;
-import io.datafibre.fibre.sql.ast.PartitionNames;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.common.ErrorCode;
+import com.starrocks.common.ErrorReport;
+import com.starrocks.common.UserException;
+import com.starrocks.common.io.Text;
+import com.starrocks.common.io.Writable;
+import com.starrocks.sql.ast.PartitionNames;
+import com.starrocks.sql.parser.NodePosition;
 
 import java.io.DataInput;
 import java.io.DataOutput;

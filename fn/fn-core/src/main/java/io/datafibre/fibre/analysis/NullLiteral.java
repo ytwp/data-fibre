@@ -32,12 +32,14 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
 import com.google.common.base.Preconditions;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.catalog.Type;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.sql.parser.NodePosition;
+import com.starrocks.thrift.TExprNode;
+import com.starrocks.thrift.TExprNodeType;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -151,10 +153,10 @@ public class NullLiteral extends LiteralExpr {
         return this;
     }
 
-//    @Override
-//    protected void toThrift(TExprNode msg) {
-//        msg.node_type = TExprNodeType.NULL_LITERAL;
-//    }
+    @Override
+    protected void toThrift(TExprNode msg) {
+        msg.node_type = TExprNodeType.NULL_LITERAL;
+    }
 
     @Override
     public void write(DataOutput out) throws IOException {

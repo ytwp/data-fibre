@@ -12,17 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.analyzer;
+package com.starrocks.sql.analyzer;
 
 import com.google.common.base.Joiner;
-import io.datafibre.fibre.analysis.Expr;
-import io.datafibre.fibre.analysis.ParseNode;
-import io.datafibre.fibre.analysis.SlotRef;
-import io.datafibre.fibre.analysis.TableName;
-import io.datafibre.fibre.catalog.Table;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.common.util.ParseUtil;
-import io.datafibre.fibre.sql.ast.*;
+import com.starrocks.analysis.Expr;
+import com.starrocks.analysis.ParseNode;
+import com.starrocks.analysis.SlotRef;
+import com.starrocks.analysis.TableName;
+import com.starrocks.catalog.Table;
+import com.starrocks.catalog.Type;
+import com.starrocks.common.util.ParseUtil;
+import com.starrocks.sql.ast.ArrayExpr;
+import com.starrocks.sql.ast.CTERelation;
+import com.starrocks.sql.ast.FieldReference;
+import com.starrocks.sql.ast.InsertStmt;
+import com.starrocks.sql.ast.MapExpr;
+import com.starrocks.sql.ast.NormalizedTableFunctionRelation;
+import com.starrocks.sql.ast.SelectList;
+import com.starrocks.sql.ast.SelectListItem;
+import com.starrocks.sql.ast.SelectRelation;
+import com.starrocks.sql.ast.StatementBase;
+import com.starrocks.sql.ast.SubqueryRelation;
+import com.starrocks.sql.ast.TableFunctionRelation;
+import com.starrocks.sql.ast.TableRelation;
+import com.starrocks.sql.ast.ViewRelation;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 

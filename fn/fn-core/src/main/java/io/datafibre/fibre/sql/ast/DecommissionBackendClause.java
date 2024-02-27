@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
-import io.datafibre.fibre.alter.DecommissionType;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.alter.DecommissionType;
+import com.starrocks.sql.parser.NodePosition;
 
 import java.util.List;
 

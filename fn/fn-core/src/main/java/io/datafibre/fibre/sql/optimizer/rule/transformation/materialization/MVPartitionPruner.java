@@ -12,28 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.rule.transformation.materialization;
+package com.starrocks.sql.optimizer.rule.transformation.materialization;
 
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.sql.optimizer.MvRewriteContext;
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.OptExpressionVisitor;
-import io.datafibre.fibre.sql.optimizer.OptimizerContext;
-import io.datafibre.fibre.sql.optimizer.Utils;
-import io.datafibre.fibre.sql.optimizer.operator.Operator;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorBuilderFactory;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalDeltaLakeScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalEsScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalFileScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalHiveScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalHudiScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalIcebergScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalOlapScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
-import io.datafibre.fibre.sql.optimizer.rewrite.OptDistributionPruner;
-import io.datafibre.fibre.sql.optimizer.rewrite.OptExternalPartitionPruner;
-import io.datafibre.fibre.sql.optimizer.rewrite.OptOlapPartitionPruner;
+import com.starrocks.sql.optimizer.MvRewriteContext;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.OptExpressionVisitor;
+import com.starrocks.sql.optimizer.OptimizerContext;
+import com.starrocks.sql.optimizer.Utils;
+import com.starrocks.sql.optimizer.operator.Operator;
+import com.starrocks.sql.optimizer.operator.OperatorBuilderFactory;
+import com.starrocks.sql.optimizer.operator.logical.LogicalDeltaLakeScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalEsScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalFileScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalHiveScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalHudiScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalIcebergScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalOlapScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalScanOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.sql.optimizer.rewrite.OptDistributionPruner;
+import com.starrocks.sql.optimizer.rewrite.OptExternalPartitionPruner;
+import com.starrocks.sql.optimizer.rewrite.OptOlapPartitionPruner;
 
 import java.util.List;
 

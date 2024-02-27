@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.operator.stream;
+package com.starrocks.sql.optimizer.operator.stream;
 
 import com.google.common.base.Preconditions;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalOperator;
-import io.datafibre.fibre.sql.optimizer.rule.mv.KeyInference;
-import io.datafibre.fibre.sql.optimizer.rule.mv.MVOperatorProperty;
-import io.datafibre.fibre.sql.optimizer.rule.mv.ModifyInference;
+import com.starrocks.sql.optimizer.operator.OperatorType;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalOperator;
+import com.starrocks.sql.optimizer.rule.mv.KeyInference;
+import com.starrocks.sql.optimizer.rule.mv.MVOperatorProperty;
+import com.starrocks.sql.optimizer.rule.mv.ModifyInference;
 
 public abstract class PhysicalStreamOperator extends PhysicalOperator {
 

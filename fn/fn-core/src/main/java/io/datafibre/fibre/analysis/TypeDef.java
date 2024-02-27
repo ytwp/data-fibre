@@ -32,11 +32,17 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
-import io.datafibre.fibre.catalog.*;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.catalog.ArrayType;
+import com.starrocks.catalog.MapType;
+import com.starrocks.catalog.PrimitiveType;
+import com.starrocks.catalog.ScalarType;
+import com.starrocks.catalog.StructField;
+import com.starrocks.catalog.StructType;
+import com.starrocks.catalog.Type;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.sql.parser.NodePosition;
 
 import java.util.List;
 

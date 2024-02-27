@@ -15,15 +15,15 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
 import com.google.common.collect.Maps;
 import com.google.gson.annotations.SerializedName;
-import io.datafibre.fibre.common.io.Text;
-import io.datafibre.fibre.common.io.Writable;
-import io.datafibre.fibre.common.util.PrintableMap;
-import io.datafibre.fibre.sql.ast.LoadStmt;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.common.io.Text;
+import com.starrocks.common.io.Writable;
+import com.starrocks.common.util.PrintableMap;
+import com.starrocks.sql.ast.LoadStmt;
+import com.starrocks.sql.parser.NodePosition;
 
 import java.io.DataInput;
 import java.io.DataOutput;

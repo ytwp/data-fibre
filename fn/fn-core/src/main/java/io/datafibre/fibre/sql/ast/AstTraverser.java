@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
-import io.datafibre.fibre.analysis.Expr;
-import io.datafibre.fibre.analysis.OrderByElement;
-import io.datafibre.fibre.analysis.Subquery;
-import io.datafibre.fibre.sql.ast.pipe.CreatePipeStmt;
+import com.starrocks.analysis.Expr;
+import com.starrocks.analysis.OrderByElement;
+import com.starrocks.analysis.Subquery;
+import com.starrocks.sql.ast.pipe.CreatePipeStmt;
 
 public class AstTraverser<R, C> extends AstVisitor<R, C> {
 

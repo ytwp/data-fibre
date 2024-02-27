@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.authentication;
+package com.starrocks.authentication;
 
 public class AuthenticationException extends Exception {
     public AuthenticationException(String msg) {

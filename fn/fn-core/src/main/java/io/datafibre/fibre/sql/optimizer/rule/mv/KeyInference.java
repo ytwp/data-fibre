@@ -13,25 +13,25 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.rule.mv;
+package com.starrocks.sql.optimizer.rule.mv;
 
 import com.google.common.base.Preconditions;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.KeysType;
-import io.datafibre.fibre.catalog.OlapTable;
-import io.datafibre.fibre.catalog.Table;
-import io.datafibre.fibre.sql.optimizer.JoinHelper;
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.OptExpressionVisitor;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
-import io.datafibre.fibre.sql.optimizer.operator.Operator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalOlapScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalProjectOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
-import io.datafibre.fibre.sql.optimizer.operator.stream.PhysicalStreamAggOperator;
-import io.datafibre.fibre.sql.optimizer.operator.stream.PhysicalStreamJoinOperator;
-import io.datafibre.fibre.sql.optimizer.operator.stream.PhysicalStreamScanOperator;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.KeysType;
+import com.starrocks.catalog.OlapTable;
+import com.starrocks.catalog.Table;
+import com.starrocks.sql.optimizer.JoinHelper;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.OptExpressionVisitor;
+import com.starrocks.sql.optimizer.base.ColumnRefSet;
+import com.starrocks.sql.optimizer.operator.Operator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalOlapScanOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalProjectOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.operator.stream.PhysicalStreamAggOperator;
+import com.starrocks.sql.optimizer.operator.stream.PhysicalStreamJoinOperator;
+import com.starrocks.sql.optimizer.operator.stream.PhysicalStreamScanOperator;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.NotImplementedException;
 

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.common;
+package com.starrocks.common;
 
 public class StarRocksFEMetaVersion {
     //no use version

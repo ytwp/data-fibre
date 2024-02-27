@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.qe;
+package com.starrocks.qe;
 
-import io.datafibre.fibre.common.UserException;
+import com.starrocks.common.UserException;
 
 public interface BackendSelector {
     void computeScanRangeAssignment() throws UserException;

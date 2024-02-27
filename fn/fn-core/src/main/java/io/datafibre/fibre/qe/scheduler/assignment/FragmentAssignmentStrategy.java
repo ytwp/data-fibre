@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.qe.scheduler.assignment;
+package com.starrocks.qe.scheduler.assignment;
 
-import io.datafibre.fibre.common.UserException;
-import io.datafibre.fibre.qe.scheduler.dag.ExecutionFragment;
-import io.datafibre.fibre.qe.scheduler.dag.FragmentInstance;
+import com.starrocks.common.UserException;
+import com.starrocks.qe.scheduler.dag.ExecutionFragment;
+import com.starrocks.qe.scheduler.dag.FragmentInstance;
 
 /**
  * The strategy to instantiates multiple parallel instances of each fragment and assign them to appropriate workers.

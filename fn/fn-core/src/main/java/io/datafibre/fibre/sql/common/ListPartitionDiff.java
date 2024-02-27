@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.common;
+package com.starrocks.sql.common;
 
 import java.util.List;
 import java.util.Map;

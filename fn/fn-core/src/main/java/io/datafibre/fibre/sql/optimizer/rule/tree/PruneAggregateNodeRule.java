@@ -13,15 +13,15 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.rule.tree;
+package com.starrocks.sql.optimizer.rule.tree;
 
-import io.datafibre.fibre.common.FeConstants;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.OptExpressionVisitor;
-import io.datafibre.fibre.sql.optimizer.operator.Operator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalHashAggregateOperator;
-import io.datafibre.fibre.sql.optimizer.task.TaskContext;
+import com.starrocks.common.FeConstants;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.OptExpressionVisitor;
+import com.starrocks.sql.optimizer.operator.Operator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalHashAggregateOperator;
+import com.starrocks.sql.optimizer.task.TaskContext;
 
 /*
  * Because of local property, we could generate three/four stage plan like:

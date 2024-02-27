@@ -32,11 +32,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
 import com.google.common.collect.Sets;
-import io.datafibre.fibre.thrift.TJoinOp;
-//import io.datafibre.fibre.thrift.TJoinOp;
+import com.starrocks.thrift.TJoinOp;
 
 import java.util.Set;
 

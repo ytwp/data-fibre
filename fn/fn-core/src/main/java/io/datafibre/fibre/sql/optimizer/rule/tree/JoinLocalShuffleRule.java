@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.rule.tree;
+package com.starrocks.sql.optimizer.rule.tree;
 
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.OptExpressionVisitor;
-import io.datafibre.fibre.sql.optimizer.operator.Operator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalHashAggregateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalJoinOperator;
-import io.datafibre.fibre.sql.optimizer.task.TaskContext;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.OptExpressionVisitor;
+import com.starrocks.sql.optimizer.operator.Operator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalHashAggregateOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalJoinOperator;
+import com.starrocks.sql.optimizer.task.TaskContext;
 
 public class JoinLocalShuffleRule implements TreeRewriteRule {
     private static final JoinLocalShuffleVisitor HANDLER = new JoinLocalShuffleVisitor();

@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.common.profile;
+package com.starrocks.common.profile;
 
 import com.google.common.base.Stopwatch;
-import io.datafibre.fibre.common.util.RuntimeProfile;
-import io.datafibre.fibre.qe.ConnectContext;
+import com.starrocks.common.util.RuntimeProfile;
+import com.starrocks.qe.ConnectContext;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;

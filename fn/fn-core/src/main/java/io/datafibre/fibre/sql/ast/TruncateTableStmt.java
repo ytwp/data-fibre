@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
-import io.datafibre.fibre.analysis.TableRef;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.analysis.TableRef;
+import com.starrocks.sql.parser.NodePosition;
 
 // TRUNCATE TABLE tbl [PARTITION(p1, p2, ...)]
 public class TruncateTableStmt extends DdlStmt {

@@ -12,33 +12,42 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.qe;
+package com.starrocks.qe;
 
 import com.google.api.client.util.Sets;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.datafibre.fibre.common.UserException;
-import io.datafibre.fibre.planner.OlapScanNode;
-import io.datafibre.fibre.qe.scheduler.WorkerProvider;
-import io.datafibre.fibre.thrift.TScanRangeLocation;
-import io.datafibre.fibre.thrift.TScanRangeLocations;
-import io.datafibre.fibre.thrift.TScanRangeParams;
+import com.starrocks.common.UserException;
+import com.starrocks.planner.OlapScanNode;
+import com.starrocks.qe.scheduler.WorkerProvider;
+import com.starrocks.thrift.TScanRangeLocation;
+import com.starrocks.thrift.TScanRangeLocations;
+import com.starrocks.thrift.TScanRangeParams;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.NavigableSet;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Function;
 
 public class ColocatedBackendSelector implements BackendSelector {
 
     private final OlapScanNode scanNode;
     private final FragmentScanRangeAssignment assignment;
-    private final Assignment colocatedAssignment;
+    private final ColocatedBackendSelector.Assignment colocatedAssignment;
     private final boolean isRightOrFullBucketShuffleFragment;
     private final WorkerProvider workerProvider;
     private final BucketSequenceIterator bucketSequenceIterator;
 
     public ColocatedBackendSelector(OlapScanNode scanNode, FragmentScanRangeAssignment assignment,
-                                    Assignment colocatedAssignment,
+                                    ColocatedBackendSelector.Assignment colocatedAssignment,
                                     boolean isRightOrFullBucketShuffleFragment, WorkerProvider workerProvider,
                                     int maxBucketsPerBeToUseBalancerAssignment) {
         this.scanNode = scanNode;
@@ -52,7 +61,7 @@ public class ColocatedBackendSelector implements BackendSelector {
     @Override
     public void computeScanRangeAssignment() throws UserException {
         Map<Integer, Long> bucketSeqToWorkerId = colocatedAssignment.seqToWorkerId;
-        BucketSeqToScanRange bucketSeqToScanRange = colocatedAssignment.seqToScanRange;
+        ColocatedBackendSelector.BucketSeqToScanRange bucketSeqToScanRange = colocatedAssignment.seqToScanRange;
 
         Iterable<Integer> bucketSeqs = bucketSequenceIterator.createIterable();
         for (Integer bucketSeq : bucketSeqs) {
@@ -131,8 +140,8 @@ public class ColocatedBackendSelector implements BackendSelector {
     public static class Assignment {
         private final Map<Integer, Long> seqToWorkerId = Maps.newHashMap();
         // < bucket_seq -> < scan_node_id -> scan_range_params >>
-        private final BucketSeqToScanRange seqToScanRange =
-                new BucketSeqToScanRange();
+        private final ColocatedBackendSelector.BucketSeqToScanRange seqToScanRange =
+                new ColocatedBackendSelector.BucketSeqToScanRange();
         private final Map<Long, Integer> backendIdToBucketCount = Maps.newHashMap();
         private final int bucketNum;
 
@@ -151,7 +160,7 @@ public class ColocatedBackendSelector implements BackendSelector {
             return seqToWorkerId;
         }
 
-        public BucketSeqToScanRange getSeqToScanRange() {
+        public ColocatedBackendSelector.BucketSeqToScanRange getSeqToScanRange() {
             return seqToScanRange;
         }
 

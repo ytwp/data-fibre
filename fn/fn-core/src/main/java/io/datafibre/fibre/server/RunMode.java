@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.server;
+package com.starrocks.server;
 
-import io.datafibre.fibre.common.Config;
+import com.starrocks.common.Config;
+import com.starrocks.thrift.TRunMode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -43,13 +44,13 @@ public abstract class RunMode {
         }
     }
 
-//    public static TRunMode toTRunMode(RunMode mode) {
-//        if (mode == SHARED_DATA) {
-//            return TRunMode.SHARED_DATA;
-//        } else {
-//            return TRunMode.SHARED_NOTHING;
-//        }
-//    }
+    public static TRunMode toTRunMode(RunMode mode) {
+        if (mode == SHARED_DATA) {
+            return TRunMode.SHARED_DATA;
+        } else {
+            return TRunMode.SHARED_NOTHING;
+        }
+    }
 
     public static RunMode getCurrentRunMode() {
         return currentRunMode;

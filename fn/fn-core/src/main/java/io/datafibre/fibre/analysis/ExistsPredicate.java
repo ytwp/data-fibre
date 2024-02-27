@@ -32,12 +32,13 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
 import com.google.common.base.Preconditions;
-import io.datafibre.fibre.sql.analyzer.SemanticException;
-import io.datafibre.fibre.sql.ast.AstVisitor;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.sql.analyzer.SemanticException;
+import com.starrocks.sql.ast.AstVisitor;
+import com.starrocks.sql.parser.NodePosition;
+import com.starrocks.thrift.TExprNode;
 
 import java.util.Objects;
 
@@ -69,11 +70,11 @@ public class ExistsPredicate extends Predicate {
         return new ExistsPredicate((Subquery) getChild(0), !notExists);
     }
 
-//    @Override
-//    protected void toThrift(TExprNode msg) {
-//         Cannot serialize a nested predicate
-//        Preconditions.checkState(false);
-//    }
+    @Override
+    protected void toThrift(TExprNode msg) {
+        // Cannot serialize a nested predicate
+        Preconditions.checkState(false);
+    }
 
     @Override
     public Expr clone() {

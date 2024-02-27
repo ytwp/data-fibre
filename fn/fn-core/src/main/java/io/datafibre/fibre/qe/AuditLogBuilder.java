@@ -32,15 +32,19 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.qe;
+package com.starrocks.qe;
 
-import io.datafibre.fibre.common.AuditLog;
-import io.datafibre.fibre.common.Config;
-import io.datafibre.fibre.common.util.DigitalVersion;
-import io.datafibre.fibre.plugin.*;
-import io.datafibre.fibre.plugin.AuditEvent.AuditField;
-import io.datafibre.fibre.plugin.AuditEvent.EventType;
-import io.datafibre.fibre.plugin.PluginInfo.PluginType;
+import com.starrocks.common.AuditLog;
+import com.starrocks.common.Config;
+import com.starrocks.common.util.DigitalVersion;
+import com.starrocks.plugin.AuditEvent;
+import com.starrocks.plugin.AuditEvent.AuditField;
+import com.starrocks.plugin.AuditEvent.EventType;
+import com.starrocks.plugin.AuditPlugin;
+import com.starrocks.plugin.Plugin;
+import com.starrocks.plugin.PluginInfo;
+import com.starrocks.plugin.PluginInfo.PluginType;
+import com.starrocks.plugin.PluginMgr;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

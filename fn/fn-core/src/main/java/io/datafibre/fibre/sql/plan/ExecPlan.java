@@ -12,26 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.plan;
+package com.starrocks.sql.plan;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Maps;
-import io.datafibre.fibre.analysis.DescriptorTable;
-import io.datafibre.fibre.analysis.Expr;
-import io.datafibre.fibre.common.IdGenerator;
-import io.datafibre.fibre.common.util.ProfilingExecPlan;
-import io.datafibre.fibre.planner.PlanFragment;
-import io.datafibre.fibre.planner.PlanFragmentId;
-import io.datafibre.fibre.planner.PlanNodeId;
-import io.datafibre.fibre.planner.ScanNode;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.sql.Explain;
-import io.datafibre.fibre.sql.ast.StatementBase;
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
-import io.datafibre.fibre.thrift.TExplainLevel;
+import com.starrocks.analysis.DescriptorTable;
+import com.starrocks.analysis.Expr;
+import com.starrocks.common.IdGenerator;
+import com.starrocks.common.util.ProfilingExecPlan;
+import com.starrocks.planner.PlanFragment;
+import com.starrocks.planner.PlanFragmentId;
+import com.starrocks.planner.PlanNodeId;
+import com.starrocks.planner.ScanNode;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.sql.Explain;
+import com.starrocks.sql.ast.StatementBase;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.thrift.TExplainLevel;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class ExecPlan {
     private final ConnectContext connectContext;

@@ -15,20 +15,24 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.sql;
+package com.starrocks.sql;
 
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.OptExpressionVisitor;
-import io.datafibre.fibre.sql.optimizer.operator.Operator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalFilterOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalOlapScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalProjectOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.catalog.Table;
+import com.starrocks.planner.PartitionColumnFilter;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.OptExpressionVisitor;
+import com.starrocks.sql.optimizer.operator.ColumnFilterConverter;
+import com.starrocks.sql.optimizer.operator.Operator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalFilterOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalOlapScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalProjectOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
 
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class ShortCircuitPlanner {
 
@@ -142,30 +146,30 @@ public class ShortCircuitPlanner {
                     allowSort, predicate, orderByColumns, limit).visitLogicalTableScan(optExpression, context);
         }
 
-//        protected static boolean isPointScan(Table table, List<String> keyColumns, List<ScalarOperator> conjuncts) {
-//            Map<String, PartitionColumnFilter> filters = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-//            filters.putAll(ColumnFilterConverter.convertColumnFilter(conjuncts, table));
-//            if (keyColumns == null || keyColumns.isEmpty()) {
-//                return false;
-//            }
-//            long cardinality = 1;
-//            for (String keyColumn : keyColumns) {
-//                if (filters.containsKey(keyColumn)) {
-//                    PartitionColumnFilter filter = filters.get(keyColumn);
-//                    if (filter.getInPredicateLiterals() != null) {
-//                        cardinality *= filter.getInPredicateLiterals().size();
-//                        if (cardinality > MAX_RETURN_ROWS) {
-//                            return false;
-//                        }
-//                    } else if (!filter.isPoint()) {
-//                        return false;
-//                    }
-//                } else {
-//                    return false;
-//                }
-//            }
-//            return true;
-//        }
+        protected static boolean isPointScan(Table table, List<String> keyColumns, List<ScalarOperator> conjuncts) {
+            Map<String, PartitionColumnFilter> filters = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+            filters.putAll(ColumnFilterConverter.convertColumnFilter(conjuncts, table));
+            if (keyColumns == null || keyColumns.isEmpty()) {
+                return false;
+            }
+            long cardinality = 1;
+            for (String keyColumn : keyColumns) {
+                if (filters.containsKey(keyColumn)) {
+                    PartitionColumnFilter filter = filters.get(keyColumn);
+                    if (filter.getInPredicateLiterals() != null) {
+                        cardinality *= filter.getInPredicateLiterals().size();
+                        if (cardinality > MAX_RETURN_ROWS) {
+                            return false;
+                        }
+                    } else if (!filter.isPoint()) {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 
 }

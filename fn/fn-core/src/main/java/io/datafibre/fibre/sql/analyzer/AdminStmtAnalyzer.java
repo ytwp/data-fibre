@@ -12,23 +12,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.analyzer;
+package com.starrocks.sql.analyzer;
 
 import com.google.common.base.Enums;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.analysis.*;
-import io.datafibre.fibre.catalog.CatalogUtils;
-import io.datafibre.fibre.catalog.Replica;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.common.util.PropertyAnalyzer;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.sql.ast.*;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.analysis.BinaryPredicate;
+import com.starrocks.analysis.BinaryType;
+import com.starrocks.analysis.Expr;
+import com.starrocks.analysis.SlotRef;
+import com.starrocks.analysis.StringLiteral;
+import com.starrocks.catalog.CatalogUtils;
+import com.starrocks.catalog.Replica;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.common.util.PropertyAnalyzer;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.sql.ast.AdminCancelRepairTableStmt;
+import com.starrocks.sql.ast.AdminCheckTabletsStmt;
+import com.starrocks.sql.ast.AdminRepairTableStmt;
+import com.starrocks.sql.ast.AdminSetConfigStmt;
+import com.starrocks.sql.ast.AdminSetReplicaStatusStmt;
+import com.starrocks.sql.ast.AdminShowReplicaDistributionStmt;
+import com.starrocks.sql.ast.AdminShowReplicaStatusStmt;
+import com.starrocks.sql.ast.AstVisitor;
+import com.starrocks.sql.ast.PartitionNames;
+import com.starrocks.sql.ast.Property;
+import com.starrocks.sql.ast.StatementBase;
+import com.starrocks.sql.parser.NodePosition;
 
 import java.util.List;
 
-import static io.datafibre.fibre.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
+import static com.starrocks.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
 
 public class AdminStmtAnalyzer {
     public static final long DEFAULT_PRIORITY_REPAIR_TIMEOUT_SEC = 4 * 3600L;
@@ -117,11 +131,11 @@ public class AdminStmtAnalyzer {
             }
             adminShowReplicaStatusStmt.setDbName(dbName);
 
-//            try {
-//                CatalogUtils.checkIsLakeTable(dbName, tblName);
-//            } catch (AnalysisException e) {
-//                throw new SemanticException(e.getMessage(), pos);
-//            }
+            try {
+                CatalogUtils.checkIsLakeTable(dbName, tblName);
+            } catch (AnalysisException e) {
+                throw new SemanticException(e.getMessage(), pos);
+            }
 
             List<String> partitions = Lists.newArrayList();
             PartitionNames partitionNames = adminShowReplicaStatusStmt.getTblRef().getPartitionNames();

@@ -12,11 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.qe.scheduler.slot;
+package com.starrocks.qe.scheduler.slot;
 
-import io.datafibre.fibre.thrift.TUniqueId;
+import com.starrocks.thrift.TUniqueId;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class AllocatedSlots {
 

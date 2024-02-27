@@ -13,9 +13,9 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.statistics;
+package com.starrocks.sql.optimizer.statistics;
 
-import io.datafibre.fibre.catalog.Table;
+import com.starrocks.catalog.Table;
 
 import java.util.List;
 import java.util.stream.Collectors;

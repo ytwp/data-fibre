@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.catalog;
+package com.starrocks.catalog;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
@@ -40,19 +40,29 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.annotations.SerializedName;
-import io.datafibre.fibre.common.io.Text;
-import io.datafibre.fibre.common.io.Writable;
-import io.datafibre.fibre.persist.gson.GsonPostProcessable;
+import com.starrocks.analysis.DescriptorTable.ReferencedPartitionInfo;
+import com.starrocks.catalog.system.SystemTable;
+import com.starrocks.common.io.Text;
+import com.starrocks.common.io.Writable;
+import com.starrocks.lake.LakeMaterializedView;
+import com.starrocks.lake.LakeTable;
+import com.starrocks.persist.gson.GsonPostProcessable;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.thrift.TTableDescriptor;
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.annotation.Nullable;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -371,13 +381,13 @@ public class Table extends MetaObject implements Writable, GsonPostProcessable, 
     }
 
     public boolean isExprPartitionTable() {
-//        if (this instanceof OlapTable) {
-//            OlapTable olapTable = (OlapTable) this;
-//            if (olapTable.getPartitionInfo().getType() == PartitionType.EXPR_RANGE_V2) {
-//                PartitionInfo partitionInfo = olapTable.getPartitionInfo();
-//                return partitionInfo instanceof ExpressionRangePartitionInfoV2;
-//            }
-//        }
+        if (this instanceof OlapTable) {
+            OlapTable olapTable = (OlapTable) this;
+            if (olapTable.getPartitionInfo().getType() == PartitionType.EXPR_RANGE_V2) {
+                PartitionInfo partitionInfo = olapTable.getPartitionInfo();
+                return partitionInfo instanceof ExpressionRangePartitionInfoV2;
+            }
+        }
         return false;
     }
 
@@ -423,50 +433,49 @@ public class Table extends MetaObject implements Writable, GsonPostProcessable, 
         throw new NotImplementedException(msg);
     }
 
-//    public TTableDescriptor toThrift(List<ReferencedPartitionInfo> partitions) {
-//        return null;
-//    }
+    public TTableDescriptor toThrift(List<ReferencedPartitionInfo> partitions) {
+        return null;
+    }
 
     public static Table read(DataInput in) throws IOException {
         Table table;
         TableType type = TableType.deserialize(Text.readString(in));
-//        if (type == TableType.OLAP) {
-//            table = new OlapTable();
-//        } else
-        if (type == TableType.MYSQL) {
+        if (type == TableType.OLAP) {
+            table = new OlapTable();
+        } else if (type == TableType.MYSQL) {
             table = new MysqlTable();
-//        } else if (type == TableType.VIEW) {
-//            table = new View();
-//        } else if (type == TableType.BROKER) {
-//            table = new BrokerTable();
-//        } else if (type == TableType.ELASTICSEARCH) {
-//            table = new EsTable();
-//        } else if (type == TableType.HIVE) {
-//            table = new HiveTable();
-//        } else if (type == TableType.FILE) {
-//            table = new FileTable();
-//        } else if (type == TableType.HUDI) {
-//            table = new HudiTable();
-//        } else if (type == TableType.OLAP_EXTERNAL) {
-//            table = new ExternalOlapTable();
-//        } else if (type == TableType.ICEBERG) {
-//            table = new IcebergTable();
-//        } else if (type == TableType.JDBC) {
-//            table = new JDBCTable();
-//        } else if (type == TableType.MATERIALIZED_VIEW) {
-//            table = MaterializedView.read(in);
-//            table.setTypeRead(true);
-//            return table;
-//        } else if (type == TableType.CLOUD_NATIVE) {
-//            table = LakeTable.read(in);
-//            table.setTypeRead(true);
-//            return table;
-//        } else if (type == TableType.CLOUD_NATIVE_MATERIALIZED_VIEW) {
-//            table = LakeMaterializedView.read(in);
-//            table.setTypeRead(true);
-//            return table;
-//        } else if (type == TableType.ODPS) {
-//            table = new OdpsTable();
+        } else if (type == TableType.VIEW) {
+            table = new View();
+        } else if (type == TableType.BROKER) {
+            table = new BrokerTable();
+        } else if (type == TableType.ELASTICSEARCH) {
+            table = new EsTable();
+        } else if (type == TableType.HIVE) {
+            table = new HiveTable();
+        } else if (type == TableType.FILE) {
+            table = new FileTable();
+        } else if (type == TableType.HUDI) {
+            table = new HudiTable();
+        } else if (type == TableType.OLAP_EXTERNAL) {
+            table = new ExternalOlapTable();
+        } else if (type == TableType.ICEBERG) {
+            table = new IcebergTable();
+        } else if (type == TableType.JDBC) {
+            table = new JDBCTable();
+        } else if (type == TableType.MATERIALIZED_VIEW) {
+            table = MaterializedView.read(in);
+            table.setTypeRead(true);
+            return table;
+        } else if (type == TableType.CLOUD_NATIVE) {
+            table = LakeTable.read(in);
+            table.setTypeRead(true);
+            return table;
+        } else if (type == TableType.CLOUD_NATIVE_MATERIALIZED_VIEW) {
+            table = LakeMaterializedView.read(in);
+            table.setTypeRead(true);
+            return table;
+        } else if (type == TableType.ODPS) {
+            table = new OdpsTable();
         } else {
             throw new IOException("Unknown table type: " + type.name());
         }
@@ -578,27 +587,26 @@ public class Table extends MetaObject implements Writable, GsonPostProcessable, 
     }
 
     public String getEngine() {
-//        if (this instanceof OlapTable) {
-//            return "StarRocks";
-//        } else
-        if (this instanceof MysqlTable) {
+        if (this instanceof OlapTable) {
+            return "StarRocks";
+        } else if (this instanceof MysqlTable) {
             return "MySQL";
-//        } else if (this instanceof SystemTable) {
-//            return "MEMORY";
-//        } else if (this instanceof HiveTable) {
-//            return "Hive";
-//        } else if (this instanceof HudiTable) {
-//            return "Hudi";
-//        } else if (this instanceof IcebergTable) {
-//            return "Iceberg";
-//        } else if (this instanceof DeltaLakeTable) {
-//            return "DeltaLake";
-//        } else if (this instanceof EsTable) {
-//            return "Elasticsearch";
-//        } else if (this instanceof JDBCTable) {
-//            return "JDBC";
-//        } else if (this instanceof FileTable) {
-//            return "File";
+        } else if (this instanceof SystemTable) {
+            return "MEMORY";
+        } else if (this instanceof HiveTable) {
+            return "Hive";
+        } else if (this instanceof HudiTable) {
+            return "Hudi";
+        } else if (this instanceof IcebergTable) {
+            return "Iceberg";
+        } else if (this instanceof DeltaLakeTable) {
+            return "DeltaLake";
+        } else if (this instanceof EsTable) {
+            return "Elasticsearch";
+        } else if (this instanceof JDBCTable) {
+            return "JDBC";
+        } else if (this instanceof FileTable) {
+            return "File";
         } else {
             return null;
         }
@@ -630,7 +638,7 @@ public class Table extends MetaObject implements Writable, GsonPostProcessable, 
     // comment, you need add the escape character back
     public String getDisplayComment() {
         if (!Strings.isNullOrEmpty(comment)) {
-//            return CatalogUtils.addEscapeCharacter(comment);
+            return CatalogUtils.addEscapeCharacter(comment);
         }
         return "";
     }
@@ -660,25 +668,25 @@ public class Table extends MetaObject implements Writable, GsonPostProcessable, 
      * 4. Even if table's state is ROLLUP or SCHEMA_CHANGE, check it. Because we can repair the tablet of base index.
      * 5. PRIMARY_KEYS table does not support local balance.
      */
-//    public boolean needSchedule(boolean isLocalBalance) {
-//        if (!isOlapTableOrMaterializedView()) {
-//            return false;
-//        }
-//
-//        ColocateTableIndex colocateIndex = GlobalStateMgr.getCurrentState().getColocateTableIndex();
-//        if (colocateIndex.isColocateTable(getId())) {
-//            boolean isGroupUnstable = colocateIndex.isGroupUnstable(colocateIndex.getGroup(getId()));
-//            if (!isLocalBalance || isGroupUnstable) {
-//                LOG.debug(
-//                        "table {} is a colocate table, skip tablet checker. " +
-//                                "is local migration: {}, is group unstable: {}",
-//                        name, isLocalBalance, isGroupUnstable);
-//                return false;
-//            }
-//        }
-//
-//        return true;
-//    }
+    public boolean needSchedule(boolean isLocalBalance) {
+        if (!isOlapTableOrMaterializedView()) {
+            return false;
+        }
+
+        ColocateTableIndex colocateIndex = GlobalStateMgr.getCurrentState().getColocateTableIndex();
+        if (colocateIndex.isColocateTable(getId())) {
+            boolean isGroupUnstable = colocateIndex.isGroupUnstable(colocateIndex.getGroup(getId()));
+            if (!isLocalBalance || isGroupUnstable) {
+                LOG.debug(
+                        "table {} is a colocate table, skip tablet checker. " +
+                                "is local migration: {}, is group unstable: {}",
+                        name, isLocalBalance, isGroupUnstable);
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     public boolean hasAutoIncrementColumn() {
         List<Column> columns = this.getFullSchema();
@@ -702,12 +710,15 @@ public class Table extends MetaObject implements Writable, GsonPostProcessable, 
     }
 
     /**
-     * This method is called right before the calling of {@link Database#dropTable(String)}, with the protection of the
-     * database's writer lock.
+     * This method is called right after the calling of {@link Database#dropTable(String)}, with the
+     * protection of the database's writer lock.
      * <p>
-     * If {@code force} is false, this table will be placed into the {@link /CatalogRecycleBin} and may be
-     * recovered later, so the implementation should not delete any real data otherwise there will be
-     * data loss after the table been recovered.
+     * If {@code force} is false, this table can be recovered later, so the implementation should not
+     * delete any real data otherwise there will be data loss after the table been recovered.
+     * <p>
+     * To avoid holding the database lock for a long time, do NOT perform time-consuming operations in this
+     * method, such as deleting data, sending RPC requests, etc. Instead, you should put these operations
+     * into {@link Table#delete(boolean)}.
      *
      * @param db     the owner database of the table
      * @param force  is this a force drop
@@ -718,15 +729,32 @@ public class Table extends MetaObject implements Writable, GsonPostProcessable, 
     }
 
     /**
-     * Delete this table. this method is called with the protection of the database's writer lock.
+     * Delete this table permanently. Implementations can perform necessary cleanup work.
      *
+     * @param dbId ID of the database to which the table belongs
      * @param replay is this a log replay operation.
-     * @return a {@link Runnable} object that will be invoked after the table has been deleted from
-     * catalog, or null if no action need to be performed.
+     * @return Returns true if the deletion task was performed successfully, false otherwise.
      */
-    @Nullable
-    public Runnable delete(boolean replay) {
-        return null;
+    public boolean delete(long dbId, boolean replay) {
+        return true;
+    }
+
+    /**
+     * Delete thie table from {@link CatalogRecycleBin}
+     * @param replay is this a log relay operation.
+     * @return Returns true if the deletion task was performed successfully, false otherwise.
+     */
+    public boolean deleteFromRecycleBin(long dbId, boolean replay) {
+        return delete(dbId, replay);
+    }
+
+    /**
+     * Whether the delete table operation supports retry on failure
+     *
+     * @return true if retry is supported on delete table failure, false if retry is not supported.
+     */
+    public boolean isDeleteRetryable() {
+        return false;
     }
 
     public boolean isSupported() {
@@ -817,7 +845,8 @@ public class Table extends MetaObject implements Writable, GsonPostProcessable, 
 
     public boolean isTable() {
         return !type.equals(TableType.MATERIALIZED_VIEW) &&
-               !type.equals(TableType.CLOUD_NATIVE_MATERIALIZED_VIEW) &&
-               !type.equals(TableType.VIEW);
+                !type.equals(TableType.CLOUD_NATIVE_MATERIALIZED_VIEW) &&
+                !type.equals(TableType.VIEW) &&
+                !type.equals(TableType.HIVE_VIEW);
     }
 }

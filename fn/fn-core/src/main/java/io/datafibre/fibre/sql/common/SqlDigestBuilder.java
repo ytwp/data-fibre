@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.common;
+package com.starrocks.sql.common;
 
-import io.datafibre.fibre.analysis.LimitElement;
-import io.datafibre.fibre.analysis.LiteralExpr;
-import io.datafibre.fibre.sql.analyzer.AstToStringBuilder;
-import io.datafibre.fibre.sql.ast.StatementBase;
+import com.starrocks.analysis.LimitElement;
+import com.starrocks.analysis.LiteralExpr;
+import com.starrocks.sql.analyzer.AstToStringBuilder;
+import com.starrocks.sql.ast.StatementBase;
 
 //Used to build sql digests
 public class SqlDigestBuilder {

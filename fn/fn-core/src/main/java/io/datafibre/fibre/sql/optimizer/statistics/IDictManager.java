@@ -13,9 +13,9 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.statistics;
+package com.starrocks.sql.optimizer.statistics;
 
-import io.datafibre.fibre.common.FeConstants;
+import com.starrocks.common.FeConstants;
 
 import java.util.Optional;
 

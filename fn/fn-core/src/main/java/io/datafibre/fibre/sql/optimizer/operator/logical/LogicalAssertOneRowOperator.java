@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.operator.logical;
+package com.starrocks.sql.optimizer.operator.logical;
 
-import io.datafibre.fibre.sql.ast.AssertNumRowsElement;
-import io.datafibre.fibre.sql.optimizer.ExpressionContext;
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.OptExpressionVisitor;
-import io.datafibre.fibre.sql.optimizer.RowOutputInfo;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorVisitor;
+import com.starrocks.sql.ast.AssertNumRowsElement;
+import com.starrocks.sql.optimizer.ExpressionContext;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.OptExpressionVisitor;
+import com.starrocks.sql.optimizer.RowOutputInfo;
+import com.starrocks.sql.optimizer.base.ColumnRefSet;
+import com.starrocks.sql.optimizer.operator.OperatorType;
+import com.starrocks.sql.optimizer.operator.OperatorVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,7 +97,7 @@ public class LogicalAssertOneRowOperator extends LogicalOperator {
     }
 
     public static class Builder
-            extends LogicalOperator.Builder<LogicalAssertOneRowOperator, Builder> {
+            extends LogicalOperator.Builder<LogicalAssertOneRowOperator, LogicalAssertOneRowOperator.Builder> {
 
         @Override
         protected LogicalAssertOneRowOperator newInstance() {
@@ -105,7 +105,7 @@ public class LogicalAssertOneRowOperator extends LogicalOperator {
         }
 
         @Override
-        public Builder withOperator(LogicalAssertOneRowOperator assertOneRowOperator) {
+        public LogicalAssertOneRowOperator.Builder withOperator(LogicalAssertOneRowOperator assertOneRowOperator) {
             super.withOperator(assertOneRowOperator);
             builder.assertion = assertOneRowOperator.assertion;
             builder.checkRows = assertOneRowOperator.checkRows;

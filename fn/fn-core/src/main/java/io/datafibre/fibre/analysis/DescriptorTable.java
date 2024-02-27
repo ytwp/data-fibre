@@ -32,15 +32,22 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.datafibre.fibre.catalog.PartitionKey;
-import io.datafibre.fibre.catalog.Table;
-import io.datafibre.fibre.common.IdGenerator;
+import com.google.common.collect.Sets;
+import com.starrocks.catalog.PartitionKey;
+import com.starrocks.catalog.Table;
+import com.starrocks.common.IdGenerator;
+import com.starrocks.thrift.TDescriptorTable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Repository for tuple (and slot) descriptors.
@@ -142,36 +149,36 @@ public class DescriptorTable {
         }
     }
 
-//    public TDescriptorTable toThrift() {
-//        TDescriptorTable result = new TDescriptorTable();
-//        Map<Long, Table> referencedTbls = Maps.newHashMap();
-//        for (TupleDescriptor tupleD : tupleDescs.values()) {
-//            // inline view of a non-constant select has a non-materialized tuple descriptor
-//            // in the descriptor table just for type checking, which we need to skip
-//            if (tupleD.getIsMaterialized()) {
-//                result.addToTupleDescriptors(tupleD.toThrift());
-//                // an inline view of a constant select has a materialized tuple
-//                // but its table has no id
-//                if (tupleD.getTable() != null
-//                        && tupleD.getTable().getId() >= 0) {
-//                    referencedTbls.putIfAbsent(tupleD.getTable().getId(), tupleD.getTable());
-//                }
-//                for (SlotDescriptor slotD : tupleD.getMaterializedSlots()) {
-//                    result.addToSlotDescriptors(slotD.toThrift());
-//                }
-//            }
-//        }
-//
-//        for (Table tbl : referencedTables) {
-//            referencedTbls.putIfAbsent(tbl.getId(), tbl);
-//        }
-//
-//        for (Table tbl : referencedTbls.values()) {
-//            result.addToTableDescriptors(
-//                    tbl.toThrift(referencedPartitionsPerTable.getOrDefault(tbl, Lists.newArrayList())));
-//        }
-//        return result;
-//    }
+    public TDescriptorTable toThrift() {
+        TDescriptorTable result = new TDescriptorTable();
+        Map<Long, Table> referencedTbls = Maps.newHashMap();
+        for (TupleDescriptor tupleD : tupleDescs.values()) {
+            // inline view of a non-constant select has a non-materialized tuple descriptor
+            // in the descriptor table just for type checking, which we need to skip
+            if (tupleD.getIsMaterialized()) {
+                result.addToTupleDescriptors(tupleD.toThrift());
+                // an inline view of a constant select has a materialized tuple
+                // but its table has no id
+                if (tupleD.getTable() != null
+                        && tupleD.getTable().getId() >= 0) {
+                    referencedTbls.putIfAbsent(tupleD.getTable().getId(), tupleD.getTable());
+                }
+                for (SlotDescriptor slotD : tupleD.getMaterializedSlots()) {
+                    result.addToSlotDescriptors(slotD.toThrift());
+                }
+            }
+        }
+
+        for (Table tbl : referencedTables) {
+            referencedTbls.putIfAbsent(tbl.getId(), tbl);
+        }
+
+        for (Table tbl : referencedTbls.values()) {
+            result.addToTableDescriptors(
+                    tbl.toThrift(referencedPartitionsPerTable.getOrDefault(tbl, Lists.newArrayList())));
+        }
+        return result;
+    }
 
     public static class ReferencedPartitionInfo {
         private long id;

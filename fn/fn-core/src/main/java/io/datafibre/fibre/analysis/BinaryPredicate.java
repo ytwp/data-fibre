@@ -32,16 +32,18 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
 import com.google.common.base.Preconditions;
-import io.datafibre.fibre.catalog.PrimitiveType;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.common.io.Text;
-import io.datafibre.fibre.common.io.Writable;
-import io.datafibre.fibre.sql.ast.AstVisitor;
-import io.datafibre.fibre.sql.common.TypeManager;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.catalog.PrimitiveType;
+import com.starrocks.catalog.Type;
+import com.starrocks.common.io.Text;
+import com.starrocks.common.io.Writable;
+import com.starrocks.sql.ast.AstVisitor;
+import com.starrocks.sql.common.TypeManager;
+import com.starrocks.sql.parser.NodePosition;
+import com.starrocks.thrift.TExprNode;
+import com.starrocks.thrift.TExprNodeType;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -153,17 +155,17 @@ public class BinaryPredicate extends Predicate implements Writable {
         return getChild(0).explain() + " " + op.toString() + " " + getChild(1).explain();
     }
 
-//    @Override
-//    protected void toThrift(TExprNode msg) {
-//        msg.node_type = TExprNodeType.BINARY_PRED;
-//        msg.setOpcode(opcode);
-//        msg.setVector_opcode(vectorOpcode);
-//        if (getChild(0).getType().isComplexType()) {
-//            msg.setChild_type_desc(getChild(0).getType().toThrift());
-//        } else {
-//            msg.setChild_type(getChild(0).getType().getPrimitiveType().toThrift());
-//        }
-//    }
+    @Override
+    protected void toThrift(TExprNode msg) {
+        msg.node_type = TExprNodeType.BINARY_PRED;
+        msg.setOpcode(opcode);
+        msg.setVector_opcode(vectorOpcode);
+        if (getChild(0).getType().isComplexType()) {
+            msg.setChild_type_desc(getChild(0).getType().toThrift());
+        } else {
+            msg.setChild_type(getChild(0).getType().getPrimitiveType().toThrift());
+        }
+    }
 
     private static boolean canCompareDate(PrimitiveType t1, PrimitiveType t2) {
         if (t1.isDateType()) {

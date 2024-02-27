@@ -12,23 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.rewrite;
+package com.starrocks.sql.optimizer.rewrite;
 
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.common.Config;
-import io.datafibre.fibre.sql.common.ErrorType;
-import io.datafibre.fibre.sql.common.StarRocksPlannerException;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
-import io.datafibre.fibre.sql.optimizer.rewrite.scalar.ArithmeticCommutativeRule;
-import io.datafibre.fibre.sql.optimizer.rewrite.scalar.ExtractCommonPredicateRule;
-import io.datafibre.fibre.sql.optimizer.rewrite.scalar.FoldConstantsRule;
-import io.datafibre.fibre.sql.optimizer.rewrite.scalar.ImplicitCastRule;
-import io.datafibre.fibre.sql.optimizer.rewrite.scalar.MvNormalizePredicateRule;
-import io.datafibre.fibre.sql.optimizer.rewrite.scalar.NormalizePredicateRule;
-import io.datafibre.fibre.sql.optimizer.rewrite.scalar.ReduceCastRule;
-import io.datafibre.fibre.sql.optimizer.rewrite.scalar.ScalarOperatorRewriteRule;
-import io.datafibre.fibre.sql.optimizer.rewrite.scalar.SimplifiedPredicateRule;
-import io.datafibre.fibre.sql.optimizer.rewrite.scalar.SimplifiedScanColumnRule;
+import com.starrocks.common.Config;
+import com.starrocks.sql.common.ErrorType;
+import com.starrocks.sql.common.StarRocksPlannerException;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.sql.optimizer.rewrite.scalar.ArithmeticCommutativeRule;
+import com.starrocks.sql.optimizer.rewrite.scalar.ExtractCommonPredicateRule;
+import com.starrocks.sql.optimizer.rewrite.scalar.FoldConstantsRule;
+import com.starrocks.sql.optimizer.rewrite.scalar.ImplicitCastRule;
+import com.starrocks.sql.optimizer.rewrite.scalar.MvNormalizePredicateRule;
+import com.starrocks.sql.optimizer.rewrite.scalar.NormalizePredicateRule;
+import com.starrocks.sql.optimizer.rewrite.scalar.ReduceCastRule;
+import com.starrocks.sql.optimizer.rewrite.scalar.ScalarOperatorRewriteRule;
+import com.starrocks.sql.optimizer.rewrite.scalar.SimplifiedPredicateRule;
+import com.starrocks.sql.optimizer.rewrite.scalar.SimplifiedScanColumnRule;
 
 import java.util.List;
 import java.util.stream.Collectors;

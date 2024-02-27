@@ -32,15 +32,15 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
-//import io.datafibre.fibre.cluster.ClusterNamespace;
-import io.datafibre.fibre.common.io.Text;
-import io.datafibre.fibre.common.io.Writable;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.sql.analyzer.AnalyzerUtils;
-import io.datafibre.fibre.sql.analyzer.FeNameFormat;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.cluster.ClusterNamespace;
+import com.starrocks.sql.analyzer.FeNameFormat;
+import com.starrocks.common.io.Text;
+import com.starrocks.common.io.Writable;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.sql.analyzer.AnalyzerUtils;
+import com.starrocks.sql.parser.NodePosition;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.io.DataInput;
@@ -111,12 +111,12 @@ public class LabelName implements ParseNode, Writable {
     @Override
     public void write(DataOutput out) throws IOException {
         // compatible with old version
-//        Text.writeString(out, ClusterNamespace.getFullName(dbName));
+        Text.writeString(out, ClusterNamespace.getFullName(dbName));
         Text.writeString(out, labelName);
     }
 
     public void readFields(DataInput in) throws IOException {
-//        dbName = ClusterNamespace.getNameFromFullName(Text.readString(in));
+        dbName = ClusterNamespace.getNameFromFullName(Text.readString(in));
         labelName = Text.readString(in);
     }
 

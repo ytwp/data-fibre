@@ -13,12 +13,12 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
-import io.datafibre.fibre.analysis.FunctionName;
-import io.datafibre.fibre.analysis.RedirectStatus;
-import io.datafibre.fibre.catalog.FunctionSearchDesc;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.analysis.FunctionName;
+import com.starrocks.analysis.RedirectStatus;
+import com.starrocks.catalog.FunctionSearchDesc;
+import com.starrocks.sql.parser.NodePosition;
 
 public class DropFunctionStmt extends DdlStmt {
     private final FunctionName functionName;

@@ -32,15 +32,15 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.qe;
+package com.starrocks.qe;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
-import io.datafibre.fibre.common.DdlException;
-import io.datafibre.fibre.common.ErrorCode;
-import io.datafibre.fibre.common.ErrorReport;
-import org.apache.commons.lang3.StringUtils;
+import com.starrocks.common.DdlException;
+import com.starrocks.common.ErrorCode;
+import com.starrocks.common.ErrorReport;
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -96,16 +96,16 @@ public class SqlModeHelper {
 
     public static final long MODE_ALLOWED_MASK =
             (MODE_REAL_AS_FLOAT | MODE_PIPES_AS_CONCAT | MODE_ANSI_QUOTES |
-             MODE_IGNORE_SPACE | MODE_NOT_USED | MODE_ONLY_FULL_GROUP_BY |
-             MODE_NO_UNSIGNED_SUBTRACTION | MODE_NO_DIR_IN_CREATE | MODE_DOUBLE_LITERAL |
-             MODE_FORBID_INVALID_DATE | MODE_ALLOW_THROW_EXCEPTION |
-             MODE_NO_AUTO_VALUE_ON_ZERO | MODE_NO_BACKSLASH_ESCAPES |
-             MODE_STRICT_TRANS_TABLES | MODE_STRICT_ALL_TABLES | MODE_NO_ZERO_IN_DATE |
-             MODE_NO_ZERO_DATE | MODE_INVALID_DATES | MODE_ERROR_FOR_DIVISION_BY_ZERO |
-             MODE_HIGH_NOT_PRECEDENCE | MODE_NO_ENGINE_SUBSTITUTION |
-             MODE_PAD_CHAR_TO_FULL_LENGTH | MODE_TRADITIONAL | MODE_ANSI |
-             MODE_TIME_TRUNCATE_FRACTIONAL | MODE_SORT_NULLS_LAST) | MODE_ERROR_IF_OVERFLOW |
-            MODE_GROUP_CONCAT_LEGACY;
+                    MODE_IGNORE_SPACE | MODE_NOT_USED | MODE_ONLY_FULL_GROUP_BY |
+                    MODE_NO_UNSIGNED_SUBTRACTION | MODE_NO_DIR_IN_CREATE | MODE_DOUBLE_LITERAL |
+                    MODE_FORBID_INVALID_DATE | MODE_ALLOW_THROW_EXCEPTION |
+                    MODE_NO_AUTO_VALUE_ON_ZERO | MODE_NO_BACKSLASH_ESCAPES |
+                    MODE_STRICT_TRANS_TABLES | MODE_STRICT_ALL_TABLES | MODE_NO_ZERO_IN_DATE |
+                    MODE_NO_ZERO_DATE | MODE_INVALID_DATES | MODE_ERROR_FOR_DIVISION_BY_ZERO |
+                    MODE_HIGH_NOT_PRECEDENCE | MODE_NO_ENGINE_SUBSTITUTION |
+                    MODE_PAD_CHAR_TO_FULL_LENGTH | MODE_TRADITIONAL | MODE_ANSI |
+                    MODE_TIME_TRUNCATE_FRACTIONAL | MODE_SORT_NULLS_LAST) | MODE_ERROR_IF_OVERFLOW |
+                    MODE_GROUP_CONCAT_LEGACY;
 
     private static final Map<String, Long> SQL_MODE_SET = Maps.newTreeMap(String.CASE_INSENSITIVE_ORDER);
 
@@ -142,10 +142,10 @@ public class SqlModeHelper {
         SQL_MODE_SET.put("GROUP_CONCAT_LEGACY", MODE_GROUP_CONCAT_LEGACY);
 
         COMBINE_MODE_SET.put("ANSI", (MODE_REAL_AS_FLOAT | MODE_PIPES_AS_CONCAT |
-                                      MODE_ANSI_QUOTES | MODE_IGNORE_SPACE | MODE_ONLY_FULL_GROUP_BY));
+                MODE_ANSI_QUOTES | MODE_IGNORE_SPACE | MODE_ONLY_FULL_GROUP_BY));
         COMBINE_MODE_SET.put("TRADITIONAL", (MODE_STRICT_TRANS_TABLES | MODE_STRICT_ALL_TABLES |
-                                             MODE_NO_ZERO_IN_DATE | MODE_NO_ZERO_DATE | MODE_ERROR_FOR_DIVISION_BY_ZERO |
-                                             MODE_NO_ENGINE_SUBSTITUTION));
+                MODE_NO_ZERO_IN_DATE | MODE_NO_ZERO_DATE | MODE_ERROR_FOR_DIVISION_BY_ZERO |
+                MODE_NO_ENGINE_SUBSTITUTION));
     }
 
     // convert long type SQL MODE to string type that user can read

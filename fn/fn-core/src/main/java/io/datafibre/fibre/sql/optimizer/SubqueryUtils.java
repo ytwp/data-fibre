@@ -13,33 +13,42 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer;
+package com.starrocks.sql.optimizer;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.datafibre.fibre.analysis.BinaryType;
-import io.datafibre.fibre.analysis.Expr;
-import io.datafibre.fibre.catalog.AggregateFunction;
-import io.datafibre.fibre.catalog.Function;
-import io.datafibre.fibre.catalog.FunctionSet;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.common.Pair;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.sql.analyzer.DecimalV3FunctionAnalyzer;
-import io.datafibre.fibre.sql.analyzer.SemanticException;
-import io.datafibre.fibre.sql.ast.QueryRelation;
-import io.datafibre.fibre.sql.ast.SelectRelation;
-import io.datafibre.fibre.sql.ast.SubqueryRelation;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefFactory;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalApplyOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.*;
-import io.datafibre.fibre.sql.optimizer.rewrite.ScalarOperatorRewriter;
-import io.datafibre.fibre.sql.optimizer.rewrite.scalar.ReplaceSubqueryRewriteRule;
-import io.datafibre.fibre.sql.optimizer.rewrite.scalar.ScalarOperatorRewriteRule;
-import io.datafibre.fibre.sql.optimizer.transformer.*;
+import com.starrocks.analysis.BinaryType;
+import com.starrocks.analysis.Expr;
+import com.starrocks.catalog.AggregateFunction;
+import com.starrocks.catalog.Function;
+import com.starrocks.catalog.FunctionSet;
+import com.starrocks.catalog.Type;
+import com.starrocks.common.Pair;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.sql.analyzer.DecimalV3FunctionAnalyzer;
+import com.starrocks.sql.analyzer.SemanticException;
+import com.starrocks.sql.ast.QueryRelation;
+import com.starrocks.sql.ast.SelectRelation;
+import com.starrocks.sql.ast.SubqueryRelation;
+import com.starrocks.sql.optimizer.base.ColumnRefFactory;
+import com.starrocks.sql.optimizer.base.ColumnRefSet;
+import com.starrocks.sql.optimizer.operator.OperatorType;
+import com.starrocks.sql.optimizer.operator.logical.LogicalApplyOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalOperator;
+import com.starrocks.sql.optimizer.operator.scalar.BinaryPredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ConstantOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.sql.optimizer.operator.scalar.SubqueryOperator;
+import com.starrocks.sql.optimizer.rewrite.ScalarOperatorRewriter;
+import com.starrocks.sql.optimizer.rewrite.scalar.ReplaceSubqueryRewriteRule;
+import com.starrocks.sql.optimizer.rewrite.scalar.ScalarOperatorRewriteRule;
+import com.starrocks.sql.optimizer.transformer.CTETransformerContext;
+import com.starrocks.sql.optimizer.transformer.ExpressionMapping;
+import com.starrocks.sql.optimizer.transformer.LogicalPlan;
+import com.starrocks.sql.optimizer.transformer.OptExprBuilder;
+import com.starrocks.sql.optimizer.transformer.RelationTransformer;
 
 import java.util.Collection;
 import java.util.Iterator;

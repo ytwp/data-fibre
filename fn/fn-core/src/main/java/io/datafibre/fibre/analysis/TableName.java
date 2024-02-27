@@ -32,22 +32,24 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.gson.annotations.SerializedName;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.common.ErrorCode;
-import io.datafibre.fibre.common.ErrorReport;
-import io.datafibre.fibre.common.io.Text;
-import io.datafibre.fibre.common.io.Writable;
-import io.datafibre.fibre.persist.gson.GsonPostProcessable;
-import io.datafibre.fibre.persist.gson.GsonPreProcessable;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.sql.analyzer.SemanticException;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.cluster.ClusterNamespace;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.common.ErrorCode;
+import com.starrocks.common.ErrorReport;
+import com.starrocks.common.io.Text;
+import com.starrocks.common.io.Writable;
+import com.starrocks.persist.gson.GsonPostProcessable;
+import com.starrocks.persist.gson.GsonPreProcessable;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.server.CatalogMgr;
+import com.starrocks.sql.analyzer.SemanticException;
+import com.starrocks.sql.parser.NodePosition;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.DataInput;
@@ -203,9 +205,9 @@ public class TableName implements Writable, GsonPreProcessable, GsonPostProcessa
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-//        if (catalog != null && !CatalogMgr.isInternalCatalog(catalog)) {
-//            stringBuilder.append(catalog).append(".");
-//        }
+        if (catalog != null && !CatalogMgr.isInternalCatalog(catalog)) {
+            stringBuilder.append(catalog).append(".");
+        }
         if (db != null) {
             stringBuilder.append(db).append(".");
         }
@@ -215,9 +217,9 @@ public class TableName implements Writable, GsonPreProcessable, GsonPostProcessa
 
     public String toSql() {
         StringBuilder stringBuilder = new StringBuilder();
-//        if (catalog != null && !CatalogMgr.isInternalCatalog(catalog)) {
-//            stringBuilder.append("`").append(catalog).append("`.");
-//        }
+        if (catalog != null && !CatalogMgr.isInternalCatalog(catalog)) {
+            stringBuilder.append("`").append(catalog).append("`.");
+        }
         if (db != null) {
             stringBuilder.append("`").append(db).append("`.");
         }
@@ -228,23 +230,23 @@ public class TableName implements Writable, GsonPreProcessable, GsonPostProcessa
     @Override
     public void write(DataOutput out) throws IOException {
         // compatible with old version
-//        Text.writeString(out, ClusterNamespace.getFullName(db));
+        Text.writeString(out, ClusterNamespace.getFullName(db));
         Text.writeString(out, tbl);
     }
 
     public void readFields(DataInput in) throws IOException {
-//        db = ClusterNamespace.getNameFromFullName(Text.readString(in));
+        db = ClusterNamespace.getNameFromFullName(Text.readString(in));
         tbl = Text.readString(in);
     }
 
     @Override
     public void gsonPostProcess() throws IOException {
-//        db = ClusterNamespace.getNameFromFullName(fullDb);
+        db = ClusterNamespace.getNameFromFullName(fullDb);
     }
 
     @Override
     public void gsonPreProcess() throws IOException {
-//        fullDb = ClusterNamespace.getFullName(db);
+        fullDb = ClusterNamespace.getFullName(db);
     }
 
     @Override
@@ -253,8 +255,8 @@ public class TableName implements Writable, GsonPreProcessable, GsonPostProcessa
         if (o == null || getClass() != o.getClass()) return false;
         TableName tableName = (TableName) o;
         return Objects.equals(catalog, tableName.catalog)
-               && Objects.equals(tbl, tableName.tbl)
-               && Objects.equals(db, tableName.db);
+                && Objects.equals(tbl, tableName.tbl)
+                && Objects.equals(db, tableName.db);
     }
 
     @Override

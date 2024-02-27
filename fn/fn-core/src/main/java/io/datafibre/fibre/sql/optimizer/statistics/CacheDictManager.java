@@ -12,23 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.statistics;
+package com.starrocks.sql.optimizer.statistics;
 
 import com.github.benmanes.caffeine.cache.AsyncCacheLoader;
 import com.github.benmanes.caffeine.cache.AsyncLoadingCache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
-import io.datafibre.fibre.catalog.Database;
-import io.datafibre.fibre.common.Config;
-import io.datafibre.fibre.common.Pair;
-import io.datafibre.fibre.common.Status;
-import io.datafibre.fibre.memory.MemoryTrackable;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.sql.optimizer.base.ColumnIdentifier;
-import io.datafibre.fibre.thrift.TGlobalDict;
-import io.datafibre.fibre.thrift.TStatisticData;
+import com.starrocks.catalog.Database;
+import com.starrocks.common.Config;
+import com.starrocks.common.Pair;
+import com.starrocks.common.Status;
+import com.starrocks.memory.MemoryTrackable;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.sql.optimizer.base.ColumnIdentifier;
+import com.starrocks.thrift.TGlobalDict;
+import com.starrocks.thrift.TStatisticData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -42,7 +42,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.Executor;
 
-import static io.datafibre.fibre.statistic.StatisticExecutor.queryDictSync;
+import static com.starrocks.statistic.StatisticExecutor.queryDictSync;
 
 public class CacheDictManager implements IDictManager, MemoryTrackable {
     private static final Logger LOG = LogManager.getLogger(CacheDictManager.class);

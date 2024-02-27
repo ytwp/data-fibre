@@ -13,12 +13,12 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.rule.join;
+package com.starrocks.sql.optimizer.rule.join;
 
 import com.google.common.base.Preconditions;
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.OptimizerContext;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalScanOperator;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.OptimizerContext;
+import com.starrocks.sql.optimizer.operator.logical.LogicalScanOperator;
 
 import java.util.BitSet;
 import java.util.Collections;

@@ -13,17 +13,17 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.operator.scalar;
+package com.starrocks.sql.optimizer.operator.scalar;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
+import com.starrocks.catalog.Type;
+import com.starrocks.sql.optimizer.base.ColumnRefSet;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static io.datafibre.fibre.sql.optimizer.operator.OperatorType.COLLECTION_ELEMENT;
+import static com.starrocks.sql.optimizer.operator.OperatorType.COLLECTION_ELEMENT;
 
 public class CollectionElementOperator extends ScalarOperator {
     protected List<ScalarOperator> arguments = Lists.newArrayList();

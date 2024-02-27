@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.qe.scheduler;
+package com.starrocks.qe.scheduler;
 
-import io.datafibre.fibre.system.ComputeNode;
-import io.datafibre.fibre.system.SystemInfoService;
+import com.starrocks.system.ComputeNode;
+import com.starrocks.system.SystemInfoService;
 
 import java.util.Collection;
 import java.util.List;

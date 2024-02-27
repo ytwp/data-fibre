@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.operator.logical;
+package com.starrocks.sql.optimizer.operator.logical;
 
 import com.google.common.base.Preconditions;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.IcebergTable;
-import io.datafibre.fibre.catalog.Table;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorVisitor;
-import io.datafibre.fibre.sql.optimizer.operator.ScanOperatorPredicates;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.IcebergTable;
+import com.starrocks.catalog.Table;
+import com.starrocks.sql.optimizer.operator.OperatorType;
+import com.starrocks.sql.optimizer.operator.OperatorVisitor;
+import com.starrocks.sql.optimizer.operator.ScanOperatorPredicates;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
 
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -84,7 +84,7 @@ public class LogicalIcebergScanOperator extends LogicalScanOperator {
     }
 
     public static class Builder
-            extends LogicalScanOperator.Builder<LogicalIcebergScanOperator, Builder> {
+            extends LogicalScanOperator.Builder<LogicalIcebergScanOperator, LogicalIcebergScanOperator.Builder> {
 
         @Override
         protected LogicalIcebergScanOperator newInstance() {
@@ -92,7 +92,7 @@ public class LogicalIcebergScanOperator extends LogicalScanOperator {
         }
 
         @Override
-        public Builder withOperator(LogicalIcebergScanOperator scanOperator) {
+        public LogicalIcebergScanOperator.Builder withOperator(LogicalIcebergScanOperator scanOperator) {
             super.withOperator(scanOperator);
 
             builder.predicates = scanOperator.predicates.clone();

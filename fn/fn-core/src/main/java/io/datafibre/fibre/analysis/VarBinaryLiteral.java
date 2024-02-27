@@ -13,17 +13,19 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.io.BaseEncoding;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.common.io.Text;
-import io.datafibre.fibre.sql.parser.NodePosition;
-import io.datafibre.fibre.sql.parser.ParsingException;
+import com.starrocks.catalog.Type;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.common.io.Text;
+import com.starrocks.sql.parser.NodePosition;
+import com.starrocks.sql.parser.ParsingException;
+import com.starrocks.thrift.TBinaryLiteral;
+import com.starrocks.thrift.TExprNode;
+import com.starrocks.thrift.TExprNodeType;
 
-import javax.validation.constraints.NotNull;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
@@ -32,7 +34,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Objects;
 
-import static io.datafibre.fibre.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
+import javax.validation.constraints.NotNull;
+
+import static com.starrocks.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
 import static java.util.Locale.ENGLISH;
 
 public class VarBinaryLiteral extends LiteralExpr {
@@ -136,11 +140,11 @@ public class VarBinaryLiteral extends LiteralExpr {
         return "'" + getStringValue() + "'";
     }
 
-//    @Override
-//    protected void toThrift(TExprNode msg) {
-//        msg.node_type = TExprNodeType.BINARY_LITERAL;
-//        msg.binary_literal = new TBinaryLiteral(ByteBuffer.wrap(value));
-//    }
+    @Override
+    protected void toThrift(TExprNode msg) {
+        msg.node_type = TExprNodeType.BINARY_LITERAL;
+        msg.binary_literal = new TBinaryLiteral(ByteBuffer.wrap(value));
+    }
 
     @Override
     public String getStringValue() {

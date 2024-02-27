@@ -13,9 +13,9 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.rewrite;
+package com.starrocks.sql.optimizer.rewrite;
 
-import io.datafibre.fibre.catalog.PrimitiveType;
+import com.starrocks.catalog.PrimitiveType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

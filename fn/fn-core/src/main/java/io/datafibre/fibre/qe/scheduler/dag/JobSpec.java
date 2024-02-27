@@ -12,23 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.qe.scheduler.dag;
+package com.starrocks.qe.scheduler.dag;
 
 import com.google.common.base.Preconditions;
-import io.datafibre.fibre.analysis.DescriptorTable;
-import io.datafibre.fibre.catalog.ResourceGroupClassifier;
-import io.datafibre.fibre.common.util.CompressionUtils;
-import io.datafibre.fibre.common.util.DebugUtil;
-import io.datafibre.fibre.load.loadv2.BulkLoadJob;
-import io.datafibre.fibre.planner.PlanFragment;
-import io.datafibre.fibre.planner.ScanNode;
-import io.datafibre.fibre.planner.SchemaScanNode;
-import io.datafibre.fibre.planner.StreamLoadPlanner;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.qe.GlobalVariable;
-import io.datafibre.fibre.qe.SessionVariable;
-import io.datafibre.fibre.sql.LoadPlanner;
-import io.datafibre.fibre.thrift.*;
+import com.starrocks.analysis.DescriptorTable;
+import com.starrocks.catalog.ResourceGroupClassifier;
+import com.starrocks.common.util.CompressionUtils;
+import com.starrocks.common.util.DebugUtil;
+import com.starrocks.load.loadv2.BulkLoadJob;
+import com.starrocks.planner.PlanFragment;
+import com.starrocks.planner.ScanNode;
+import com.starrocks.planner.SchemaScanNode;
+import com.starrocks.planner.StreamLoadPlanner;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.qe.GlobalVariable;
+import com.starrocks.qe.SessionVariable;
+import com.starrocks.sql.LoadPlanner;
+import com.starrocks.thrift.TCompressionType;
+import com.starrocks.thrift.TDescriptorTable;
+import com.starrocks.thrift.TExecPlanFragmentParams;
+import com.starrocks.thrift.TLoadJobType;
+import com.starrocks.thrift.TQueryGlobals;
+import com.starrocks.thrift.TQueryOptions;
+import com.starrocks.thrift.TQueryType;
+import com.starrocks.thrift.TUniqueId;
+import com.starrocks.thrift.TWorkGroup;
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.Instant;
@@ -36,8 +44,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static io.datafibre.fibre.qe.CoordinatorPreprocessor.genQueryGlobals;
-import static io.datafibre.fibre.qe.CoordinatorPreprocessor.prepareResourceGroup;
+import static com.starrocks.qe.CoordinatorPreprocessor.genQueryGlobals;
+import static com.starrocks.qe.CoordinatorPreprocessor.prepareResourceGroup;
 
 public class JobSpec {
 
@@ -147,7 +155,7 @@ public class JobSpec {
                 queryGlobals.setLast_query_id(context.getLastQueryId().toString());
             }
 
-            return new Builder()
+            return new JobSpec.Builder()
                     .loadJobId(loadPlanner.getLoadJobId())
                     .queryId(loadPlanner.getLoadId())
                     .fragments(loadPlanner.getFragments())
@@ -182,7 +190,7 @@ public class JobSpec {
 
             TQueryGlobals queryGlobals = genQueryGlobals(Instant.ofEpochMilli(startTime), timezone);
 
-            return new Builder()
+            return new JobSpec.Builder()
                     .loadJobId(loadJobId)
                     .queryId(queryId)
                     .fragments(fragments)
@@ -206,7 +214,7 @@ public class JobSpec {
             TQueryGlobals queryGlobals = genQueryGlobals(context.getStartTimeInstant(),
                                                          context.getSessionVariable().getTimeZone());
 
-            return new Builder()
+            return new JobSpec.Builder()
                     .queryId(queryId)
                     .fragments(fragments)
                     .scanNodes(scanNodes)
@@ -244,7 +252,7 @@ public class JobSpec {
 
             TQueryGlobals queryGlobals = genQueryGlobals(Instant.ofEpochMilli(startTime), timezone);
 
-            return new Builder()
+            return new JobSpec.Builder()
                     .loadJobId(loadJobId)
                     .queryId(queryId)
                     .fragments(fragments)

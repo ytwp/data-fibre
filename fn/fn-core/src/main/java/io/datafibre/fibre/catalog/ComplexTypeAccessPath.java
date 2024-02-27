@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.catalog;
+package com.starrocks.catalog;
 
 public class ComplexTypeAccessPath {
     private final ComplexTypeAccessPathType accessPathType;

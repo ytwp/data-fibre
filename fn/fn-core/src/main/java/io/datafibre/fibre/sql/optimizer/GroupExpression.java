@@ -13,24 +13,30 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer;
+package com.starrocks.sql.optimizer;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import io.datafibre.fibre.common.Pair;
-import io.datafibre.fibre.sql.common.DebugOperatorTracer;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
-import io.datafibre.fibre.sql.optimizer.base.OutputPropertyGroup;
-import io.datafibre.fibre.sql.optimizer.base.PhysicalPropertySet;
-import io.datafibre.fibre.sql.optimizer.operator.Operator;
-import io.datafibre.fibre.sql.optimizer.rule.Rule;
-import io.datafibre.fibre.sql.optimizer.rule.RuleSet;
-import io.datafibre.fibre.sql.optimizer.rule.RuleSetType;
-import io.datafibre.fibre.sql.optimizer.rule.RuleType;
+import com.starrocks.common.Pair;
+import com.starrocks.sql.common.DebugOperatorTracer;
+import com.starrocks.sql.optimizer.base.ColumnRefSet;
+import com.starrocks.sql.optimizer.base.OutputPropertyGroup;
+import com.starrocks.sql.optimizer.base.PhysicalPropertySet;
+import com.starrocks.sql.optimizer.operator.Operator;
+import com.starrocks.sql.optimizer.rule.Rule;
+import com.starrocks.sql.optimizer.rule.RuleSet;
+import com.starrocks.sql.optimizer.rule.RuleSetType;
+import com.starrocks.sql.optimizer.rule.RuleType;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.BitSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**

@@ -32,14 +32,14 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.DistributionInfo;
-import io.datafibre.fibre.catalog.DistributionInfo.DistributionInfoType;
-import io.datafibre.fibre.catalog.RandomDistributionInfo;
-import io.datafibre.fibre.sql.analyzer.SemanticException;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.DistributionInfo;
+import com.starrocks.catalog.DistributionInfo.DistributionInfoType;
+import com.starrocks.catalog.RandomDistributionInfo;
+import com.starrocks.sql.analyzer.SemanticException;
+import com.starrocks.sql.parser.NodePosition;
 
 import java.io.DataInput;
 import java.io.DataOutput;

@@ -12,26 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.qe.scheduler.assignment;
+package com.starrocks.qe.scheduler.assignment;
 
 import com.google.common.collect.Sets;
-import io.datafibre.fibre.common.Config;
-import io.datafibre.fibre.common.UserException;
-import io.datafibre.fibre.common.util.ListUtil;
-import io.datafibre.fibre.planner.PlanFragment;
-import io.datafibre.fibre.planner.ScanNode;
-import io.datafibre.fibre.qe.BackendSelector;
-import io.datafibre.fibre.qe.ColocatedBackendSelector;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.qe.scheduler.WorkerProvider;
-import io.datafibre.fibre.qe.scheduler.dag.ExecutionFragment;
-import io.datafibre.fibre.qe.scheduler.dag.FragmentInstance;
-import io.datafibre.fibre.system.ComputeNode;
-import io.datafibre.fibre.thrift.TScanRangeParams;
+import com.starrocks.common.Config;
+import com.starrocks.common.UserException;
+import com.starrocks.common.util.ListUtil;
+import com.starrocks.planner.PlanFragment;
+import com.starrocks.planner.ScanNode;
+import com.starrocks.qe.BackendSelector;
+import com.starrocks.qe.ColocatedBackendSelector;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.qe.scheduler.WorkerProvider;
+import com.starrocks.qe.scheduler.dag.ExecutionFragment;
+import com.starrocks.qe.scheduler.dag.FragmentInstance;
+import com.starrocks.system.ComputeNode;
+import com.starrocks.thrift.TScanRangeParams;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**

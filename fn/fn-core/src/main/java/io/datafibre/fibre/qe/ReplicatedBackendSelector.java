@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.qe;
+package com.starrocks.qe;
 
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.planner.ScanNode;
-import io.datafibre.fibre.thrift.TScanRangeLocations;
-import io.datafibre.fibre.thrift.TScanRangeParams;
+import com.starrocks.planner.ScanNode;
+import com.starrocks.thrift.TScanRangeLocations;
+import com.starrocks.thrift.TScanRangeParams;
 import org.apache.commons.collections4.MapUtils;
 
 import java.util.List;

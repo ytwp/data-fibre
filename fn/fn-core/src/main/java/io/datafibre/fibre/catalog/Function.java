@@ -32,21 +32,22 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.catalog;
+package com.starrocks.catalog;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.gson.annotations.SerializedName;
-import io.datafibre.fibre.analysis.Expr;
-import io.datafibre.fibre.analysis.FunctionName;
-import io.datafibre.fibre.common.Pair;
-import io.datafibre.fibre.common.io.Text;
-import io.datafibre.fibre.common.io.Writable;
-import io.datafibre.fibre.sql.ast.HdfsURI;
-import io.datafibre.fibre.thrift.TFunctionBinaryType;
-import org.apache.commons.lang3.ArrayUtils;
+import com.starrocks.analysis.Expr;
+import com.starrocks.analysis.FunctionName;
+import com.starrocks.common.Pair;
+import com.starrocks.common.io.Text;
+import com.starrocks.common.io.Writable;
+import com.starrocks.sql.ast.HdfsURI;
+import com.starrocks.thrift.TFunction;
+import com.starrocks.thrift.TFunctionBinaryType;
+import org.apache.commons.lang.ArrayUtils;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -57,8 +58,8 @@ import java.util.Vector;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
-import static io.datafibre.fibre.common.io.IOUtils.readOptionStringOrNull;
-import static io.datafibre.fibre.common.io.IOUtils.writeOptionString;
+import static com.starrocks.common.io.IOUtils.readOptionStringOrNull;
+import static com.starrocks.common.io.IOUtils.writeOptionString;
 
 /**
  * Base class for all functions.
@@ -670,24 +671,24 @@ public class Function implements Writable {
         }
     }
 
-//    public TFunction toThrift() {
-//        TFunction fn = new TFunction();
-//        fn.setName(name.toThrift());
-//        fn.setBinary_type(binaryType);
-//        if (location != null) {
-//            fn.setHdfs_location(location.toString());
-//        }
-//        fn.setArg_types(Type.toThrift(argTypes));
-//        fn.setRet_type(getReturnType().toThrift());
-//        fn.setHas_var_args(hasVarArgs);
-//        fn.setId(id);
-//        fn.setFid(functionId);
-//        if (!checksum.isEmpty()) {
-//            fn.setChecksum(checksum);
-//        }
-//        fn.setCould_apply_dict_optimize(couldApplyDictOptimize);
-//        return fn;
-//    }
+    public TFunction toThrift() {
+        TFunction fn = new TFunction();
+        fn.setName(name.toThrift());
+        fn.setBinary_type(binaryType);
+        if (location != null) {
+            fn.setHdfs_location(location.toString());
+        }
+        fn.setArg_types(Type.toThrift(argTypes));
+        fn.setRet_type(getReturnType().toThrift());
+        fn.setHas_var_args(hasVarArgs);
+        fn.setId(id);
+        fn.setFid(functionId);
+        if (!checksum.isEmpty()) {
+            fn.setChecksum(checksum);
+        }
+        fn.setCould_apply_dict_optimize(couldApplyDictOptimize);
+        return fn;
+    }
 
     // Child classes must override this function.
     public String toSql(boolean ifNotExists) {
@@ -700,36 +701,36 @@ public class Function implements Writable {
         }
         // First check for identical
         for (Function f : fns) {
-            if (f.compare(desc, CompareMode.IS_IDENTICAL)) {
+            if (f.compare(desc, Function.CompareMode.IS_IDENTICAL)) {
                 return f;
             }
         }
-        if (mode == CompareMode.IS_IDENTICAL) {
+        if (mode == Function.CompareMode.IS_IDENTICAL) {
             return null;
         }
 
         // Next check for indistinguishable
         for (Function f : fns) {
-            if (f.compare(desc, CompareMode.IS_INDISTINGUISHABLE)) {
+            if (f.compare(desc, Function.CompareMode.IS_INDISTINGUISHABLE)) {
                 return f;
             }
         }
-        if (mode == CompareMode.IS_INDISTINGUISHABLE) {
+        if (mode == Function.CompareMode.IS_INDISTINGUISHABLE) {
             return null;
         }
 
         // Next check for strict supertypes
         for (Function f : fns) {
-            if (f.compare(desc, CompareMode.IS_SUPERTYPE_OF)) {
+            if (f.compare(desc, Function.CompareMode.IS_SUPERTYPE_OF)) {
                 return f;
             }
         }
-        if (mode == CompareMode.IS_SUPERTYPE_OF) {
+        if (mode == Function.CompareMode.IS_SUPERTYPE_OF) {
             return null;
         }
         // Finally check for non-strict supertypes
         for (Function f : fns) {
-            if (f.compare(desc, CompareMode.IS_NONSTRICT_SUPERTYPE_OF)) {
+            if (f.compare(desc, Function.CompareMode.IS_NONSTRICT_SUPERTYPE_OF)) {
                 return f;
             }
         }

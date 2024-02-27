@@ -13,16 +13,16 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer;
+package com.starrocks.sql.optimizer;
 
 import com.google.common.base.Preconditions;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalCTEAnchorOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalCTEConsumeOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalCTEProduceOperator;
-import io.datafibre.fibre.sql.optimizer.statistics.ColumnStatistic;
-import io.datafibre.fibre.sql.optimizer.statistics.Statistics;
-import io.datafibre.fibre.sql.optimizer.statistics.StatisticsCalculator;
+import com.starrocks.sql.optimizer.operator.OperatorType;
+import com.starrocks.sql.optimizer.operator.logical.LogicalCTEAnchorOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalCTEConsumeOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalCTEProduceOperator;
+import com.starrocks.sql.optimizer.statistics.ColumnStatistic;
+import com.starrocks.sql.optimizer.statistics.Statistics;
+import com.starrocks.sql.optimizer.statistics.StatisticsCalculator;
 
 import java.util.BitSet;
 

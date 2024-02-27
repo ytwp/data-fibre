@@ -15,11 +15,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.common.util;
+package com.starrocks.common.util;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
-import io.datafibre.fibre.common.AnalysisException;
+import com.starrocks.common.AnalysisException;
 import org.apache.commons.lang3.StringUtils;
 
 import java.nio.charset.StandardCharsets;

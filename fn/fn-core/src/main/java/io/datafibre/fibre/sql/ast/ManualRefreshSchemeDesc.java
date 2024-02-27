@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
-import io.datafibre.fibre.catalog.MaterializedView;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.catalog.MaterializedView;
+import com.starrocks.sql.parser.NodePosition;
 
 public class ManualRefreshSchemeDesc extends RefreshSchemeClause {
     public ManualRefreshSchemeDesc(MaterializedView.RefreshMoment moment, NodePosition pos) {

@@ -13,17 +13,18 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.alter.AlterOpType;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.alter.AlterOpType;
+import com.starrocks.sql.parser.NodePosition;
 
 import java.util.List;
 
 public class CompactionClause extends AlterTableClause {
 
     private List<String> partitionNames;
+    // used only in shared-nothing mode
     private boolean baseCompaction = true;
 
     public List<String> getPartitionNames() {

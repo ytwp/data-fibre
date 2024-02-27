@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.common.util;
+package com.starrocks.common.util;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.HashBasedTable;
@@ -40,21 +40,34 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Table;
 import com.google.gson.annotations.SerializedName;
-import io.datafibre.fibre.catalog.Database;
-import io.datafibre.fibre.common.Config;
-import io.datafibre.fibre.common.DdlException;
-import io.datafibre.fibre.common.io.Text;
-import io.datafibre.fibre.common.io.Writable;
-import io.datafibre.fibre.persist.metablock.*;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.sql.ast.CreateFileStmt;
-import io.datafibre.fibre.sql.ast.DropFileStmt;
+import com.starrocks.catalog.Database;
+import com.starrocks.common.Config;
+import com.starrocks.common.DdlException;
+import com.starrocks.common.io.Text;
+import com.starrocks.common.io.Writable;
+import com.starrocks.persist.metablock.SRMetaBlockEOFException;
+import com.starrocks.persist.metablock.SRMetaBlockException;
+import com.starrocks.persist.metablock.SRMetaBlockID;
+import com.starrocks.persist.metablock.SRMetaBlockReader;
+import com.starrocks.persist.metablock.SRMetaBlockWriter;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.sql.ast.CreateFileStmt;
+import com.starrocks.sql.ast.DropFileStmt;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.DataInput;
+import java.io.DataInputStream;
+import java.io.DataOutput;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;

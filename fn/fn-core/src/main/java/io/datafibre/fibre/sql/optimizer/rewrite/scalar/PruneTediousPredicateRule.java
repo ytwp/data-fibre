@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.rewrite.scalar;
+package com.starrocks.sql.optimizer.rewrite.scalar;
 
-import io.datafibre.fibre.catalog.FunctionSet;
-import io.datafibre.fibre.sql.optimizer.Utils;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.CallOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.CompoundPredicateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperatorVisitor;
-import io.datafibre.fibre.sql.optimizer.rewrite.ScalarOperatorRewriteContext;
+import com.starrocks.catalog.FunctionSet;
+import com.starrocks.sql.optimizer.Utils;
+import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CompoundPredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ConstantOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperatorVisitor;
+import com.starrocks.sql.optimizer.rewrite.ScalarOperatorRewriteContext;
 
 import java.util.List;
 import java.util.Optional;
@@ -70,6 +70,8 @@ public class PruneTediousPredicateRule extends OnlyOnceScalarOperatorRewriteRule
                     && (call.getChild(2).equals(ConstantOperator.NULL) ||
                     call.getChild(2).equals(ConstantOperator.FALSE))) {
                 return Optional.of(call.getChild(0));
+            } else if (call.getFnName().equals(FunctionSet.COALESCE)) {
+                return Optional.of(SimplifiedPredicateRule.simplifiedCoalesce(call, true));
             } else {
                 return Optional.empty();
             }

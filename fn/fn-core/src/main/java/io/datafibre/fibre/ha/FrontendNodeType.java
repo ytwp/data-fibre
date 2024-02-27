@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.ha;
+package com.starrocks.ha;
 
 public enum FrontendNodeType {
     LEADER,

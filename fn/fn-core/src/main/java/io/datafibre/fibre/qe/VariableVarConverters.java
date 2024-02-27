@@ -15,10 +15,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.qe;
+package com.starrocks.qe;
 
 import com.google.common.collect.Maps;
-import io.datafibre.fibre.common.DdlException;
+import com.starrocks.common.DdlException;
 
 import java.util.Map;
 

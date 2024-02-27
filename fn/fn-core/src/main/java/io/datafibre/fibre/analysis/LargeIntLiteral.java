@@ -32,13 +32,16 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.common.NotImplementedException;
-import io.datafibre.fibre.common.io.Text;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.catalog.Type;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.common.NotImplementedException;
+import com.starrocks.common.io.Text;
+import com.starrocks.sql.parser.NodePosition;
+import com.starrocks.thrift.TExprNode;
+import com.starrocks.thrift.TExprNodeType;
+import com.starrocks.thrift.TLargeIntLiteral;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -206,11 +209,11 @@ public class LargeIntLiteral extends LiteralExpr {
         return getStringValue();
     }
 
-//    @Override
-//    protected void toThrift(TExprNode msg) {
-//        msg.node_type = TExprNodeType.LARGE_INT_LITERAL;
-//        msg.large_int_literal = new TLargeIntLiteral(value.toString());
-//    }
+    @Override
+    protected void toThrift(TExprNode msg) {
+        msg.node_type = TExprNodeType.LARGE_INT_LITERAL;
+        msg.large_int_literal = new TLargeIntLiteral(value.toString());
+    }
 
     @Override
     public Expr uncheckedCastTo(Type targetType) throws AnalysisException {

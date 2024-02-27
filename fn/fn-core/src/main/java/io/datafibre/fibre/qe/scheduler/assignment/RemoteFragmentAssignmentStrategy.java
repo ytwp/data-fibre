@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.qe.scheduler.assignment;
+package com.starrocks.qe.scheduler.assignment;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import io.datafibre.fibre.common.UserException;
-import io.datafibre.fibre.planner.DataPartition;
-import io.datafibre.fibre.planner.MultiCastPlanFragment;
-import io.datafibre.fibre.planner.PlanFragment;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.qe.scheduler.WorkerProvider;
-import io.datafibre.fibre.qe.scheduler.dag.ExecutionFragment;
-import io.datafibre.fibre.qe.scheduler.dag.FragmentInstance;
+import com.starrocks.common.UserException;
+import com.starrocks.planner.DataPartition;
+import com.starrocks.planner.MultiCastPlanFragment;
+import com.starrocks.planner.PlanFragment;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.qe.scheduler.WorkerProvider;
+import com.starrocks.qe.scheduler.dag.ExecutionFragment;
+import com.starrocks.qe.scheduler.dag.FragmentInstance;
 
 import java.util.Collections;
 import java.util.List;

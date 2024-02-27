@@ -15,11 +15,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.qe;
+package com.starrocks.qe;
 
 import com.google.common.base.Strings;
-import io.datafibre.fibre.common.UserException;
-import io.datafibre.fibre.qe.QueryState.MysqlStateType;
+import com.starrocks.common.UserException;
+import com.starrocks.qe.QueryState.MysqlStateType;
 
 public class QueryStateException extends UserException {
     private QueryState queryState;

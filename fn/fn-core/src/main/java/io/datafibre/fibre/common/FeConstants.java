@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.common;
+package com.starrocks.common;
 
 public class FeConstants {
     public static final long DEFAULT_DB_DATA_QUOTA_BYTES = Long.MAX_VALUE;
@@ -42,6 +42,9 @@ public class FeConstants {
     public static final String DPP_VERSION = "3_2_0";
     // bloom filter false positive probability
     public static final double DEFAULT_BLOOM_FILTER_FPP = 0.05;
+
+    // NGRAM Bloom filter's default gram number
+    public static final int DEFAULT_GRAM_NUM = 2;
     // general model
     @Deprecated
     // for rollback compatible

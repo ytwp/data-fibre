@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.operator.scalar;
+package com.starrocks.sql.optimizer.operator.scalar;
 
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
+import com.starrocks.catalog.Type;
+import com.starrocks.sql.optimizer.base.ColumnRefSet;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static io.datafibre.fibre.sql.optimizer.operator.OperatorType.MAP;
+import static com.starrocks.sql.optimizer.operator.OperatorType.MAP;
 
 /**
  * MapOperator corresponds to MapExpr at the syntax level.

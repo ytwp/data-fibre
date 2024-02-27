@@ -13,39 +13,39 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.datafibre.fibre.analysis.BinaryPredicate;
-import io.datafibre.fibre.analysis.BinaryType;
-import io.datafibre.fibre.analysis.Expr;
-import io.datafibre.fibre.analysis.FunctionCallExpr;
-import io.datafibre.fibre.analysis.NullLiteral;
-import io.datafibre.fibre.analysis.ParseNode;
-import io.datafibre.fibre.analysis.SlotRef;
-import io.datafibre.fibre.analysis.StringLiteral;
-import io.datafibre.fibre.analysis.TableName;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.FunctionSet;
-import io.datafibre.fibre.catalog.InternalCatalog;
-import io.datafibre.fibre.catalog.MaterializedView;
-import io.datafibre.fibre.catalog.Table;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.common.CsvFormat;
-import io.datafibre.fibre.common.Pair;
-import io.datafibre.fibre.privilege.AccessDeniedException;
-import io.datafibre.fibre.privilege.ObjectType;
-import io.datafibre.fibre.privilege.PrivilegeType;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.sql.analyzer.AstToSQLBuilder;
-import io.datafibre.fibre.sql.analyzer.Authorizer;
-import io.datafibre.fibre.sql.common.MetaUtils;
-import io.datafibre.fibre.sql.parser.NodePosition;
-import io.datafibre.fibre.thrift.TNetworkAddress;
+import com.starrocks.analysis.BinaryPredicate;
+import com.starrocks.analysis.BinaryType;
+import com.starrocks.analysis.Expr;
+import com.starrocks.analysis.FunctionCallExpr;
+import com.starrocks.analysis.NullLiteral;
+import com.starrocks.analysis.ParseNode;
+import com.starrocks.analysis.SlotRef;
+import com.starrocks.analysis.StringLiteral;
+import com.starrocks.analysis.TableName;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.FunctionSet;
+import com.starrocks.catalog.InternalCatalog;
+import com.starrocks.catalog.MaterializedView;
+import com.starrocks.catalog.Table;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.common.CsvFormat;
+import com.starrocks.common.Pair;
+import com.starrocks.privilege.AccessDeniedException;
+import com.starrocks.privilege.ObjectType;
+import com.starrocks.privilege.PrivilegeType;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.sql.analyzer.AstToSQLBuilder;
+import com.starrocks.sql.analyzer.Authorizer;
+import com.starrocks.sql.common.MetaUtils;
+import com.starrocks.sql.parser.NodePosition;
+import com.starrocks.thrift.TNetworkAddress;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

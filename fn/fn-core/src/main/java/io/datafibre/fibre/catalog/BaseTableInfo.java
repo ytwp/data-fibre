@@ -13,18 +13,18 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.catalog;
+package com.starrocks.catalog;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
 import com.google.gson.annotations.SerializedName;
-import io.datafibre.fibre.common.MaterializedViewExceptions;
-//import io.datafibre.fibre.server.CatalogMgr;
-import io.datafibre.fibre.server.GlobalStateMgr;
+import com.starrocks.common.MaterializedViewExceptions;
+import com.starrocks.server.CatalogMgr;
+import com.starrocks.server.GlobalStateMgr;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.parquet.Strings;
 
 import java.util.Optional;
 
@@ -74,25 +74,25 @@ public class BaseTableInfo {
         this.tableIdentifier = tableIdentifier;
     }
 
-//    public String getTableInfoStr() {
-//        if (CatalogMgr.isInternalCatalog(catalogName)) {
-//            return Joiner.on(".").join(dbId, tableId);
-//        } else {
-//            return Joiner.on(".").join(catalogName, dbName, tableName);
-//        }
-//    }
+    public String getTableInfoStr() {
+        if (CatalogMgr.isInternalCatalog(catalogName)) {
+            return Joiner.on(".").join(dbId, tableId);
+        } else {
+            return Joiner.on(".").join(catalogName, dbName, tableName);
+        }
+    }
 
-//    public String getDbInfoStr() {
-//        if (CatalogMgr.isInternalCatalog(catalogName)) {
-//            return String.valueOf(dbId);
-//        } else {
-//            return Joiner.on(".").join(catalogName, dbName);
-//        }
-//    }
+    public String getDbInfoStr() {
+        if (CatalogMgr.isInternalCatalog(catalogName)) {
+            return String.valueOf(dbId);
+        } else {
+            return Joiner.on(".").join(catalogName, dbName);
+        }
+    }
 
-//    public boolean isInternalCatalog() {
-//        return CatalogMgr.isInternalCatalog(catalogName);
-//    }
+    public boolean isInternalCatalog() {
+        return CatalogMgr.isInternalCatalog(catalogName);
+    }
 
     public String getCatalogName() {
         return this.catalogName;
@@ -118,13 +118,13 @@ public class BaseTableInfo {
         return this.tableId;
     }
 
-//    public String toString() {
-//        if (isInternalCatalog()) {
-//            return Joiner.on(".").join(InternalCatalog.DEFAULT_INTERNAL_CATALOG_NAME, dbId, tableId);
-//        } else {
-//            return Joiner.on(".").join(catalogName, dbName, tableIdentifier);
-//        }
-//    }
+    public String toString() {
+        if (isInternalCatalog()) {
+            return Joiner.on(".").join(InternalCatalog.DEFAULT_INTERNAL_CATALOG_NAME, dbId, tableId);
+        } else {
+            return Joiner.on(".").join(catalogName, dbName, tableIdentifier);
+        }
+    }
 
     public String getReadableString() {
         String dbName = getDbName();
@@ -189,39 +189,38 @@ public class BaseTableInfo {
      */
     @Deprecated
     public Table getTable() {
-//        if (isInternalCatalog()) {
-//            // olap table
-//            Database db = GlobalStateMgr.getCurrentState().getDb(getDbId());
-//            if (db == null) {
-//                return null;
-//            }
-//            return db.getTable(getTableId());
-//        } else {
-//            // external table
-//            String catalogName = getCatalogName();
-//            if (!GlobalStateMgr.getCurrentState().getCatalogMgr().catalogExists(catalogName)) {
-//                LOG.warn("catalog {} not exist", catalogName);
-//                return null;
-//            }
-//
-//            // upgrade from 3.1 to 3.2, dbName/tableName maybe null after dbs or tables are dropped
-//            String dbName = getDbName();
-//            String tableName = getTableName();
-//            if (dbName == null || tableName == null) {
-//                return null;
-//            }
-//            Table table = GlobalStateMgr.getCurrentState().getMetadataMgr().getTable(catalogName, dbName, tableName);
-//            if (table == null) {
-//                LOG.warn("table {}.{}.{} not exist", catalogName, dbName, tableName);
-//                return null;
-//            }
-//            String tableIdentifier = getTableIdentifier();
-//            if (tableIdentifier != null && tableIdentifier.equals(table.getTableIdentifier())) {
-//                return table;
-//            }
-//            return null;
-//        }
-        return null;
+        if (isInternalCatalog()) {
+            // olap table
+            Database db = GlobalStateMgr.getCurrentState().getDb(getDbId());
+            if (db == null) {
+                return null;
+            }
+            return db.getTable(getTableId());
+        } else {
+            // external table
+            String catalogName = getCatalogName();
+            if (!GlobalStateMgr.getCurrentState().getCatalogMgr().catalogExists(catalogName)) {
+                LOG.warn("catalog {} not exist", catalogName);
+                return null;
+            }
+
+            // upgrade from 3.1 to 3.2, dbName/tableName maybe null after dbs or tables are dropped
+            String dbName = getDbName();
+            String tableName = getTableName();
+            if (dbName == null || tableName == null) {
+                return null;
+            }
+            Table table = GlobalStateMgr.getCurrentState().getMetadataMgr().getTable(catalogName, dbName, tableName);
+            if (table == null) {
+                LOG.warn("table {}.{}.{} not exist", catalogName, dbName, tableName);
+                return null;
+            }
+            String tableIdentifier = getTableIdentifier();
+            if (tableIdentifier != null && tableIdentifier.equals(table.getTableIdentifier())) {
+                return table;
+            }
+            return null;
+        }
     }
 
     /**
@@ -229,14 +228,13 @@ public class BaseTableInfo {
      * @return {@link Database} if BaseTableInfo is health otherwise null will be returned.
      */
     public Database getDb() {
-//        if (isInternalCatalog()) {
-//            // olap table
-//            return GlobalStateMgr.getCurrentState().getDb(this.getDbId());
-//        } else {
-//            // external table
-//            return GlobalStateMgr.getCurrentState().getMetadataMgr()
-//                    .getDb(this.getCatalogName(), this.getDbName());
-//        }
-        return null;
+        if (isInternalCatalog()) {
+            // olap table
+            return GlobalStateMgr.getCurrentState().getDb(this.getDbId());
+        } else {
+            // external table
+            return GlobalStateMgr.getCurrentState().getMetadataMgr()
+                    .getDb(this.getCatalogName(), this.getDbName());
+        }
     }
 }

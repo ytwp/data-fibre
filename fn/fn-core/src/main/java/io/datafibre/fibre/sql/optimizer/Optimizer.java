@@ -12,48 +12,91 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer;
+package com.starrocks.sql.optimizer;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.analysis.JoinOperator;
-import io.datafibre.fibre.catalog.OlapTable;
-import io.datafibre.fibre.common.profile.Timer;
-import io.datafibre.fibre.common.profile.Tracers;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.qe.SessionVariable;
-import io.datafibre.fibre.sql.Explain;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefFactory;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
-import io.datafibre.fibre.sql.optimizer.base.PhysicalPropertySet;
-import io.datafibre.fibre.sql.optimizer.cost.CostEstimate;
-import io.datafibre.fibre.sql.optimizer.operator.Operator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalOlapScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalTreeAnchorOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalViewScanOperator;
-import io.datafibre.fibre.sql.optimizer.rule.Rule;
-import io.datafibre.fibre.sql.optimizer.rule.RuleSetType;
-import io.datafibre.fibre.sql.optimizer.rule.implementation.OlapScanImplementationRule;
-import io.datafibre.fibre.sql.optimizer.rule.join.ReorderJoinRule;
-import io.datafibre.fibre.sql.optimizer.rule.mv.MaterializedViewRule;
-import io.datafibre.fibre.sql.optimizer.rule.transformation.*;
-import io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.MvUtils;
-import io.datafibre.fibre.sql.optimizer.rule.transformation.pruner.CboTablePruneRule;
-import io.datafibre.fibre.sql.optimizer.rule.transformation.pruner.PrimaryKeyUpdateTableRule;
-import io.datafibre.fibre.sql.optimizer.rule.transformation.pruner.RboTablePruneRule;
-import io.datafibre.fibre.sql.optimizer.rule.transformation.pruner.UniquenessBasedTablePruneRule;
-import io.datafibre.fibre.sql.optimizer.rule.tree.*;
-import io.datafibre.fibre.sql.optimizer.rule.tree.lowcardinality.LowCardinalityRewriteRule;
-import io.datafibre.fibre.sql.optimizer.rule.tree.prunesubfield.PruneSubfieldRule;
-import io.datafibre.fibre.sql.optimizer.rule.tree.prunesubfield.PushDownSubfieldRule;
-import io.datafibre.fibre.sql.optimizer.task.OptimizeGroupTask;
-import io.datafibre.fibre.sql.optimizer.task.PrepareCollectMetaTask;
-import io.datafibre.fibre.sql.optimizer.task.RewriteTreeTask;
-import io.datafibre.fibre.sql.optimizer.task.TaskContext;
-import io.datafibre.fibre.sql.optimizer.validate.MVRewriteValidator;
-import io.datafibre.fibre.sql.optimizer.validate.OptExpressionValidator;
-import io.datafibre.fibre.sql.optimizer.validate.PlanValidator;
+import com.starrocks.analysis.JoinOperator;
+import com.starrocks.catalog.OlapTable;
+import com.starrocks.common.profile.Timer;
+import com.starrocks.common.profile.Tracers;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.qe.SessionVariable;
+import com.starrocks.sql.Explain;
+import com.starrocks.sql.optimizer.base.ColumnRefFactory;
+import com.starrocks.sql.optimizer.base.ColumnRefSet;
+import com.starrocks.sql.optimizer.base.PhysicalPropertySet;
+import com.starrocks.sql.optimizer.cost.CostEstimate;
+import com.starrocks.sql.optimizer.operator.Operator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalOlapScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalTreeAnchorOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalViewScanOperator;
+import com.starrocks.sql.optimizer.rule.Rule;
+import com.starrocks.sql.optimizer.rule.RuleSetType;
+import com.starrocks.sql.optimizer.rule.implementation.OlapScanImplementationRule;
+import com.starrocks.sql.optimizer.rule.join.ReorderJoinRule;
+import com.starrocks.sql.optimizer.rule.mv.MaterializedViewRule;
+import com.starrocks.sql.optimizer.rule.transformation.ApplyExceptionRule;
+import com.starrocks.sql.optimizer.rule.transformation.ArrayDistinctAfterAggRule;
+import com.starrocks.sql.optimizer.rule.transformation.ConvertToEqualForNullRule;
+import com.starrocks.sql.optimizer.rule.transformation.DeriveRangeJoinPredicateRule;
+import com.starrocks.sql.optimizer.rule.transformation.ForceCTEReuseRule;
+import com.starrocks.sql.optimizer.rule.transformation.GroupByCountDistinctRewriteRule;
+import com.starrocks.sql.optimizer.rule.transformation.JoinLeftAsscomRule;
+import com.starrocks.sql.optimizer.rule.transformation.MergeProjectWithChildRule;
+import com.starrocks.sql.optimizer.rule.transformation.MergeTwoAggRule;
+import com.starrocks.sql.optimizer.rule.transformation.MergeTwoProjectRule;
+import com.starrocks.sql.optimizer.rule.transformation.MinMaxCountOptOnScanRule;
+import com.starrocks.sql.optimizer.rule.transformation.PartitionColumnValueOnlyOnScanRule;
+import com.starrocks.sql.optimizer.rule.transformation.PruneEmptyWindowRule;
+import com.starrocks.sql.optimizer.rule.transformation.PushDownAggToMetaScanRule;
+import com.starrocks.sql.optimizer.rule.transformation.PushDownJoinOnExpressionToChildProject;
+import com.starrocks.sql.optimizer.rule.transformation.PushDownLimitRankingWindowRule;
+import com.starrocks.sql.optimizer.rule.transformation.PushDownPredicateRankingWindowRule;
+import com.starrocks.sql.optimizer.rule.transformation.PushDownProjectLimitRule;
+import com.starrocks.sql.optimizer.rule.transformation.PushDownTopNBelowOuterJoinRule;
+import com.starrocks.sql.optimizer.rule.transformation.PushDownTopNBelowUnionRule;
+import com.starrocks.sql.optimizer.rule.transformation.PushLimitAndFilterToCTEProduceRule;
+import com.starrocks.sql.optimizer.rule.transformation.RemoveAggregationFromAggTable;
+import com.starrocks.sql.optimizer.rule.transformation.RewriteGroupingSetsByCTERule;
+import com.starrocks.sql.optimizer.rule.transformation.RewriteMultiDistinctRule;
+import com.starrocks.sql.optimizer.rule.transformation.RewriteSimpleAggToMetaScanRule;
+import com.starrocks.sql.optimizer.rule.transformation.SeparateProjectRule;
+import com.starrocks.sql.optimizer.rule.transformation.SkewJoinOptimizeRule;
+import com.starrocks.sql.optimizer.rule.transformation.SplitDatePredicateRule;
+import com.starrocks.sql.optimizer.rule.transformation.SplitScanORToUnionRule;
+import com.starrocks.sql.optimizer.rule.transformation.materialization.MvUtils;
+import com.starrocks.sql.optimizer.rule.transformation.pruner.CboTablePruneRule;
+import com.starrocks.sql.optimizer.rule.transformation.pruner.PrimaryKeyUpdateTableRule;
+import com.starrocks.sql.optimizer.rule.transformation.pruner.RboTablePruneRule;
+import com.starrocks.sql.optimizer.rule.transformation.pruner.UniquenessBasedTablePruneRule;
+import com.starrocks.sql.optimizer.rule.tree.AddDecodeNodeForDictStringRule;
+import com.starrocks.sql.optimizer.rule.tree.AddIndexOnlyPredicateRule;
+import com.starrocks.sql.optimizer.rule.tree.CloneDuplicateColRefRule;
+import com.starrocks.sql.optimizer.rule.tree.ExchangeSortToMergeRule;
+import com.starrocks.sql.optimizer.rule.tree.ExtractAggregateColumn;
+import com.starrocks.sql.optimizer.rule.tree.JoinLocalShuffleRule;
+import com.starrocks.sql.optimizer.rule.tree.PhysicalDistributionAggOptRule;
+import com.starrocks.sql.optimizer.rule.tree.PreAggregateTurnOnRule;
+import com.starrocks.sql.optimizer.rule.tree.PredicateReorderRule;
+import com.starrocks.sql.optimizer.rule.tree.PruneAggregateNodeRule;
+import com.starrocks.sql.optimizer.rule.tree.PruneShuffleColumnRule;
+import com.starrocks.sql.optimizer.rule.tree.PruneSubfieldsForComplexType;
+import com.starrocks.sql.optimizer.rule.tree.PushDownAggregateRule;
+import com.starrocks.sql.optimizer.rule.tree.PushDownDistinctAggregateRule;
+import com.starrocks.sql.optimizer.rule.tree.ScalarOperatorsReuseRule;
+import com.starrocks.sql.optimizer.rule.tree.SubfieldExprNoCopyRule;
+import com.starrocks.sql.optimizer.rule.tree.lowcardinality.LowCardinalityRewriteRule;
+import com.starrocks.sql.optimizer.rule.tree.prunesubfield.PruneSubfieldRule;
+import com.starrocks.sql.optimizer.rule.tree.prunesubfield.PushDownSubfieldRule;
+import com.starrocks.sql.optimizer.task.OptimizeGroupTask;
+import com.starrocks.sql.optimizer.task.PrepareCollectMetaTask;
+import com.starrocks.sql.optimizer.task.RewriteTreeTask;
+import com.starrocks.sql.optimizer.task.TaskContext;
+import com.starrocks.sql.optimizer.validate.MVRewriteValidator;
+import com.starrocks.sql.optimizer.validate.OptExpressionValidator;
+import com.starrocks.sql.optimizer.validate.PlanValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -63,7 +106,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.datafibre.fibre.sql.optimizer.rule.RuleType.TF_MATERIALIZED_VIEW;
+import static com.starrocks.sql.optimizer.rule.RuleType.TF_MATERIALIZED_VIEW;
 
 /**
  * Optimizer's entrance class
@@ -325,6 +368,7 @@ public class Optimizer {
         ruleRewriteOnlyOnce(tree, rootTaskContext, new ConvertToEqualForNullRule());
         ruleRewriteOnlyOnce(tree, rootTaskContext, new PushDownJoinOnExpressionToChildProject());
         ruleRewriteOnlyOnce(tree, rootTaskContext, RuleSetType.PRUNE_COLUMNS);
+        ruleRewriteIterative(tree, rootTaskContext, RuleSetType.PRUNE_UKFK_JOIN);
         deriveLogicalProperty(tree);
 
         ruleRewriteIterative(tree, rootTaskContext, new PruneEmptyWindowRule());
@@ -738,6 +782,8 @@ public class Optimizer {
             result = new SubfieldExprNoCopyRule().rewrite(result, rootTaskContext);
         }
 
+        result = new AddIndexOnlyPredicateRule().rewrite(result, rootTaskContext);
+
         result.setPlanCount(planCount);
         return result;
     }
@@ -793,9 +839,6 @@ public class Optimizer {
         }
         context.getTaskScheduler().pushTask(new RewriteTreeTask(rootTaskContext, tree, rules, false));
         context.getTaskScheduler().executeTasks(rootTaskContext);
-        if (ruleSetType.equals(RuleSetType.PUSH_DOWN_PREDICATE)) {
-            context.reset();
-        }
     }
 
     private void ruleRewriteIterative(OptExpression tree, TaskContext rootTaskContext, Rule rule) {

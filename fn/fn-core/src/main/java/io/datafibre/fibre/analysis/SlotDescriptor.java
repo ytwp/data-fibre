@@ -32,17 +32,17 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.ColumnStats;
-import io.datafibre.fibre.catalog.ScalarType;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.sql.analyzer.SemanticException;
-//import io.datafibre.fibre.thrift.TSlotDescriptor;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.ColumnStats;
+import com.starrocks.catalog.ScalarType;
+import com.starrocks.catalog.Type;
+import com.starrocks.sql.analyzer.SemanticException;
+import com.starrocks.thrift.TSlotDescriptor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -194,6 +194,12 @@ public class SlotDescriptor {
 
     public void setIsNullable(boolean value) {
         isNullable = value;
+        // NullIndicatorBit is deprecated in BE, we mock bit to avoid BE crash
+        if (isNullable) {
+            nullIndicatorBit = 0;
+        } else {
+            nullIndicatorBit = -1;
+        }
     }
 
     public void setStats(ColumnStats stats) {
@@ -242,38 +248,38 @@ public class SlotDescriptor {
     }
 
     // TODO
-//    public TSlotDescriptor toThrift() {
-//        if (isNullable) {
-//            nullIndicatorBit = 1;
-//        } else {
-//            nullIndicatorBit = -1;
-//        }
-//        Preconditions.checkState(isMaterialized, "isMaterialized must be true");
-//        TSlotDescriptor tSlotDescriptor = new TSlotDescriptor();
-//        tSlotDescriptor.setId(id.asInt());
-//        tSlotDescriptor.setParent(parent.getId().asInt());
-//        if (originType != null) {
-//            tSlotDescriptor.setSlotType(originType.toThrift());
-//        } else {
-//            type = type.isNull() ? ScalarType.BOOLEAN : type;
-//            tSlotDescriptor.setSlotType(type.toThrift());
-//            if (column != null) {
-//                LOG.debug("column physical name:{}, column unique id:{}",
-//                        column.getPhysicalName(), column.getUniqueId());
-//                tSlotDescriptor.setCol_unique_id(column.getUniqueId());
-//            }
-//        }
-//        tSlotDescriptor.setColumnPos(-1);
-//        tSlotDescriptor.setByteOffset(-1);
-//        tSlotDescriptor.setNullIndicatorByte(-1);
-//        tSlotDescriptor.setNullIndicatorBit(nullIndicatorBit);
-//        tSlotDescriptor.setColName(((column != null) ? column.getPhysicalName() : ""));
-//        tSlotDescriptor.setSlotIdx(-1);
-//        tSlotDescriptor.setIsMaterialized(true);
-//        tSlotDescriptor.setIsOutputColumn(isOutputColumn);
-//        tSlotDescriptor.setIsNullable(isNullable);
-//        return tSlotDescriptor;
-//    }
+    public TSlotDescriptor toThrift() {
+        if (isNullable) {
+            nullIndicatorBit = 1;
+        } else {
+            nullIndicatorBit = -1;
+        }
+        Preconditions.checkState(isMaterialized, "isMaterialized must be true");
+        TSlotDescriptor tSlotDescriptor = new TSlotDescriptor();
+        tSlotDescriptor.setId(id.asInt());
+        tSlotDescriptor.setParent(parent.getId().asInt());
+        if (originType != null) {
+            tSlotDescriptor.setSlotType(originType.toThrift());
+        } else {
+            type = type.isNull() ? ScalarType.BOOLEAN : type;
+            tSlotDescriptor.setSlotType(type.toThrift());
+            if (column != null) {
+                LOG.debug("column physical name:{}, column unique id:{}",
+                        column.getPhysicalName(), column.getUniqueId());
+                tSlotDescriptor.setCol_unique_id(column.getUniqueId());
+            }
+        }
+        tSlotDescriptor.setColumnPos(-1);
+        tSlotDescriptor.setByteOffset(-1);
+        tSlotDescriptor.setNullIndicatorByte(-1);
+        tSlotDescriptor.setNullIndicatorBit(nullIndicatorBit);
+        tSlotDescriptor.setColName(((column != null) ? column.getPhysicalName() : ""));
+        tSlotDescriptor.setSlotIdx(-1);
+        tSlotDescriptor.setIsMaterialized(true);
+        tSlotDescriptor.setIsOutputColumn(isOutputColumn);
+        tSlotDescriptor.setIsNullable(isNullable);
+        return tSlotDescriptor;
+    }
 
     public String debugString() {
         String colStr = (column == null ? "null" : column.getName());

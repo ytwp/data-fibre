@@ -12,11 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.catalog;
+package com.starrocks.catalog;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.gson.annotations.SerializedName;
+import com.starrocks.thrift.TStructField;
+import com.starrocks.thrift.TTypeDesc;
+import com.starrocks.thrift.TTypeNode;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -100,13 +103,13 @@ public class StructField {
         return sb.toString();
     }
 
-//    public void toThrift(TTypeDesc container, TTypeNode node) {
-//        TStructField field = new TStructField();
-//        field.setName(name);
-//        field.setComment(comment);
-//        node.struct_fields.add(field);
-//        type.toThrift(container);
-//    }
+    public void toThrift(TTypeDesc container, TTypeNode node) {
+        TStructField field = new TStructField();
+        field.setName(name);
+        field.setComment(comment);
+        node.struct_fields.add(field);
+        type.toThrift(container);
+    }
 
     @Override
     public int hashCode() {

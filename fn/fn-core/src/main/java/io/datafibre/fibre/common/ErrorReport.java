@@ -32,12 +32,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.common;
+package com.starrocks.common;
 
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.sql.analyzer.SemanticException;
-import io.datafibre.fibre.sql.common.ErrorType;
-import io.datafibre.fibre.sql.optimizer.validate.ValidateException;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.sql.analyzer.SemanticException;
+import com.starrocks.sql.common.ErrorType;
+import com.starrocks.sql.optimizer.validate.ValidateException;
 
 // Used to report error happened when execute SQL of user
 public class ErrorReport {
@@ -57,11 +57,13 @@ public class ErrorReport {
         return errMsg;
     }
 
-    public static void reportAnalysisException(String pattern, Object... objs) throws AnalysisException {
+    public static void reportAnalysisException(String pattern, Object... objs)
+            throws AnalysisException {
         throw new AnalysisException(reportCommon(pattern, ErrorCode.ERR_UNKNOWN_ERROR, objs));
     }
 
-    public static void reportAnalysisException(ErrorCode errorCode, Object... objs) throws AnalysisException {
+    public static void reportAnalysisException(ErrorCode errorCode, Object... objs)
+            throws AnalysisException {
         reportAnalysisException(null, errorCode, objs);
     }
 

@@ -13,13 +13,13 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.rule.implementation.stream;
+package com.starrocks.sql.optimizer.rule.implementation.stream;
 
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.OptimizerContext;
-import io.datafibre.fibre.sql.optimizer.operator.pattern.Pattern;
-import io.datafibre.fibre.sql.optimizer.rule.RuleType;
-import io.datafibre.fibre.sql.optimizer.rule.implementation.ImplementationRule;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.OptimizerContext;
+import com.starrocks.sql.optimizer.operator.pattern.Pattern;
+import com.starrocks.sql.optimizer.rule.RuleType;
+import com.starrocks.sql.optimizer.rule.implementation.ImplementationRule;
 
 public abstract class StreamImplementationRule extends ImplementationRule {
 

@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
-import io.datafibre.fibre.analysis.Analyzer;
-import io.datafibre.fibre.analysis.Expr;
-import io.datafibre.fibre.catalog.ArrayType;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.sql.parser.NodePosition;
-import io.datafibre.fibre.thrift.TExprNode;
-import io.datafibre.fibre.thrift.TExprNodeType;
+import com.starrocks.analysis.Analyzer;
+import com.starrocks.analysis.Expr;
+import com.starrocks.catalog.ArrayType;
+import com.starrocks.catalog.Type;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.sql.parser.NodePosition;
+import com.starrocks.thrift.TExprNode;
+import com.starrocks.thrift.TExprNodeType;
 
 import java.util.ArrayList;
 import java.util.List;

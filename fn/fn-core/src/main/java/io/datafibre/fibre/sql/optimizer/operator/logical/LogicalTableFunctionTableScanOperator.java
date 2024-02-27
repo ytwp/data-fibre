@@ -13,17 +13,17 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.operator.logical;
+package com.starrocks.sql.optimizer.operator.logical;
 
 import com.google.common.base.Preconditions;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.Table;
-import io.datafibre.fibre.catalog.TableFunctionTable;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorVisitor;
-import io.datafibre.fibre.sql.optimizer.operator.ScanOperatorPredicates;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.Table;
+import com.starrocks.catalog.TableFunctionTable;
+import com.starrocks.sql.optimizer.operator.OperatorType;
+import com.starrocks.sql.optimizer.operator.OperatorVisitor;
+import com.starrocks.sql.optimizer.operator.ScanOperatorPredicates;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
 
 import java.util.Map;
 
@@ -65,7 +65,7 @@ public class LogicalTableFunctionTableScanOperator extends LogicalScanOperator {
 
     public static class Builder
             extends LogicalScanOperator.Builder<LogicalTableFunctionTableScanOperator,
-            Builder> {
+            LogicalTableFunctionTableScanOperator.Builder> {
 
         @Override
         protected LogicalTableFunctionTableScanOperator newInstance() {
@@ -73,7 +73,7 @@ public class LogicalTableFunctionTableScanOperator extends LogicalScanOperator {
         }
 
         @Override
-        public Builder withOperator(LogicalTableFunctionTableScanOperator scanOperator) {
+        public LogicalTableFunctionTableScanOperator.Builder withOperator(LogicalTableFunctionTableScanOperator scanOperator) {
             super.withOperator(scanOperator);
 
             builder.predicates = scanOperator.predicates.clone();

@@ -32,14 +32,16 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
 import com.google.common.base.Preconditions;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.sql.analyzer.SemanticException;
-import io.datafibre.fibre.sql.ast.AstVisitor;
-import io.datafibre.fibre.sql.parser.NodePosition;
-import io.datafibre.fibre.thrift.TExprOpcode;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.sql.analyzer.SemanticException;
+import com.starrocks.sql.ast.AstVisitor;
+import com.starrocks.sql.parser.NodePosition;
+import com.starrocks.thrift.TExprNode;
+import com.starrocks.thrift.TExprNodeType;
+import com.starrocks.thrift.TExprOpcode;
 
 import java.util.Objects;
 
@@ -92,11 +94,11 @@ public class CompoundPredicate extends Predicate {
         }
     }
 
-//    @Override
-//    protected void toThrift(TExprNode msg) {
-//        msg.node_type = TExprNodeType.COMPOUND_PRED;
-//        msg.setOpcode(op.toThrift());
-//    }
+    @Override
+    protected void toThrift(TExprNode msg) {
+        msg.node_type = TExprNodeType.COMPOUND_PRED;
+        msg.setOpcode(op.toThrift());
+    }
 
     @Override
     public void analyzeImpl(Analyzer analyzer) throws AnalysisException {

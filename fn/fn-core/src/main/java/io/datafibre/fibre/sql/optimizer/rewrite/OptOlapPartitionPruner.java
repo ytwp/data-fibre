@@ -13,37 +13,37 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.rewrite;
+package com.starrocks.sql.optimizer.rewrite;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
-import io.datafibre.fibre.analysis.Expr;
-import io.datafibre.fibre.analysis.FunctionCallExpr;
-import io.datafibre.fibre.analysis.LiteralExpr;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.ExpressionRangePartitionInfo;
-import io.datafibre.fibre.catalog.ExpressionRangePartitionInfoV2;
-import io.datafibre.fibre.catalog.FunctionSet;
-import io.datafibre.fibre.catalog.ListPartitionInfo;
-import io.datafibre.fibre.catalog.OlapTable;
-import io.datafibre.fibre.catalog.Partition;
-import io.datafibre.fibre.catalog.PartitionInfo;
-import io.datafibre.fibre.catalog.PartitionKey;
-import io.datafibre.fibre.catalog.PartitionType;
-import io.datafibre.fibre.catalog.RangePartitionInfo;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.common.Pair;
-import io.datafibre.fibre.planner.PartitionColumnFilter;
-import io.datafibre.fibre.planner.PartitionPruner;
-import io.datafibre.fibre.planner.RangePartitionPruner;
-import io.datafibre.fibre.sql.optimizer.Utils;
-import io.datafibre.fibre.sql.optimizer.operator.ColumnFilterConverter;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalOlapScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
-import io.datafibre.fibre.sql.optimizer.rule.transformation.ListPartitionPruner;
+import com.starrocks.analysis.Expr;
+import com.starrocks.analysis.FunctionCallExpr;
+import com.starrocks.analysis.LiteralExpr;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.ExpressionRangePartitionInfo;
+import com.starrocks.catalog.ExpressionRangePartitionInfoV2;
+import com.starrocks.catalog.FunctionSet;
+import com.starrocks.catalog.ListPartitionInfo;
+import com.starrocks.catalog.OlapTable;
+import com.starrocks.catalog.Partition;
+import com.starrocks.catalog.PartitionInfo;
+import com.starrocks.catalog.PartitionKey;
+import com.starrocks.catalog.PartitionType;
+import com.starrocks.catalog.RangePartitionInfo;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.common.Pair;
+import com.starrocks.planner.PartitionColumnFilter;
+import com.starrocks.planner.PartitionPruner;
+import com.starrocks.planner.RangePartitionPruner;
+import com.starrocks.sql.optimizer.Utils;
+import com.starrocks.sql.optimizer.operator.ColumnFilterConverter;
+import com.starrocks.sql.optimizer.operator.logical.LogicalOlapScanOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ConstantOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.sql.optimizer.rule.transformation.ListPartitionPruner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

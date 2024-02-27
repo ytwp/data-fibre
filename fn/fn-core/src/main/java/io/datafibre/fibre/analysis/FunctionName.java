@@ -12,15 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
 import com.google.common.base.Strings;
 import com.google.gson.annotations.SerializedName;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.common.ErrorCode;
-import io.datafibre.fibre.common.ErrorReport;
-import io.datafibre.fibre.common.io.Text;
-import io.datafibre.fibre.common.io.Writable;
+import com.starrocks.cluster.ClusterNamespace;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.common.ErrorCode;
+import com.starrocks.common.ErrorReport;
+import com.starrocks.common.io.Text;
+import com.starrocks.common.io.Writable;
+import com.starrocks.thrift.TFunctionName;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -106,7 +108,7 @@ public class FunctionName implements Writable {
             if (!isValidCharacter(fn_.charAt(i))) {
                 throw new AnalysisException(
                         "Function names must be all alphanumeric or underscore. " +
-                        "Invalid name: " + fn_);
+                                "Invalid name: " + fn_);
             }
         }
         if (Character.isDigit(fn_.charAt(0))) {
@@ -124,19 +126,19 @@ public class FunctionName implements Writable {
         return Character.isLetterOrDigit(c) || c == '_';
     }
 
-//    public TFunctionName toThrift() {
-//        TFunctionName name = new TFunctionName(fn_);
-//        name.setDb_name(db_);
-//        name.setFunction_name(fn_);
-//        return name;
-//    }
+    public TFunctionName toThrift() {
+        TFunctionName name = new TFunctionName(fn_);
+        name.setDb_name(db_);
+        name.setFunction_name(fn_);
+        return name;
+    }
 
     @Override
     public void write(DataOutput out) throws IOException {
         if (db_ != null) {
             out.writeBoolean(true);
             // compatible with old version
-//            Text.writeString(out, ClusterNamespace.getFullName(db_));
+            Text.writeString(out, ClusterNamespace.getFullName(db_));
         } else {
             out.writeBoolean(false);
         }
@@ -146,7 +148,7 @@ public class FunctionName implements Writable {
     public void readFields(DataInput in) throws IOException {
         if (in.readBoolean()) {
             // compatible with old version
-//            db_ = ClusterNamespace.getNameFromFullName(Text.readString(in));
+            db_ = ClusterNamespace.getNameFromFullName(Text.readString(in));
         }
         fn_ = Text.readString(in);
     }

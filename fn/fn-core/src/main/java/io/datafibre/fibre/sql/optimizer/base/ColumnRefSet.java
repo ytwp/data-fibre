@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.base;
+package com.starrocks.sql.optimizer.base;
 
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
 import org.roaringbitmap.RoaringBitmap;
 
 import java.util.Collection;

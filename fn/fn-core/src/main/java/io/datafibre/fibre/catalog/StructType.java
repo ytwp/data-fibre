@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.catalog;
+package com.starrocks.catalog;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
@@ -20,10 +20,18 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.gson.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.annotations.SerializedName;
-import io.datafibre.fibre.persist.gson.GsonUtils;
-import io.datafibre.fibre.sql.analyzer.SemanticException;
+import com.starrocks.persist.gson.GsonUtils;
+import com.starrocks.sql.analyzer.SemanticException;
+import com.starrocks.thrift.TTypeDesc;
+import com.starrocks.thrift.TTypeNode;
+import com.starrocks.thrift.TTypeNodeType;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -245,19 +253,19 @@ public class StructType extends Type {
         return otherStructType.getFields().equals(fields);
     }
 
-//    @Override
-//    public void toThrift(TTypeDesc container) {
-//        TTypeNode node = new TTypeNode();
-//        container.types.add(node);
-//        Preconditions.checkNotNull(fields);
-//        Preconditions.checkState(!fields.isEmpty(), "StructType must contains at least one StructField.");
-//        node.setType(TTypeNodeType.STRUCT);
-//        node.setStruct_fields(Lists.newArrayList());
-//        node.setIs_named(isNamed);
-//        for (StructField field : fields) {
-//            field.toThrift(container, node);
-//        }
-//    }
+    @Override
+    public void toThrift(TTypeDesc container) {
+        TTypeNode node = new TTypeNode();
+        container.types.add(node);
+        Preconditions.checkNotNull(fields);
+        Preconditions.checkState(!fields.isEmpty(), "StructType must contains at least one StructField.");
+        node.setType(TTypeNodeType.STRUCT);
+        node.setStruct_fields(Lists.newArrayList());
+        node.setIs_named(isNamed);
+        for (StructField field : fields) {
+            field.toThrift(container, node);
+        }
+    }
 
     @Override
     public boolean isFullyCompatible(Type other) {

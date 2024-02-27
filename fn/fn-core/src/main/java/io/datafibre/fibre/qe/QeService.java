@@ -32,25 +32,25 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.qe;
+package com.starrocks.qe;
 
-import io.datafibre.fibre.common.Config;
-import io.datafibre.fibre.mysql.MysqlServer;
-import io.datafibre.fibre.mysql.nio.NMysqlServer;
-import io.datafibre.fibre.mysql.ssl.SSLChannelImpClassLoader;
-import org.apache.commons.lang3.StringUtils;
+import com.google.common.base.Strings;
+import com.starrocks.common.Config;
+import com.starrocks.mysql.MysqlServer;
+import com.starrocks.mysql.nio.NMysqlServer;
+import com.starrocks.mysql.ssl.SSLChannelImpClassLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.SecureRandom;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
 
 public class QeService {
     private static final Logger LOG = LogManager.getLogger(QeService.class);
@@ -59,7 +59,8 @@ public class QeService {
 
     public QeService(int port, boolean nioEnabled, ConnectScheduler scheduler) throws Exception {
         SSLContext sslContext = null;
-        if (StringUtils.isNotEmpty(Config.ssl_keystore_location) && SSLChannelImpClassLoader.loadSSLChannelImpClazz() != null) {
+        if (!Strings.isNullOrEmpty(Config.ssl_keystore_location)
+                && SSLChannelImpClassLoader.loadSSLChannelImpClazz() != null) {
             sslContext = createSSLContext();
         }
         if (nioEnabled) {
@@ -96,7 +97,7 @@ public class QeService {
 
         SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
         TrustManager[] trustManagers = null;
-        if (!StringUtils.isEmpty(Config.ssl_truststore_location)) {
+        if (!Strings.isNullOrEmpty(Config.ssl_truststore_location)) {
             trustManagers = createTrustManagers(Config.ssl_truststore_location, Config.ssl_truststore_password);
         }
         sslContext.init(kmf.getKeyManagers(), trustManagers, new SecureRandom());
@@ -106,15 +107,20 @@ public class QeService {
     /**
      * Creates the trust managers required to initiate the {@link SSLContext}, using a JKS keystore as an input.
      *
-     * @param filepath         - the path to the JKS keystore.
+     * @param filepath - the path to the JKS keystore.
      * @param keystorePassword - the keystore's password.
      * @return {@link TrustManager} array, that will be used to initiate the {@link SSLContext}.
      * @throws Exception
      */
     private TrustManager[] createTrustManagers(String filepath, String keystorePassword) throws Exception {
         KeyStore trustStore = KeyStore.getInstance("JKS");
-        try (InputStream trustStoreIS = new FileInputStream(filepath)) {
+        InputStream trustStoreIS = new FileInputStream(filepath);
+        try {
             trustStore.load(trustStoreIS, keystorePassword.toCharArray());
+        } finally {
+            if (trustStoreIS != null) {
+                trustStoreIS.close();
+            }
         }
         TrustManagerFactory trustFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         trustFactory.init(trustStore);

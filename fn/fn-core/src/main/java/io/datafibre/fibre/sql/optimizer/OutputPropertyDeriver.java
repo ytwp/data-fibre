@@ -12,27 +12,68 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer;
+package com.starrocks.sql.optimizer;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import io.datafibre.fibre.analysis.JoinOperator;
-import io.datafibre.fibre.sql.optimizer.base.*;
-import io.datafibre.fibre.sql.optimizer.operator.Operator;
-import io.datafibre.fibre.sql.optimizer.operator.Projection;
-import io.datafibre.fibre.sql.optimizer.operator.physical.*;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.analysis.JoinOperator;
+import com.starrocks.catalog.ColocateTableIndex;
+import com.starrocks.catalog.system.SystemTable;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.sql.optimizer.base.CTEProperty;
+import com.starrocks.sql.optimizer.base.ColumnRefSet;
+import com.starrocks.sql.optimizer.base.DistributionCol;
+import com.starrocks.sql.optimizer.base.DistributionProperty;
+import com.starrocks.sql.optimizer.base.DistributionSpec;
+import com.starrocks.sql.optimizer.base.EmptyDistributionProperty;
+import com.starrocks.sql.optimizer.base.EmptySortProperty;
+import com.starrocks.sql.optimizer.base.EquivalentDescriptor;
+import com.starrocks.sql.optimizer.base.HashDistributionDesc;
+import com.starrocks.sql.optimizer.base.HashDistributionSpec;
+import com.starrocks.sql.optimizer.base.PhysicalPropertySet;
+import com.starrocks.sql.optimizer.base.SortProperty;
+import com.starrocks.sql.optimizer.operator.Operator;
+import com.starrocks.sql.optimizer.operator.Projection;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalAssertOneRowOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalCTEAnchorOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalCTEConsumeOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalCTEProduceOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalFilterOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalHashAggregateOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalHashJoinOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalJDBCScanOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalJoinOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalLimitOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalMergeJoinOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalMysqlScanOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalNestLoopJoinOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalNoCTEOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalOlapScanOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalProjectOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalRepeatOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalSchemaScanOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalTableFunctionOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalTopNOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalValuesOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalWindowOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkState;
-import static io.datafibre.fibre.sql.optimizer.base.HashDistributionDesc.SourceType.SHUFFLE_AGG;
-import static io.datafibre.fibre.sql.optimizer.base.HashDistributionDesc.SourceType.SHUFFLE_JOIN;
+import static com.starrocks.sql.optimizer.base.HashDistributionDesc.SourceType.SHUFFLE_AGG;
+import static com.starrocks.sql.optimizer.base.HashDistributionDesc.SourceType.SHUFFLE_JOIN;
 
 // The output property of the node is calculated according to the attributes of the child node and itself.
 // Currently join node enforces a valid property for the child node that cannot meet the requirements.
@@ -60,7 +101,7 @@ public class OutputPropertyDeriver extends PropertyDeriverBase<PhysicalPropertyS
         return result;
     }
 
-//    @NotNull
+    @NotNull
     private PhysicalPropertySet mergeCTEProperty(PhysicalPropertySet output) {
         // set cte property
         Set<Integer> cteIds = Sets.newHashSet();
@@ -95,24 +136,24 @@ public class OutputPropertyDeriver extends PropertyDeriverBase<PhysicalPropertyS
         EquivalentDescriptor rightDesc = rightScanDistributionSpec.getEquivDesc();
 
 
-//        ColocateTableIndex colocateIndex = GlobalStateMgr.getCurrentState().getColocateTableIndex();
+        ColocateTableIndex colocateIndex = GlobalStateMgr.getCurrentState().getColocateTableIndex();
         long leftTableId = leftDesc.getTableId();
         long rightTableId = rightDesc.getTableId();
 
-//        if (leftTableId == rightTableId && !colocateIndex.isSameGroup(leftTableId, rightTableId)) {
-//            return createPropertySetByDistribution(dominatedOutputSpec);
-//        } else {
-        Optional<HashDistributionDesc> requiredShuffleDesc = getRequiredShuffleDesc();
-        if (!requiredShuffleDesc.isPresent()) {
+        if (leftTableId == rightTableId && !colocateIndex.isSameGroup(leftTableId, rightTableId)) {
             return createPropertySetByDistribution(dominatedOutputSpec);
-        }
+        } else {
+            Optional<HashDistributionDesc> requiredShuffleDesc = getRequiredShuffleDesc();
+            if (!requiredShuffleDesc.isPresent()) {
+                return createPropertySetByDistribution(dominatedOutputSpec);
+            }
 
-        return createPropertySetByDistribution(
-                new HashDistributionSpec(
-                        new HashDistributionDesc(dominatedOutputSpec.getShuffleColumns(),
-                                HashDistributionDesc.SourceType.LOCAL),
-                        dominatedOutputSpec.getEquivDesc()));
-//        }
+            return createPropertySetByDistribution(
+                    new HashDistributionSpec(
+                            new HashDistributionDesc(dominatedOutputSpec.getShuffleColumns(),
+                                    HashDistributionDesc.SourceType.LOCAL),
+                            dominatedOutputSpec.getEquivDesc()));
+        }
     }
 
     private PhysicalPropertySet computeBucketJoinDistributionProperty(JoinOperator joinType,
@@ -222,7 +263,7 @@ public class OutputPropertyDeriver extends PropertyDeriverBase<PhysicalPropertyS
                         leftOnPredicateColumns, rightOnPredicateColumns);
 
             } else if ((leftDistributionDesc.isShuffle() || leftDistributionDesc.isShuffleEnforce()) &&
-                       (rightDistributionDesc.isShuffle()) || rightDistributionDesc.isShuffleEnforce()) {
+                    (rightDistributionDesc.isShuffle()) || rightDistributionDesc.isShuffleEnforce()) {
                 // shuffle join
                 PhysicalPropertySet outputProperty = computeShuffleJoinOutputProperty(node.getJoinType(),
                         leftDistributionDesc.getDistributionCols(), rightDistributionDesc.getDistributionCols());
@@ -231,13 +272,13 @@ public class OutputPropertyDeriver extends PropertyDeriverBase<PhysicalPropertyS
 
             } else {
                 LOG.error("Children output property distribution error.left child property: {}, " +
-                          "right child property: {}, join node: {}",
+                                "right child property: {}, join node: {}",
                         leftChildDistributionProperty, rightChildDistributionProperty, node);
                 throw new IllegalStateException("Children output property distribution error.");
             }
         } else {
             LOG.error("Children output property distribution error.left child property: {}, " +
-                      "right child property: {}, join node: {}",
+                            "right child property: {}, join node: {}",
                     leftChildDistributionProperty, rightChildDistributionProperty, node);
             throw new IllegalStateException("Children output property distribution error.");
         }
@@ -453,11 +494,11 @@ public class OutputPropertyDeriver extends PropertyDeriverBase<PhysicalPropertyS
 
     @Override
     public PhysicalPropertySet visitPhysicalSchemaScan(PhysicalSchemaScanOperator node, ExpressionContext context) {
-//        if (SystemTable.isBeSchemaTable(node.getTable().getName())) {
-//            return PhysicalPropertySet.EMPTY;
-//        } else {
+        if (SystemTable.isBeSchemaTable(node.getTable().getName())) {
+            return PhysicalPropertySet.EMPTY;
+        } else {
             return createGatherPropertySet();
-//        }
+        }
     }
 
     @Override
@@ -515,7 +556,7 @@ public class OutputPropertyDeriver extends PropertyDeriverBase<PhysicalPropertyS
                                                      Map<Integer, DistributionCol> idToDistributionCol) {
         DistributionCol col;
         if (scalarOperator.isColumnRef()
-            && (col = idToDistributionCol.get(scalarOperator.getUsedColumns().getFirstId())) != null) {
+                && (col = idToDistributionCol.get(scalarOperator.getUsedColumns().getFirstId())) != null) {
             return Optional.of(col.isNullStrict());
         }
 

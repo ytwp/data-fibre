@@ -32,9 +32,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.common.io;
+package com.starrocks.common.io;
 
-import io.datafibre.fibre.meta.LimitExceededException;
+import com.starrocks.meta.LimitExceededException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -44,7 +44,11 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
-import java.nio.charset.*;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CharsetEncoder;
+import java.nio.charset.CodingErrorAction;
+import java.nio.charset.StandardCharsets;
 import java.util.zip.CheckedInputStream;
 import java.util.zip.CheckedOutputStream;
 
@@ -254,7 +258,7 @@ public class Text implements Writable {
     /**
      * Convert text back to string
      *
-     * @see Object#toString()
+     * @see java.lang.Object#toString()
      */
     public String toString() {
         try {
@@ -328,7 +332,7 @@ public class Text implements Writable {
                 .onMalformedInput(CodingErrorAction.REPORT)
                 .onUnmappableCharacter(CodingErrorAction.REPORT);
         if (replace) {
-            decoder.onMalformedInput(CodingErrorAction.REPLACE);
+            decoder.onMalformedInput(java.nio.charset.CodingErrorAction.REPLACE);
             decoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
         }
         String str = decoder.decode(utf8).toString();

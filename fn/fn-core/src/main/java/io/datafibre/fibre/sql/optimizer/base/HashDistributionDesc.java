@@ -13,8 +13,9 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.base;
+package com.starrocks.sql.optimizer.base;
 
+import com.google.api.client.util.Lists;
 import com.google.common.base.Preconditions;
 
 import java.util.Collection;
@@ -55,7 +56,7 @@ public class HashDistributionDesc {
     }
 
     public HashDistributionDesc(Collection<DistributionCol> distributionCols, SourceType sourceType) {
-        this.distributionCols = List.copyOf(distributionCols);
+        this.distributionCols = Lists.newArrayList(distributionCols);
         this.sourceType = sourceType;
         Preconditions.checkState(!distributionCols.isEmpty());
     }
@@ -84,10 +85,10 @@ public class HashDistributionDesc {
         if (this.sourceType == SourceType.SHUFFLE_AGG && item.sourceType == SourceType.SHUFFLE_JOIN) {
             return distributionColsEquals(item.distributionCols);
         } else if (this.sourceType == SourceType.SHUFFLE_JOIN && (item.sourceType == SourceType.SHUFFLE_AGG ||
-                                                                  item.sourceType == SourceType.SHUFFLE_JOIN)) {
+                item.sourceType == SourceType.SHUFFLE_JOIN)) {
             return distributionColsContainsAll(item.distributionCols);
         } else if (!this.sourceType.equals(item.sourceType) &&
-                   this.sourceType != SourceType.LOCAL) {
+                this.sourceType != HashDistributionDesc.SourceType.LOCAL) {
             return false;
         }
 
@@ -127,6 +128,7 @@ public class HashDistributionDesc {
         }
         return true;
     }
+
 
 
     public boolean isLocal() {

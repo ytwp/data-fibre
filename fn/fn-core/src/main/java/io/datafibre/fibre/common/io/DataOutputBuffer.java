@@ -15,9 +15,13 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.common.io;
+package com.starrocks.common.io;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInput;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * A reusable {@link DataOutput} implementation that writes to an in-memory

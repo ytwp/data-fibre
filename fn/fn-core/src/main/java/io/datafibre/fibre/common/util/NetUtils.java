@@ -32,14 +32,19 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.common.util;
+package com.starrocks.common.util;
 
 import com.google.common.base.Strings;
-import io.datafibre.fibre.common.Pair;
+import com.starrocks.common.Pair;
 import org.apache.commons.validator.routines.InetAddressValidator;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.NetworkInterface;
+import java.net.Socket;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;

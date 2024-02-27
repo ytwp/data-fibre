@@ -32,8 +32,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.catalog;
+package com.starrocks.catalog;
 
+import com.starrocks.thrift.TKeysType;
 
 public enum KeysType {
     PRIMARY_KEYS,
@@ -51,35 +52,35 @@ public enum KeysType {
         }
     }
 
-//    public TKeysType toThrift() {
-//        switch (this) {
-//            case PRIMARY_KEYS:
-//                return TKeysType.PRIMARY_KEYS;
-//            case DUP_KEYS:
-//                return TKeysType.DUP_KEYS;
-//            case UNIQUE_KEYS:
-//                return TKeysType.UNIQUE_KEYS;
-//            case AGG_KEYS:
-//                return TKeysType.AGG_KEYS;
-//            default:
-//                return null;
-//        }
-//    }
-//
-//    public static KeysType fromThrift(TKeysType tKeysType) {
-//        switch (tKeysType) {
-//            case PRIMARY_KEYS:
-//                return KeysType.PRIMARY_KEYS;
-//            case DUP_KEYS:
-//                return KeysType.DUP_KEYS;
-//            case UNIQUE_KEYS:
-//                return KeysType.UNIQUE_KEYS;
-//            case AGG_KEYS:
-//                return KeysType.AGG_KEYS;
-//            default:
-//                return null;
-//        }
-//    }
+    public TKeysType toThrift() {
+        switch (this) {
+            case PRIMARY_KEYS:
+                return TKeysType.PRIMARY_KEYS;
+            case DUP_KEYS:
+                return TKeysType.DUP_KEYS;
+            case UNIQUE_KEYS:
+                return TKeysType.UNIQUE_KEYS;
+            case AGG_KEYS:
+                return TKeysType.AGG_KEYS;
+            default:
+                return null;
+        }
+    }
+
+    public static KeysType fromThrift(TKeysType tKeysType) {
+        switch (tKeysType) {
+            case PRIMARY_KEYS:
+                return KeysType.PRIMARY_KEYS;
+            case DUP_KEYS:
+                return KeysType.DUP_KEYS;
+            case UNIQUE_KEYS:
+                return KeysType.UNIQUE_KEYS;
+            case AGG_KEYS:
+                return KeysType.AGG_KEYS;
+            default:
+                return null;
+        }
+    }
 
     public String toSql() {
         switch (this) {

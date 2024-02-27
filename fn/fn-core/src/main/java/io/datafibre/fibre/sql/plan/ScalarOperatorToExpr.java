@@ -12,25 +12,89 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.plan;
+package com.starrocks.sql.plan;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.datafibre.fibre.analysis.*;
-import io.datafibre.fibre.catalog.Function;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.sql.analyzer.AnalyzerUtils;
-import io.datafibre.fibre.sql.ast.ArrayExpr;
-import io.datafibre.fibre.sql.ast.DictionaryGetExpr;
-import io.datafibre.fibre.sql.ast.LambdaFunctionExpr;
-import io.datafibre.fibre.sql.ast.MapExpr;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.*;
-import io.datafibre.fibre.thrift.TExprOpcode;
-import io.datafibre.fibre.thrift.TFunctionBinaryType;
+import com.starrocks.analysis.ArithmeticExpr;
+import com.starrocks.analysis.ArraySliceExpr;
+import com.starrocks.analysis.BetweenPredicate;
+import com.starrocks.analysis.BinaryPredicate;
+import com.starrocks.analysis.BoolLiteral;
+import com.starrocks.analysis.CaseExpr;
+import com.starrocks.analysis.CaseWhenClause;
+import com.starrocks.analysis.CastExpr;
+import com.starrocks.analysis.CloneExpr;
+import com.starrocks.analysis.CollectionElementExpr;
+import com.starrocks.analysis.CompoundPredicate;
+import com.starrocks.analysis.DateLiteral;
+import com.starrocks.analysis.DecimalLiteral;
+import com.starrocks.analysis.DictMappingExpr;
+import com.starrocks.analysis.DictQueryExpr;
+import com.starrocks.analysis.Expr;
+import com.starrocks.analysis.FloatLiteral;
+import com.starrocks.analysis.FunctionCallExpr;
+import com.starrocks.analysis.FunctionName;
+import com.starrocks.analysis.FunctionParams;
+import com.starrocks.analysis.InPredicate;
+import com.starrocks.analysis.InformationFunction;
+import com.starrocks.analysis.IntLiteral;
+import com.starrocks.analysis.IsNullPredicate;
+import com.starrocks.analysis.LargeIntLiteral;
+import com.starrocks.analysis.LikePredicate;
+import com.starrocks.analysis.NullLiteral;
+import com.starrocks.analysis.PlaceHolderExpr;
+import com.starrocks.analysis.SlotDescriptor;
+import com.starrocks.analysis.SlotId;
+import com.starrocks.analysis.SlotRef;
+import com.starrocks.analysis.StringLiteral;
+import com.starrocks.analysis.SubfieldExpr;
+import com.starrocks.analysis.Subquery;
+import com.starrocks.analysis.TableName;
+import com.starrocks.analysis.VarBinaryLiteral;
+import com.starrocks.catalog.Function;
+import com.starrocks.catalog.Type;
+import com.starrocks.sql.analyzer.AnalyzerUtils;
+import com.starrocks.sql.ast.ArrayExpr;
+import com.starrocks.sql.ast.DictionaryGetExpr;
+import com.starrocks.sql.ast.LambdaFunctionExpr;
+import com.starrocks.sql.ast.MapExpr;
+import com.starrocks.sql.optimizer.operator.scalar.ArrayOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ArraySliceOperator;
+import com.starrocks.sql.optimizer.operator.scalar.BetweenPredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.BinaryPredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CaseWhenOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CastOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CloneOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CollectionElementOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CompoundPredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ConstantOperator;
+import com.starrocks.sql.optimizer.operator.scalar.DictMappingOperator;
+import com.starrocks.sql.optimizer.operator.scalar.DictQueryOperator;
+import com.starrocks.sql.optimizer.operator.scalar.DictionaryGetOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ExistsPredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.InPredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.IsNullPredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.LambdaFunctionOperator;
+import com.starrocks.sql.optimizer.operator.scalar.LikePredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.MapOperator;
+import com.starrocks.sql.optimizer.operator.scalar.PredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperatorVisitor;
+import com.starrocks.sql.optimizer.operator.scalar.SubfieldOperator;
+import com.starrocks.sql.optimizer.operator.scalar.SubqueryOperator;
+import com.starrocks.thrift.TExprOpcode;
+import com.starrocks.thrift.TFunctionBinaryType;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ScalarOperatorToExpr {
@@ -224,6 +288,7 @@ public class ScalarOperatorToExpr {
                         buildExpr.build(predicate.getChild(0), context), null);
             }
             callExpr.setType(Type.BOOLEAN);
+            callExpr.setIndexOnlyFilter(predicate.isIndexOnlyFilter());
             return callExpr;
         }
 
@@ -232,6 +297,7 @@ public class ScalarOperatorToExpr {
                     buildExpr.build(predicate.getChildren().get(0), context),
                     buildExpr.build(predicate.getChildren().get(1), context));
             call.setType(Type.BOOLEAN);
+            call.setIndexOnlyFilter(predicate.isIndexOnlyFilter());
             return call;
         }
 

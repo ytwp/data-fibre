@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.transformer;
+package com.starrocks.sql.optimizer.transformer;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;

@@ -32,20 +32,23 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.catalog.AggregateFunction;
-import io.datafibre.fibre.catalog.Function;
-import io.datafibre.fibre.catalog.FunctionSet;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.sql.ast.AstVisitor;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.catalog.AggregateFunction;
+import com.starrocks.catalog.Function;
+import com.starrocks.catalog.FunctionSet;
+import com.starrocks.catalog.Type;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.sql.ast.AstVisitor;
+import com.starrocks.sql.parser.NodePosition;
+import com.starrocks.thrift.TAggregateExpr;
+import com.starrocks.thrift.TExprNode;
+import com.starrocks.thrift.TExprNodeType;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -54,7 +57,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import static io.datafibre.fibre.catalog.FunctionSet.IGNORE_NULL_WINDOW_FUNCTION;
+import static com.starrocks.catalog.FunctionSet.IGNORE_NULL_WINDOW_FUNCTION;
 
 public class FunctionCallExpr extends Expr {
     private FunctionName fnName;
@@ -330,19 +333,19 @@ public class FunctionCallExpr extends Expr {
         return false;
     }
 
-//    @Override
-//    protected void toThrift(TExprNode msg) {
-//        // TODO: we never serialize this to thrift if it's an aggregate function
-//        // except in test cases that do it explicitly.
-//        if (isAggregate() || isAnalyticFnCall) {
-//            msg.node_type = TExprNodeType.AGG_EXPR;
-//            if (!isAnalyticFnCall) {
-//                msg.setAgg_expr(new TAggregateExpr(isMergeAggFn));
-//            }
-//        } else {
-//            msg.node_type = TExprNodeType.FUNCTION_CALL;
-//        }
-//    }
+    @Override
+    protected void toThrift(TExprNode msg) {
+        // TODO: we never serialize this to thrift if it's an aggregate function
+        // except in test cases that do it explicitly.
+        if (isAggregate() || isAnalyticFnCall) {
+            msg.node_type = TExprNodeType.AGG_EXPR;
+            if (!isAnalyticFnCall) {
+                msg.setAgg_expr(new TAggregateExpr(isMergeAggFn));
+            }
+        } else {
+            msg.node_type = TExprNodeType.FUNCTION_CALL;
+        }
+    }
 
     @Override
     public void analyzeImpl(Analyzer analyzer) throws AnalysisException {

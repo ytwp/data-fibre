@@ -12,32 +12,89 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.analyzer;
+package com.starrocks.sql.analyzer;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.analysis.*;
-import io.datafibre.fibre.catalog.*;
-import io.datafibre.fibre.common.*;
-import io.datafibre.fibre.common.util.concurrent.lock.LockType;
-import io.datafibre.fibre.common.util.concurrent.lock.Locker;
-import io.datafibre.fibre.privilege.ranger.SecurityPolicyRewriteRule;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.server.MetadataMgr;
-import io.datafibre.fibre.sql.ast.*;
-import io.datafibre.fibre.sql.common.MetaUtils;
-import io.datafibre.fibre.sql.common.TypeManager;
-import io.datafibre.fibre.sql.optimizer.dump.HiveMetaStoreTableDumpInfo;
+import com.starrocks.analysis.BinaryPredicate;
+import com.starrocks.analysis.BinaryType;
+import com.starrocks.analysis.CompoundPredicate;
+import com.starrocks.analysis.Expr;
+import com.starrocks.analysis.IntLiteral;
+import com.starrocks.analysis.JoinOperator;
+import com.starrocks.analysis.OrderByElement;
+import com.starrocks.analysis.ParseNode;
+import com.starrocks.analysis.SlotRef;
+import com.starrocks.analysis.TableName;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.Database;
+import com.starrocks.catalog.Function;
+import com.starrocks.catalog.HiveTable;
+import com.starrocks.catalog.HiveView;
+import com.starrocks.catalog.MaterializedIndexMeta;
+import com.starrocks.catalog.OlapTable;
+import com.starrocks.catalog.Partition;
+import com.starrocks.catalog.Resource;
+import com.starrocks.catalog.Table;
+import com.starrocks.catalog.TableFunction;
+import com.starrocks.catalog.TableFunctionTable;
+import com.starrocks.catalog.Type;
+import com.starrocks.catalog.View;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.common.DdlException;
+import com.starrocks.common.ErrorCode;
+import com.starrocks.common.ErrorReport;
+import com.starrocks.common.Pair;
+import com.starrocks.common.util.concurrent.lock.LockType;
+import com.starrocks.common.util.concurrent.lock.Locker;
+import com.starrocks.privilege.ranger.SecurityPolicyRewriteRule;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.server.MetadataMgr;
+import com.starrocks.sql.ast.AstVisitor;
+import com.starrocks.sql.ast.CTERelation;
+import com.starrocks.sql.ast.ExceptRelation;
+import com.starrocks.sql.ast.FieldReference;
+import com.starrocks.sql.ast.FileTableFunctionRelation;
+import com.starrocks.sql.ast.IntersectRelation;
+import com.starrocks.sql.ast.JoinRelation;
+import com.starrocks.sql.ast.NormalizedTableFunctionRelation;
+import com.starrocks.sql.ast.PartitionNames;
+import com.starrocks.sql.ast.QueryRelation;
+import com.starrocks.sql.ast.QueryStatement;
+import com.starrocks.sql.ast.Relation;
+import com.starrocks.sql.ast.SelectRelation;
+import com.starrocks.sql.ast.SetOperationRelation;
+import com.starrocks.sql.ast.SetQualifier;
+import com.starrocks.sql.ast.StatementBase;
+import com.starrocks.sql.ast.SubqueryRelation;
+import com.starrocks.sql.ast.TableFunctionRelation;
+import com.starrocks.sql.ast.TableRelation;
+import com.starrocks.sql.ast.UnionRelation;
+import com.starrocks.sql.ast.ValuesRelation;
+import com.starrocks.sql.ast.ViewRelation;
+import com.starrocks.sql.common.MetaUtils;
+import com.starrocks.sql.common.TypeManager;
+import com.starrocks.sql.optimizer.dump.HiveMetaStoreTableDumpInfo;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.datafibre.fibre.sql.common.UnsupportedException.unsupportedException;
-import static io.datafibre.fibre.thrift.PlanNodesConstants.*;
+import static com.starrocks.sql.common.UnsupportedException.unsupportedException;
+import static com.starrocks.thrift.PlanNodesConstants.BINLOG_OP_COLUMN_NAME;
+import static com.starrocks.thrift.PlanNodesConstants.BINLOG_SEQ_ID_COLUMN_NAME;
+import static com.starrocks.thrift.PlanNodesConstants.BINLOG_TIMESTAMP_COLUMN_NAME;
+import static com.starrocks.thrift.PlanNodesConstants.BINLOG_VERSION_COLUMN_NAME;
 
 public class QueryAnalyzer {
     private final ConnectContext session;
@@ -250,7 +307,8 @@ public class QueryAnalyzer {
                 } else if (table instanceof HiveView) {
                     HiveView hiveView = (HiveView) table;
                     QueryStatement queryStatement = hiveView.getQueryStatement();
-                    View view = new View(hiveView.getId(), hiveView.getName(), hiveView.getFullSchema());
+                    View view = new View(hiveView.getId(), hiveView.getName(), hiveView.getFullSchema(),
+                            Table.TableType.HIVE_VIEW);
                     view.setInlineViewDefWithSqlMode(hiveView.getInlineViewDef(), 0);
                     ViewRelation viewRelation = new ViewRelation(tableName, view, queryStatement);
                     viewRelation.setAlias(tableRelation.getAlias());
@@ -277,8 +335,7 @@ public class QueryAnalyzer {
                     return r;
                 }
                 assert tableName != null;
-//                QueryStatement policyRewriteQuery = SecurityPolicyRewriteRule.buildView(session, r, tableName);
-                QueryStatement policyRewriteQuery =null;
+                QueryStatement policyRewriteQuery = SecurityPolicyRewriteRule.buildView(session, r, tableName);
                 if (policyRewriteQuery == null) {
                     return r;
                 } else {
@@ -652,13 +709,26 @@ public class QueryAnalyzer {
 
         @Override
         public Scope visitView(ViewRelation node, Scope scope) {
+            boolean isRelationAliasCaseInSensitive = false;
+            if (ConnectContext.get() != null) {
+                isRelationAliasCaseInSensitive = ConnectContext.get().isRelationAliasCaseInsensitive();
+                // For hive view, relation alias is case-insensitive
+                if (node.getView().isHiveView()) {
+                    ConnectContext.get().setRelationAliasCaseInSensitive(true);
+                }
+            }
             Scope queryOutputScope;
             try {
                 queryOutputScope = process(node.getQueryStatement(), scope);
             } catch (SemanticException e) {
                 throw new SemanticException("View " + node.getName() + " references invalid table(s) or column(s) or " +
                         "function(s) or definer/invoker of view lack rights to use them: " + e.getMessage(), e);
+            } finally {
+                if (ConnectContext.get() != null && node.getView().isHiveView()) {
+                    ConnectContext.get().setRelationAliasCaseInSensitive(isRelationAliasCaseInSensitive);
+                }
             }
+
             View view = node.getView();
             List<Field> fields = Lists.newArrayList();
             for (int i = 0; i < view.getBaseSchema().size(); ++i) {

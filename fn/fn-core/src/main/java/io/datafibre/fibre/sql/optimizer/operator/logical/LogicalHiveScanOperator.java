@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.operator.logical;
+package com.starrocks.sql.optimizer.operator.logical;
 
 import com.google.common.base.Preconditions;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.HiveTable;
-import io.datafibre.fibre.catalog.Table;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorVisitor;
-import io.datafibre.fibre.sql.optimizer.operator.ScanOperatorPredicates;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.HiveTable;
+import com.starrocks.catalog.Table;
+import com.starrocks.sql.optimizer.operator.OperatorType;
+import com.starrocks.sql.optimizer.operator.OperatorVisitor;
+import com.starrocks.sql.optimizer.operator.ScanOperatorPredicates;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
 
 import java.util.Map;
 
@@ -79,7 +79,7 @@ public class LogicalHiveScanOperator extends LogicalScanOperator {
     }
 
     public static class Builder
-            extends LogicalScanOperator.Builder<LogicalHiveScanOperator, Builder> {
+            extends LogicalScanOperator.Builder<LogicalHiveScanOperator, LogicalHiveScanOperator.Builder> {
 
         @Override
         protected LogicalHiveScanOperator newInstance() {
@@ -87,7 +87,7 @@ public class LogicalHiveScanOperator extends LogicalScanOperator {
         }
 
         @Override
-        public Builder withOperator(LogicalHiveScanOperator scanOperator) {
+        public LogicalHiveScanOperator.Builder withOperator(LogicalHiveScanOperator scanOperator) {
             super.withOperator(scanOperator);
 
             builder.predicates = scanOperator.predicates.clone();

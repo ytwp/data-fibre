@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer;
+package com.starrocks.sql.optimizer;
 
-import io.datafibre.fibre.catalog.MaterializedView;
-import io.datafibre.fibre.common.profile.Tracers;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.sql.ast.QueryStatement;
-import io.datafibre.fibre.sql.common.DebugRelationTracer;
-import io.datafibre.fibre.sql.optimizer.rule.Rule;
+import com.starrocks.catalog.MaterializedView;
+import com.starrocks.common.profile.Tracers;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.sql.ast.QueryStatement;
+import com.starrocks.sql.common.DebugRelationTracer;
+import com.starrocks.sql.optimizer.rule.Rule;
 import org.slf4j.helpers.MessageFormatter;
 
 import java.util.List;

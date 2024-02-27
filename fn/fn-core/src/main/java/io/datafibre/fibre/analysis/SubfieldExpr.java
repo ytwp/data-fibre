@@ -12,15 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.sql.ast.AstVisitor;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.catalog.Type;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.sql.ast.AstVisitor;
+import com.starrocks.sql.parser.NodePosition;
+import com.starrocks.thrift.TExprNode;
+import com.starrocks.thrift.TExprNodeType;
 
 import java.util.List;
 import java.util.Objects;
@@ -89,12 +91,12 @@ public class SubfieldExpr extends Expr {
         return getChild(0).toSqlImpl() + "." + Joiner.on('.').join(fieldNames) + '[' + copyFlag + ']';
     }
 
-//    @Override
-//    protected void toThrift(TExprNode msg) {
-//        msg.setNode_type(TExprNodeType.SUBFIELD_EXPR);
-//        msg.setUsed_subfield_names(fieldNames);
-//        msg.setCopy_flag(copyFlag);
-//    }
+    @Override
+    protected void toThrift(TExprNode msg) {
+        msg.setNode_type(TExprNodeType.SUBFIELD_EXPR);
+        msg.setUsed_subfield_names(fieldNames);
+        msg.setCopy_flag(copyFlag);
+    }
 
     @Override
     public Expr clone() {

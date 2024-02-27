@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.equivalent;
+package com.starrocks.sql.optimizer.rule.transformation.materialization.equivalent;
 
-import io.datafibre.fibre.catalog.FunctionSet;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.CallOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
-import io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.AggregatedMaterializedViewRewriter;
+import com.starrocks.catalog.FunctionSet;
+import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.sql.optimizer.rule.transformation.materialization.AggregatedMaterializedViewRewriter;
 
 public class CountRewriteEquivalent extends IAggregateRewriteEquivalent {
     public static IRewriteEquivalent INSTANCE = new CountRewriteEquivalent();

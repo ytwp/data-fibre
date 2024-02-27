@@ -15,12 +15,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.qe;
+package com.starrocks.qe;
 
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.common.util.RuntimeProfile;
-import io.datafibre.fibre.thrift.TNetworkAddress;
-import io.datafibre.fibre.thrift.TUniqueId;
+import com.starrocks.common.util.RuntimeProfile;
+import com.starrocks.thrift.TNetworkAddress;
+import com.starrocks.thrift.TUniqueId;
 
 import java.util.List;
 

@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.privilege;
+package com.starrocks.privilege;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.annotations.SerializedName;
-import io.datafibre.fibre.common.Pair;
+import com.starrocks.common.Pair;
 
 import java.util.Map;
 import java.util.Objects;

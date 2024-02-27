@@ -32,19 +32,19 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.catalog;
+package com.starrocks.catalog;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.annotations.SerializedName;
-import io.datafibre.fibre.catalog.DistributionInfo.DistributionInfoType;
-import io.datafibre.fibre.catalog.MaterializedIndex.IndexExtState;
-import io.datafibre.fibre.catalog.MaterializedIndex.IndexState;
-import io.datafibre.fibre.common.FeConstants;
-import io.datafibre.fibre.common.io.Text;
-import io.datafibre.fibre.common.io.Writable;
+import com.starrocks.catalog.DistributionInfo.DistributionInfoType;
+import com.starrocks.catalog.MaterializedIndex.IndexExtState;
+import com.starrocks.catalog.MaterializedIndex.IndexState;
+import com.starrocks.common.FeConstants;
+import com.starrocks.common.io.Text;
+import com.starrocks.common.io.Writable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -567,9 +567,9 @@ public class Partition extends MetaObject implements PhysicalPartition, Writable
         in.readLong(); // read a version_hash for compatibility
         DistributionInfoType distriType = DistributionInfoType.valueOf(Text.readString(in));
         if (distriType == DistributionInfoType.HASH) {
-//            distributionInfo = HashDistributionInfo.read(in);
+            distributionInfo = HashDistributionInfo.read(in);
         } else if (distriType == DistributionInfoType.RANDOM) {
-//            distributionInfo = RandomDistributionInfo.read(in);
+            distributionInfo = RandomDistributionInfo.read(in);
         } else {
             throw new IOException("invalid distribution type: " + distriType);
         }
@@ -624,14 +624,14 @@ public class Partition extends MetaObject implements PhysicalPartition, Writable
         return buffer.toString();
     }
 
-//    public boolean convertRandomDistributionToHashDistribution(List<Column> baseSchema) {
-//        boolean hasChanged = false;
-//        if (distributionInfo.getType() == DistributionInfoType.RANDOM) {
-//            distributionInfo = ((RandomDistributionInfo) distributionInfo).toHashDistributionInfo(baseSchema);
-//            hasChanged = true;
-//        }
-//        return hasChanged;
-//    }
+    public boolean convertRandomDistributionToHashDistribution(List<Column> baseSchema) {
+        boolean hasChanged = false;
+        if (distributionInfo.getType() == DistributionInfoType.RANDOM) {
+            distributionInfo = ((RandomDistributionInfo) distributionInfo).toHashDistributionInfo(baseSchema);
+            hasChanged = true;
+        }
+        return hasChanged;
+    }
 
     public long getLastVacuumTime() {
         return lastVacuumTime;

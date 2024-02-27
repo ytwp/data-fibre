@@ -11,17 +11,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package io.datafibre.fibre.privilege.ranger;
+package com.starrocks.privilege.ranger;
 
-import io.datafibre.fibre.analysis.Expr;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.privilege.AccessDeniedException;
-import io.datafibre.fibre.privilege.ExternalAccessController;
-import io.datafibre.fibre.privilege.PrivilegeType;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.sql.ast.UserIdentity;
-import io.datafibre.fibre.sql.parser.SqlParser;
-import org.apache.commons.lang3.StringUtils;
+import com.starrocks.analysis.Expr;
+import com.starrocks.catalog.Column;
+import com.starrocks.privilege.AccessDeniedException;
+import com.starrocks.privilege.ExternalAccessController;
+import com.starrocks.privilege.PrivilegeType;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.sql.ast.UserIdentity;
+import com.starrocks.sql.parser.SqlParser;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ranger.authorization.hadoop.config.RangerPluginConfig;
 import org.apache.ranger.plugin.audit.RangerDefaultAuditHandler;
 import org.apache.ranger.plugin.model.RangerPolicy;
@@ -61,62 +61,62 @@ public abstract class RangerAccessController extends ExternalAccessController im
         return rangerPlugin;
     }
 
-//    public Expr getColumnMaskingExpression(RangerAccessResourceImpl resource, Column column, ConnectContext context) {
-//        RangerStarRocksAccessRequest request = RangerStarRocksAccessRequest.createAccessRequest(
-//                resource, context.getCurrentUserIdentity(), PrivilegeType.SELECT.name().toLowerCase(ENGLISH));
-//
-//        RangerAccessResult result = rangerPlugin.evalDataMaskPolicies(request, null);
-//        if (result != null && result.isMaskEnabled()) {
-//            String maskType = result.getMaskType();
-//            RangerServiceDef.RangerDataMaskTypeDef maskTypeDef = result.getMaskTypeDef();
-//            String transformer = null;
-//
-//            if (maskTypeDef != null) {
-//                transformer = maskTypeDef.getTransformer();
-//            }
-//
-//            if (StringUtils.equalsIgnoreCase(maskType, RangerPolicy.MASK_TYPE_NULL)) {
-//                transformer = "NULL";
-//            } else if (StringUtils.equalsIgnoreCase(maskType, RangerPolicy.MASK_TYPE_CUSTOM)) {
-//                String maskedValue = result.getMaskedValue();
-//                transformer = Objects.requireNonNullElse(maskedValue, "NULL");
-//            }
-//
-//            if (StringUtils.isNotEmpty(transformer)) {
-//                transformer = transformer.replace("{col}", column.getName())
-//                        .replace("{type}", column.getType().toSql());
-//            }
-//
-//            return SqlParser.parseSqlToExpr(transformer, context.getSessionVariable().getSqlMode());
-//        }
-//
-//        return null;
-//    }
+    public Expr getColumnMaskingExpression(RangerAccessResourceImpl resource, Column column, ConnectContext context) {
+        RangerStarRocksAccessRequest request = RangerStarRocksAccessRequest.createAccessRequest(
+                resource, context.getCurrentUserIdentity(), PrivilegeType.SELECT.name().toLowerCase(ENGLISH));
 
-//    protected Expr getRowAccessExpression(RangerAccessResourceImpl resource, ConnectContext context) {
-//        RangerStarRocksAccessRequest request = RangerStarRocksAccessRequest.createAccessRequest(
-//                resource, context.getCurrentUserIdentity(), PrivilegeType.SELECT.name().toLowerCase(ENGLISH));
-//        RangerAccessResult result = rangerPlugin.evalRowFilterPolicies(request, null);
-//        if (result != null && result.isRowFilterEnabled()) {
-//            return SqlParser.parseSqlToExpr(result.getFilterExpr(), context.getSessionVariable().getSqlMode());
-//        } else {
-//            return null;
-//        }
-//    }
+        RangerAccessResult result = rangerPlugin.evalDataMaskPolicies(request, null);
+        if (result != null && result.isMaskEnabled()) {
+            String maskType = result.getMaskType();
+            RangerServiceDef.RangerDataMaskTypeDef maskTypeDef = result.getMaskTypeDef();
+            String transformer = null;
 
-//    protected void hasPermission(RangerAccessResourceImpl resource, UserIdentity user, PrivilegeType privilegeType)
-//            throws AccessDeniedException {
-//        String accessType;
-//        if (privilegeType.equals(PrivilegeType.ANY)) {
-//            accessType = RangerPolicyEngine.ANY_ACCESS;
-//        } else {
-//            accessType = convertToAccessType(privilegeType);
-//        }
-//
-//        RangerStarRocksAccessRequest request = RangerStarRocksAccessRequest.createAccessRequest(resource, user, accessType);
-//        RangerAccessResult result = rangerPlugin.isAccessAllowed(request);
-//        if (result == null || !result.getIsAllowed()) {
-//            throw new AccessDeniedException();
-//        }
-//    }
+            if (maskTypeDef != null) {
+                transformer = maskTypeDef.getTransformer();
+            }
+
+            if (StringUtils.equalsIgnoreCase(maskType, RangerPolicy.MASK_TYPE_NULL)) {
+                transformer = "NULL";
+            } else if (StringUtils.equalsIgnoreCase(maskType, RangerPolicy.MASK_TYPE_CUSTOM)) {
+                String maskedValue = result.getMaskedValue();
+                transformer = Objects.requireNonNullElse(maskedValue, "NULL");
+            }
+
+            if (StringUtils.isNotEmpty(transformer)) {
+                transformer = transformer.replace("{col}", column.getName())
+                        .replace("{type}", column.getType().toSql());
+            }
+
+            return SqlParser.parseSqlToExpr(transformer, context.getSessionVariable().getSqlMode());
+        }
+
+        return null;
+    }
+
+    protected Expr getRowAccessExpression(RangerAccessResourceImpl resource, ConnectContext context) {
+        RangerStarRocksAccessRequest request = RangerStarRocksAccessRequest.createAccessRequest(
+                resource, context.getCurrentUserIdentity(), PrivilegeType.SELECT.name().toLowerCase(ENGLISH));
+        RangerAccessResult result = rangerPlugin.evalRowFilterPolicies(request, null);
+        if (result != null && result.isRowFilterEnabled()) {
+            return SqlParser.parseSqlToExpr(result.getFilterExpr(), context.getSessionVariable().getSqlMode());
+        } else {
+            return null;
+        }
+    }
+
+    protected void hasPermission(RangerAccessResourceImpl resource, UserIdentity user, PrivilegeType privilegeType)
+            throws AccessDeniedException {
+        String accessType;
+        if (privilegeType.equals(PrivilegeType.ANY)) {
+            accessType = RangerPolicyEngine.ANY_ACCESS;
+        } else {
+            accessType = convertToAccessType(privilegeType);
+        }
+
+        RangerStarRocksAccessRequest request = RangerStarRocksAccessRequest.createAccessRequest(resource, user, accessType);
+        RangerAccessResult result = rangerPlugin.isAccessAllowed(request);
+        if (result == null || !result.getIsAllowed()) {
+            throw new AccessDeniedException();
+        }
+    }
 }

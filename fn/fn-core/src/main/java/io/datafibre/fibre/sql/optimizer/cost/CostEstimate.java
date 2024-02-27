@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.cost;
+package com.starrocks.sql.optimizer.cost;
 
 import static java.lang.Double.POSITIVE_INFINITY;
 

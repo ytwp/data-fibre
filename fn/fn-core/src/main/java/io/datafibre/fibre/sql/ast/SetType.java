@@ -13,9 +13,9 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
-import io.datafibre.fibre.thrift.TVarType;
+import com.starrocks.thrift.TVarType;
 
 // Set statement type.
 public enum SetType {

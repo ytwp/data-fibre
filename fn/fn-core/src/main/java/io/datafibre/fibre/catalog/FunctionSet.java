@@ -32,20 +32,26 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.catalog;
+package com.starrocks.catalog;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.datafibre.fibre.analysis.ArithmeticExpr;
-import io.datafibre.fibre.analysis.FunctionName;
-import io.datafibre.fibre.sql.analyzer.PolymorphicFunctionAnalyzer;
+import com.starrocks.analysis.ArithmeticExpr;
+import com.starrocks.analysis.FunctionName;
+import com.starrocks.builtins.VectorizedBuiltinFunctions;
+import com.starrocks.sql.analyzer.PolymorphicFunctionAnalyzer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class FunctionSet {
@@ -458,9 +464,13 @@ public class FunctionSet {
     public static final String STRUCT = "struct";
     public static final String NAMED_STRUCT = "named_struct";
 
+    public static final String NGRAM_SEARCH = "ngram_search";
+    public static final String NGRAM_SEARCH_CASE_INSENSITIVE = "ngram_search_case_insensitive";
+
+
     // JSON functions
     public static final Function JSON_QUERY_FUNC = new Function(
-            new FunctionName(JSON_QUERY), new Type[]{Type.JSON, Type.VARCHAR}, Type.JSON, false);
+            new FunctionName(JSON_QUERY), new Type[] {Type.JSON, Type.VARCHAR}, Type.JSON, false);
 
     // dict query function
     public static final String DICT_MAPPING = "dict_mapping";
@@ -703,6 +713,9 @@ public class FunctionSet {
                 return new ArrayType(new StructType(fields, true));
             };
 
+    public static final Set<String> INDEX_ONLY_FUNCTIONS =
+            ImmutableSet.<String>builder().add().add(NGRAM_SEARCH).add(NGRAM_SEARCH_CASE_INSENSITIVE).build();
+
     public FunctionSet() {
         vectorizedFunctions = Maps.newHashMap();
     }
@@ -720,14 +733,14 @@ public class FunctionSet {
         final Type[] descArgTypes = desc.getArgs();
         final Type[] candidateArgTypes = candicate.getArgs();
         if (functionName.equalsIgnoreCase(HEX)
-            || functionName.equalsIgnoreCase(LEAD)
-            || functionName.equalsIgnoreCase(LAG)
-            || functionName.equalsIgnoreCase(APPROX_TOP_K)) {
+                || functionName.equalsIgnoreCase(LEAD)
+                || functionName.equalsIgnoreCase(LAG)
+                || functionName.equalsIgnoreCase(APPROX_TOP_K)) {
             final ScalarType descArgType = (ScalarType) descArgTypes[0];
             final ScalarType candidateArgType = (ScalarType) candidateArgTypes[0];
             if (functionName.equalsIgnoreCase(LEAD) ||
-                functionName.equalsIgnoreCase(LAG) ||
-                functionName.equalsIgnoreCase(APPROX_TOP_K)) {
+                    functionName.equalsIgnoreCase(LAG) ||
+                    functionName.equalsIgnoreCase(APPROX_TOP_K)) {
                 // lead and lag function respect first arg type
                 return descArgType.isNull() || descArgType.matchesType(candidateArgType);
             } else if (descArgType.isOnlyMetricType()) {
@@ -744,9 +757,9 @@ public class FunctionSet {
         // coalesce(DATE, DATETIME) should return datetime
         int arg_index = 0;
         if (functionName.equalsIgnoreCase(IFNULL) ||
-            functionName.equalsIgnoreCase(NULLIF) ||
-            functionName.equalsIgnoreCase(IF) ||
-            functionName.equalsIgnoreCase(COALESCE)) {
+                functionName.equalsIgnoreCase(NULLIF) ||
+                functionName.equalsIgnoreCase(IF) ||
+                functionName.equalsIgnoreCase(COALESCE)) {
             if (functionName.equalsIgnoreCase(IF)) {
                 arg_index = 1;
             }
@@ -767,14 +780,14 @@ public class FunctionSet {
 
     public void init() {
         ArithmeticExpr.initBuiltins(this);
-//        TableFunction.initBuiltins(this);
-//        VectorizedBuiltinFunctions.initBuiltins(this);
+        TableFunction.initBuiltins(this);
+        VectorizedBuiltinFunctions.initBuiltins(this);
         initAggregateBuiltins();
     }
 
     public boolean isNotAlwaysNullResultWithNullParamFunctions(String funcName) {
         return notAlwaysNullResultWithNullParamFunctions.contains(funcName)
-               || alwaysReturnNonNullableFunctions.contains(funcName);
+                || alwaysReturnNonNullableFunctions.contains(funcName);
     }
 
     private Function matchFuncCandidates(Function desc, Function.CompareMode mode, List<Function> fns) {

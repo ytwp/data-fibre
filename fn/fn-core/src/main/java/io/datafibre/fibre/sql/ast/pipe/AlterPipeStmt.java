@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.ast.pipe;
+package com.starrocks.sql.ast.pipe;
 
-import io.datafibre.fibre.sql.ast.AstVisitor;
-import io.datafibre.fibre.sql.ast.DdlStmt;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.sql.ast.AstVisitor;
+import com.starrocks.sql.ast.DdlStmt;
+import com.starrocks.sql.parser.NodePosition;
 
 public class AlterPipeStmt extends DdlStmt {
 

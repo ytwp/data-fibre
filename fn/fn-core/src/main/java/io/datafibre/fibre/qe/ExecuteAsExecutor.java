@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.qe;
+package com.starrocks.qe;
 
 import com.google.common.base.Preconditions;
-import io.datafibre.fibre.sql.ast.ExecuteAsStmt;
+import com.starrocks.sql.ast.ExecuteAsStmt;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

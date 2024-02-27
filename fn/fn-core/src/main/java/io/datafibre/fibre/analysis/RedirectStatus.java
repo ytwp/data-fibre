@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
 public class RedirectStatus {
     private final boolean isForwardToLeader;

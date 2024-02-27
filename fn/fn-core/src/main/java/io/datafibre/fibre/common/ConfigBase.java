@@ -32,10 +32,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.common;
+package com.starrocks.common;
 
 import com.google.common.base.Strings;
-import org.apache.commons.lang3.StringUtils;
+import com.google.common.collect.Lists;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -43,7 +43,13 @@ import java.io.FileReader;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -319,10 +325,10 @@ public class ConfigBase {
     }
 
     public static synchronized List<List<String>> getConfigInfo(PatternMatcher matcher) throws InvalidConfException {
-        List<List<String>> configs = new ArrayList<>();
+        List<List<String>> configs = Lists.newArrayList();
         Field[] fields = configFields;
         for (Field f : fields) {
-            List<String> config = new ArrayList<>();
+            List<String> config = Lists.newArrayList();
             ConfField anno = f.getAnnotation(ConfField.class);
             if (anno == null) {
                 continue;
@@ -367,7 +373,7 @@ public class ConfigBase {
 
             config.add(confKey);
             config.add(Arrays.toString(anno.aliases()));
-            config.add(StringUtils.defaultString(confVal));
+            config.add(Strings.nullToEmpty(confVal));
             config.add(f.getType().getSimpleName());
             config.add(String.valueOf(anno.mutable()));
             config.add(anno.comment());

@@ -32,13 +32,16 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
-import io.datafibre.fibre.catalog.PrimitiveType;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.common.NotImplementedException;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.catalog.PrimitiveType;
+import com.starrocks.catalog.Type;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.common.NotImplementedException;
+import com.starrocks.sql.parser.NodePosition;
+import com.starrocks.thrift.TExprNode;
+import com.starrocks.thrift.TExprNodeType;
+import com.starrocks.thrift.TFloatLiteral;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -175,11 +178,11 @@ public class FloatLiteral extends LiteralExpr {
         return value;
     }
 
-//    @Override
-//    protected void toThrift(TExprNode msg) {
-//        msg.node_type = TExprNodeType.FLOAT_LITERAL;
-//        msg.float_literal = new TFloatLiteral(value);
-//    }
+    @Override
+    protected void toThrift(TExprNode msg) {
+        msg.node_type = TExprNodeType.FLOAT_LITERAL;
+        msg.float_literal = new TFloatLiteral(value);
+    }
 
     public double getValue() {
         return value;

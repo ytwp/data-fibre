@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.operator.stream;
+package com.starrocks.sql.optimizer.operator.stream;
 
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.Table;
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.OptExpressionVisitor;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorVisitor;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.Table;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.OptExpressionVisitor;
+import com.starrocks.sql.optimizer.operator.OperatorType;
+import com.starrocks.sql.optimizer.operator.OperatorVisitor;
+import com.starrocks.sql.optimizer.operator.logical.LogicalScanOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
 
 import java.util.Map;
 
@@ -49,7 +49,7 @@ public class LogicalBinlogScanOperator extends LogicalScanOperator {
     }
 
     public static class Builder
-            extends LogicalScanOperator.Builder<LogicalBinlogScanOperator, Builder> {
+            extends LogicalScanOperator.Builder<LogicalBinlogScanOperator, LogicalBinlogScanOperator.Builder> {
 
         @Override
         protected LogicalBinlogScanOperator newInstance() {

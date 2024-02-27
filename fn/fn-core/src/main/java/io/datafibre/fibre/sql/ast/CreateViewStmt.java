@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
 import com.google.common.base.Strings;
-import io.datafibre.fibre.analysis.TableName;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.analysis.TableName;
+import com.starrocks.catalog.Column;
+import com.starrocks.sql.parser.NodePosition;
 
 import java.util.List;
 

@@ -13,14 +13,14 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer;
+package com.starrocks.sql.optimizer;
 
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
+import com.starrocks.catalog.Type;
+import com.starrocks.sql.optimizer.operator.scalar.ConstantOperator;
 
 import java.util.OptionalDouble;
 
-import static io.datafibre.fibre.sql.optimizer.Utils.getLongFromDateTime;
+import static com.starrocks.sql.optimizer.Utils.getLongFromDateTime;
 
 /**
  * TYPE            |  JAVA_TYPE

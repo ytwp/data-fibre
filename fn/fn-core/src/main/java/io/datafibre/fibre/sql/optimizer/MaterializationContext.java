@@ -12,33 +12,39 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer;
+package com.starrocks.sql.optimizer;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import io.datafibre.fibre.catalog.MaterializedView;
-import io.datafibre.fibre.catalog.Table;
-import io.datafibre.fibre.common.Pair;
-import io.datafibre.fibre.qe.SessionVariable;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefFactory;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalAggregationOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalOlapScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.pattern.Pattern;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
-import io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.MaterializedViewRewriter;
-import io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.MvUtils;
-import io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.TableScanDesc;
+import com.starrocks.catalog.MaterializedView;
+import com.starrocks.catalog.Table;
+import com.starrocks.common.Pair;
+import com.starrocks.qe.SessionVariable;
+import com.starrocks.sql.optimizer.base.ColumnRefFactory;
+import com.starrocks.sql.optimizer.operator.OperatorType;
+import com.starrocks.sql.optimizer.operator.logical.LogicalAggregationOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalOlapScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalScanOperator;
+import com.starrocks.sql.optimizer.operator.pattern.Pattern;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.sql.optimizer.rule.transformation.materialization.MaterializedViewRewriter;
+import com.starrocks.sql.optimizer.rule.transformation.materialization.MvUtils;
+import com.starrocks.sql.optimizer.rule.transformation.materialization.TableScanDesc;
 import org.apache.commons.collections4.SetUtils;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.datafibre.fibre.sql.optimizer.OptimizerTraceUtil.logMVRewrite;
+import static com.starrocks.sql.optimizer.OptimizerTraceUtil.logMVRewrite;
+import static com.starrocks.sql.optimizer.rule.transformation.materialization.MvPartitionCompensator.isNeedCompensatePartitionPredicate;
 
 public class MaterializationContext {
     private final MaterializedView mv;
@@ -86,8 +92,6 @@ public class MaterializationContext {
     // But it is different for each materialized view, compensate partition predicate from the plan's
     // `selectedPartitionIds`, and check `isNeedCompensatePartitionPredicate` to get more information.
     private Optional<Boolean> isCompensatePartitionPredicateOpt = Optional.empty();
-    // Cache a mv's pruned partition predicates in the rewrite because it's not changed through the context.
-    private Optional<ScalarOperator> mvPrunedPartitionPredicateOpt = Optional.empty();
     // Cache partition compensates predicates for each ScanNode and isCompensate pair.
     private Map<Pair<LogicalScanOperator, Boolean>, List<ScalarOperator>> scanOpToPartitionCompensatePredicates;
 
@@ -423,25 +427,13 @@ public class MaterializationContext {
             SessionVariable sessionVariable = optimizerContext.getSessionVariable();
             // only set this when `queryExpression` contains ref table, otherwise the cached value maybe dirty.
             isCompensatePartitionPredicateOpt = sessionVariable.isEnableMaterializedViewRewritePartitionCompensate() ?
-                    MvUtils.isNeedCompensatePartitionPredicate(queryExpression, this) : Optional.of(false);
+                    isNeedCompensatePartitionPredicate(queryExpression, this) : Optional.of(false);
         }
         return isCompensatePartitionPredicateOpt.orElse(true);
     }
 
     public boolean isCompensatePartitionPredicate() {
         return isCompensatePartitionPredicateOpt.orElse(true);
-    }
-
-    public ScalarOperator getMVPrunedPartitionPredicate() {
-        if (!mvPrunedPartitionPredicateOpt.isPresent()) {
-            List<ScalarOperator> mvPrunedPartitionPredicates = MvUtils.getMVPrunedPartitionPredicates(mv, mvExpression);
-            if (mvPrunedPartitionPredicates == null || mvPrunedPartitionPredicates.isEmpty()) {
-                mvPrunedPartitionPredicateOpt = Optional.of(ConstantOperator.TRUE);
-            } else {
-                mvPrunedPartitionPredicateOpt = Optional.of(Utils.compoundAnd(mvPrunedPartitionPredicates));
-            }
-        }
-        return mvPrunedPartitionPredicateOpt.get();
     }
 
     public Map<Pair<LogicalScanOperator, Boolean>, List<ScalarOperator>> getScanOpToPartitionCompensatePredicates() {

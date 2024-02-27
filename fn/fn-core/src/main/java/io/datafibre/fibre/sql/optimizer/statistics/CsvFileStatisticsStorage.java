@@ -13,20 +13,20 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.statistics;
+package com.starrocks.sql.optimizer.statistics;
 
 import com.google.common.collect.Maps;
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.PrimitiveType;
-import io.datafibre.fibre.catalog.Table;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.common.ErrorCode;
-import io.datafibre.fibre.common.ErrorReport;
-import io.datafibre.fibre.common.Pair;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.PrimitiveType;
+import com.starrocks.catalog.Table;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.common.ErrorCode;
+import com.starrocks.common.ErrorReport;
+import com.starrocks.common.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static io.datafibre.fibre.sql.optimizer.Utils.getLongFromDateTime;
+import static com.starrocks.sql.optimizer.Utils.getLongFromDateTime;
 
 public class CsvFileStatisticsStorage implements StatisticStorage {
     private static final Logger LOG = LogManager.getLogger(CsvFileStatisticsStorage.class);

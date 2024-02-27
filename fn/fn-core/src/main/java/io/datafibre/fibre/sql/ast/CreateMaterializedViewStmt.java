@@ -32,28 +32,50 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import io.datafibre.fibre.analysis.*;
-import io.datafibre.fibre.catalog.*;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.common.ErrorCode;
-import io.datafibre.fibre.common.ErrorReport;
-import io.datafibre.fibre.common.FeConstants;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.qe.SessionVariable;
-import io.datafibre.fibre.sql.analyzer.Analyzer;
-import io.datafibre.fibre.sql.analyzer.AnalyzerUtils;
-import io.datafibre.fibre.sql.analyzer.SemanticException;
-import io.datafibre.fibre.sql.analyzer.UnsupportedMVException;
-import io.datafibre.fibre.sql.analyzer.mvpattern.*;
-import io.datafibre.fibre.sql.optimizer.rule.mv.MVUtils;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.analysis.CaseExpr;
+import com.starrocks.analysis.CaseWhenClause;
+import com.starrocks.analysis.Expr;
+import com.starrocks.analysis.FunctionCallExpr;
+import com.starrocks.analysis.IntLiteral;
+import com.starrocks.analysis.IsNullPredicate;
+import com.starrocks.analysis.OrderByElement;
+import com.starrocks.analysis.SlotRef;
+import com.starrocks.analysis.TableName;
+import com.starrocks.catalog.AggregateType;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.Function;
+import com.starrocks.catalog.FunctionSet;
+import com.starrocks.catalog.KeysType;
+import com.starrocks.catalog.OlapTable;
+import com.starrocks.catalog.PrimitiveType;
+import com.starrocks.catalog.Table;
+import com.starrocks.catalog.Type;
+import com.starrocks.catalog.View;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.common.ErrorCode;
+import com.starrocks.common.ErrorReport;
+import com.starrocks.common.FeConstants;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.qe.SessionVariable;
+import com.starrocks.sql.analyzer.Analyzer;
+import com.starrocks.sql.analyzer.AnalyzerUtils;
+import com.starrocks.sql.analyzer.SemanticException;
+import com.starrocks.sql.analyzer.UnsupportedMVException;
+import com.starrocks.sql.analyzer.mvpattern.MVColumnBitmapAggPattern;
+import com.starrocks.sql.analyzer.mvpattern.MVColumnBitmapUnionPattern;
+import com.starrocks.sql.analyzer.mvpattern.MVColumnHLLUnionPattern;
+import com.starrocks.sql.analyzer.mvpattern.MVColumnOneChildPattern;
+import com.starrocks.sql.analyzer.mvpattern.MVColumnPattern;
+import com.starrocks.sql.analyzer.mvpattern.MVColumnPercentileUnionPattern;
+import com.starrocks.sql.optimizer.rule.mv.MVUtils;
+import com.starrocks.sql.parser.NodePosition;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -63,7 +85,7 @@ import java.util.Set;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
-import static io.datafibre.fibre.sql.optimizer.rule.mv.MVUtils.MATERIALIZED_VIEW_NAME_PREFIX;
+import static com.starrocks.sql.optimizer.rule.mv.MVUtils.MATERIALIZED_VIEW_NAME_PREFIX;
 
 /**
  * Materialized view is performed to materialize the results of query.

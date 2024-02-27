@@ -13,11 +13,11 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.rule.tree;
+package com.starrocks.sql.optimizer.rule.tree;
 
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.rule.tree.pdagg.PushDownAggregateRewriter;
-import io.datafibre.fibre.sql.optimizer.task.TaskContext;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.rule.tree.pdagg.PushDownAggregateRewriter;
+import com.starrocks.sql.optimizer.task.TaskContext;
 
 public class PushDownAggregateRule implements TreeRewriteRule {
 

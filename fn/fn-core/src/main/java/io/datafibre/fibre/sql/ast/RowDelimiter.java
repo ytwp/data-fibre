@@ -13,11 +13,11 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
-import io.datafibre.fibre.analysis.Delimiter;
-import io.datafibre.fibre.analysis.ParseNode;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.analysis.Delimiter;
+import com.starrocks.analysis.ParseNode;
+import com.starrocks.sql.parser.NodePosition;
 
 public class RowDelimiter implements ParseNode {
     private final String oriDelimiter;

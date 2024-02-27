@@ -13,8 +13,10 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.base;
+package com.starrocks.sql.optimizer.base;
 
+import com.starrocks.catalog.ColocateTableIndex;
+import com.starrocks.server.GlobalStateMgr;
 
 import java.util.List;
 import java.util.Objects;
@@ -55,19 +57,19 @@ public class HashDistributionSpec extends DistributionSpec {
         HashDistributionDesc.SourceType thisShuffleType = getHashDistributionDesc().getSourceType();
 
         if (thisShuffleType == HashDistributionDesc.SourceType.SHUFFLE_AGG &&
-            requiredShuffleType == HashDistributionDesc.SourceType.SHUFFLE_JOIN) {
+                requiredShuffleType == HashDistributionDesc.SourceType.SHUFFLE_JOIN) {
             return satisfySameColumns(requiredShuffleColumns, shuffleColumns);
         } else if (thisShuffleType == HashDistributionDesc.SourceType.SHUFFLE_JOIN &&
-                   requiredShuffleType == HashDistributionDesc.SourceType.SHUFFLE_AGG) {
+                requiredShuffleType == HashDistributionDesc.SourceType.SHUFFLE_AGG) {
             return satisfyContainAll(requiredShuffleColumns, shuffleColumns);
         } else if (!thisShuffleType.equals(requiredShuffleType) &&
-                   thisShuffleType != HashDistributionDesc.SourceType.LOCAL) {
+                thisShuffleType != HashDistributionDesc.SourceType.LOCAL) {
             return false;
         }
 
         // different columns size is allowed if this sourceType is LOCAL or SHUFFLE_AGG
         if (HashDistributionDesc.SourceType.LOCAL.equals(thisShuffleType) ||
-            HashDistributionDesc.SourceType.SHUFFLE_AGG.equals(thisShuffleType)) {
+                HashDistributionDesc.SourceType.SHUFFLE_AGG.equals(thisShuffleType)) {
             return satisfyContainAll(requiredShuffleColumns, shuffleColumns);
         }
 
@@ -127,15 +129,15 @@ public class HashDistributionSpec extends DistributionSpec {
 
         // check shuffle_local equivalentDescriptor
         if (thisSourceType == HashDistributionDesc.SourceType.LOCAL) {
-//            ColocateTableIndex colocateIndex = GlobalStateMgr.getCurrentState().getColocateTableIndex();
-//            long tableId = equivDesc.getTableId();
-//            // Disable use colocate/bucket join when table with empty partition
-//            boolean satisfyColocate = equivDesc.isSinglePartition() || (colocateIndex.isColocateTable(tableId) &&
-//                    !colocateIndex.isGroupUnstable(colocateIndex.getGroup(tableId)) &&
-//                    !equivDesc.isEmptyPartition());
-//            if (!satisfyColocate) {
-//                return false;
-//            }
+            ColocateTableIndex colocateIndex = GlobalStateMgr.getCurrentState().getColocateTableIndex();
+            long tableId = equivDesc.getTableId();
+            // Disable use colocate/bucket join when table with empty partition
+            boolean satisfyColocate = equivDesc.isSinglePartition() || (colocateIndex.isColocateTable(tableId) &&
+                    !colocateIndex.isGroupUnstable(colocateIndex.getGroup(tableId)) &&
+                    !equivDesc.isEmptyPartition());
+            if (!satisfyColocate) {
+                return false;
+            }
         }
 
         return hashDistributionDesc.isSatisfy(other.hashDistributionDesc) || isJoinEqColumnsCompatible(other);

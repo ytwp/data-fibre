@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.persist.gson;
+package com.starrocks.persist.gson;
 
 import java.io.IOException;
 

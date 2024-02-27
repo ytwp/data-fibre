@@ -32,9 +32,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.catalog;
+package com.starrocks.catalog;
 
-import io.datafibre.fibre.server.GlobalStateMgr;
+import com.starrocks.server.GlobalStateMgr;
 
 // This new Id generator is just same as TransactionIdGenerator.
 // But we can't just use TransactionIdGenerator to replace the old globalStateMgr's 'nextId' for compatibility reason.
@@ -56,7 +56,7 @@ public class CatalogIdGenerator {
             return nextId++;
         } else {
             batchEndId = batchEndId + BATCH_ID_INTERVAL;
-//            GlobalStateMgr.getCurrentState().getEditLog().logSaveNextId(batchEndId);
+            GlobalStateMgr.getCurrentState().getEditLog().logSaveNextId(batchEndId);
             return nextId++;
         }
     }

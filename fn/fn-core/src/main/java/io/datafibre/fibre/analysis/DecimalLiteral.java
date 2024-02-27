@@ -32,20 +32,23 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import io.datafibre.fibre.catalog.PrimitiveType;
-import io.datafibre.fibre.catalog.ScalarType;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.common.Config;
-import io.datafibre.fibre.common.NotImplementedException;
-import io.datafibre.fibre.common.io.Text;
-import io.datafibre.fibre.sql.common.ErrorType;
-import io.datafibre.fibre.sql.optimizer.validate.ValidateException;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.catalog.PrimitiveType;
+import com.starrocks.catalog.ScalarType;
+import com.starrocks.catalog.Type;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.common.Config;
+import com.starrocks.common.NotImplementedException;
+import com.starrocks.common.io.Text;
+import com.starrocks.sql.common.ErrorType;
+import com.starrocks.sql.optimizer.validate.ValidateException;
+import com.starrocks.sql.parser.NodePosition;
+import com.starrocks.thrift.TDecimalLiteral;
+import com.starrocks.thrift.TExprNode;
+import com.starrocks.thrift.TExprNodeType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -399,15 +402,15 @@ public class DecimalLiteral extends LiteralExpr {
         return value.doubleValue();
     }
 
-//    @Override
-//    protected void toThrift(TExprNode msg) {
-//        // TODO(hujie01) deal with loss information
-//        msg.setNode_type(TExprNodeType.DECIMAL_LITERAL);
-//        TDecimalLiteral decimalLiteral = new TDecimalLiteral();
-//        decimalLiteral.setValue(value.toPlainString());
-//        decimalLiteral.setInteger_value(packDecimal());
-//        msg.setDecimal_literal(decimalLiteral);
-//    }
+    @Override
+    protected void toThrift(TExprNode msg) {
+        // TODO(hujie01) deal with loss information
+        msg.setNode_type(TExprNodeType.DECIMAL_LITERAL);
+        TDecimalLiteral decimalLiteral = new TDecimalLiteral();
+        decimalLiteral.setValue(value.toPlainString());
+        decimalLiteral.setInteger_value(packDecimal());
+        msg.setDecimal_literal(decimalLiteral);
+    }
 
     @Override
     public void swapSign() throws NotImplementedException {
@@ -506,12 +509,12 @@ public class DecimalLiteral extends LiteralExpr {
         } else if (targetType.getPrimitiveType().isDecimalV2Type()) {
             this.type = targetType;
             return this;
-//        } else if (targetType.isFloatingPointType()) {
-//            return new FloatLiteral(value.doubleValue(), targetType);
-//        } else if (targetType.isIntegerType()) {
-//            return new IntLiteral(value.longValue(), targetType);
-//        } else if (targetType.isStringType()) {
-//            return new StringLiteral(value.toString());
+        } else if (targetType.isFloatingPointType()) {
+            return new FloatLiteral(value.doubleValue(), targetType);
+        } else if (targetType.isIntegerType()) {
+            return new IntLiteral(value.longValue(), targetType);
+        } else if (targetType.isStringType()) {
+            return new StringLiteral(value.toString());
         }
         return super.uncheckedCastTo(targetType);
     }

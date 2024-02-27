@@ -13,15 +13,15 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.qe;
+package com.starrocks.qe;
 
-import io.datafibre.fibre.common.UserException;
-import io.datafibre.fibre.privilege.AuthorizationMgr;
-import io.datafibre.fibre.privilege.PrivilegeException;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.sql.ast.SetRoleStmt;
-import io.datafibre.fibre.sql.ast.SetRoleType;
-import io.datafibre.fibre.sql.ast.UserIdentity;
+import com.starrocks.common.UserException;
+import com.starrocks.privilege.AuthorizationMgr;
+import com.starrocks.privilege.PrivilegeException;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.sql.ast.SetRoleStmt;
+import com.starrocks.sql.ast.SetRoleType;
+import com.starrocks.sql.ast.UserIdentity;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -42,29 +42,29 @@ public class SetRoleExecutor {
     }
 
     public static void execute(SetRoleStmt stmt, ConnectContext context) throws UserException, PrivilegeException {
-//        AuthorizationMgr manager = GlobalStateMgr.getCurrentState().getAuthorizationMgr();
-//        UserIdentity user = context.getCurrentUserIdentity();
-//        Set<Long> roleIdsForUser = manager.getRoleIdsByUser(user);
-//        Set<Long> roleIds;
-//
-//        if (stmt.getSetRoleType().equals(SetRoleType.NONE)) {
-//            roleIds = new HashSet<>();
-//        } else if (stmt.getSetRoleType().equals(SetRoleType.DEFAULT)) {
-//            roleIds = manager.getDefaultRoleIdsByUser(user);
-//        } else if (stmt.getSetRoleType().equals(SetRoleType.ALL)) {
-//            roleIds = roleIdsForUser;
-//
-//            // SET ROLE ALL EXCEPT
-//            for (String roleName : stmt.getRoles()) {
-//                roleIds.remove(getValidRoleId(manager, roleIdsForUser, roleName, user));
-//            }
-//        } else {
-//            // set role 'role1', 'role2'
-//            roleIds = new HashSet<>();
-//            for (String roleName : stmt.getRoles()) {
-//                roleIds.add(getValidRoleId(manager, roleIdsForUser, roleName, user));
-//            }
-//        }
-//        context.setCurrentRoleIds(roleIds);
+        AuthorizationMgr manager = GlobalStateMgr.getCurrentState().getAuthorizationMgr();
+        UserIdentity user = context.getCurrentUserIdentity();
+        Set<Long> roleIdsForUser = manager.getRoleIdsByUser(user);
+        Set<Long> roleIds;
+
+        if (stmt.getSetRoleType().equals(SetRoleType.NONE)) {
+            roleIds = new HashSet<>();
+        } else if (stmt.getSetRoleType().equals(SetRoleType.DEFAULT)) {
+            roleIds = manager.getDefaultRoleIdsByUser(user);
+        } else if (stmt.getSetRoleType().equals(SetRoleType.ALL)) {
+            roleIds = roleIdsForUser;
+
+            // SET ROLE ALL EXCEPT
+            for (String roleName : stmt.getRoles()) {
+                roleIds.remove(getValidRoleId(manager, roleIdsForUser, roleName, user));
+            }
+        } else {
+            // set role 'role1', 'role2'
+            roleIds = new HashSet<>();
+            for (String roleName : stmt.getRoles()) {
+                roleIds.add(getValidRoleId(manager, roleIdsForUser, roleName, user));
+            }
+        }
+        context.setCurrentRoleIds(roleIds);
     }
 }

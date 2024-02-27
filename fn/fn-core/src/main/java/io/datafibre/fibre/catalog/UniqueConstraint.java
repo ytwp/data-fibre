@@ -13,13 +13,13 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.catalog;
+package com.starrocks.catalog;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.sql.analyzer.SemanticException;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.sql.analyzer.SemanticException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -57,14 +57,14 @@ public class UniqueConstraint {
     // foreignKeys must be in lower case for case-insensitive
     public boolean isMatch(Table parentTable, Set<String> foreignKeys) {
         if (catalogName != null && dbName != null && tableName != null) {
-//            Table uniqueTable = GlobalStateMgr.getCurrentState().getMetadataMgr().getTable(catalogName, dbName, tableName);
-//            if (uniqueTable == null) {
-//                LOG.warn("can not find unique constraint table: {}.{}.{}", catalogName, dbName, tableName);
-//                return false;
-//            }
-//            if (!uniqueTable.equals(parentTable)) {
-//                return false;
-//            }
+            Table uniqueTable = GlobalStateMgr.getCurrentState().getMetadataMgr().getTable(catalogName, dbName, tableName);
+            if (uniqueTable == null) {
+                LOG.warn("can not find unique constraint table: {}.{}.{}", catalogName, dbName, tableName);
+                return false;
+            }
+            if (!uniqueTable.equals(parentTable)) {
+                return false;
+            }
         }
         Set<String> uniqueColumnSet = uniqueColumns.stream().map(String::toLowerCase).collect(Collectors.toSet());
         return uniqueColumnSet.equals(foreignKeys);
@@ -97,7 +97,8 @@ public class UniqueConstraint {
         return tableName;
     }
 
-    public static List<UniqueConstraint> parse(String constraintDescs) {
+    public static List<UniqueConstraint> parse(String catalogName, String dbName, String tableName,
+                                               String constraintDescs) {
         if (Strings.isNullOrEmpty(constraintDescs)) {
             return null;
         }
@@ -110,12 +111,14 @@ public class UniqueConstraint {
             String[] uniqueColumns = constraintDesc.split(",");
             List<String> columnNames =
                     Arrays.stream(uniqueColumns).map(String::trim).collect(Collectors.toList());
-            parseUniqueConstraintColumns(columnNames, uniqueConstraints);
+            parseUniqueConstraintColumns(catalogName, dbName, tableName, columnNames, uniqueConstraints);
         }
         return uniqueConstraints;
     }
 
-    private static void parseUniqueConstraintColumns(List<String> columnNames, List<UniqueConstraint> uniqueConstraints) {
+    private static void parseUniqueConstraintColumns(String defaultCatalogName, String defaultDbName,
+                                                     String defaultTableName, List<String> columnNames,
+                                                     List<UniqueConstraint> uniqueConstraints) {
         String catalogName = null;
         String dbName = null;
         String tableName = null;
@@ -157,6 +160,16 @@ public class UniqueConstraint {
             } else {
                 throw new SemanticException("invalid unique constraint" + columnName);
             }
+        }
+
+        if (catalogName == null) {
+            catalogName = defaultCatalogName;
+        }
+        if (dbName == null) {
+            dbName = defaultDbName;
+        }
+        if (tableName == null) {
+            tableName = defaultTableName;
         }
 
         uniqueConstraints.add(new UniqueConstraint(catalogName, dbName, tableName, uniqueConstraintColumns));

@@ -12,16 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.base;
+package com.starrocks.sql.optimizer.base;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import io.datafibre.fibre.analysis.*;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.Table;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.*;
+import com.starrocks.analysis.CaseExpr;
+import com.starrocks.analysis.CastExpr;
+import com.starrocks.analysis.Expr;
+import com.starrocks.analysis.FunctionCallExpr;
+import com.starrocks.analysis.SlotRef;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.Table;
+import com.starrocks.catalog.Type;
+import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CaseWhenOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CastOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
 
 import java.util.List;
 import java.util.Map;
@@ -43,15 +51,15 @@ public class ColumnRefFactory {
 
     public ColumnRefOperator create(Expr expression, Type type, boolean nullable) {
         String nameHint = "expr";
-//        if (expression instanceof SlotRef) {
-//            nameHint = ((SlotRef) expression).getColumnName();
-//        } else if (expression instanceof FunctionCallExpr) {
-//            nameHint = ((FunctionCallExpr) expression).getFnName().toString();
-//        } else if (expression instanceof CaseExpr) {
-//            nameHint = "case";
-//        } else if (expression instanceof CastExpr) {
-//            nameHint = "cast";
-//        }
+        if (expression instanceof SlotRef) {
+            nameHint = ((SlotRef) expression).getColumnName();
+        } else if (expression instanceof FunctionCallExpr) {
+            nameHint = ((FunctionCallExpr) expression).getFnName().toString();
+        } else if (expression instanceof CaseExpr) {
+            nameHint = "case";
+        } else if (expression instanceof CastExpr) {
+            nameHint = "cast";
+        }
         return create(nextId++, nameHint, type, nullable, false);
     }
 

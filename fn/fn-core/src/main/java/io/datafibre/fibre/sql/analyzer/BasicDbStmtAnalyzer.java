@@ -12,13 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.analyzer;
+package com.starrocks.sql.analyzer;
 
 import com.google.common.base.Strings;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.sql.ast.*;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.sql.ast.AstVisitor;
+import com.starrocks.sql.ast.RecoverDbStmt;
+import com.starrocks.sql.ast.ShowCreateDbStmt;
+import com.starrocks.sql.ast.StatementBase;
+import com.starrocks.sql.ast.UseDbStmt;
 
-import static io.datafibre.fibre.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
+import static com.starrocks.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
 
 /**
  * This is a basic analyzer for some database statements, currently used by

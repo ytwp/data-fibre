@@ -32,16 +32,18 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.catalog;
+package com.starrocks.catalog;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
-import io.datafibre.fibre.analysis.FunctionName;
-import io.datafibre.fibre.sql.ast.CreateFunctionStmt;
-import io.datafibre.fibre.sql.ast.HdfsURI;
-import io.datafibre.fibre.thrift.TFunctionBinaryType;
+import com.starrocks.analysis.FunctionName;
+import com.starrocks.sql.ast.CreateFunctionStmt;
+import com.starrocks.sql.ast.HdfsURI;
+import com.starrocks.thrift.TAggregateFunction;
+import com.starrocks.thrift.TFunction;
+import com.starrocks.thrift.TFunctionBinaryType;
 import org.apache.logging.log4j.util.Strings;
 
 import java.io.DataInput;
@@ -51,8 +53,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static io.datafibre.fibre.common.io.IOUtils.readOptionStringOrNull;
-import static io.datafibre.fibre.common.io.IOUtils.writeOptionString;
+import static com.starrocks.common.io.IOUtils.readOptionStringOrNull;
+import static com.starrocks.common.io.IOUtils.writeOptionString;
 
 /**
  * Internal representation of an aggregate function.
@@ -338,34 +340,34 @@ public class AggregateFunction extends Function {
         AggregateFunction agg = (AggregateFunction) obj;
 
         return Objects.equals(intermediateType, agg.intermediateType) && ignoresDistinct == agg.ignoresDistinct &&
-               isAnalyticFn == agg.isAnalyticFn && isAggregateFn == agg.isAggregateFn &&
-               returnsNonNullOnEmpty == agg.returnsNonNullOnEmpty && Objects.equals(symbolName, agg.symbolName)
-               && isDistinct == agg.isDistinct && Objects.equals(nullsFirst, agg.getNullsFirst()) &&
-               Objects.equals(isAscOrder, agg.getIsAscOrder()) && super.equals(obj);
+                isAnalyticFn == agg.isAnalyticFn && isAggregateFn == agg.isAggregateFn &&
+                returnsNonNullOnEmpty == agg.returnsNonNullOnEmpty && Objects.equals(symbolName, agg.symbolName)
+                && isDistinct == agg.isDistinct && Objects.equals(nullsFirst, agg.getNullsFirst()) &&
+                Objects.equals(isAscOrder, agg.getIsAscOrder()) && super.equals(obj);
     }
 
-//    @Override
-//    public TFunction toThrift() {
-//        TFunction fn = super.toThrift();
-//        TAggregateFunction aggFn = new TAggregateFunction();
-//        aggFn.setIs_analytic_only_fn(isAnalyticFn && !isAggregateFn);
-//        if (intermediateType != null) {
-//            aggFn.setIntermediate_type(intermediateType.toThrift());
-//        } else {
-//            aggFn.setIntermediate_type(getReturnType().toThrift());
-//        }
-//        if (isAscOrder != null && !isAscOrder.isEmpty()) {
-//            aggFn.setIs_asc_order(isAscOrder);
-//        }
-//        if (nullsFirst != null && !nullsFirst.isEmpty()) {
-//            aggFn.setNulls_first(nullsFirst);
-//        }
-//        aggFn.setIs_distinct(isDistinct);
-//
-//        aggFn.setSymbol(getSymbolName());
-//        fn.setAggregate_fn(aggFn);
-//        return fn;
-//    }
+    @Override
+    public TFunction toThrift() {
+        TFunction fn = super.toThrift();
+        TAggregateFunction aggFn = new TAggregateFunction();
+        aggFn.setIs_analytic_only_fn(isAnalyticFn && !isAggregateFn);
+        if (intermediateType != null) {
+            aggFn.setIntermediate_type(intermediateType.toThrift());
+        } else {
+            aggFn.setIntermediate_type(getReturnType().toThrift());
+        }
+        if (isAscOrder != null && !isAscOrder.isEmpty()) {
+            aggFn.setIs_asc_order(isAscOrder);
+        }
+        if (nullsFirst != null && !nullsFirst.isEmpty()) {
+            aggFn.setNulls_first(nullsFirst);
+        }
+        aggFn.setIs_distinct(isDistinct);
+
+        aggFn.setSymbol(getSymbolName());
+        fn.setAggregate_fn(aggFn);
+        return fn;
+    }
 
     @Override
     public void write(DataOutput output) throws IOException {

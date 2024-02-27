@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.common.io;
+package com.starrocks.common.io;
 
-import io.datafibre.fibre.persist.gson.GsonUtils;
+import com.starrocks.persist.gson.GsonUtils;
 
 import java.io.DataOutput;
 import java.io.IOException;

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.privilege;
+package com.starrocks.privilege;
 
 public class PrivilegeException extends Exception {
     public PrivilegeException(String msg) {

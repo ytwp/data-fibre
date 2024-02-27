@@ -12,48 +12,131 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.analyzer;
+package com.starrocks.sql.analyzer;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
-import com.google.common.collect.*;
-import io.datafibre.fibre.analysis.*;
-import io.datafibre.fibre.catalog.Table;
-import io.datafibre.fibre.catalog.*;
-import io.datafibre.fibre.common.*;
-import io.datafibre.fibre.common.util.DateUtils;
-import io.datafibre.fibre.common.util.TimeUtils;
-import io.datafibre.fibre.common.util.concurrent.lock.LockType;
-import io.datafibre.fibre.common.util.concurrent.lock.Locker;
-import io.datafibre.fibre.privilege.AccessDeniedException;
-import io.datafibre.fibre.privilege.ObjectType;
-import io.datafibre.fibre.privilege.PrivilegeType;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.server.CatalogMgr;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.service.PartitionMeasure;
-import io.datafibre.fibre.sql.ast.*;
-import io.datafibre.fibre.sql.common.ErrorType;
-import io.datafibre.fibre.sql.common.StarRocksPlannerException;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.CallOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.CastOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
-import io.datafibre.fibre.sql.parser.NodePosition;
-import io.datafibre.fibre.sql.parser.ParsingException;
-import io.datafibre.fibre.statistic.StatsConstants;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
+import com.starrocks.analysis.AnalyticExpr;
+import com.starrocks.analysis.CastExpr;
+import com.starrocks.analysis.DateLiteral;
+import com.starrocks.analysis.Expr;
+import com.starrocks.analysis.FunctionCallExpr;
+import com.starrocks.analysis.FunctionName;
+import com.starrocks.analysis.GroupingFunctionCallExpr;
+import com.starrocks.analysis.IntLiteral;
+import com.starrocks.analysis.LiteralExpr;
+import com.starrocks.analysis.MaxLiteral;
+import com.starrocks.analysis.OrderByElement;
+import com.starrocks.analysis.ParseNode;
+import com.starrocks.analysis.SlotRef;
+import com.starrocks.analysis.StringLiteral;
+import com.starrocks.analysis.Subquery;
+import com.starrocks.analysis.TableName;
+import com.starrocks.catalog.AggregateFunction;
+import com.starrocks.catalog.ArrayType;
+import com.starrocks.catalog.Database;
+import com.starrocks.catalog.ExpressionRangePartitionInfo;
+import com.starrocks.catalog.Function;
+import com.starrocks.catalog.FunctionSet;
+import com.starrocks.catalog.HiveMetaStoreTable;
+import com.starrocks.catalog.IcebergTable;
+import com.starrocks.catalog.InternalCatalog;
+import com.starrocks.catalog.ListPartitionInfo;
+import com.starrocks.catalog.MapType;
+import com.starrocks.catalog.MaterializedView;
+import com.starrocks.catalog.OlapTable;
+import com.starrocks.catalog.PaimonTable;
+import com.starrocks.catalog.PartitionInfo;
+import com.starrocks.catalog.PartitionKey;
+import com.starrocks.catalog.PrimitiveType;
+import com.starrocks.catalog.ScalarType;
+import com.starrocks.catalog.StructField;
+import com.starrocks.catalog.StructType;
+import com.starrocks.catalog.Table;
+import com.starrocks.catalog.Type;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.common.Config;
+import com.starrocks.common.ErrorCode;
+import com.starrocks.common.ErrorReport;
+import com.starrocks.common.Pair;
+import com.starrocks.common.util.DateUtils;
+import com.starrocks.common.util.TimeUtils;
+import com.starrocks.common.util.concurrent.lock.LockType;
+import com.starrocks.common.util.concurrent.lock.Locker;
+import com.starrocks.privilege.AccessDeniedException;
+import com.starrocks.privilege.ObjectType;
+import com.starrocks.privilege.PrivilegeType;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.server.CatalogMgr;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.service.PartitionMeasure;
+import com.starrocks.sql.ast.AddPartitionClause;
+import com.starrocks.sql.ast.AstTraverser;
+import com.starrocks.sql.ast.AstVisitor;
+import com.starrocks.sql.ast.CTERelation;
+import com.starrocks.sql.ast.ColumnDef;
+import com.starrocks.sql.ast.DeleteStmt;
+import com.starrocks.sql.ast.DistributionDesc;
+import com.starrocks.sql.ast.FieldReference;
+import com.starrocks.sql.ast.FileTableFunctionRelation;
+import com.starrocks.sql.ast.InsertStmt;
+import com.starrocks.sql.ast.JoinRelation;
+import com.starrocks.sql.ast.ListPartitionDesc;
+import com.starrocks.sql.ast.MultiItemListPartitionDesc;
+import com.starrocks.sql.ast.NormalizedTableFunctionRelation;
+import com.starrocks.sql.ast.PartitionDesc;
+import com.starrocks.sql.ast.PartitionKeyDesc;
+import com.starrocks.sql.ast.PartitionValue;
+import com.starrocks.sql.ast.QueryStatement;
+import com.starrocks.sql.ast.RangePartitionDesc;
+import com.starrocks.sql.ast.Relation;
+import com.starrocks.sql.ast.SelectRelation;
+import com.starrocks.sql.ast.SetOperationRelation;
+import com.starrocks.sql.ast.SingleRangePartitionDesc;
+import com.starrocks.sql.ast.StatementBase;
+import com.starrocks.sql.ast.SubqueryRelation;
+import com.starrocks.sql.ast.TableFunctionRelation;
+import com.starrocks.sql.ast.TableRelation;
+import com.starrocks.sql.ast.UpdateStmt;
+import com.starrocks.sql.ast.ValuesRelation;
+import com.starrocks.sql.ast.ViewRelation;
+import com.starrocks.sql.common.ErrorType;
+import com.starrocks.sql.common.StarRocksPlannerException;
+import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CastOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.sql.parser.NodePosition;
+import com.starrocks.sql.parser.ParsingException;
+import com.starrocks.statistic.StatsConstants;
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.datafibre.fibre.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
-import static io.datafibre.fibre.statistic.StatsConstants.STATISTICS_DB_NAME;
+import static com.starrocks.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
+import static com.starrocks.statistic.StatsConstants.STATISTICS_DB_NAME;
 
 public class AnalyzerUtils {
 
@@ -144,24 +227,22 @@ public class AnalyzerUtils {
     }
 
     private static Function getGlobalUdfFunction(ConnectContext context, FunctionName fnName, Type[] argTypes) {
-//        Function search = new Function(fnName, argTypes, Type.INVALID, false);
-//        Function fn = context.getGlobalStateMgr().getGlobalFunctionMgr()
-//                .getFunction(search, Function.CompareMode.IS_NONSTRICT_SUPERTYPE_OF);
-//        if (fn != null) {
-//            try {
-//                Authorizer.checkGlobalFunctionAction(context.getCurrentUserIdentity(), context.getCurrentRoleIds(),
-//                        fn, PrivilegeType.USAGE);
-//            } catch (AccessDeniedException e) {
-//                AccessDeniedException.reportAccessDenied(
-//                        InternalCatalog.DEFAULT_INTERNAL_CATALOG_NAME,
-//                        context.getCurrentUserIdentity(), context.getCurrentRoleIds(),
-//                        PrivilegeType.USAGE.name(), ObjectType.GLOBAL_FUNCTION.name(), fn.getSignature());
-//            }
-//        }
-//
-//        return fn;
+        Function search = new Function(fnName, argTypes, Type.INVALID, false);
+        Function fn = context.getGlobalStateMgr().getGlobalFunctionMgr()
+                .getFunction(search, Function.CompareMode.IS_NONSTRICT_SUPERTYPE_OF);
+        if (fn != null) {
+            try {
+                Authorizer.checkGlobalFunctionAction(context.getCurrentUserIdentity(), context.getCurrentRoleIds(),
+                        fn, PrivilegeType.USAGE);
+            } catch (AccessDeniedException e) {
+                AccessDeniedException.reportAccessDenied(
+                        InternalCatalog.DEFAULT_INTERNAL_CATALOG_NAME,
+                        context.getCurrentUserIdentity(), context.getCurrentRoleIds(),
+                        PrivilegeType.USAGE.name(), ObjectType.GLOBAL_FUNCTION.name(), fn.getSignature());
+            }
+        }
 
-        return null;
+        return fn;
     }
 
     public static Function getUdfFunction(ConnectContext context, FunctionName fnName, Type[] argTypes) {
@@ -182,7 +263,7 @@ public class AnalyzerUtils {
     // Get all the db used, the query needs to add locks to them
     public static Map<String, Database> collectAllDatabase(ConnectContext context, StatementBase statementBase) {
         Map<String, Database> dbs = Maps.newHashMap();
-        new DBCollector(dbs, context).visit(statementBase);
+        new AnalyzerUtils.DBCollector(dbs, context).visit(statementBase);
         return dbs;
     }
 
@@ -531,7 +612,7 @@ public class AnalyzerUtils {
     //Get all the table used
     public static Map<TableName, Table> collectAllTable(StatementBase statementBase) {
         Map<TableName, Table> tables = Maps.newHashMap();
-        new TableCollector(tables).visit(statementBase);
+        new AnalyzerUtils.TableCollector(tables).visit(statementBase);
         return tables;
     }
 
@@ -586,37 +667,37 @@ public class AnalyzerUtils {
 
     public static Map<TableName, Table> collectAllTableWithAlias(StatementBase statementBase) {
         Map<TableName, Table> tables = Maps.newHashMap();
-        new TableCollectorWithAlias(tables).visit(statementBase);
+        new AnalyzerUtils.TableCollectorWithAlias(tables).visit(statementBase);
         return tables;
     }
 
     public static Map<TableName, Table> collectAllTableAndViewWithAlias(StatementBase statementBase) {
         Map<TableName, Table> tables = Maps.newHashMap();
-        new TableAndViewCollectorWithAlias(tables).visit(statementBase);
+        new AnalyzerUtils.TableAndViewCollectorWithAlias(tables).visit(statementBase);
         return tables;
     }
 
     public static Map<TableName, Table> collectAllTableAndViewWithAlias(SelectRelation statementBase) {
         Map<TableName, Table> tables = Maps.newHashMap();
-        new TableAndViewCollectorWithAlias(tables).visit(statementBase);
+        new AnalyzerUtils.TableAndViewCollectorWithAlias(tables).visit(statementBase);
         return tables;
     }
 
     public static Multimap<String, TableRelation> collectAllTableRelation(StatementBase statementBase) {
         Multimap<String, TableRelation> tableRelations = ArrayListMultimap.create();
-        new TableRelationCollector(tableRelations).visit(statementBase);
+        new AnalyzerUtils.TableRelationCollector(tableRelations).visit(statementBase);
         return tableRelations;
     }
 
     public static List<TableRelation> collectTableRelations(StatementBase statementBase) {
         List<TableRelation> tableRelations = Lists.newArrayList();
-        new TableRelationsCollector(tableRelations).visit(statementBase);
+        new AnalyzerUtils.TableRelationsCollector(tableRelations).visit(statementBase);
         return tableRelations;
     }
 
     public static List<ViewRelation> collectViewRelations(StatementBase statementBase) {
         List<ViewRelation> viewRelations = Lists.newArrayList();
-        new ViewRelationsCollector(viewRelations).visit(statementBase);
+        new AnalyzerUtils.ViewRelationsCollector(viewRelations).visit(statementBase);
         return viewRelations;
     }
 
@@ -628,12 +709,12 @@ public class AnalyzerUtils {
 
     public static boolean isOnlyHasOlapTables(StatementBase statementBase) {
         Map<TableName, Table> nonOlapTables = Maps.newHashMap();
-        new NonOlapTableCollector(nonOlapTables).visit(statementBase);
+        new AnalyzerUtils.NonOlapTableCollector(nonOlapTables).visit(statementBase);
         return nonOlapTables.isEmpty();
     }
 
     public static void copyOlapTable(StatementBase statementBase, Set<OlapTable> olapTables) {
-        new OlapTableCollector(olapTables).visit(statementBase);
+        new AnalyzerUtils.OlapTableCollector(olapTables).visit(statementBase);
     }
 
     public static void collectSpecifyExternalTables(StatementBase statementBase, List<Table> tables,
@@ -643,7 +724,7 @@ public class AnalyzerUtils {
 
     public static Map<TableName, SubqueryRelation> collectAllSubQueryRelation(QueryStatement queryStatement) {
         Map<TableName, SubqueryRelation> subQueryRelations = Maps.newHashMap();
-        new SubQueryRelationCollector(subQueryRelations).visit(queryStatement);
+        new AnalyzerUtils.SubQueryRelationCollector(subQueryRelations).visit(queryStatement);
         return subQueryRelations;
     }
 
@@ -652,25 +733,25 @@ public class AnalyzerUtils {
      */
     public static Map<TableName, SubqueryRelation> collectOneLevelSubQueryRelation(QueryStatement queryStatement) {
         Map<TableName, SubqueryRelation> subQueryRelations = Maps.newHashMap();
-        new SubQueryOneLevelRelationCollector(subQueryRelations).visit(queryStatement);
+        new AnalyzerUtils.SubQueryOneLevelRelationCollector(subQueryRelations).visit(queryStatement);
         return subQueryRelations;
     }
 
     public static Map<TableName, Table> collectAllTableAndView(StatementBase statementBase) {
         Map<TableName, Table> tables = Maps.newHashMap();
-        new TableAndViewCollector(tables).visit(statementBase);
+        new AnalyzerUtils.TableAndViewCollector(tables).visit(statementBase);
         return tables;
     }
 
     public static Map<TableName, Table> collectAllConnectorTableAndView(StatementBase statementBase) {
         Map<TableName, Table> tables = Maps.newHashMap();
-        new ConnectorTableAndViewCollector(tables).visit(statementBase);
+        new AnalyzerUtils.ConnectorTableAndViewCollector(tables).visit(statementBase);
         return tables;
     }
 
     public static List<Pair<Expr, Relation[]>> collectAllJoinPredicatesRelations(StatementBase statementBase) {
         List<Pair<Expr, Relation[]>> joinPredicates = Lists.newArrayList();
-        new JoinPredicateRelationCollector(joinPredicates).visit(statementBase);
+        new AnalyzerUtils.JoinPredicateRelationCollector(joinPredicates).visit(statementBase);
         return joinPredicates;
     }
 
@@ -1008,42 +1089,42 @@ public class AnalyzerUtils {
         }
     }
 
-//    public static Set<TableName> getAllTableNamesForAnalyzeJobStmt(long dbId, long tableId) {
-//        Set<TableName> tableNames = Sets.newHashSet();
-//        if (StatsConstants.DEFAULT_ALL_ID != tableId && StatsConstants.DEFAULT_ALL_ID != dbId) {
-//            Database db = GlobalStateMgr.getCurrentState().getDb(dbId);
-//            if (db != null && !db.isSystemDatabase()) {
-//                Table table = db.getTable(tableId);
-//                if (table != null && table.isOlapOrCloudNativeTable()) {
-//                    tableNames.add(new TableName(InternalCatalog.DEFAULT_INTERNAL_CATALOG_NAME,
-//                            db.getFullName(), table.getName()));
-//                }
-//            }
-//        } else if (StatsConstants.DEFAULT_ALL_ID == tableId && StatsConstants.DEFAULT_ALL_ID != dbId) {
-//            getTableNamesInDb(tableNames, dbId);
-//        } else {
-//            List<Long> dbIds = GlobalStateMgr.getCurrentState().getLocalMetastore().getDbIds();
-//            for (Long id : dbIds) {
-//                getTableNamesInDb(tableNames, id);
-//            }
-//        }
-//
-//        return tableNames;
-//    }
+    public static Set<TableName> getAllTableNamesForAnalyzeJobStmt(long dbId, long tableId) {
+        Set<TableName> tableNames = Sets.newHashSet();
+        if (StatsConstants.DEFAULT_ALL_ID != tableId && StatsConstants.DEFAULT_ALL_ID != dbId) {
+            Database db = GlobalStateMgr.getCurrentState().getDb(dbId);
+            if (db != null && !db.isSystemDatabase()) {
+                Table table = db.getTable(tableId);
+                if (table != null && table.isOlapOrCloudNativeTable()) {
+                    tableNames.add(new TableName(InternalCatalog.DEFAULT_INTERNAL_CATALOG_NAME,
+                            db.getFullName(), table.getName()));
+                }
+            }
+        } else if (StatsConstants.DEFAULT_ALL_ID == tableId && StatsConstants.DEFAULT_ALL_ID != dbId) {
+            getTableNamesInDb(tableNames, dbId);
+        } else {
+            List<Long> dbIds = GlobalStateMgr.getCurrentState().getLocalMetastore().getDbIds();
+            for (Long id : dbIds) {
+                getTableNamesInDb(tableNames, id);
+            }
+        }
 
-//    private static void getTableNamesInDb(Set<TableName> tableNames, Long id) {
-//        Database db = GlobalStateMgr.getCurrentState().getDb(id);
-//        if (db != null && !db.isSystemDatabase()) {
-//            for (Table table : db.getTables()) {
-//                if (table == null || !table.isOlapOrCloudNativeTable()) {
-//                    continue;
-//                }
-//                TableName tableNameNew = new TableName(InternalCatalog.DEFAULT_INTERNAL_CATALOG_NAME,
-//                        db.getFullName(), table.getName());
-//                tableNames.add(tableNameNew);
-//            }
-//        }
-//    }
+        return tableNames;
+    }
+
+    private static void getTableNamesInDb(Set<TableName> tableNames, Long id) {
+        Database db = GlobalStateMgr.getCurrentState().getDb(id);
+        if (db != null && !db.isSystemDatabase()) {
+            for (Table table : db.getTables()) {
+                if (table == null || !table.isOlapOrCloudNativeTable()) {
+                    continue;
+                }
+                TableName tableNameNew = new TableName(InternalCatalog.DEFAULT_INTERNAL_CATALOG_NAME,
+                        db.getFullName(), table.getName());
+                tableNames.add(tableNameNew);
+            }
+        }
+    }
 
     public static Type transformTableColumnType(Type srcType) {
         return transformTableColumnType(srcType, true);

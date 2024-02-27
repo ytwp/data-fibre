@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.dump;
+package com.starrocks.sql.optimizer.dump;
 
-import io.datafibre.fibre.common.Id;
-import io.datafibre.fibre.common.IdGenerator;
+import com.starrocks.common.Id;
+import com.starrocks.common.IdGenerator;
 
 public class DesensitizedId extends Id<DesensitizedId> {
 

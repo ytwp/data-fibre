@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.equivalent;
+package com.starrocks.sql.optimizer.rule.transformation.materialization.equivalent;
 
 public class EquivalentShuttleContext {
     private boolean isRewrittenByEquivalent;

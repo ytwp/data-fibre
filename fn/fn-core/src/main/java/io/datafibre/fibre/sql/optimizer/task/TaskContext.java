@@ -13,12 +13,12 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.task;
+package com.starrocks.sql.optimizer.task;
 
-import io.datafibre.fibre.sql.optimizer.OptimizerContext;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
-import io.datafibre.fibre.sql.optimizer.base.PhysicalPropertySet;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalOlapScanOperator;
+import com.starrocks.sql.optimizer.OptimizerContext;
+import com.starrocks.sql.optimizer.base.ColumnRefSet;
+import com.starrocks.sql.optimizer.base.PhysicalPropertySet;
+import com.starrocks.sql.optimizer.operator.logical.LogicalOlapScanOperator;
 
 import java.util.Collections;
 import java.util.List;

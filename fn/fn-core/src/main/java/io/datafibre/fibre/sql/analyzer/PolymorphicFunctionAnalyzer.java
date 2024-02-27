@@ -12,13 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.analyzer;
+package com.starrocks.sql.analyzer;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.catalog.*;
-import io.datafibre.fibre.sql.common.TypeManager;
+import com.starrocks.catalog.AggregateFunction;
+import com.starrocks.catalog.AnyArrayType;
+import com.starrocks.catalog.AnyElementType;
+import com.starrocks.catalog.AnyMapType;
+import com.starrocks.catalog.AnyStructType;
+import com.starrocks.catalog.ArrayType;
+import com.starrocks.catalog.Function;
+import com.starrocks.catalog.FunctionSet;
+import com.starrocks.catalog.MapType;
+import com.starrocks.catalog.ScalarFunction;
+import com.starrocks.catalog.StructType;
+import com.starrocks.catalog.TableFunction;
+import com.starrocks.catalog.Type;
+import com.starrocks.sql.common.TypeManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,7 +38,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static io.datafibre.fibre.sql.analyzer.AnalyzerUtils.replaceNullType2Boolean;
+import static com.starrocks.sql.analyzer.AnalyzerUtils.replaceNullType2Boolean;
 
 public class PolymorphicFunctionAnalyzer {
     private static final Logger LOGGER = LogManager.getLogger(PolymorphicFunctionAnalyzer.class);

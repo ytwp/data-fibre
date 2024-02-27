@@ -29,11 +29,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.http;
+package com.starrocks.http;
 
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.qe.StmtExecutor;
-import io.datafibre.fibre.sql.ast.StatementBase;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.qe.StmtExecutor;
+import com.starrocks.sql.ast.StatementBase;
+import com.starrocks.thrift.TResultSinkFormatType;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import org.apache.logging.log4j.LogManager;
@@ -67,7 +68,7 @@ public class HttpConnectContext extends ConnectContext {
     private boolean isKeepAlive;
 
     // right now only support json type
-//    private TResultSinkFormatType resultSinkFormatType;
+    private TResultSinkFormatType resultSinkFormatType;
 
     public HttpConnectContext() {
         super();
@@ -76,13 +77,13 @@ public class HttpConnectContext extends ConnectContext {
         onlyOutputResultRaw = false;
     }
 
-//    public TResultSinkFormatType getResultSinkFormatType() {
-//        return resultSinkFormatType;
-//    }
+    public TResultSinkFormatType getResultSinkFormatType() {
+        return resultSinkFormatType;
+    }
 
-//    public void setResultSinkFormatType(TResultSinkFormatType resultSinkFormatType) {
-//        this.resultSinkFormatType = resultSinkFormatType;
-//    }
+    public void setResultSinkFormatType(TResultSinkFormatType resultSinkFormatType) {
+        this.resultSinkFormatType = resultSinkFormatType;
+    }
 
     public boolean isForwardToLeader() {
         return forwardToLeader;

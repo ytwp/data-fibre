@@ -12,24 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.qe.scheduler;
+package com.starrocks.qe.scheduler;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
-import io.datafibre.fibre.common.FeConstants;
-import io.datafibre.fibre.qe.SimpleScheduler;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.server.RunMode;
-import io.datafibre.fibre.system.ComputeNode;
-import io.datafibre.fibre.system.SystemInfoService;
+import com.starrocks.common.FeConstants;
+import com.starrocks.qe.SimpleScheduler;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.server.RunMode;
+import com.starrocks.system.ComputeNode;
+import com.starrocks.system.SystemInfoService;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.IntSupplier;
 import java.util.stream.Collectors;
@@ -265,9 +271,9 @@ public class DefaultWorkerProvider implements WorkerProvider {
 
     private static ImmutableMap<Long, ComputeNode> buildComputeNodeInfo(SystemInfoService systemInfoService,
                                                                         int numUsedComputeNodes) {
-//        if (RunMode.isSharedDataMode()) {
-//            return GlobalStateMgr.getCurrentState().getWarehouseMgr().getComputeNodesFromWarehouse();
-//        }
+        if (RunMode.isSharedDataMode()) {
+            return GlobalStateMgr.getCurrentState().getWarehouseMgr().getComputeNodesFromWarehouse();
+        }
 
         ImmutableMap<Long, ComputeNode> idToComputeNode
                 = ImmutableMap.copyOf(systemInfoService.getIdComputeNode());

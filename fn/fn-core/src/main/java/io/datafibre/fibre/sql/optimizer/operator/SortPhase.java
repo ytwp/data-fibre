@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.operator;
+package com.starrocks.sql.optimizer.operator;
 
 public enum SortPhase {
     PARTIAL,

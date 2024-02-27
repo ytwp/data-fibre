@@ -32,16 +32,22 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.catalog;
+package com.starrocks.catalog;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.analysis.*;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.common.io.Text;
-import io.datafibre.fibre.common.io.Writable;
-import io.datafibre.fibre.sql.ast.PartitionValue;
+import com.starrocks.analysis.DateLiteral;
+import com.starrocks.analysis.IntLiteral;
+import com.starrocks.analysis.LargeIntLiteral;
+import com.starrocks.analysis.LiteralExpr;
+import com.starrocks.analysis.MaxLiteral;
+import com.starrocks.analysis.NullLiteral;
+import com.starrocks.analysis.StringLiteral;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.common.io.Text;
+import com.starrocks.common.io.Writable;
+import com.starrocks.sql.ast.PartitionValue;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

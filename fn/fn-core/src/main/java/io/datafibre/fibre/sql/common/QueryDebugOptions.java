@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.common;
+package com.starrocks.sql.common;
 
 import com.google.gson.annotations.SerializedName;
-import io.datafibre.fibre.common.FeConstants;
-import io.datafibre.fibre.persist.gson.GsonUtils;
+import com.starrocks.common.FeConstants;
+import com.starrocks.persist.gson.GsonUtils;
 
 public class QueryDebugOptions {
     private static QueryDebugOptions INSTANCE = new QueryDebugOptions();

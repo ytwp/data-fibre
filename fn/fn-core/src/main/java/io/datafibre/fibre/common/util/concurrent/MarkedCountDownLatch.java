@@ -32,12 +32,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.common.util.concurrent;
+package com.starrocks.common.util.concurrent;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
-import io.datafibre.fibre.common.Status;
+import com.starrocks.common.Status;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

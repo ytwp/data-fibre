@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.common;
+package com.starrocks.sql.common;
 
-import static io.datafibre.fibre.sql.common.ErrorMsgProxy.BaseMessage;
+import static com.starrocks.sql.common.ErrorMsgProxy.BaseMessage;
 
 public interface ParserErrorMsg {
 
@@ -217,4 +217,7 @@ public interface ParserErrorMsg {
 
     @BaseMessage("Failed to evaluate user variable hint ''{0}'', because {1}")
     String invalidUserVariableHint(String a0, String a1);
+
+    @BaseMessage("No selected database for cancel BACKUP/RESTORE")
+    String nullIdentifierCancelBackupRestore();
 }

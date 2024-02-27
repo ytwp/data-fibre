@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.common;
+package com.starrocks.common;
 
 /**
  * Generator of consecutively numbered integers to be used as ids by subclasses of Id.

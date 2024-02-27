@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.authentication;
+package com.starrocks.authentication;
 
-import io.datafibre.fibre.mysql.privilege.Password;
-import io.datafibre.fibre.sql.ast.UserIdentity;
+import com.starrocks.mysql.privilege.Password;
+import com.starrocks.sql.ast.UserIdentity;
 
 public interface AuthenticationProvider {
 

@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.catalog;
+package com.starrocks.catalog;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.annotations.SerializedName;
-import io.datafibre.fibre.catalog.MaterializedIndex.IndexExtState;
-import io.datafibre.fibre.catalog.MaterializedIndex.IndexState;
-import io.datafibre.fibre.common.FeConstants;
+import com.starrocks.catalog.MaterializedIndex.IndexExtState;
+import com.starrocks.catalog.MaterializedIndex.IndexState;
+import com.starrocks.common.FeConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -412,7 +412,7 @@ public class PhysicalPartitionImpl extends MetaObject implements PhysicalPartiti
         buffer.append("rollupCount: ").append(rollupCount).append("; ");
 
         if (idToVisibleRollupIndex != null) {
-            for (Entry<Long, MaterializedIndex> entry : idToVisibleRollupIndex.entrySet()) {
+            for (Map.Entry<Long, MaterializedIndex> entry : idToVisibleRollupIndex.entrySet()) {
                 buffer.append("rollupIndex: ").append(entry.getValue().toString()).append("; ");
             }
         }

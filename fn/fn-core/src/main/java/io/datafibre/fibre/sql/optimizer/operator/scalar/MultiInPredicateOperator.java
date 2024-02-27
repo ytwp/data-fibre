@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.operator.scalar;
+package com.starrocks.sql.optimizer.operator.scalar;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static io.datafibre.fibre.sql.optimizer.operator.OperatorType.MULTI_IN;
+import static com.starrocks.sql.optimizer.operator.OperatorType.MULTI_IN;
 
 /**
  * Represents an IN subquery with multiple columns e.g. WHERE (x, y) IN (SELECT a, b FROM T): (x, y) is a tuple that is

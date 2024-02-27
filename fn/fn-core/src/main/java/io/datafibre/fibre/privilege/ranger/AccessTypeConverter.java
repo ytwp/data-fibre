@@ -11,9 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package io.datafibre.fibre.privilege.ranger;
+package com.starrocks.privilege.ranger;
 
-import io.datafibre.fibre.privilege.PrivilegeType;
+import com.starrocks.privilege.PrivilegeType;
 
 public interface AccessTypeConverter {
     String convertToAccessType(PrivilegeType privilegeType);

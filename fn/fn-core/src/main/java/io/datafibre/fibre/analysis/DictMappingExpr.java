@@ -13,9 +13,11 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
-import io.datafibre.fibre.common.AnalysisException;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.thrift.TExprNode;
+import com.starrocks.thrift.TExprNodeType;
 
 // DictMappingExpr.
 // The original expression will be rewritten as a dictionary mapping function in the global field optimization.
@@ -60,10 +62,10 @@ public class DictMappingExpr extends Expr {
                 getChild(2).toSqlImpl() + ")";
     }
 
-//    @Override
-//    protected void toThrift(TExprNode msg) {
-//        msg.setNode_type(TExprNodeType.DICT_EXPR);
-//    }
+    @Override
+    protected void toThrift(TExprNode msg) {
+        msg.setNode_type(TExprNodeType.DICT_EXPR);
+    }
 
     @Override
     public Expr clone() {

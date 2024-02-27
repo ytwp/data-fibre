@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.qe;
+package com.starrocks.qe;
 
-import io.datafibre.fibre.sql.ast.PrepareStmt;
-import io.datafibre.fibre.sql.plan.ExecPlan;
+import com.starrocks.sql.ast.PrepareStmt;
+import com.starrocks.sql.plan.ExecPlan;
 
 public class PrepareStmtContext {
     private final PrepareStmt stmt;

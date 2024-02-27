@@ -12,37 +12,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.rule.tree.lowcardinality;
+package com.starrocks.sql.optimizer.rule.tree.lowcardinality;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.FunctionSet;
-import io.datafibre.fibre.common.Pair;
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.OptExpressionVisitor;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefFactory;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
-import io.datafibre.fibre.sql.optimizer.base.DistributionCol;
-import io.datafibre.fibre.sql.optimizer.base.HashDistributionDesc;
-import io.datafibre.fibre.sql.optimizer.base.HashDistributionSpec;
-import io.datafibre.fibre.sql.optimizer.base.LogicalProperty;
-import io.datafibre.fibre.sql.optimizer.base.OrderSpec;
-import io.datafibre.fibre.sql.optimizer.base.Ordering;
-import io.datafibre.fibre.sql.optimizer.operator.Operator;
-import io.datafibre.fibre.sql.optimizer.operator.Projection;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalDecodeOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalDistributionOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalHashAggregateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalOlapScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalTopNOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.CallOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
-import io.datafibre.fibre.sql.optimizer.rewrite.BaseScalarOperatorShuttle;
-import io.datafibre.fibre.sql.optimizer.statistics.ColumnDict;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.FunctionSet;
+import com.starrocks.common.Pair;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.OptExpressionVisitor;
+import com.starrocks.sql.optimizer.base.ColumnRefFactory;
+import com.starrocks.sql.optimizer.base.ColumnRefSet;
+import com.starrocks.sql.optimizer.base.DistributionCol;
+import com.starrocks.sql.optimizer.base.HashDistributionDesc;
+import com.starrocks.sql.optimizer.base.HashDistributionSpec;
+import com.starrocks.sql.optimizer.base.LogicalProperty;
+import com.starrocks.sql.optimizer.base.OrderSpec;
+import com.starrocks.sql.optimizer.base.Ordering;
+import com.starrocks.sql.optimizer.operator.Operator;
+import com.starrocks.sql.optimizer.operator.Projection;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalDecodeOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalDistributionOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalHashAggregateOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalOlapScanOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalTopNOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.sql.optimizer.rewrite.BaseScalarOperatorShuttle;
+import com.starrocks.sql.optimizer.statistics.ColumnDict;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

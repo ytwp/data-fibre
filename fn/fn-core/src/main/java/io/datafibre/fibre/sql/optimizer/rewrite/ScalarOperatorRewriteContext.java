@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.rewrite;
+package com.starrocks.sql.optimizer.rewrite;
 
 public class ScalarOperatorRewriteContext {
     // mark operator rewrite nums

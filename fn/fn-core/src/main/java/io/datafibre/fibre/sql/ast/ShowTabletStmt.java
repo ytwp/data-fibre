@@ -13,21 +13,29 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
-import io.datafibre.fibre.analysis.*;
-import io.datafibre.fibre.catalog.*;
-import io.datafibre.fibre.common.proc.LakeTabletsProcDir;
-import io.datafibre.fibre.common.proc.LocalTabletsProcDir;
-import io.datafibre.fibre.common.util.OrderByPair;
-import io.datafibre.fibre.common.util.concurrent.lock.LockType;
-import io.datafibre.fibre.common.util.concurrent.lock.Locker;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.qe.ShowResultSetMetaData;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.analysis.Expr;
+import com.starrocks.analysis.LimitElement;
+import com.starrocks.analysis.OrderByElement;
+import com.starrocks.analysis.RedirectStatus;
+import com.starrocks.analysis.TableName;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.Database;
+import com.starrocks.catalog.Replica;
+import com.starrocks.catalog.ScalarType;
+import com.starrocks.catalog.Table;
+import com.starrocks.common.proc.LakeTabletsProcDir;
+import com.starrocks.common.proc.LocalTabletsProcDir;
+import com.starrocks.common.util.OrderByPair;
+import com.starrocks.common.util.concurrent.lock.LockType;
+import com.starrocks.common.util.concurrent.lock.Locker;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.qe.ShowResultSetMetaData;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.sql.parser.NodePosition;
 
 import java.util.ArrayList;
 import java.util.List;

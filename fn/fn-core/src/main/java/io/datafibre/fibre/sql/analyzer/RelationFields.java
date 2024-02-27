@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.analyzer;
+package com.starrocks.sql.analyzer;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Multimap;
-import io.datafibre.fibre.analysis.SlotRef;
-import io.datafibre.fibre.analysis.TableName;
+import com.starrocks.analysis.SlotRef;
+import com.starrocks.analysis.TableName;
 
 import java.util.List;
 import java.util.stream.Collectors;

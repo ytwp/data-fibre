@@ -12,17 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.rule.tree;
+package com.starrocks.sql.optimizer.rule.tree;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import io.datafibre.fibre.catalog.*;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalTableFunctionOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.*;
+import com.starrocks.catalog.ArrayType;
+import com.starrocks.catalog.ComplexTypeAccessGroup;
+import com.starrocks.catalog.ComplexTypeAccessPath;
+import com.starrocks.catalog.ComplexTypeAccessPathType;
+import com.starrocks.catalog.ComplexTypeAccessPaths;
+import com.starrocks.catalog.FunctionSet;
+import com.starrocks.catalog.MapType;
+import com.starrocks.catalog.StructType;
+import com.starrocks.catalog.Type;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalTableFunctionOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CollectionElementOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperatorVisitor;
+import com.starrocks.sql.optimizer.operator.scalar.SubfieldOperator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class PruneComplexTypeUtil {
     private static final Logger LOG = LogManager.getLogger(PruneComplexTypeUtil.class);

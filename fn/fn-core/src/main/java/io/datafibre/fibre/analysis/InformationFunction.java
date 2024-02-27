@@ -32,11 +32,14 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.sql.ast.AstVisitor;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.sql.ast.AstVisitor;
+import com.starrocks.sql.parser.NodePosition;
+import com.starrocks.thrift.TExprNode;
+import com.starrocks.thrift.TExprNodeType;
+import com.starrocks.thrift.TInfoFunc;
 
 public class InformationFunction extends Expr {
     private final String funcType;
@@ -101,11 +104,11 @@ public class InformationFunction extends Expr {
         return strValue;
     }
 
-//    @Override
-//    protected void toThrift(TExprNode msg) {
-//        msg.node_type = TExprNodeType.INFO_FUNC;
-//        msg.info_func = new TInfoFunc(intValue, strValue);
-//    }
+    @Override
+    protected void toThrift(TExprNode msg) {
+        msg.node_type = TExprNodeType.INFO_FUNC;
+        msg.info_func = new TInfoFunc(intValue, strValue);
+    }
 
     @Override
     public String toSqlImpl() {

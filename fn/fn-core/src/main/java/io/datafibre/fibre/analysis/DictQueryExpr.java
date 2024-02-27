@@ -13,13 +13,16 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
-import io.datafibre.fibre.catalog.Function;
-import io.datafibre.fibre.catalog.FunctionSet;
-import io.datafibre.fibre.sql.analyzer.SemanticException;
-import io.datafibre.fibre.sql.ast.AstVisitor;
-import io.datafibre.fibre.thrift.TDictQueryExpr;
+import com.starrocks.catalog.Function;
+import com.starrocks.catalog.FunctionSet;
+import com.starrocks.catalog.Type;
+import com.starrocks.sql.analyzer.SemanticException;
+import com.starrocks.sql.ast.AstVisitor;
+import com.starrocks.thrift.TDictQueryExpr;
+import com.starrocks.thrift.TExprNode;
+import com.starrocks.thrift.TExprNodeType;
 
 import java.util.List;
 
@@ -45,11 +48,11 @@ public class DictQueryExpr extends FunctionCallExpr {
     }
 
 
-//    @Override
-//    protected void toThrift(TExprNode msg) {
-//        msg.setNode_type(TExprNodeType.DICT_QUERY_EXPR);
-//        msg.setDict_query_expr(dictQueryExpr);
-//    }
+    @Override
+    protected void toThrift(TExprNode msg) {
+        msg.setNode_type(TExprNodeType.DICT_QUERY_EXPR);
+        msg.setDict_query_expr(dictQueryExpr);
+    }
 
     @Override
     public <R, C> R accept(AstVisitor<R, C> visitor, C context) {

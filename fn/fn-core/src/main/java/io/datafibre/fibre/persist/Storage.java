@@ -32,15 +32,19 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.persist;
+package com.starrocks.persist;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import io.datafibre.fibre.ha.FrontendNodeType;
+import com.starrocks.ha.FrontendNodeType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;

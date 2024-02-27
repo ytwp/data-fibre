@@ -11,9 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.sql.parser.NodePosition;
 
 public class AlterCatalogStmt extends DdlStmt {
     private final String catalogName;

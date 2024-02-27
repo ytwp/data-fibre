@@ -13,12 +13,12 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
-import io.datafibre.fibre.analysis.ParseNode;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.analysis.ParseNode;
+import com.starrocks.sql.parser.NodePosition;
 
 import java.util.List;
 

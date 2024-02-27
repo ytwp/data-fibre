@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.analyzer;
+package com.starrocks.sql.analyzer;
 
 import com.google.common.base.Strings;
-//import io.datafibre.fibre.alter.SchemaChangeHandler;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.common.Config;
-import io.datafibre.fibre.common.ErrorCode;
-import io.datafibre.fibre.common.ErrorReport;
+import com.starrocks.alter.SchemaChangeHandler;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.common.Config;
+import com.starrocks.common.ErrorCode;
+import com.starrocks.common.ErrorReport;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -80,12 +80,12 @@ public class FeNameFormat {
         if (Strings.isNullOrEmpty(columnName) || !columnName.matches(COLUMN_NAME_REGEX)) {
             ErrorReport.reportSemanticException(ErrorCode.ERR_WRONG_COLUMN_NAME, columnName);
         }
-//        if (columnName.startsWith(SchemaChangeHandler.SHADOW_NAME_PRFIX)) {
-//            ErrorReport.reportSemanticException(ErrorCode.ERR_WRONG_COLUMN_NAME, columnName);
-//        }
-//        if (columnName.startsWith(SchemaChangeHandler.SHADOW_NAME_PRFIX_V1)) {
-//            ErrorReport.reportSemanticException(ErrorCode.ERR_WRONG_COLUMN_NAME, columnName);
-//        }
+        if (columnName.startsWith(SchemaChangeHandler.SHADOW_NAME_PRFIX)) {
+            ErrorReport.reportSemanticException(ErrorCode.ERR_WRONG_COLUMN_NAME, columnName);
+        }
+        if (columnName.startsWith(SchemaChangeHandler.SHADOW_NAME_PRFIX_V1)) {
+            ErrorReport.reportSemanticException(ErrorCode.ERR_WRONG_COLUMN_NAME, columnName);
+        }
 
         if (!Config.allow_system_reserved_names) {
             if (FORBIDDEN_COLUMN_NAMES.contains(columnName)) {

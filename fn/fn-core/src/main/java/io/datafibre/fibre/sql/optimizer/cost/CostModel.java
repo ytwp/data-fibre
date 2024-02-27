@@ -12,29 +12,52 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.cost;
+package com.starrocks.sql.optimizer.cost;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.common.Pair;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.qe.SessionVariable;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.sql.common.ErrorType;
-import io.datafibre.fibre.sql.common.StarRocksPlannerException;
-import io.datafibre.fibre.sql.optimizer.*;
-import io.datafibre.fibre.sql.optimizer.base.*;
-import io.datafibre.fibre.sql.optimizer.operator.DataSkewInfo;
-import io.datafibre.fibre.sql.optimizer.operator.Operator;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorVisitor;
-import io.datafibre.fibre.sql.optimizer.operator.Projection;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalAggregationOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.*;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.BinaryPredicateOperator;
-import io.datafibre.fibre.sql.optimizer.statistics.ColumnStatistic;
-import io.datafibre.fibre.sql.optimizer.statistics.Statistics;
-import io.datafibre.fibre.sql.optimizer.statistics.StatisticsEstimateCoefficient;
+import com.starrocks.common.Pair;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.qe.SessionVariable;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.sql.common.ErrorType;
+import com.starrocks.sql.common.StarRocksPlannerException;
+import com.starrocks.sql.optimizer.ExpressionContext;
+import com.starrocks.sql.optimizer.Group;
+import com.starrocks.sql.optimizer.GroupExpression;
+import com.starrocks.sql.optimizer.JoinHelper;
+import com.starrocks.sql.optimizer.Utils;
+import com.starrocks.sql.optimizer.base.ColumnRefSet;
+import com.starrocks.sql.optimizer.base.DistributionSpec;
+import com.starrocks.sql.optimizer.base.HashDistributionDesc;
+import com.starrocks.sql.optimizer.base.HashDistributionSpec;
+import com.starrocks.sql.optimizer.base.PhysicalPropertySet;
+import com.starrocks.sql.optimizer.operator.DataSkewInfo;
+import com.starrocks.sql.optimizer.operator.Operator;
+import com.starrocks.sql.optimizer.operator.OperatorVisitor;
+import com.starrocks.sql.optimizer.operator.Projection;
+import com.starrocks.sql.optimizer.operator.logical.LogicalAggregationOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalAssertOneRowOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalCTEAnchorOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalCTEConsumeOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalCTEProduceOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalDistributionOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalHashAggregateOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalHashJoinOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalHiveScanOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalMergeJoinOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalNestLoopJoinOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalNoCTEOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalOlapScanOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalProjectOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalTopNOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalWindowOperator;
+import com.starrocks.sql.optimizer.operator.scalar.BinaryPredicateOperator;
+import com.starrocks.sql.optimizer.statistics.ColumnStatistic;
+import com.starrocks.sql.optimizer.statistics.Statistics;
+import com.starrocks.sql.optimizer.statistics.StatisticsEstimateCoefficient;
+import com.starrocks.statistic.StatisticUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,7 +67,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static io.datafibre.fibre.sql.optimizer.statistics.StatisticsEstimateCoefficient.EXECUTE_COST_PENALTY;
+import static com.starrocks.sql.optimizer.statistics.StatisticsEstimateCoefficient.EXECUTE_COST_PENALTY;
 
 public class CostModel {
 
@@ -84,7 +107,7 @@ public class CostModel {
         double realCost = getRealCost(costEstimate);
 
         LOG.debug("operator: {}, group id: {}, child group id: {}, " +
-                  "inputProperties: {}, outputRowCount: {}, outPutSize: {}, costEstimate: {}, realCost: {}",
+                        "inputProperties: {}, outputRowCount: {}, outPutSize: {}, costEstimate: {}, realCost: {}",
                 expressionContext.getOp(), expression.getGroup().getId(),
                 expression.getInputs().stream().map(Group::getId).collect(Collectors.toList()),
                 childrenOutputProperties,
@@ -99,8 +122,8 @@ public class CostModel {
         double memoryCostWeight = 2;
         double networkCostWeight = 1.5;
         return costEstimate.getCpuCost() * cpuCostWeight +
-               costEstimate.getMemoryCost() * memoryCostWeight +
-               costEstimate.getNetworkCost() * networkCostWeight;
+                costEstimate.getMemoryCost() * memoryCostWeight +
+                costEstimate.getNetworkCost() * networkCostWeight;
     }
 
     private static class CostEstimator extends OperatorVisitor<CostEstimate, ExpressionContext> {
@@ -146,7 +169,7 @@ public class CostModel {
                 // statistics is not unknown
                 if (groupStatistics != null && groupStatistics.getColumnStatistics().values().stream().
                         anyMatch(ColumnStatistic::isUnknown) && mvStatistics.getColumnStatistics().values().stream().
-                            noneMatch(ColumnStatistic::isUnknown)) {
+                        noneMatch(ColumnStatistic::isUnknown)) {
                     return adjustCostForMV(context);
                 } else {
                     ColumnRefSet usedColumns = statistics.getUsedColumns();
@@ -187,8 +210,8 @@ public class CostModel {
         public CostEstimate visitPhysicalTopN(PhysicalTopNOperator node, ExpressionContext context) {
             // Disable one phased sort, Currently, we always use two phase sort
             if (!node.isEnforced() && !node.isSplit()
-                && node.getSortPhase().isFinal()
-                && !context.getChildOperator(0).hasLimit()) {
+                    && node.getSortPhase().isFinal()
+                    && !context.getChildOperator(0).hasLimit()) {
                 return CostEstimate.infinite();
             }
 
@@ -248,7 +271,7 @@ public class CostModel {
                     .stream().map(inputStatistics::getColumnStatistic).collect(Collectors.toList());
 
             if (distColStat.isUnknownValue() || distColStat.isUnknown() ||
-                groupByStats.stream().anyMatch(groupStat -> groupStat.isUnknown() || groupStat.isUnknownValue())) {
+                    groupByStats.stream().anyMatch(groupStat -> groupStat.isUnknown() || groupStat.isUnknownValue())) {
                 return 1.5;
             }
             double groupByColDistinctValues = 1.0;
@@ -265,9 +288,9 @@ public class CostModel {
             final double avgDistValuesPerGroup = distColDistinctValuesCount / groupByColDistinctValues;
 
             if (distColDistinctValuesCount > distColDistinctValuesCountWaterMark &&
-                ((groupByColDistinctValues <= groupByColDistinctLowWaterMark) ||
-                 (groupByColDistinctValues < groupByColDistinctHighWaterMark &&
-                  avgDistValuesPerGroup > 100))) {
+                    ((groupByColDistinctValues <= groupByColDistinctLowWaterMark) ||
+                            (groupByColDistinctValues < groupByColDistinctHighWaterMark &&
+                                    avgDistValuesPerGroup > 100))) {
                 return 0.5;
             } else {
                 return 1.5;
@@ -312,8 +335,8 @@ public class CostModel {
                     // 1. Ignore the network cost for ExchangeNode when estimating cost model.
                     // 2. Remove ExchangeNode between AggNode and ScanNode when building fragments.
                     boolean ignoreNetworkCost = sessionVariable.isEnableLocalShuffleAgg()
-                                                && sessionVariable.isEnablePipelineEngine()
-                                                && GlobalStateMgr.getCurrentState().getNodeMgr().getClusterInfo().isSingleBackendAndComputeNode();
+                            && sessionVariable.isEnablePipelineEngine()
+                            && GlobalStateMgr.getCurrentState().getNodeMgr().getClusterInfo().isSingleBackendAndComputeNode();
                     double networkCost = ignoreNetworkCost ? 0 : Math.max(outputSize, 1);
 
                     result = CostEstimate.of(outputSize * factor, 0, networkCost * factor);
@@ -369,12 +392,12 @@ public class CostModel {
                             Utils.extractConjuncts(join.getOnPredicate()));
             if (join.getJoinType().isCrossJoin() || eqOnPredicates.isEmpty()) {
                 return CostEstimate.of(leftStatistics.getOutputSize(context.getChildOutputColumns(0))
-                                       + rightStatistics.getOutputSize(context.getChildOutputColumns(1)),
+                                + rightStatistics.getOutputSize(context.getChildOutputColumns(1)),
                         rightStatistics.getOutputSize(context.getChildOutputColumns(1))
-                        * EXECUTE_COST_PENALTY * 100D, 0);
+                                * EXECUTE_COST_PENALTY * 100D, 0);
             } else {
                 return CostEstimate.of((leftStatistics.getOutputSize(context.getChildOutputColumns(0))
-                                        + rightStatistics.getOutputSize(context.getChildOutputColumns(1)) / 2),
+                                + rightStatistics.getOutputSize(context.getChildOutputColumns(1)) / 2),
                         0, 0);
 
             }
@@ -409,7 +432,7 @@ public class CostModel {
                 memCost += rightSize;
             }
             if (join.getJoinType().isOuterJoin() || join.getJoinType().isSemiJoin() ||
-                join.getJoinType().isAntiJoin()) {
+                    join.getJoinType().isAntiJoin()) {
                 cpuCost += leftSize;
             }
 
@@ -496,9 +519,9 @@ public class CostModel {
         // eliminate plan like input -> local agg -> global agg plan to remove this unnecessary local agg step.
         private Optional<CostEstimate> redundantTwoStageAggCost(PhysicalHashAggregateOperator node, ExpressionContext context) {
             if (node.isSplit() && node.getType().isGlobal()
-                && CollectionUtils.isNotEmpty(inputProperties)
-                && inputProperties.get(0).getDistributionProperty().isShuffle()
-                && context.getGroupExpression() != null) {
+                    && CollectionUtils.isNotEmpty(inputProperties)
+                    && inputProperties.get(0).getDistributionProperty().isShuffle()
+                    && context.getGroupExpression() != null) {
                 HashDistributionSpec spec = (HashDistributionSpec) inputProperties.get(0).getDistributionProperty().getSpec();
                 HashDistributionDesc desc = spec.getHashDistributionDesc();
                 Group group = context.getGroupExpression().getGroup();

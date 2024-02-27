@@ -32,11 +32,16 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.common.io;
+package com.starrocks.common.io;
 
 import com.google.common.base.Strings;
 
-import java.io.*;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 /**
  * An utility class for I/O related functionality.

@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
 import com.google.common.collect.ImmutableList;
-import io.datafibre.fibre.analysis.RedirectStatus;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.ScalarType;
-import io.datafibre.fibre.common.Pair;
-import io.datafibre.fibre.common.util.DebugUtil;
-import io.datafibre.fibre.common.util.TimeUtils;
-import io.datafibre.fibre.qe.ShowResultSetMetaData;
-import io.datafibre.fibre.qe.scheduler.slot.LogicalSlot;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.analysis.RedirectStatus;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.ScalarType;
+import com.starrocks.common.Pair;
+import com.starrocks.common.util.DebugUtil;
+import com.starrocks.common.util.TimeUtils;
+import com.starrocks.qe.ShowResultSetMetaData;
+import com.starrocks.qe.scheduler.slot.LogicalSlot;
+import com.starrocks.sql.parser.NodePosition;
 
 import java.util.List;
 import java.util.function.Function;

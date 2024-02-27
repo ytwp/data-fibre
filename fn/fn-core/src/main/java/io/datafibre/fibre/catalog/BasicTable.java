@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.catalog;
+package com.starrocks.catalog;
 
 /**
  * BasicTable declares a subset of methods in {@link Table}, which aims to provide basic information about table while

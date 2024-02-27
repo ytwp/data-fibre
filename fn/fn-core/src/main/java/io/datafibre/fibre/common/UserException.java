@@ -32,10 +32,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.common;
+package com.starrocks.common;
 
-
-import org.apache.commons.lang3.StringUtils;
+import com.google.common.base.Strings;
 
 /**
  * Thrown for internal server errors.
@@ -44,7 +43,7 @@ public class UserException extends Exception {
     private final InternalErrorCode errorCode;
 
     public UserException(String msg, Throwable cause) {
-        super(StringUtils.defaultString(msg), cause);
+        super(Strings.nullToEmpty(msg), cause);
         errorCode = InternalErrorCode.INTERNAL_ERR;
     }
 
@@ -54,17 +53,17 @@ public class UserException extends Exception {
     }
 
     public UserException(String msg, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(StringUtils.defaultString(msg), cause, enableSuppression, writableStackTrace);
+        super(Strings.nullToEmpty(msg), cause, enableSuppression, writableStackTrace);
         errorCode = InternalErrorCode.INTERNAL_ERR;
     }
 
     public UserException(String msg) {
-        super(StringUtils.defaultString(msg));
+        super(Strings.nullToEmpty(msg));
         errorCode = InternalErrorCode.INTERNAL_ERR;
     }
 
     public UserException(InternalErrorCode errCode, String msg) {
-        super(StringUtils.defaultString(msg));
+        super(Strings.nullToEmpty(msg));
         this.errorCode = errCode;
     }
 

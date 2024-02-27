@@ -13,9 +13,13 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.common;
+package com.starrocks.common;
 
-import java.util.concurrent.*;
+import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class PriorityThreadPoolExecutor extends ThreadPoolExecutor {
 

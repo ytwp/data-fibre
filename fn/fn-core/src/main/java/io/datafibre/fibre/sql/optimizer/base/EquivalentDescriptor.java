@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.base;
+package com.starrocks.sql.optimizer.base;
 
-import io.datafibre.fibre.common.util.UnionFind;
+import com.starrocks.common.util.UnionFind;
 
 import java.util.Collections;
 import java.util.List;

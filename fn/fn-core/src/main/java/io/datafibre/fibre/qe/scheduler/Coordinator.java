@@ -12,25 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.qe.scheduler;
+package com.starrocks.qe.scheduler;
 
-import io.datafibre.fibre.analysis.DescriptorTable;
-import io.datafibre.fibre.common.Status;
-import io.datafibre.fibre.common.util.RuntimeProfile;
-import io.datafibre.fibre.planner.PlanFragment;
-import io.datafibre.fibre.planner.ScanNode;
-import io.datafibre.fibre.planner.StreamLoadPlanner;
-import io.datafibre.fibre.proto.PPlanFragmentCancelReason;
-import io.datafibre.fibre.proto.PQueryStatistics;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.qe.QueryStatisticsItem;
-import io.datafibre.fibre.qe.RowBatch;
-import io.datafibre.fibre.qe.scheduler.slot.LogicalSlot;
-import io.datafibre.fibre.sql.LoadPlanner;
-import io.datafibre.fibre.sql.plan.ExecPlan;
-import io.datafibre.fibre.thrift.*;
-import io.datafibre.fibre.transaction.TabletCommitInfo;
-import io.datafibre.fibre.transaction.TabletFailInfo;
+import com.starrocks.analysis.DescriptorTable;
+import com.starrocks.common.Status;
+import com.starrocks.common.util.RuntimeProfile;
+import com.starrocks.planner.PlanFragment;
+import com.starrocks.planner.ScanNode;
+import com.starrocks.planner.StreamLoadPlanner;
+import com.starrocks.proto.PPlanFragmentCancelReason;
+import com.starrocks.proto.PQueryStatistics;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.qe.QueryStatisticsItem;
+import com.starrocks.qe.RowBatch;
+import com.starrocks.qe.scheduler.slot.LogicalSlot;
+import com.starrocks.sql.LoadPlanner;
+import com.starrocks.sql.plan.ExecPlan;
+import com.starrocks.thrift.TDescriptorTable;
+import com.starrocks.thrift.TLoadJobType;
+import com.starrocks.thrift.TNetworkAddress;
+import com.starrocks.thrift.TReportAuditStatisticsParams;
+import com.starrocks.thrift.TReportExecStatusParams;
+import com.starrocks.thrift.TSinkCommitInfo;
+import com.starrocks.thrift.TTabletCommitInfo;
+import com.starrocks.thrift.TTabletFailInfo;
+import com.starrocks.thrift.TUniqueId;
+import com.starrocks.transaction.TabletCommitInfo;
+import com.starrocks.transaction.TabletFailInfo;
 
 import java.util.Collections;
 import java.util.List;

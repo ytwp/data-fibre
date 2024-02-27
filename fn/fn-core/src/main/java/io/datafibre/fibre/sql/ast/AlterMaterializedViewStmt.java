@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
-import io.datafibre.fibre.analysis.TableName;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.analysis.TableName;
+import com.starrocks.sql.parser.NodePosition;
 
 /**
  * 1.Support for modifying the way of refresh and the cycle of asynchronous refresh;

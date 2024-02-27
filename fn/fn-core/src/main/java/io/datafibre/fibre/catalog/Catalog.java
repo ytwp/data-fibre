@@ -13,14 +13,14 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.catalog;
+package com.starrocks.catalog;
 
 import com.google.common.collect.Lists;
 import com.google.gson.annotations.SerializedName;
-import io.datafibre.fibre.common.io.Text;
-import io.datafibre.fibre.common.io.Writable;
-import io.datafibre.fibre.common.proc.BaseProcResult;
-import io.datafibre.fibre.persist.gson.GsonUtils;
+import com.starrocks.common.io.Text;
+import com.starrocks.common.io.Writable;
+import com.starrocks.common.proc.BaseProcResult;
+import com.starrocks.persist.gson.GsonUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.DataInput;

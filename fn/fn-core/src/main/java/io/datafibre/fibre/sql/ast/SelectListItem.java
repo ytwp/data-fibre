@@ -13,13 +13,13 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
 import com.google.common.base.Preconditions;
-import io.datafibre.fibre.analysis.Expr;
-import io.datafibre.fibre.analysis.ParseNode;
-import io.datafibre.fibre.analysis.TableName;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.analysis.Expr;
+import com.starrocks.analysis.ParseNode;
+import com.starrocks.analysis.TableName;
+import com.starrocks.sql.parser.NodePosition;
 
 public class SelectListItem implements ParseNode {
     private Expr expr;

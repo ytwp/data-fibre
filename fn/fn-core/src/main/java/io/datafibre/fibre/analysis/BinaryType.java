@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
-import io.datafibre.fibre.thrift.TExprOpcode;
+import com.starrocks.thrift.TExprOpcode;
 
 public enum BinaryType {
     EQ("=", "eq", TExprOpcode.EQ, false),

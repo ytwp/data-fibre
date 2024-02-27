@@ -32,24 +32,33 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.qe;
+package com.starrocks.qe;
 
 import com.google.common.base.Preconditions;
-import io.datafibre.fibre.analysis.RedirectStatus;
-import io.datafibre.fibre.common.*;
-import io.datafibre.fibre.common.util.AuditStatisticsUtil;
-import io.datafibre.fibre.common.util.UUIDUtil;
-import io.datafibre.fibre.mysql.MysqlChannel;
-import io.datafibre.fibre.qe.QueryState.MysqlStateType;
-import io.datafibre.fibre.rpc.FrontendServiceProxy;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.sql.analyzer.AstToSQLBuilder;
-import io.datafibre.fibre.sql.ast.SetListItem;
-import io.datafibre.fibre.sql.ast.SetStmt;
-import io.datafibre.fibre.sql.ast.StatementBase;
-import io.datafibre.fibre.sql.ast.SystemVariable;
-import io.datafibre.fibre.system.SystemInfoService;
-import io.datafibre.fibre.thrift.*;
+import com.starrocks.analysis.RedirectStatus;
+import com.starrocks.common.Config;
+import com.starrocks.common.DdlException;
+import com.starrocks.common.ErrorCode;
+import com.starrocks.common.ErrorReportException;
+import com.starrocks.common.Pair;
+import com.starrocks.common.util.AuditStatisticsUtil;
+import com.starrocks.common.util.UUIDUtil;
+import com.starrocks.mysql.MysqlChannel;
+import com.starrocks.qe.QueryState.MysqlStateType;
+import com.starrocks.rpc.FrontendServiceProxy;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.sql.analyzer.AstToSQLBuilder;
+import com.starrocks.sql.ast.SetListItem;
+import com.starrocks.sql.ast.SetStmt;
+import com.starrocks.sql.ast.StatementBase;
+import com.starrocks.sql.ast.SystemVariable;
+import com.starrocks.system.SystemInfoService;
+import com.starrocks.thrift.TAuditStatistics;
+import com.starrocks.thrift.TMasterOpRequest;
+import com.starrocks.thrift.TMasterOpResult;
+import com.starrocks.thrift.TNetworkAddress;
+import com.starrocks.thrift.TQueryOptions;
+import com.starrocks.thrift.TUserRoles;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -94,28 +103,28 @@ public class LeaderOpExecutor {
 
     public void execute() throws Exception {
         forward();
-//        LOG.info("forwarding to master get result max journal id: {}", result.maxJournalId);
-//        ctx.getGlobalStateMgr().getJournalObservable().waitOn(result.maxJournalId, waitTimeoutMs);
-//
-//        if (result.state != null) {
-//            MysqlStateType state = MysqlStateType.fromString(result.state);
-//            if (state != null) {
-//                ctx.getState().setStateType(state);
-//                if (state == MysqlStateType.EOF || state == MysqlStateType.OK) {
-//                    afterForward();
-//                }
-//            }
-//        }
-//
-//        if (result.isSetResource_group_name()) {
-//            ctx.getAuditEventBuilder().setResourceGroup(result.getResource_group_name());
-//        }
-//        if (result.isSetAudit_statistics()) {
-//            TAuditStatistics tAuditStatistics = result.getAudit_statistics();
-//            if (ctx.getExecutor() != null) {
-//                ctx.getExecutor().setQueryStatistics(AuditStatisticsUtil.toProtobuf(tAuditStatistics));
-//            }
-//        }
+        LOG.info("forwarding to master get result max journal id: {}", result.maxJournalId);
+        ctx.getGlobalStateMgr().getJournalObservable().waitOn(result.maxJournalId, waitTimeoutMs);
+
+        if (result.state != null) {
+            MysqlStateType state = MysqlStateType.fromString(result.state);
+            if (state != null) {
+                ctx.getState().setStateType(state);
+                if (state == MysqlStateType.EOF || state == MysqlStateType.OK) {
+                    afterForward();
+                }
+            }
+        }
+
+        if (result.isSetResource_group_name()) {
+            ctx.getAuditEventBuilder().setResourceGroup(result.getResource_group_name());
+        }
+        if (result.isSetAudit_statistics()) {
+            TAuditStatistics tAuditStatistics = result.getAudit_statistics();
+            if (ctx.getExecutor() != null) {
+                ctx.getExecutor().setQueryStatistics(AuditStatisticsUtil.toProtobuf(tAuditStatistics));
+            }
+        }
     }
 
     private void afterForward() throws DdlException {

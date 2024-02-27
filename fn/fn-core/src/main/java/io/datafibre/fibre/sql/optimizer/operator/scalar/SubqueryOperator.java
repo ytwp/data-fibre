@@ -13,15 +13,15 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.operator.scalar;
+package com.starrocks.sql.optimizer.operator.scalar;
 
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.sql.analyzer.AstToStringBuilder;
-import io.datafibre.fibre.sql.ast.QueryStatement;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalApplyOperator;
-import io.datafibre.fibre.sql.optimizer.transformer.OptExprBuilder;
+import com.starrocks.catalog.Type;
+import com.starrocks.sql.analyzer.AstToStringBuilder;
+import com.starrocks.sql.ast.QueryStatement;
+import com.starrocks.sql.optimizer.base.ColumnRefSet;
+import com.starrocks.sql.optimizer.operator.OperatorType;
+import com.starrocks.sql.optimizer.operator.logical.LogicalApplyOperator;
+import com.starrocks.sql.optimizer.transformer.OptExprBuilder;
 
 import java.util.Collections;
 import java.util.List;

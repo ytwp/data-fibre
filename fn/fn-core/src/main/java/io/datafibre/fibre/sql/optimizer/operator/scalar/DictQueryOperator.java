@@ -13,12 +13,12 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.operator.scalar;
+package com.starrocks.sql.optimizer.operator.scalar;
 
-import io.datafibre.fibre.catalog.Function;
-import io.datafibre.fibre.catalog.FunctionSet;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.thrift.TDictQueryExpr;
+import com.starrocks.catalog.Function;
+import com.starrocks.catalog.FunctionSet;
+import com.starrocks.catalog.Type;
+import com.starrocks.thrift.TDictQueryExpr;
 
 import java.util.List;
 
@@ -27,8 +27,9 @@ public class DictQueryOperator extends CallOperator {
     private final TDictQueryExpr dictQueryExpr;
     private final Function fn;
 
-    public DictQueryOperator(List<ScalarOperator> arguments, TDictQueryExpr dictQueryExpr, Function fn) {
-        super(FunctionSet.DICT_MAPPING, Type.BIGINT, arguments);
+    public DictQueryOperator(List<ScalarOperator> arguments, TDictQueryExpr dictQueryExpr, Function fn,
+                             Type type) {
+        super(FunctionSet.DICT_MAPPING, type, arguments);
         this.dictQueryExpr = dictQueryExpr;
         this.fn = fn;
     }

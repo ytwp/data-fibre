@@ -32,19 +32,19 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.qe;
+package com.starrocks.qe;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.datafibre.fibre.common.Config;
-import io.datafibre.fibre.common.ThreadPoolManager;
-import io.datafibre.fibre.common.util.LogUtil;
-import io.datafibre.fibre.http.HttpConnectContext;
-import io.datafibre.fibre.mysql.MysqlProto;
-import io.datafibre.fibre.mysql.nio.NConnectContext;
-import io.datafibre.fibre.privilege.AccessDeniedException;
-import io.datafibre.fibre.privilege.PrivilegeType;
-import io.datafibre.fibre.sql.analyzer.Authorizer;
+import com.starrocks.common.Config;
+import com.starrocks.common.ThreadPoolManager;
+import com.starrocks.common.util.LogUtil;
+import com.starrocks.http.HttpConnectContext;
+import com.starrocks.mysql.MysqlProto;
+import com.starrocks.mysql.nio.NConnectContext;
+import com.starrocks.privilege.AccessDeniedException;
+import com.starrocks.privilege.PrivilegeType;
+import com.starrocks.sql.analyzer.Authorizer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -111,15 +111,17 @@ public class ConnectScheduler {
         if (context == null) {
             return false;
         }
-        // 生成查询ID
+
         context.setConnectionId(nextConnectionId.getAndAdd(1));
         context.resetConnectionStartTime();
         // no necessary for nio or Http.
         if (context instanceof NConnectContext || context instanceof HttpConnectContext) {
             return true;
         }
-        // 提交任务
-        executor.submit(new LoopHandler(context));
+        if (executor.submit(new LoopHandler(context)) == null) {
+            LOG.warn("Submit one thread failed.");
+            return false;
+        }
         return true;
     }
 
@@ -129,10 +131,12 @@ public class ConnectScheduler {
             return false;
         }
         // Check user
-        connCountByUser.computeIfAbsent(ctx.getQualifiedUser(), k -> new AtomicInteger(0));
-        int currentConns = connCountByUser.get(ctx.getQualifiedUser()).get();
-        long currentMaxConns = ctx.getGlobalStateMgr().getAuthenticationMgr().getMaxConn(ctx.getQualifiedUser());
-        if (currentConns >= currentMaxConns) {
+        if (connCountByUser.get(ctx.getQualifiedUser()) == null) {
+            connCountByUser.put(ctx.getQualifiedUser(), new AtomicInteger(0));
+        }
+        int currentConn = connCountByUser.get(ctx.getQualifiedUser()).get();
+        long currentMaxConn = ctx.getGlobalStateMgr().getAuthenticationMgr().getMaxConn(ctx.getCurrentUserIdentity());
+        if (currentConn >= currentMaxConn) {
             return false;
         }
         numberConnection.incrementAndGet();
@@ -204,14 +208,12 @@ public class ConnectScheduler {
                 // authenticate check failed.
                 MysqlProto.NegotiateResult result = null;
                 try {
-                    // 连接？
                     result = MysqlProto.negotiate(context);
                     if (!result.isSuccess()) {
                         return;
                     }
-                    // 使用连接id注册一个连接
+
                     if (registerConnection(context)) {
-                        // 返回【成功失败】结果
                         MysqlProto.sendResponsePacket(context);
                     } else {
                         context.getState().setError("Reach limit of connections");

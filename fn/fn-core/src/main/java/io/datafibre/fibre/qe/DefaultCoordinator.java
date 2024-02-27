@@ -32,44 +32,76 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.qe;
+package com.starrocks.qe;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import io.datafibre.fibre.analysis.DescriptorTable;
-import io.datafibre.fibre.authentication.AuthenticationMgr;
-import io.datafibre.fibre.catalog.FsBroker;
-import io.datafibre.fibre.common.*;
-import io.datafibre.fibre.common.profile.Timer;
-import io.datafibre.fibre.common.profile.Tracers;
-import io.datafibre.fibre.common.util.AuditStatisticsUtil;
-import io.datafibre.fibre.common.util.DebugUtil;
-import io.datafibre.fibre.common.util.RuntimeProfile;
-import io.datafibre.fibre.connector.exception.RemoteFileNotFoundException;
-import io.datafibre.fibre.mysql.MysqlCommand;
-import io.datafibre.fibre.planner.*;
-import io.datafibre.fibre.privilege.PrivilegeBuiltinConstants;
-import io.datafibre.fibre.proto.PPlanFragmentCancelReason;
-import io.datafibre.fibre.proto.PQueryStatistics;
-import io.datafibre.fibre.qe.scheduler.Coordinator;
-import io.datafibre.fibre.qe.scheduler.Deployer;
-import io.datafibre.fibre.qe.scheduler.QueryRuntimeProfile;
-import io.datafibre.fibre.qe.scheduler.dag.*;
-import io.datafibre.fibre.qe.scheduler.slot.LogicalSlot;
-import io.datafibre.fibre.rpc.RpcException;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.sql.LoadPlanner;
-import io.datafibre.fibre.sql.ast.UserIdentity;
-import io.datafibre.fibre.sql.plan.ExecPlan;
-import io.datafibre.fibre.system.ComputeNode;
-import io.datafibre.fibre.thrift.*;
+import com.starrocks.analysis.DescriptorTable;
+import com.starrocks.authentication.AuthenticationMgr;
+import com.starrocks.catalog.FsBroker;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.common.Config;
+import com.starrocks.common.FeConstants;
+import com.starrocks.common.Status;
+import com.starrocks.common.ThriftServer;
+import com.starrocks.common.UserException;
+import com.starrocks.common.profile.Timer;
+import com.starrocks.common.profile.Tracers;
+import com.starrocks.common.util.AuditStatisticsUtil;
+import com.starrocks.common.util.DebugUtil;
+import com.starrocks.common.util.RuntimeProfile;
+import com.starrocks.connector.exception.RemoteFileNotFoundException;
+import com.starrocks.mysql.MysqlCommand;
+import com.starrocks.planner.PlanFragment;
+import com.starrocks.planner.ResultSink;
+import com.starrocks.planner.RuntimeFilterDescription;
+import com.starrocks.planner.ScanNode;
+import com.starrocks.planner.StreamLoadPlanner;
+import com.starrocks.privilege.PrivilegeBuiltinConstants;
+import com.starrocks.proto.PPlanFragmentCancelReason;
+import com.starrocks.proto.PQueryStatistics;
+import com.starrocks.qe.scheduler.Coordinator;
+import com.starrocks.qe.scheduler.Deployer;
+import com.starrocks.qe.scheduler.QueryRuntimeProfile;
+import com.starrocks.qe.scheduler.dag.ExecutionDAG;
+import com.starrocks.qe.scheduler.dag.ExecutionFragment;
+import com.starrocks.qe.scheduler.dag.FragmentInstance;
+import com.starrocks.qe.scheduler.dag.FragmentInstanceExecState;
+import com.starrocks.qe.scheduler.dag.JobSpec;
+import com.starrocks.qe.scheduler.slot.LogicalSlot;
+import com.starrocks.rpc.RpcException;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.sql.LoadPlanner;
+import com.starrocks.sql.ast.UserIdentity;
+import com.starrocks.sql.plan.ExecPlan;
+import com.starrocks.system.ComputeNode;
+import com.starrocks.thrift.TDescriptorTable;
+import com.starrocks.thrift.TLoadJobType;
+import com.starrocks.thrift.TNetworkAddress;
+import com.starrocks.thrift.TQueryType;
+import com.starrocks.thrift.TReportAuditStatisticsParams;
+import com.starrocks.thrift.TReportExecStatusParams;
+import com.starrocks.thrift.TRuntimeFilterDestination;
+import com.starrocks.thrift.TRuntimeFilterProberParams;
+import com.starrocks.thrift.TSinkCommitInfo;
+import com.starrocks.thrift.TStatusCode;
+import com.starrocks.thrift.TTabletCommitInfo;
+import com.starrocks.thrift.TTabletFailInfo;
+import com.starrocks.thrift.TUniqueId;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -118,7 +150,7 @@ public class DefaultCoordinator extends Coordinator {
 
     private LogicalSlot slot = null;
 
-//    private ShortCircuitExecutor shortCircuitExecutor = null;
+    private ShortCircuitExecutor shortCircuitExecutor = null;
     private boolean isShortCircuit = false;
     private boolean isBinaryRow = false;
 
@@ -241,20 +273,20 @@ public class DefaultCoordinator extends Coordinator {
         this.executionDAG = coordinatorPreprocessor.getExecutionDAG();
 
         this.queryProfile = new QueryRuntimeProfile(connectContext, jobSpec, executionDAG.getFragmentsInCreatedOrder().size());
-//        List<PlanFragment> fragments = jobSpec.getFragments();
-//        List<ScanNode> scanNodes = jobSpec.getScanNodes();
-//        TDescriptorTable descTable = jobSpec.getDescTable();
-//
-//        if (connectContext.getCommand() == MysqlCommand.COM_STMT_EXECUTE) {
-//            isBinaryRow = true;
-//        }
-//
-//        shortCircuitExecutor = ShortCircuitExecutor.create(context, fragments, scanNodes, descTable,
-//                isBinaryRow, jobSpec.isNeedReport());
-//
-//        if (null != shortCircuitExecutor) {
-//            isShortCircuit = true;
-//        }
+        List<PlanFragment> fragments = jobSpec.getFragments();
+        List<ScanNode> scanNodes = jobSpec.getScanNodes();
+        TDescriptorTable descTable = jobSpec.getDescTable();
+
+        if (connectContext.getCommand() == MysqlCommand.COM_STMT_EXECUTE) {
+            isBinaryRow = true;
+        }
+
+        shortCircuitExecutor = ShortCircuitExecutor.create(context, fragments, scanNodes, descTable,
+                isBinaryRow, jobSpec.isNeedReport());
+
+        if (null != shortCircuitExecutor) {
+            isShortCircuit = true;
+        }
     }
 
     @Override
@@ -500,44 +532,44 @@ public class DefaultCoordinator extends Coordinator {
     private void prepareResultSink() throws AnalysisException {
         ExecutionFragment rootExecFragment = executionDAG.getRootFragment();
         long workerId = rootExecFragment.getInstances().get(0).getWorkerId();
-//        ComputeNode worker = coordinatorPreprocessor.getWorkerProvider().getWorkerById(workerId);
-//        // Select top fragment as global runtime filter merge address
-//        setGlobalRuntimeFilterParams(rootExecFragment, worker.getBrpcIpAddress());
-//        boolean isLoadType = !(rootExecFragment.getPlanFragment().getSink() instanceof ResultSink);
-//        if (isLoadType) {
-//            // TODO (by satanson): Other DataSink except ResultSink can not support global
-//            //  runtime filter merging at present, we should support it in future.
-//            // pipeline-level runtime filter needs to derive RuntimeFilterLayout, so we collect
-//            // RuntimeFilterDescription
-//            for (ExecutionFragment execFragment : executionDAG.getFragmentsInPreorder()) {
-//                PlanFragment fragment = execFragment.getPlanFragment();
-//                fragment.collectBuildRuntimeFilters(fragment.getPlanRoot());
-//            }
-//            return;
-//        }
-//
-//        TNetworkAddress execBeAddr = worker.getAddress();
-//        receiver = new ResultReceiver(
-//                rootExecFragment.getInstances().get(0).getInstanceId(),
-//                workerId,
-//                worker.getBrpcAddress(),
-//                jobSpec.getQueryOptions().query_timeout * 1000);
-//
-//        if (LOG.isDebugEnabled()) {
-//            LOG.debug("dispatch query job: {} to {}", DebugUtil.printId(jobSpec.getQueryId()), execBeAddr);
-//        }
-//
-//        // set the broker address for OUTFILE sink
-//        ResultSink resultSink = (ResultSink) rootExecFragment.getPlanFragment().getSink();
-//        if (isBinaryRow) {
-//            resultSink.setBinaryRow(true);
-//        }
-//        if (resultSink.isOutputFileSink() && resultSink.needBroker()) {
-//            FsBroker broker = GlobalStateMgr.getCurrentState().getBrokerMgr().getBroker(resultSink.getBrokerName(),
-//                    execBeAddr.getHostname());
-//            resultSink.setBrokerAddr(broker.ip, broker.port);
-//            LOG.info("OUTFILE through broker: {}:{}", broker.ip, broker.port);
-//        }
+        ComputeNode worker = coordinatorPreprocessor.getWorkerProvider().getWorkerById(workerId);
+        // Select top fragment as global runtime filter merge address
+        setGlobalRuntimeFilterParams(rootExecFragment, worker.getBrpcIpAddress());
+        boolean isLoadType = !(rootExecFragment.getPlanFragment().getSink() instanceof ResultSink);
+        if (isLoadType) {
+            // TODO (by satanson): Other DataSink except ResultSink can not support global
+            //  runtime filter merging at present, we should support it in future.
+            // pipeline-level runtime filter needs to derive RuntimeFilterLayout, so we collect
+            // RuntimeFilterDescription
+            for (ExecutionFragment execFragment : executionDAG.getFragmentsInPreorder()) {
+                PlanFragment fragment = execFragment.getPlanFragment();
+                fragment.collectBuildRuntimeFilters(fragment.getPlanRoot());
+            }
+            return;
+        }
+
+        TNetworkAddress execBeAddr = worker.getAddress();
+        receiver = new ResultReceiver(
+                rootExecFragment.getInstances().get(0).getInstanceId(),
+                workerId,
+                worker.getBrpcAddress(),
+                jobSpec.getQueryOptions().query_timeout * 1000);
+
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("dispatch query job: {} to {}", DebugUtil.printId(jobSpec.getQueryId()), execBeAddr);
+        }
+
+        // set the broker address for OUTFILE sink
+        ResultSink resultSink = (ResultSink) rootExecFragment.getPlanFragment().getSink();
+        if (isBinaryRow) {
+            resultSink.setBinaryRow(true);
+        }
+        if (resultSink.isOutputFileSink() && resultSink.needBroker()) {
+            FsBroker broker = GlobalStateMgr.getCurrentState().getBrokerMgr().getBroker(resultSink.getBrokerName(),
+                    execBeAddr.getHostname());
+            resultSink.setBrokerAddr(broker.ip, broker.port);
+            LOG.info("OUTFILE through broker: {}:{}", broker.ip, broker.port);
+        }
     }
 
     private void deliverExecFragments(boolean needDeploy) throws RpcException, UserException {
@@ -716,63 +748,63 @@ public class DefaultCoordinator extends Coordinator {
             throw new UserException("There is no receiver.");
         }
 
-        RowBatch resultBatch = null;
-//        Status status = new Status();
-//
-//        resultBatch = receiver.getNext(status);
-//        if (!status.ok()) {
-//            connectContext.setErrorCodeOnce(status.getErrorCodeString());
-//            LOG.warn("get next fail, need cancel. status {}, query id: {}", status,
-//                    DebugUtil.printId(jobSpec.getQueryId()));
-//        }
-//        updateStatus(status, null /* no instance id */);
-//
-//        Status copyStatus;
-//        lock();
-//        try {
-//            copyStatus = new Status(queryStatus);
-//        } finally {
-//            unlock();
-//        }
-//
-//        if (!copyStatus.ok()) {
-//            if (Strings.isNullOrEmpty(copyStatus.getErrorMsg())) {
-//                copyStatus.rewriteErrorMsg();
-//            }
-//
-//            if (copyStatus.isRemoteFileNotFound()) {
-//                throw new RemoteFileNotFoundException(copyStatus.getErrorMsg());
-//            }
-//
-//            if (copyStatus.isRpcError()) {
-//                throw new RpcException("unknown", copyStatus.getErrorMsg());
-//            } else {
-//                String errMsg = copyStatus.getErrorMsg();
-//                LOG.warn("query failed: {}", errMsg);
-//
-//                // hide host info
-//                int hostIndex = errMsg.indexOf("host");
-//                if (hostIndex != -1) {
-//                    errMsg = errMsg.substring(0, hostIndex);
-//                }
-//                throw new UserException(errMsg);
-//            }
-//        }
-//
-//        if (resultBatch.isEos()) {
-//            this.returnedAllResults = true;
-//
-//            // if this query is a block query do not cancel.
-//            long numLimitRows = executionDAG.getRootFragment().getPlanFragment().getPlanRoot().getLimit();
-//            boolean hasLimit = numLimitRows > 0;
-//            if (!jobSpec.isBlockQuery() && executionDAG.getInstanceIds().size() > 1 && hasLimit &&
-//                    numReceivedRows >= numLimitRows) {
-//                LOG.debug("no block query, return num >= limit rows, need cancel");
-//                cancelInternal(PPlanFragmentCancelReason.LIMIT_REACH);
-//            }
-//        } else {
-//            numReceivedRows += resultBatch.getBatch().getRowsSize();
-//        }
+        RowBatch resultBatch;
+        Status status = new Status();
+
+        resultBatch = receiver.getNext(status);
+        if (!status.ok()) {
+            connectContext.setErrorCodeOnce(status.getErrorCodeString());
+            LOG.warn("get next fail, need cancel. status {}, query id: {}", status,
+                    DebugUtil.printId(jobSpec.getQueryId()));
+        }
+        updateStatus(status, null /* no instance id */);
+
+        Status copyStatus;
+        lock();
+        try {
+            copyStatus = new Status(queryStatus);
+        } finally {
+            unlock();
+        }
+
+        if (!copyStatus.ok()) {
+            if (Strings.isNullOrEmpty(copyStatus.getErrorMsg())) {
+                copyStatus.rewriteErrorMsg();
+            }
+
+            if (copyStatus.isRemoteFileNotFound()) {
+                throw new RemoteFileNotFoundException(copyStatus.getErrorMsg());
+            }
+
+            if (copyStatus.isRpcError()) {
+                throw new RpcException("unknown", copyStatus.getErrorMsg());
+            } else {
+                String errMsg = copyStatus.getErrorMsg();
+                LOG.warn("query failed: {}", errMsg);
+
+                // hide host info
+                int hostIndex = errMsg.indexOf("host");
+                if (hostIndex != -1) {
+                    errMsg = errMsg.substring(0, hostIndex);
+                }
+                throw new UserException(errMsg);
+            }
+        }
+
+        if (resultBatch.isEos()) {
+            this.returnedAllResults = true;
+
+            // if this query is a block query do not cancel.
+            long numLimitRows = executionDAG.getRootFragment().getPlanFragment().getPlanRoot().getLimit();
+            boolean hasLimit = numLimitRows > 0;
+            if (!jobSpec.isBlockQuery() && executionDAG.getInstanceIds().size() > 1 && hasLimit &&
+                    numReceivedRows >= numLimitRows) {
+                LOG.debug("no block query, return num >= limit rows, need cancel");
+                cancelInternal(PPlanFragmentCancelReason.LIMIT_REACH);
+            }
+        } else {
+            numReceivedRows += resultBatch.getBatch().getRowsSize();
+        }
 
         return resultBatch;
     }

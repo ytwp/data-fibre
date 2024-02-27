@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.dump;
+package com.starrocks.sql.optimizer.dump;
 
 import java.util.List;
 

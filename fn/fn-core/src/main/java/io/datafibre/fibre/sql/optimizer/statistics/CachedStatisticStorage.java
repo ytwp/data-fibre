@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.statistics;
+package com.starrocks.sql.optimizer.statistics;
 
 import com.github.benmanes.caffeine.cache.AsyncLoadingCache;
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -21,15 +21,15 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import io.datafibre.fibre.catalog.Partition;
-import io.datafibre.fibre.catalog.Table;
-import io.datafibre.fibre.common.Config;
-import io.datafibre.fibre.common.Pair;
-import io.datafibre.fibre.connector.ConnectorColumnStatsCacheLoader;
-import io.datafibre.fibre.connector.ConnectorTableColumnKey;
-import io.datafibre.fibre.connector.ConnectorTableColumnStats;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.statistic.StatisticUtils;
+import com.starrocks.catalog.Partition;
+import com.starrocks.catalog.Table;
+import com.starrocks.common.Config;
+import com.starrocks.common.Pair;
+import com.starrocks.connector.ConnectorColumnStatsCacheLoader;
+import com.starrocks.connector.ConnectorTableColumnKey;
+import com.starrocks.connector.ConnectorTableColumnStats;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.statistic.StatisticUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -359,7 +359,7 @@ public class CachedStatisticStorage implements StatisticStorage {
 
     @Override
     public void addColumnStatistic(Table table, String column, ColumnStatistic columnStatistic) {
-//        this.cachedStatistics.synchronous().put(new ColumnStatsCacheKey(table.getId(), column), Optional.of(columnStatistic));
+        this.cachedStatistics.synchronous().put(new ColumnStatsCacheKey(table.getId(), column), Optional.of(columnStatistic));
     }
 
     @Override
@@ -368,10 +368,10 @@ public class CachedStatisticStorage implements StatisticStorage {
 
         List<String> columnHasHistogram = new ArrayList<>();
         for (String columnName : columns) {
-//            if (GlobalStateMgr.getCurrentState().getAnalyzeMgr().getHistogramStatsMetaMap()
-//                    .get(new Pair<>(table.getId(), columnName)) != null) {
-//                columnHasHistogram.add(columnName);
-//            }
+            if (GlobalStateMgr.getCurrentState().getAnalyzeMgr().getHistogramStatsMetaMap()
+                    .get(new Pair<>(table.getId(), columnName)) != null) {
+                columnHasHistogram.add(columnName);
+            }
         }
 
         List<ColumnStatsCacheKey> cacheKeys = new ArrayList<>();

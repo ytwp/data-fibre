@@ -32,11 +32,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.mysql;
+package com.starrocks.mysql;
 
 import com.google.common.base.Strings;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.Type;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.Type;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;

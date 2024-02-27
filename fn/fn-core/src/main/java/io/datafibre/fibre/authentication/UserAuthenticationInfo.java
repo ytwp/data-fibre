@@ -13,16 +13,16 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.authentication;
+package com.starrocks.authentication;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import io.datafibre.fibre.common.CaseSensibility;
-import io.datafibre.fibre.common.PatternMatcher;
-import io.datafibre.fibre.common.io.Text;
-import io.datafibre.fibre.common.io.Writable;
-import io.datafibre.fibre.mysql.MysqlPassword;
-import io.datafibre.fibre.persist.gson.GsonUtils;
+import com.starrocks.common.CaseSensibility;
+import com.starrocks.common.PatternMatcher;
+import com.starrocks.common.io.Text;
+import com.starrocks.common.io.Writable;
+import com.starrocks.mysql.MysqlPassword;
+import com.starrocks.persist.gson.GsonUtils;
 
 import java.io.DataOutput;
 import java.io.IOException;

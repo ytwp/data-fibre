@@ -13,11 +13,12 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.base;
+package com.starrocks.sql.optimizer.base;
+
+import com.starrocks.thrift.TDistributionType;
 
 public class DistributionSpec {
     protected final DistributionType type;
-
     protected DistributionSpec(DistributionType type) {
         this.type = type;
     }
@@ -60,17 +61,17 @@ public class DistributionSpec {
         ROUND_ROBIN,
         ;
 
-//        public TDistributionType toThrift() {
-//            if (this == ANY) {
-//                return TDistributionType.ANY;
-//            } else if (this == BROADCAST) {
-//                return TDistributionType.BROADCAST;
-//            } else if (this == SHUFFLE) {
-//                return TDistributionType.SHUFFLE;
-//            } else {
-//                return TDistributionType.GATHER;
-//            }
-//        }
+        public TDistributionType toThrift() {
+            if (this == ANY) {
+                return TDistributionType.ANY;
+            } else if (this == BROADCAST) {
+                return TDistributionType.BROADCAST;
+            } else if (this == SHUFFLE) {
+                return TDistributionType.SHUFFLE;
+            } else {
+                return TDistributionType.GATHER;
+            }
+        }
     }
 
     @Override

@@ -12,17 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.catalog;
+package com.starrocks.catalog;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.google.gson.*;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.annotations.SerializedName;
-import io.datafibre.fibre.persist.gson.GsonUtils;
-import io.datafibre.fibre.thrift.TTypeDesc;
-import io.datafibre.fibre.thrift.TTypeNode;
-import io.datafibre.fibre.thrift.TTypeNodeType;
+import com.starrocks.persist.gson.GsonUtils;
+import com.starrocks.thrift.TTypeDesc;
+import com.starrocks.thrift.TTypeNode;
+import com.starrocks.thrift.TTypeNodeType;
 
 import java.util.Arrays;
 
@@ -38,7 +42,7 @@ public class MapType extends Type {
     public MapType(Type keyType, Type valueType) {
         Preconditions.checkNotNull(keyType);
         Preconditions.checkNotNull(valueType);
-        selectedFields = new Boolean[]{false, false};
+        selectedFields = new Boolean[] {false, false};
         this.keyType = keyType;
         this.valueType = valueType;
     }
@@ -69,8 +73,8 @@ public class MapType extends Type {
         }
 
         if (needSetChildren &&
-            (accessPathType == ComplexTypeAccessPathType.ALL_SUBFIELDS ||
-             accessPathType == ComplexTypeAccessPathType.MAP_VALUE) && valueType.isComplexType()) {
+                (accessPathType == ComplexTypeAccessPathType.ALL_SUBFIELDS ||
+                        accessPathType == ComplexTypeAccessPathType.MAP_VALUE) && valueType.isComplexType()) {
             valueType.selectAllFields();
         }
     }
@@ -116,7 +120,7 @@ public class MapType extends Type {
         }
         MapType otherMapType = (MapType) other;
         return otherMapType.keyType.equals(keyType)
-               && otherMapType.valueType.equals(valueType);
+                && otherMapType.valueType.equals(valueType);
     }
 
     @Override
@@ -125,7 +129,7 @@ public class MapType extends Type {
             return t.matchesType(this);
         }
         return t.isMapType()
-               && keyType.matchesType(((MapType) t).keyType) && valueType.matchesType(((MapType) t).getValueType());
+                && keyType.matchesType(((MapType) t).keyType) && valueType.matchesType(((MapType) t).getValueType());
     }
 
     @Override

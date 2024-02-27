@@ -13,27 +13,31 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import io.datafibre.fibre.analysis.*;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.Database;
-import io.datafibre.fibre.catalog.Partition;
-import io.datafibre.fibre.catalog.Table;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.common.Config;
-import io.datafibre.fibre.common.util.PrintableMap;
-import io.datafibre.fibre.common.util.PropertyAnalyzer;
-import io.datafibre.fibre.common.util.concurrent.lock.LockType;
-import io.datafibre.fibre.common.util.concurrent.lock.Locker;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.sql.analyzer.SemanticException;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.analysis.BrokerDesc;
+import com.starrocks.analysis.Delimiter;
+import com.starrocks.analysis.RedirectStatus;
+import com.starrocks.analysis.TableName;
+import com.starrocks.analysis.TableRef;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.Database;
+import com.starrocks.catalog.Partition;
+import com.starrocks.catalog.Table;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.common.Config;
+import com.starrocks.common.util.PrintableMap;
+import com.starrocks.common.util.PropertyAnalyzer;
+import com.starrocks.common.util.concurrent.lock.LockType;
+import com.starrocks.common.util.concurrent.lock.Locker;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.sql.analyzer.SemanticException;
+import com.starrocks.sql.parser.NodePosition;
 
 import java.net.URI;
 import java.net.URISyntaxException;

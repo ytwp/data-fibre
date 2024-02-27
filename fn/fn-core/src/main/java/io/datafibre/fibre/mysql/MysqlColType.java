@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.mysql;
+package com.starrocks.mysql;
 
 // MySQL column type
 // TYPE codes are defined in the file 'mysql/include/mysql_com.h' enum enum_field_types

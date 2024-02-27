@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.rewrite;
+package com.starrocks.sql.optimizer.rewrite;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
@@ -20,39 +20,39 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
 import com.google.common.collect.Sets;
-import io.datafibre.fibre.analysis.BinaryType;
-import io.datafibre.fibre.analysis.Expr;
-import io.datafibre.fibre.analysis.LiteralExpr;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.HiveMetaStoreTable;
-import io.datafibre.fibre.catalog.IcebergTable;
-import io.datafibre.fibre.catalog.PaimonTable;
-import io.datafibre.fibre.catalog.PartitionInfo;
-import io.datafibre.fibre.catalog.PartitionKey;
-import io.datafibre.fibre.catalog.RangePartitionInfo;
-import io.datafibre.fibre.catalog.Table;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.connector.RemoteFileDesc;
-import io.datafibre.fibre.connector.RemoteFileInfo;
-import io.datafibre.fibre.connector.elasticsearch.EsShardPartitions;
-import io.datafibre.fibre.connector.elasticsearch.EsTablePartitions;
-import io.datafibre.fibre.planner.PartitionColumnFilter;
-import io.datafibre.fibre.planner.PartitionPruner;
-import io.datafibre.fibre.planner.RangePartitionPruner;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.sql.common.ErrorType;
-import io.datafibre.fibre.sql.common.StarRocksPlannerException;
-import io.datafibre.fibre.sql.optimizer.OptimizerContext;
-import io.datafibre.fibre.sql.optimizer.Utils;
-import io.datafibre.fibre.sql.optimizer.operator.ScanOperatorPredicates;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalEsScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.BinaryPredicateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.InPredicateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
-import io.datafibre.fibre.sql.optimizer.rule.transformation.ListPartitionPruner;
+import com.starrocks.analysis.BinaryType;
+import com.starrocks.analysis.Expr;
+import com.starrocks.analysis.LiteralExpr;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.HiveMetaStoreTable;
+import com.starrocks.catalog.IcebergTable;
+import com.starrocks.catalog.PaimonTable;
+import com.starrocks.catalog.PartitionInfo;
+import com.starrocks.catalog.PartitionKey;
+import com.starrocks.catalog.RangePartitionInfo;
+import com.starrocks.catalog.Table;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.connector.RemoteFileDesc;
+import com.starrocks.connector.RemoteFileInfo;
+import com.starrocks.connector.elasticsearch.EsShardPartitions;
+import com.starrocks.connector.elasticsearch.EsTablePartitions;
+import com.starrocks.planner.PartitionColumnFilter;
+import com.starrocks.planner.PartitionPruner;
+import com.starrocks.planner.RangePartitionPruner;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.sql.common.ErrorType;
+import com.starrocks.sql.common.StarRocksPlannerException;
+import com.starrocks.sql.optimizer.OptimizerContext;
+import com.starrocks.sql.optimizer.Utils;
+import com.starrocks.sql.optimizer.operator.ScanOperatorPredicates;
+import com.starrocks.sql.optimizer.operator.logical.LogicalEsScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalScanOperator;
+import com.starrocks.sql.optimizer.operator.scalar.BinaryPredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ConstantOperator;
+import com.starrocks.sql.optimizer.operator.scalar.InPredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.sql.optimizer.rule.transformation.ListPartitionPruner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.paimon.table.source.Split;
@@ -67,9 +67,9 @@ import java.util.concurrent.ConcurrentNavigableMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.stream.Collectors;
 
-import static io.datafibre.fibre.connector.PartitionUtil.createPartitionKey;
-import static io.datafibre.fibre.connector.PartitionUtil.toPartitionValues;
-import static io.datafibre.fibre.connector.paimon.PaimonMetadata.getRowCount;
+import static com.starrocks.connector.PartitionUtil.createPartitionKey;
+import static com.starrocks.connector.PartitionUtil.toPartitionValues;
+import static com.starrocks.connector.paimon.PaimonMetadata.getRowCount;
 
 public class OptExternalPartitionPruner {
     private static final Logger LOG = LogManager.getLogger(OptExternalPartitionPruner.class);
@@ -308,6 +308,8 @@ public class OptExternalPartitionPruner {
         } else if (table instanceof IcebergTable) {
             IcebergTable icebergTable = (IcebergTable) table;
             if (!icebergTable.getSnapshot().isPresent()) {
+                // TODO: for iceberg table, it cannot decide whether it's pruned or not when `selectedPartitionIds`
+                //  is empty. It's expensive to set all partitions here.
                 return;
             }
 

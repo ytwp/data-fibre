@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
-import io.datafibre.fibre.analysis.ParseNode;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.DistributionInfo;
-import io.datafibre.fibre.catalog.DistributionInfo.DistributionInfoType;
-import io.datafibre.fibre.common.DdlException;
-import io.datafibre.fibre.common.io.Text;
-import io.datafibre.fibre.common.io.Writable;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.analysis.ParseNode;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.DistributionInfo;
+import com.starrocks.catalog.DistributionInfo.DistributionInfoType;
+import com.starrocks.common.DdlException;
+import com.starrocks.common.io.Text;
+import com.starrocks.common.io.Writable;
+import com.starrocks.sql.parser.NodePosition;
 import org.apache.commons.lang.NotImplementedException;
 
 import java.io.DataInput;

@@ -12,23 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.analyzer;
+package com.starrocks.sql.analyzer;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import io.datafibre.fibre.analysis.Expr;
-import io.datafibre.fibre.analysis.TableName;
-import io.datafibre.fibre.catalog.*;
-import io.datafibre.fibre.common.Config;
-import io.datafibre.fibre.common.Pair;
-import io.datafibre.fibre.privilege.*;
-import io.datafibre.fibre.privilege.ranger.starrocks.RangerStarRocksAccessController;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.server.CatalogMgr;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.sql.ast.StatementBase;
-import io.datafibre.fibre.sql.ast.UserIdentity;
-import io.datafibre.fibre.sql.ast.pipe.PipeName;
+import com.starrocks.analysis.Expr;
+import com.starrocks.analysis.TableName;
+import com.starrocks.catalog.BasicTable;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.Database;
+import com.starrocks.catalog.Function;
+import com.starrocks.catalog.InternalCatalog;
+import com.starrocks.catalog.Table;
+import com.starrocks.common.Config;
+import com.starrocks.common.Pair;
+import com.starrocks.privilege.AccessControlProvider;
+import com.starrocks.privilege.AccessController;
+import com.starrocks.privilege.AccessDeniedException;
+import com.starrocks.privilege.NativeAccessController;
+import com.starrocks.privilege.ObjectType;
+import com.starrocks.privilege.PEntryObject;
+import com.starrocks.privilege.PrivilegeType;
+import com.starrocks.privilege.ranger.starrocks.RangerStarRocksAccessController;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.server.CatalogMgr;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.sql.ast.StatementBase;
+import com.starrocks.sql.ast.UserIdentity;
+import com.starrocks.sql.ast.pipe.PipeName;
 import org.apache.commons.collections4.ListUtils;
 
 import java.util.List;
@@ -40,11 +51,11 @@ public class Authorizer {
     private static final AccessControlProvider INSTANCE;
 
     static {
-//        if (Config.access_control.equals("ranger")) {
-//            INSTANCE = new AccessControlProvider(new AuthorizerStmtVisitor(), new RangerStarRocksAccessController());
-//        } else {
-//            INSTANCE = new AccessControlProvider(new AuthorizerStmtVisitor(), new NativeAccessController());
-//        }
+        if (Config.access_control.equals("ranger")) {
+            INSTANCE = new AccessControlProvider(new AuthorizerStmtVisitor(), new RangerStarRocksAccessController());
+        } else {
+            INSTANCE = new AccessControlProvider(new AuthorizerStmtVisitor(), new NativeAccessController());
+        }
     }
 
     public static AccessControlProvider getInstance() {

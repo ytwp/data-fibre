@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.rule.transformation.pruner;
+package com.starrocks.sql.optimizer.rule.transformation.pruner;
 
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefFactory;
-import io.datafibre.fibre.sql.optimizer.rule.tree.TreeRewriteRule;
-import io.datafibre.fibre.sql.optimizer.task.TaskContext;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.base.ColumnRefFactory;
+import com.starrocks.sql.optimizer.rule.tree.TreeRewriteRule;
+import com.starrocks.sql.optimizer.task.TaskContext;
 
 public class RboTablePruneRule implements TreeRewriteRule {
 

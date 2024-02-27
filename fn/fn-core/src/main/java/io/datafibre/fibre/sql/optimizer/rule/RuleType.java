@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.rule;
+package com.starrocks.sql.optimizer.rule;
 
 public enum RuleType {
     NONE,
@@ -95,6 +95,7 @@ public enum RuleType {
     TF_PRUNE_CTE_CONSUME_COLUMNS,
     TF_PRUNE_GROUP_BY_KEYS,
     TF_PRUNE_SUBFIELD,
+    TF_PRUNE_UKFK_JOIN,
     TF_SUBFILED_NOCOPY,
 
     TF_SCALAR_OPERATORS_REUSE,

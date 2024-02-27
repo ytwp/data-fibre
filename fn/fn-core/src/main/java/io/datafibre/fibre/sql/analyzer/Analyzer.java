@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.analyzer;
+package com.starrocks.sql.analyzer;
 
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.sql.ast.StatementBase;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.sql.ast.StatementBase;
 
 public class Analyzer {
     private static final Analyzer INSTANCE = new Analyzer(new AnalyzerVisitor());

@@ -12,23 +12,39 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.qe.scheduler.slot;
+package com.starrocks.qe.scheduler.slot;
 
 import com.google.common.collect.Queues;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import io.datafibre.fibre.catalog.ResourceGroup;
-import io.datafibre.fibre.common.Config;
-import io.datafibre.fibre.qe.GlobalVariable;
-import io.datafibre.fibre.rpc.FrontendServiceProxy;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.system.Frontend;
-import io.datafibre.fibre.thrift.*;
+import com.starrocks.catalog.ResourceGroup;
+import com.starrocks.common.Config;
+import com.starrocks.qe.GlobalVariable;
+import com.starrocks.rpc.FrontendServiceProxy;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.system.Frontend;
+import com.starrocks.thrift.TFinishSlotRequirementRequest;
+import com.starrocks.thrift.TFinishSlotRequirementResponse;
+import com.starrocks.thrift.TNetworkAddress;
+import com.starrocks.thrift.TStatus;
+import com.starrocks.thrift.TStatusCode;
+import com.starrocks.thrift.TUniqueId;
 import org.apache.commons.compress.utils.Lists;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
-import java.util.concurrent.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 

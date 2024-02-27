@@ -15,10 +15,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
-import io.datafibre.fibre.common.Id;
-import io.datafibre.fibre.common.IdGenerator;
+import com.starrocks.common.Id;
+import com.starrocks.common.IdGenerator;
 
 public class SlotId extends Id<SlotId> {
     public SlotId(int id) {

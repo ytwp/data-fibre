@@ -32,15 +32,15 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.catalog;
+package com.starrocks.catalog;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.mysql.MysqlColType;
-import io.datafibre.fibre.thrift.TPrimitiveType;
+import com.starrocks.mysql.MysqlColType;
+import com.starrocks.thrift.TPrimitiveType;
 
 import java.util.Arrays;
 import java.util.List;

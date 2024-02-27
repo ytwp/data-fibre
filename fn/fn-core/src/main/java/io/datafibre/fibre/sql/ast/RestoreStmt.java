@@ -13,12 +13,12 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
-import io.datafibre.fibre.analysis.LabelName;
-import io.datafibre.fibre.analysis.TableRef;
-import io.datafibre.fibre.server.RunMode;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.analysis.LabelName;
+import com.starrocks.analysis.TableRef;
+import com.starrocks.server.RunMode;
+import com.starrocks.sql.parser.NodePosition;
 
 import java.util.List;
 import java.util.Map;

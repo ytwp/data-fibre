@@ -32,12 +32,16 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.qe;
+package com.starrocks.qe;
 
-import io.datafibre.fibre.authentication.UserAuthenticationInfo;
-import io.datafibre.fibre.common.DdlException;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.sql.ast.*;
+import com.starrocks.authentication.UserAuthenticationInfo;
+import com.starrocks.common.DdlException;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.sql.ast.SetListItem;
+import com.starrocks.sql.ast.SetPassVar;
+import com.starrocks.sql.ast.SetStmt;
+import com.starrocks.sql.ast.SystemVariable;
+import com.starrocks.sql.ast.UserVariable;
 
 // Set executor
 public class SetExecutor {

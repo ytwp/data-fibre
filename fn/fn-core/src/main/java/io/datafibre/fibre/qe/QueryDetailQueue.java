@@ -32,10 +32,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.qe;
+package com.starrocks.qe;
 
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.common.Config;
+import com.starrocks.common.Config;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;

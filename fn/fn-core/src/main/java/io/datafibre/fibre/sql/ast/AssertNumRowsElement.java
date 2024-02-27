@@ -13,9 +13,9 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
-import io.datafibre.fibre.thrift.TAssertion;
+import com.starrocks.thrift.TAssertion;
 
 public class AssertNumRowsElement {
     public enum Assertion {

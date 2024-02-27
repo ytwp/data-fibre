@@ -15,14 +15,14 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.qe;
+package com.starrocks.qe;
 
 import com.google.common.collect.Queues;
-import io.datafibre.fibre.plugin.AuditEvent;
-import io.datafibre.fibre.plugin.AuditPlugin;
-import io.datafibre.fibre.plugin.Plugin;
-import io.datafibre.fibre.plugin.PluginInfo.PluginType;
-import io.datafibre.fibre.plugin.PluginMgr;
+import com.starrocks.plugin.AuditEvent;
+import com.starrocks.plugin.AuditPlugin;
+import com.starrocks.plugin.Plugin;
+import com.starrocks.plugin.PluginInfo.PluginType;
+import com.starrocks.plugin.PluginMgr;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -32,17 +32,17 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
 import com.google.common.collect.ImmutableSet;
-import io.datafibre.fibre.analysis.BrokerDesc;
-import io.datafibre.fibre.analysis.LabelName;
-import io.datafibre.fibre.common.DdlException;
-import io.datafibre.fibre.common.util.LoadPriority;
-import io.datafibre.fibre.common.util.TimeUtils;
-import io.datafibre.fibre.load.EtlJobType;
-import io.datafibre.fibre.load.Load;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.analysis.BrokerDesc;
+import com.starrocks.analysis.LabelName;
+import com.starrocks.common.DdlException;
+import com.starrocks.common.util.LoadPriority;
+import com.starrocks.common.util.TimeUtils;
+import com.starrocks.load.EtlJobType;
+import com.starrocks.load.Load;
+import com.starrocks.sql.parser.NodePosition;
 
 import java.util.List;
 import java.util.Map;

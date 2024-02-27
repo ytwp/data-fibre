@@ -12,21 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.catalog;
+package com.starrocks.catalog;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
-import io.datafibre.fibre.analysis.Expr;
-import io.datafibre.fibre.analysis.FunctionName;
-import io.datafibre.fibre.analysis.LiteralExpr;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.common.Pair;
-import io.datafibre.fibre.common.io.Text;
-import io.datafibre.fibre.persist.gson.GsonUtils;
-import io.datafibre.fibre.sql.ast.CreateFunctionStmt;
-import io.datafibre.fibre.thrift.TFunctionBinaryType;
+import com.starrocks.analysis.Expr;
+import com.starrocks.analysis.FunctionName;
+import com.starrocks.analysis.LiteralExpr;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.common.Pair;
+import com.starrocks.common.io.Text;
+import com.starrocks.persist.gson.GsonUtils;
+import com.starrocks.sql.ast.CreateFunctionStmt;
+import com.starrocks.thrift.TFunction;
+import com.starrocks.thrift.TFunctionBinaryType;
+import com.starrocks.thrift.TTableFunction;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -34,6 +36,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import java.util.stream.Collectors;
 
 /**
  * Internal representation of a table value function.
@@ -163,15 +166,15 @@ public class TableFunction extends Function {
         this.defaultColumnNames = tableFunction.getDefaultColumnNames();
     }
 
-//    @Override
-//    public TFunction toThrift() {
-//        TFunction fn = super.toThrift();
-//        TTableFunction tableFn = new TTableFunction();
-//        tableFn.setSymbol(symbolName);
-//        tableFn.setRet_types(tableFnReturnTypes.stream().map(Type::toThrift).collect(Collectors.toList()));
-//        fn.setTable_fn(tableFn);
-//        return fn;
-//    }
+    @Override
+    public TFunction toThrift() {
+        TFunction fn = super.toThrift();
+        TTableFunction tableFn = new TTableFunction();
+        tableFn.setSymbol(symbolName);
+        tableFn.setRet_types(tableFnReturnTypes.stream().map(Type::toThrift).collect(Collectors.toList()));
+        fn.setTable_fn(tableFn);
+        return fn;
+    }
 
     @Override
     public String getProperties() {

@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.equivalent;
+package com.starrocks.sql.optimizer.rule.transformation.materialization.equivalent;
 
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
 
 import java.util.List;
 import java.util.Map;
@@ -26,7 +26,8 @@ public class RewriteEquivalent {
             TimeSliceRewriteEquivalent.INSTANCE,
             DateTruncEquivalent.INSTANCE,
             CountRewriteEquivalent.INSTANCE,
-            BitmapRewriteEquivalent.INSTANCE);
+            BitmapRewriteEquivalent.INSTANCE,
+            ArrayRewriteEquivalent.INSTANCE);
     private final IRewriteEquivalent.RewriteEquivalentContext rewriteEquivalentContext;
     private final IRewriteEquivalent iRewriteEquivalent;
 

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.statistics;
+package com.starrocks.sql.optimizer.statistics;
 
 public class StatisticsEstimateCoefficient {
     // Estimated parameters for multiple join on predicates when predicate correlation is not known

@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.common.util;
+package com.starrocks.common.util;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
@@ -41,21 +41,32 @@ import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import io.datafibre.fibre.common.Pair;
-import io.datafibre.fibre.common.Reference;
-import io.datafibre.fibre.thrift.*;
+import com.starrocks.common.Pair;
+import com.starrocks.common.Reference;
+import com.starrocks.thrift.TCounter;
+import com.starrocks.thrift.TCounterStrategy;
+import com.starrocks.thrift.TRuntimeProfileNode;
+import com.starrocks.thrift.TRuntimeProfileTree;
+import com.starrocks.thrift.TUnit;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Formatter;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Queue;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
  * It is accessed by two kinds of thread, one is to create this RuntimeProfile
  * , named 'query thread', the other is to call
- * {@link io.datafibre.fibre.common.proc.CurrentQueryInfoProvider}.
+ * {@link com.starrocks.common.proc.CurrentQueryInfoProvider}.
  */
 public class RuntimeProfile {
 

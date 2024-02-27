@@ -32,13 +32,13 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.catalog.Table;
-//import io.datafibre.fibre.thrift.TTupleDescriptor;
+import com.starrocks.catalog.Table;
+import com.starrocks.thrift.TTupleDescriptor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -162,17 +162,17 @@ public class TupleDescriptor {
         return (aliases_ != null) ? aliases_[0] : null;
     }
 
-//    public TTupleDescriptor toThrift() {
-//        TTupleDescriptor ttupleDesc = new TTupleDescriptor();
-//        ttupleDesc.setId(id.asInt());
-//        ttupleDesc.setByteSize(-1);
-//        ttupleDesc.setNumNullBytes(-1);
-//        ttupleDesc.setNumNullSlots(-1);
-//        if (table != null && table.getId() >= 0) {
-//            ttupleDesc.setTableId((int) table.getId());
-//        }
-//        return ttupleDesc;
-//    }
+    public TTupleDescriptor toThrift() {
+        TTupleDescriptor ttupleDesc = new TTupleDescriptor();
+        ttupleDesc.setId(id.asInt());
+        ttupleDesc.setByteSize(-1);
+        ttupleDesc.setNumNullBytes(-1);
+        ttupleDesc.setNumNullSlots(-1);
+        if (table != null && table.getId() >= 0) {
+            ttupleDesc.setTableId((int) table.getId());
+        }
+        return ttupleDesc;
+    }
 
     public void computeMemLayout() {
     }

@@ -32,16 +32,19 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
 import com.google.common.base.Preconditions;
-import io.datafibre.fibre.catalog.PrimitiveType;
-import io.datafibre.fibre.catalog.ScalarType;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.common.util.DateUtils;
-import io.datafibre.fibre.sql.common.ErrorType;
-import io.datafibre.fibre.sql.common.StarRocksPlannerException;
+import com.starrocks.catalog.PrimitiveType;
+import com.starrocks.catalog.ScalarType;
+import com.starrocks.catalog.Type;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.common.util.DateUtils;
+import com.starrocks.sql.common.ErrorType;
+import com.starrocks.sql.common.StarRocksPlannerException;
+import com.starrocks.thrift.TDateLiteral;
+import com.starrocks.thrift.TExprNode;
+import com.starrocks.thrift.TExprNodeType;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -289,11 +292,11 @@ public class DateLiteral extends LiteralExpr {
         }
     }
 
-//    @Override
-//    protected void toThrift(TExprNode msg) {
-//        msg.node_type = TExprNodeType.DATE_LITERAL;
-//        msg.date_literal = new TDateLiteral(getStringValue());
-//    }
+    @Override
+    protected void toThrift(TExprNode msg) {
+        msg.node_type = TExprNodeType.DATE_LITERAL;
+        msg.date_literal = new TDateLiteral(getStringValue());
+    }
 
     @Override
     public Expr uncheckedCastTo(Type targetType) throws AnalysisException {
@@ -326,8 +329,8 @@ public class DateLiteral extends LiteralExpr {
         microsecond = 0;
     }
 
-    public LocalDateTime toLocalDateTime() {
-        return LocalDateTime.of((int) year, (int) month, (int) day, (int) hour, (int) minute, (int) second,
+    public java.time.LocalDateTime toLocalDateTime() {
+        return java.time.LocalDateTime.of((int) year, (int) month, (int) day, (int) hour, (int) minute, (int) second,
                 (int) microsecond * 1000);
     }
 

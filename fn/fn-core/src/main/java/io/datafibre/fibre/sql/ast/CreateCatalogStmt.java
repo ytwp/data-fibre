@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
-import io.datafibre.fibre.common.util.PrintableMap;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.common.util.PrintableMap;
+import com.starrocks.sql.parser.NodePosition;
 
 import java.util.Map;
 

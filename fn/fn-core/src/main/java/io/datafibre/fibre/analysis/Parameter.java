@@ -12,11 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.sql.ast.AstVisitor;
+import com.starrocks.catalog.Type;
+import com.starrocks.sql.ast.AstVisitor;
 
+/**
+ * Parameter used in prepare-statement, placeholder ? is translated into a Parameter
+ */
 public class Parameter extends Expr {
     private final int slotId;
 
@@ -55,10 +58,17 @@ public class Parameter extends Expr {
 
     @Override
     public Type getType() {
+        Type res;
         if (expr != null) {
-            return expr.getType();
+            res = expr.getType();
+        } else {
+            res = super.getType();
         }
-        return super.getType();
+        // use STRING as default type, since string is compatible with almost all types in the type inference
+        if (res.isInvalid()) {
+            res = Type.STRING;
+        }
+        return res;
     }
 
     @Override

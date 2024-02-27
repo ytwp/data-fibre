@@ -12,25 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.rule.tree;
+package com.starrocks.sql.optimizer.rule.tree;
 
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.ComplexTypeAccessGroup;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.common.FeConstants;
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.OptExpressionVisitor;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
-import io.datafibre.fibre.sql.optimizer.operator.Projection;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalHashAggregateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalJoinOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalTableFunctionOperator;
-import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalWindowOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.CallOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
-import io.datafibre.fibre.sql.optimizer.task.TaskContext;
+import com.starrocks.catalog.Column;
+import com.starrocks.catalog.ComplexTypeAccessGroup;
+import com.starrocks.catalog.Type;
+import com.starrocks.common.FeConstants;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.OptExpressionVisitor;
+import com.starrocks.sql.optimizer.operator.OperatorType;
+import com.starrocks.sql.optimizer.operator.Projection;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalHashAggregateOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalJoinOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalScanOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalTableFunctionOperator;
+import com.starrocks.sql.optimizer.operator.physical.PhysicalWindowOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.sql.optimizer.task.TaskContext;
 
 import java.util.Map;
 

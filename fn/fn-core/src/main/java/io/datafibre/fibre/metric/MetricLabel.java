@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.metric;
+package com.starrocks.metric;
 
 import com.google.common.base.Objects;
 import org.apache.commons.lang3.StringUtils;

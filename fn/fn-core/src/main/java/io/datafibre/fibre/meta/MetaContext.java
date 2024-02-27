@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.meta;
+package com.starrocks.meta;
 
 /*
  * MetaContext saved the current meta version.

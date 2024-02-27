@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.common;
+package com.starrocks.sql.common;
 
 import com.google.common.collect.ImmutableMap;
 

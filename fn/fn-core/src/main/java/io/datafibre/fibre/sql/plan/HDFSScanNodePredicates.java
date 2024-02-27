@@ -13,13 +13,13 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.plan;
+package com.starrocks.sql.plan;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.datafibre.fibre.analysis.Expr;
-import io.datafibre.fibre.analysis.TupleDescriptor;
-import io.datafibre.fibre.catalog.PartitionKey;
+import com.starrocks.analysis.Expr;
+import com.starrocks.analysis.TupleDescriptor;
+import com.starrocks.catalog.PartitionKey;
 
 import java.util.ArrayList;
 import java.util.Collection;

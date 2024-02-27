@@ -32,18 +32,19 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.catalog.AggregateFunction;
-import io.datafibre.fibre.catalog.Function;
-import io.datafibre.fibre.catalog.PrimitiveType;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.sql.ast.AstVisitor;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.catalog.AggregateFunction;
+import com.starrocks.catalog.Function;
+import com.starrocks.catalog.PrimitiveType;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.sql.ast.AstVisitor;
+import com.starrocks.sql.parser.NodePosition;
+import com.starrocks.thrift.TExprNode;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.ArrayList;
@@ -212,13 +213,13 @@ public class AnalyticExpr extends Expr {
         AnalyticExpr o = (AnalyticExpr) obj;
 
         return Objects.equals(fnCall, o.fnCall) &&
-               Objects.equals(partitionExprs, o.partitionExprs) &&
-               Objects.equals(orderByElements, o.orderByElements) &&
-               Objects.equals(window, o.window) &&
-               Objects.equals(partitionHint, o.partitionHint) &&
-               Objects.equals(skewHint, o.skewHint) &&
-               Objects.equals(useHashBasedPartition, o.useHashBasedPartition) &&
-               Objects.equals(isSkewed, o.isSkewed);
+                Objects.equals(partitionExprs, o.partitionExprs) &&
+                Objects.equals(orderByElements, o.orderByElements) &&
+                Objects.equals(window, o.window) &&
+                Objects.equals(partitionHint, o.partitionHint) &&
+                Objects.equals(skewHint, o.skewHint) &&
+                Objects.equals(useHashBasedPartition, o.useHashBasedPartition) &&
+                Objects.equals(isSkewed, o.isSkewed);
     }
 
     /**
@@ -243,13 +244,13 @@ public class AnalyticExpr extends Expr {
                 .toString();
     }
 
-//    @Override
-//    protected void toThrift(TExprNode msg) {
-//    }
+    @Override
+    protected void toThrift(TExprNode msg) {
+    }
 
     public static boolean isAnalyticFn(Function fn) {
         return fn instanceof AggregateFunction
-               && ((AggregateFunction) fn).isAnalyticFn();
+                && ((AggregateFunction) fn).isAnalyticFn();
     }
 
     public static boolean isOffsetFn(Function fn) {
@@ -340,7 +341,7 @@ public class AnalyticExpr extends Expr {
 
         if (out) {
             throw new AnalysisException("Column type="
-                                        + call.getChildren().get(0).getType() + ", value is out of range ");
+                    + call.getChildren().get(0).getType() + ", value is out of range ");
         }
     }
 
@@ -387,7 +388,7 @@ public class AnalyticExpr extends Expr {
             }
 
             if (window.getRightBoundary() != null
-                && window.getRightBoundary().getExpr() != null) {
+                    && window.getRightBoundary().getExpr() != null) {
                 addChild(window.getRightBoundary().getExpr());
             }
         }

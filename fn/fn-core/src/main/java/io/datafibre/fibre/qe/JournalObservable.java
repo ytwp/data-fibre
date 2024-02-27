@@ -15,11 +15,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.qe;
+package com.starrocks.qe;
 
 import com.google.common.collect.Multiset;
 import com.google.common.collect.TreeMultiset;
-import io.datafibre.fibre.common.DdlException;
+import com.starrocks.common.DdlException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

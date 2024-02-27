@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.operator.logical;
+package com.starrocks.sql.optimizer.operator.logical;
 
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.OptExpressionVisitor;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorVisitor;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.OptExpressionVisitor;
+import com.starrocks.sql.optimizer.operator.OperatorType;
+import com.starrocks.sql.optimizer.operator.OperatorVisitor;
 
 public class LogicalExceptOperator extends LogicalSetOperator {
     private LogicalExceptOperator() {
@@ -35,7 +35,7 @@ public class LogicalExceptOperator extends LogicalSetOperator {
     }
 
     public static class Builder
-            extends LogicalSetOperator.Builder<LogicalExceptOperator, Builder> {
+            extends LogicalSetOperator.Builder<LogicalExceptOperator, LogicalExceptOperator.Builder> {
         @Override
         protected LogicalExceptOperator newInstance() {
             return new LogicalExceptOperator();

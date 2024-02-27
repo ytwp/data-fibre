@@ -13,14 +13,14 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.base;
+package com.starrocks.sql.optimizer.base;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Sets;
-import io.datafibre.fibre.sql.common.ErrorType;
-import io.datafibre.fibre.sql.common.StarRocksPlannerException;
-import io.datafibre.fibre.sql.optimizer.Group;
-import io.datafibre.fibre.sql.optimizer.GroupExpression;
+import com.starrocks.sql.common.ErrorType;
+import com.starrocks.sql.common.StarRocksPlannerException;
+import com.starrocks.sql.optimizer.Group;
+import com.starrocks.sql.optimizer.GroupExpression;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.Set;

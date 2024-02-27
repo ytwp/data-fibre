@@ -12,14 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.healthchecker;
+package com.starrocks.healthchecker;
 
 import com.google.common.annotations.VisibleForTesting;
-import io.datafibre.fibre.common.Config;
-import io.datafibre.fibre.common.util.FrontendDaemon;
-import io.datafibre.fibre.server.GlobalStateMgr;
+import com.starrocks.catalog.DiskInfo;
+import com.starrocks.common.Config;
+import com.starrocks.common.util.FrontendDaemon;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.system.Backend;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.List;
 
 public class SafeModeChecker extends FrontendDaemon {
     private static final Logger LOG = LogManager.getLogger(SafeModeChecker.class);
@@ -40,40 +44,40 @@ public class SafeModeChecker extends FrontendDaemon {
 
     @VisibleForTesting
     protected boolean checkInternal() {
-//        List<Backend> backendList = GlobalStateMgr.getCurrentState().getNodeMgr().getClusterInfo().getBackends();
-//        for (Backend be : backendList) {
-//            // We assume that the cluster is always in balance, once we find that
-//            // the left space of one disk less than min(0.9 * disk_capacity, 50GB),
-//            // we should enter safe mode
-//            if (be.isAlive()) {
-//                for (DiskInfo diskInfo : be.getDisks().values()) {
-//                    double safeModeCheckDiskCapacity = Math.min(
-//                            0.1 * diskInfo.getTotalCapacityB(), 53687091200L);
-//                    if (diskInfo.getAvailableCapacityB() < safeModeCheckDiskCapacity) {
-//                        if (!GlobalStateMgr.getCurrentState().isSafeMode()) {
-//                            String warnMsg = String.format(
-//                                    "The cluster is entering safe mode since left disk space of %d" +
-//                                            " is %d. The load jobs will fail with exception.",
-//                                    be.getId(),
-//                                    diskInfo.getAvailableCapacityB());
-//                            LOG.warn(warnMsg);
-//
-//                            // set safe mode flag to disable load jobs
-//                            GlobalStateMgr.getCurrentState().setSafeMode(true);
-//
-//                            // abort all running transactions
-//                            try {
-//                                GlobalStateMgr.getCurrentState().getGlobalTransactionMgr()
-//                                        .abortAllRunningTransactions();
-//                            } catch (Exception e) {
-//                                LOG.error("Abort transactions failed with exceptions!", e);
-//                            }
-//                        }
-//                        return true;
-//                    }
-//                }
-//            }
-//        }
+        List<Backend> backendList = GlobalStateMgr.getCurrentState().getNodeMgr().getClusterInfo().getBackends();
+        for (Backend be : backendList) {
+            // We assume that the cluster is always in balance, once we find that
+            // the left space of one disk less than min(0.9 * disk_capacity, 50GB),
+            // we should enter safe mode
+            if (be.isAlive()) {
+                for (DiskInfo diskInfo : be.getDisks().values()) {
+                    double safeModeCheckDiskCapacity = Math.min(
+                            0.1 * diskInfo.getTotalCapacityB(), 53687091200L);
+                    if (diskInfo.getAvailableCapacityB() < safeModeCheckDiskCapacity) {
+                        if (!GlobalStateMgr.getCurrentState().isSafeMode()) {
+                            String warnMsg = String.format(
+                                    "The cluster is entering safe mode since left disk space of %d" +
+                                            " is %d. The load jobs will fail with exception.",
+                                    be.getId(),
+                                    diskInfo.getAvailableCapacityB());
+                            LOG.warn(warnMsg);
+
+                            // set safe mode flag to disable load jobs
+                            GlobalStateMgr.getCurrentState().setSafeMode(true);
+
+                            // abort all running transactions
+                            try {
+                                GlobalStateMgr.getCurrentState().getGlobalTransactionMgr()
+                                        .abortAllRunningTransactions();
+                            } catch (Exception e) {
+                                LOG.error("Abort transactions failed with exceptions!", e);
+                            }
+                        }
+                        return true;
+                    }
+                }
+            }
+        }
 
         // cluster state is healthy, exit safe mode
         if (GlobalStateMgr.getCurrentState().isSafeMode()) {

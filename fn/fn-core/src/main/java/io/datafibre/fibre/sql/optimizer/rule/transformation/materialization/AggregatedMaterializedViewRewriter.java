@@ -13,39 +13,39 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.rule.transformation.materialization;
+package com.starrocks.sql.optimizer.rule.transformation.materialization;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.datafibre.fibre.analysis.Expr;
-import io.datafibre.fibre.catalog.Function;
-import io.datafibre.fibre.catalog.FunctionSet;
-import io.datafibre.fibre.catalog.MaterializedView;
-import io.datafibre.fibre.catalog.RandomDistributionInfo;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.common.Pair;
-import io.datafibre.fibre.sql.optimizer.MvRewriteContext;
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.Utils;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefFactory;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
-import io.datafibre.fibre.sql.optimizer.operator.AggType;
-import io.datafibre.fibre.sql.optimizer.operator.Operator;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorBuilderFactory;
-import io.datafibre.fibre.sql.optimizer.operator.Projection;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalAggregationOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalScanOperator;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalUnionOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.BinaryPredicateOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.CallOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
-import io.datafibre.fibre.sql.optimizer.rewrite.ReplaceColumnRefRewriter;
-import io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.equivalent.EquivalentShuttleContext;
+import com.starrocks.analysis.Expr;
+import com.starrocks.catalog.Function;
+import com.starrocks.catalog.FunctionSet;
+import com.starrocks.catalog.MaterializedView;
+import com.starrocks.catalog.RandomDistributionInfo;
+import com.starrocks.catalog.Type;
+import com.starrocks.common.Pair;
+import com.starrocks.sql.optimizer.MvRewriteContext;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.Utils;
+import com.starrocks.sql.optimizer.base.ColumnRefFactory;
+import com.starrocks.sql.optimizer.base.ColumnRefSet;
+import com.starrocks.sql.optimizer.operator.AggType;
+import com.starrocks.sql.optimizer.operator.Operator;
+import com.starrocks.sql.optimizer.operator.OperatorBuilderFactory;
+import com.starrocks.sql.optimizer.operator.Projection;
+import com.starrocks.sql.optimizer.operator.logical.LogicalAggregationOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalScanOperator;
+import com.starrocks.sql.optimizer.operator.logical.LogicalUnionOperator;
+import com.starrocks.sql.optimizer.operator.scalar.BinaryPredicateOperator;
+import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ConstantOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.sql.optimizer.rewrite.ReplaceColumnRefRewriter;
+import com.starrocks.sql.optimizer.rule.transformation.materialization.equivalent.EquivalentShuttleContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -59,9 +59,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.datafibre.fibre.catalog.Function.CompareMode.IS_NONSTRICT_SUPERTYPE_OF;
-import static io.datafibre.fibre.sql.optimizer.OptimizerTraceUtil.logMVRewrite;
-import static io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperatorUtil.findArithmeticFunction;
+import static com.starrocks.catalog.Function.CompareMode.IS_NONSTRICT_SUPERTYPE_OF;
+import static com.starrocks.sql.optimizer.OptimizerTraceUtil.logMVRewrite;
+import static com.starrocks.sql.optimizer.operator.scalar.ScalarOperatorUtil.findArithmeticFunction;
 
 /**
  * SPJG materialized view rewriter, based on
@@ -90,6 +90,7 @@ public class AggregatedMaterializedViewRewriter extends MaterializedViewRewriter
             .add(FunctionSet.HLL_UNION)
             .add(FunctionSet.PERCENTILE_UNION)
             .add(FunctionSet.ARRAY_AGG_DISTINCT)
+            .add(FunctionSet.ARRAY_AGG)
             .build();
 
     public AggregatedMaterializedViewRewriter(MvRewriteContext mvRewriteContext) {
@@ -141,8 +142,9 @@ public class AggregatedMaterializedViewRewriter extends MaterializedViewRewriter
 
         // Cannot ROLLUP distinct
         if (isRollup) {
-            boolean mvHasDistinctAggFunc = 
-                    mvAggOp.getAggregations().values().stream().anyMatch(callOp -> callOp.isDistinct());
+            boolean mvHasDistinctAggFunc =
+                    mvAggOp.getAggregations().values().stream().anyMatch(callOp -> callOp.isDistinct()
+                            && !callOp.getFnName().equalsIgnoreCase(FunctionSet.ARRAY_AGG));
             boolean queryHasDistinctAggFunc = 
                     queryAggOp.getAggregations().values().stream().anyMatch(callOp -> callOp.isDistinct());
             if (mvHasDistinctAggFunc && queryHasDistinctAggFunc) {
@@ -408,7 +410,7 @@ public class AggregatedMaterializedViewRewriter extends MaterializedViewRewriter
         Map<ColumnRefOperator, CallOperator> newAggregations = rewriteAggregates(
                 queryAggregation, equationRewriter, rewriteContext.getOutputMapping(),
                 new ColumnRefSet(rewriteContext.getQueryColumnSet()), queryColumnRefToScalarMap,
-                newProjection, !newQueryGroupKeys.isEmpty());
+                newProjection, !newQueryGroupKeys.isEmpty(), rewriteContext);
         if (newAggregations == null) {
             logMVRewrite(mvRewriteContext, "Rewrite rollup aggregate failed: cannot rewrite aggregate functions");
             return null;
@@ -630,7 +632,8 @@ public class AggregatedMaterializedViewRewriter extends MaterializedViewRewriter
                                                                    ColumnRefSet queryColumnSet,
                                                                    Map<ColumnRefOperator, ScalarOperator> aggregateMapping,
                                                                    Map<ColumnRefOperator, ScalarOperator> newProjection,
-                                                                   boolean hasGroupByKeys) {
+                                                                   boolean hasGroupByKeys,
+                                                                   RewriteContext context) {
         final Map<ColumnRefOperator, CallOperator> newAggregations = Maps.newHashMap();
         equationRewriter.setOutputMapping(mapping);
 
@@ -646,8 +649,43 @@ public class AggregatedMaterializedViewRewriter extends MaterializedViewRewriter
                 return null;
             }
             ColumnRefOperator oldColRef = (ColumnRefOperator) aggregateMapping.get(entry.getKey());
-            newAggregations.put(oldColRef, newAggregate);
-            newProjection.put(oldColRef, genRollupProject(aggCall, oldColRef, hasGroupByKeys));
+
+            if (!(newAggregate.isAggregate())) {
+                // If rewritten function is not an aggregation function, it could be like ScalarFunc(AggregateFunc(...))
+                // We need to decompose it into Projection function and Aggregation function
+                // E.g. count(distinct x) => array_length(array_unique_agg(x))
+                // The array_length is a ScalarFunction and array_unique_agg is AggregateFunction
+                // So it's decomposed into 1: array_length(slot_2), 2: array_unique_agg(x)
+                CallOperator realAggregate = null;
+                int foundIndex = -1;
+                for (int i = 0; i < newAggregate.getChildren().size(); i++) {
+                    if (newAggregate.getChild(i) instanceof CallOperator) {
+                        CallOperator call = (CallOperator) newAggregate.getChild(i);
+                        if (call.isAggregate()) {
+                            foundIndex = i;
+                            realAggregate = call;
+                            break;
+                        }
+                    }
+                }
+                Preconditions.checkState(foundIndex != -1,
+                        "no aggregate functions found: " + newAggregate.getChildren());
+
+                ColumnRefOperator innerAgg = context.getQueryRefFactory()
+                                .create(realAggregate, realAggregate.getType(), realAggregate.isNullable());
+                CallOperator copyProject = (CallOperator) newAggregate.clone();
+                copyProject.setChild(foundIndex, innerAgg);
+
+                ColumnRefOperator outerProject = context.getQueryRefFactory()
+                                .create(copyProject, copyProject.getType(), copyProject.isNullable());
+                newProjection.put(outerProject, copyProject);
+                newAggregations.put(innerAgg, realAggregate);
+                // replace original projection
+                aggregateMapping.put(entry.getKey(), copyProject);
+            } else {
+                newAggregations.put(oldColRef, newAggregate);
+                newProjection.put(oldColRef, genRollupProject(aggCall, oldColRef, hasGroupByKeys));
+            }
         }
 
         return newAggregations;

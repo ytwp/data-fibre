@@ -15,9 +15,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.mysql;
+package com.starrocks.mysql;
 
-import io.datafibre.fibre.analysis.Expr;
+import com.starrocks.analysis.Expr;
 
 // MySQL protocol field used to describe result field info
 public class MysqlColDef {

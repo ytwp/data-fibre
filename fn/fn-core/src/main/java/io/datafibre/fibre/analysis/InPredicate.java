@@ -32,14 +32,17 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import io.datafibre.fibre.sql.analyzer.SemanticException;
-import io.datafibre.fibre.sql.ast.AstVisitor;
-import io.datafibre.fibre.sql.parser.NodePosition;
-import io.datafibre.fibre.thrift.TExprOpcode;
+import com.starrocks.sql.analyzer.SemanticException;
+import com.starrocks.sql.ast.AstVisitor;
+import com.starrocks.sql.parser.NodePosition;
+import com.starrocks.thrift.TExprNode;
+import com.starrocks.thrift.TExprNodeType;
+import com.starrocks.thrift.TExprOpcode;
+import com.starrocks.thrift.TInPredicate;
 
 import java.util.List;
 
@@ -123,20 +126,20 @@ public class InPredicate extends Predicate {
         return true;
     }
 
-//    @Override
-//    protected void toThrift(TExprNode msg) {
-//        // Can't serialize a predicate with a subquery
-//        Preconditions.checkState(!contains(Subquery.class));
-//        msg.in_predicate = new TInPredicate(isNotIn);
-//        msg.node_type = TExprNodeType.IN_PRED;
-//        msg.setOpcode(opcode);
-//        msg.setVector_opcode(vectorOpcode);
-//        if (getChild(0).getType().isComplexType()) {
-//            msg.setChild_type_desc(getChild(0).getType().toThrift());
-//        } else {
-//            msg.setChild_type(getChild(0).getType().getPrimitiveType().toThrift());
-//        }
-//    }
+    @Override
+    protected void toThrift(TExprNode msg) {
+        // Can't serialize a predicate with a subquery
+        Preconditions.checkState(!contains(Subquery.class));
+        msg.in_predicate = new TInPredicate(isNotIn);
+        msg.node_type = TExprNodeType.IN_PRED;
+        msg.setOpcode(opcode);
+        msg.setVector_opcode(vectorOpcode);
+        if (getChild(0).getType().isComplexType()) {
+            msg.setChild_type_desc(getChild(0).getType().toThrift());
+        } else {
+            msg.setChild_type(getChild(0).getType().getPrimitiveType().toThrift());
+        }
+    }
 
     @Override
     public String toSqlImpl() {

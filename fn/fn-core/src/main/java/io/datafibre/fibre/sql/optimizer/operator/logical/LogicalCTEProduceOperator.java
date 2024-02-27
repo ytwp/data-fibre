@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.operator.logical;
+package com.starrocks.sql.optimizer.operator.logical;
 
-import io.datafibre.fibre.sql.optimizer.ExpressionContext;
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.OptExpressionVisitor;
-import io.datafibre.fibre.sql.optimizer.RowOutputInfo;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorVisitor;
+import com.starrocks.sql.optimizer.ExpressionContext;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.OptExpressionVisitor;
+import com.starrocks.sql.optimizer.RowOutputInfo;
+import com.starrocks.sql.optimizer.base.ColumnRefSet;
+import com.starrocks.sql.optimizer.operator.OperatorType;
+import com.starrocks.sql.optimizer.operator.OperatorVisitor;
 
 import java.util.List;
 import java.util.Objects;
@@ -90,7 +90,7 @@ public class LogicalCTEProduceOperator extends LogicalOperator {
     }
 
     public static class Builder
-            extends LogicalOperator.Builder<LogicalCTEProduceOperator, Builder> {
+            extends LogicalOperator.Builder<LogicalCTEProduceOperator, LogicalCTEProduceOperator.Builder> {
         @Override
         protected LogicalCTEProduceOperator newInstance() {
             return new LogicalCTEProduceOperator(-1);
@@ -101,7 +101,7 @@ public class LogicalCTEProduceOperator extends LogicalOperator {
         }
 
         @Override
-        public Builder withOperator(LogicalCTEProduceOperator operator) {
+        public LogicalCTEProduceOperator.Builder withOperator(LogicalCTEProduceOperator operator) {
             builder.cteId = operator.cteId;
             return super.withOperator(operator);
         }

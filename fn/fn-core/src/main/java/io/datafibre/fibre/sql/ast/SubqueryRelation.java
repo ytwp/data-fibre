@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.ast;
+package com.starrocks.sql.ast;
 
-import io.datafibre.fibre.analysis.Expr;
-import io.datafibre.fibre.sql.analyzer.FieldId;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.analysis.Expr;
+import com.starrocks.sql.analyzer.FieldId;
+import com.starrocks.sql.parser.NodePosition;
 
 import java.util.List;
 import java.util.Map;
@@ -50,6 +50,10 @@ public class SubqueryRelation extends QueryRelation {
     @Override
     public String toString() {
         return alias == null ? "anonymous" : alias.toString();
+    }
+
+    public boolean isAnonymous() {
+        return alias == null;
     }
 
     @Override

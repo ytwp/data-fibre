@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.alter;
+package com.starrocks.alter;
 
 public enum AlterOpType {
     // rollup

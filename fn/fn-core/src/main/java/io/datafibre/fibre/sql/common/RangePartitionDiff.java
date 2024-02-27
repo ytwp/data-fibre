@@ -13,11 +13,11 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.common;
+package com.starrocks.sql.common;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
-import io.datafibre.fibre.catalog.PartitionKey;
+import com.starrocks.catalog.PartitionKey;
 
 import java.util.Map;
 import java.util.Set;

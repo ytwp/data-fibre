@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.operator.scalar;
+package com.starrocks.sql.optimizer.operator.scalar;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
+import com.starrocks.catalog.Type;
+import com.starrocks.sql.optimizer.base.ColumnRefSet;
+import com.starrocks.sql.optimizer.operator.OperatorType;
 
 import java.util.Collections;
 import java.util.List;
@@ -43,6 +43,8 @@ public abstract class ScalarOperator implements Cloneable {
     protected boolean isCorrelated = false;
 
     private List<String> hints = Collections.emptyList();
+
+    private boolean isIndexOnlyFilter = false;
 
     public ScalarOperator(OperatorType opType, Type type) {
         this.opType = requireNonNull(opType, "opType is null");
@@ -110,6 +112,18 @@ public abstract class ScalarOperator implements Cloneable {
 
     public void setFromPredicateRangeDerive(boolean fromPredicateRangeDerive) {
         this.fromPredicateRangeDerive = fromPredicateRangeDerive;
+    }
+
+    public boolean isIndexOnlyFilter() {
+        boolean result = isIndexOnlyFilter;
+        for (ScalarOperator child : getChildren()) {
+            result = result || child.isIndexOnlyFilter();
+        }
+        return result;
+    }
+
+    public void setIndexOnlyFilter(boolean indexOnlyFilter) {
+        isIndexOnlyFilter = indexOnlyFilter;
     }
 
     public abstract List<ScalarOperator> getChildren();

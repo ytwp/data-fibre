@@ -13,14 +13,15 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.analysis;
+package com.starrocks.analysis;
 
 import com.google.common.base.Preconditions;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.sql.ast.AstVisitor;
-import io.datafibre.fibre.sql.common.ErrorType;
-import io.datafibre.fibre.sql.common.StarRocksPlannerException;
-import io.datafibre.fibre.sql.parser.NodePosition;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.sql.ast.AstVisitor;
+import com.starrocks.sql.common.ErrorType;
+import com.starrocks.sql.common.StarRocksPlannerException;
+import com.starrocks.sql.parser.NodePosition;
+import com.starrocks.thrift.TExprNode;
 
 /**
  * ArrowExpr: col->'xxx'
@@ -62,10 +63,10 @@ public class ArrowExpr extends Expr {
         return String.format("%s->%s", getItem().toSqlImpl(), getKey().toSqlImpl());
     }
 
-//    @Override
-//    protected void toThrift(TExprNode msg) {
-//        throw new StarRocksPlannerException("not support", ErrorType.INTERNAL_ERROR);
-//    }
+    @Override
+    protected void toThrift(TExprNode msg) {
+        throw new StarRocksPlannerException("not support", ErrorType.INTERNAL_ERROR);
+    }
 
     @Override
     public Expr clone() {

@@ -12,18 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.qe.scheduler.slot;
+package com.starrocks.qe.scheduler.slot;
 
-import io.datafibre.fibre.catalog.ResourceGroup;
-import io.datafibre.fibre.qe.GlobalVariable;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.system.BackendCoreStat;
-import io.datafibre.fibre.thrift.TUniqueId;
+import com.starrocks.catalog.ResourceGroup;
+import com.starrocks.qe.GlobalVariable;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.system.BackendCoreStat;
+import com.starrocks.thrift.TUniqueId;
 import org.apache.commons.compress.utils.Lists;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 

@@ -11,24 +11,24 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.equivalent;
+package com.starrocks.sql.optimizer.rule.transformation.materialization.equivalent;
 
-import io.datafibre.fibre.analysis.Expr;
-import io.datafibre.fibre.catalog.FunctionSet;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.CallOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.analysis.Expr;
+import com.starrocks.catalog.FunctionSet;
+import com.starrocks.catalog.Type;
+import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
 
 import java.util.Arrays;
 
-import static io.datafibre.fibre.catalog.Function.CompareMode.IS_IDENTICAL;
-import static io.datafibre.fibre.catalog.FunctionSet.BITMAP_AGG;
-import static io.datafibre.fibre.catalog.FunctionSet.BITMAP_HASH;
-import static io.datafibre.fibre.catalog.FunctionSet.BITMAP_UNION;
-import static io.datafibre.fibre.catalog.FunctionSet.BITMAP_UNION_COUNT;
-import static io.datafibre.fibre.catalog.FunctionSet.MULTI_DISTINCT_COUNT;
-import static io.datafibre.fibre.catalog.FunctionSet.TO_BITMAP;
+import static com.starrocks.catalog.Function.CompareMode.IS_IDENTICAL;
+import static com.starrocks.catalog.FunctionSet.BITMAP_AGG;
+import static com.starrocks.catalog.FunctionSet.BITMAP_HASH;
+import static com.starrocks.catalog.FunctionSet.BITMAP_UNION;
+import static com.starrocks.catalog.FunctionSet.BITMAP_UNION_COUNT;
+import static com.starrocks.catalog.FunctionSet.MULTI_DISTINCT_COUNT;
+import static com.starrocks.catalog.FunctionSet.TO_BITMAP;
 
 public class BitmapRewriteEquivalent extends IAggregateRewriteEquivalent {
     public static IRewriteEquivalent INSTANCE = new BitmapRewriteEquivalent();

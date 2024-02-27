@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.qe.scheduler.slot;
+package com.starrocks.qe.scheduler.slot;
 
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.system.ComputeNode;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.system.ComputeNode;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

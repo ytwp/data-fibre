@@ -32,16 +32,18 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.catalog;
+package com.starrocks.catalog;
 
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
-import io.datafibre.fibre.analysis.FunctionName;
-import io.datafibre.fibre.common.io.Text;
-import io.datafibre.fibre.sql.ast.CreateFunctionStmt;
-import io.datafibre.fibre.sql.ast.HdfsURI;
-import io.datafibre.fibre.thrift.TFunctionBinaryType;
+import com.starrocks.analysis.FunctionName;
+import com.starrocks.common.io.Text;
+import com.starrocks.sql.ast.CreateFunctionStmt;
+import com.starrocks.sql.ast.HdfsURI;
+import com.starrocks.thrift.TFunction;
+import com.starrocks.thrift.TFunctionBinaryType;
+import com.starrocks.thrift.TScalarFunction;
 import org.apache.logging.log4j.util.Strings;
 
 import java.io.DataInput;
@@ -51,7 +53,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static io.datafibre.fibre.common.io.IOUtils.writeOptionString;
+import static com.starrocks.common.io.IOUtils.writeOptionString;
 
 /**
  * Internal representation of a scalar function.
@@ -211,21 +213,21 @@ public class ScalarFunction extends Function {
         return sb.toString();
     }
 
-//    @Override
-//    public TFunction toThrift() {
-//        TFunction fn = super.toThrift();
-//        TScalarFunction scalarFunction = new TScalarFunction();
-//        scalarFunction.setSymbol(getSymbolName());
-//        if (prepareFnSymbol != null) {
-//            scalarFunction.setPrepare_fn_symbol(prepareFnSymbol);
-//        }
-//        if (closeFnSymbol != null) {
-//            scalarFunction.setClose_fn_symbol(closeFnSymbol);
-//        }
-//        fn.setScalar_fn(scalarFunction);
-//        fn.setIsolated(isolationType);
-//        return fn;
-//    }
+    @Override
+    public TFunction toThrift() {
+        TFunction fn = super.toThrift();
+        TScalarFunction scalarFunction = new TScalarFunction();
+        scalarFunction.setSymbol(getSymbolName());
+        if (prepareFnSymbol != null) {
+            scalarFunction.setPrepare_fn_symbol(prepareFnSymbol);
+        }
+        if (closeFnSymbol != null) {
+            scalarFunction.setClose_fn_symbol(closeFnSymbol);
+        }
+        fn.setScalar_fn(scalarFunction);
+        fn.setIsolated(isolationType);
+        return fn;
+    }
 
     @Override
     public void write(DataOutput output) throws IOException {

@@ -32,11 +32,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.common.util;
+package com.starrocks.common.util;
 
-import io.datafibre.fibre.common.Pair;
-import io.datafibre.fibre.proto.PUniqueId;
-import io.datafibre.fibre.thrift.TUniqueId;
+import com.starrocks.common.Pair;
+import com.starrocks.proto.PUniqueId;
+import com.starrocks.thrift.TUniqueId;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

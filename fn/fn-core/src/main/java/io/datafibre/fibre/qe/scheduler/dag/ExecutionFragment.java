@@ -12,23 +12,42 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.qe.scheduler.dag;
+package com.starrocks.qe.scheduler.dag;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.datafibre.fibre.common.util.DebugUtil;
-import io.datafibre.fibre.planner.*;
-import io.datafibre.fibre.qe.ColocatedBackendSelector;
-import io.datafibre.fibre.qe.CoordinatorPreprocessor;
-import io.datafibre.fibre.qe.FragmentScanRangeAssignment;
-import io.datafibre.fibre.qe.scheduler.ExplainBuilder;
-import io.datafibre.fibre.thrift.*;
+import com.starrocks.common.util.DebugUtil;
+import com.starrocks.planner.ExchangeNode;
+import com.starrocks.planner.JoinNode;
+import com.starrocks.planner.OlapScanNode;
+import com.starrocks.planner.PlanFragment;
+import com.starrocks.planner.PlanFragmentId;
+import com.starrocks.planner.PlanNode;
+import com.starrocks.planner.PlanNodeId;
+import com.starrocks.planner.RuntimeFilterDescription;
+import com.starrocks.planner.ScanNode;
+import com.starrocks.qe.ColocatedBackendSelector;
+import com.starrocks.qe.CoordinatorPreprocessor;
+import com.starrocks.qe.FragmentScanRangeAssignment;
+import com.starrocks.qe.scheduler.ExplainBuilder;
+import com.starrocks.thrift.TEsScanRange;
+import com.starrocks.thrift.THdfsScanRange;
+import com.starrocks.thrift.TInternalScanRange;
+import com.starrocks.thrift.TPlanFragmentDestination;
+import com.starrocks.thrift.TRuntimeFilterParams;
+import com.starrocks.thrift.TScanRangeParams;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
 
-import static io.datafibre.fibre.qe.scheduler.dag.FragmentInstance.ABSENT_DRIVER_SEQUENCE;
+import static com.starrocks.qe.scheduler.dag.FragmentInstance.ABSENT_DRIVER_SEQUENCE;
 
 /**
  * An {@code ExecutionFragment} is a part of the {@link ExecutionDAG}, and it corresponds one-to-one with a {@link PlanFragment}.

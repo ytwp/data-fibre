@@ -31,14 +31,14 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
-package io.datafibre.fibre.mysql.nio;
+package com.starrocks.mysql.nio;
 
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.qe.ConnectProcessor;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.qe.ConnectProcessor;
 import org.xnio.StreamConnection;
 
-import javax.net.ssl.SSLContext;
 import java.io.IOException;
+import javax.net.ssl.SSLContext;
 
 /**
  * connect context based on nio.

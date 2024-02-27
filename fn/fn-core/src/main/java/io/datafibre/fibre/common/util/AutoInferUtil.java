@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.common.util;
+package com.starrocks.common.util;
 
-import io.datafibre.fibre.common.NoAliveBackendException;
-import io.datafibre.fibre.common.UserException;
-import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.server.RunMode;
+import com.starrocks.common.NoAliveBackendException;
+import com.starrocks.common.UserException;
+import com.starrocks.server.GlobalStateMgr;
+import com.starrocks.server.RunMode;
 
 public class AutoInferUtil {
     public static int calDefaultReplicationNum() throws UserException {

@@ -13,9 +13,9 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.privilege;
+package com.starrocks.privilege;
 
-import io.datafibre.fibre.server.GlobalStateMgr;
+import com.starrocks.server.GlobalStateMgr;
 
 /**
  * Each `GRANT`/`REVOKE` statement will create some privilege entry object

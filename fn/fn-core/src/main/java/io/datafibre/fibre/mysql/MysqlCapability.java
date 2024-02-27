@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package io.datafibre.fibre.mysql;
+package com.starrocks.mysql;
 
 import java.util.EnumSet;
 
@@ -125,6 +125,10 @@ public class MysqlCapability {
         }
 
         return sb.toString();
+    }
+
+    public boolean isDeprecateEof() {
+        return (flags & Flag.CLIENT_DEPRECATE_EOF.getFlagBit()) != 0;
     }
 
     public boolean isProtocol41() {

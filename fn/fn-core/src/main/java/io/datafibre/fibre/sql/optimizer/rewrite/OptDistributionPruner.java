@@ -13,23 +13,23 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.rewrite;
+package com.starrocks.sql.optimizer.rewrite;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.datafibre.fibre.catalog.DistributionInfo;
-import io.datafibre.fibre.catalog.HashDistributionInfo;
-import io.datafibre.fibre.catalog.MaterializedIndex;
-import io.datafibre.fibre.catalog.OlapTable;
-import io.datafibre.fibre.catalog.Partition;
-import io.datafibre.fibre.catalog.PhysicalPartition;
-import io.datafibre.fibre.catalog.Table;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.planner.DistributionPruner;
-import io.datafibre.fibre.planner.HashDistributionPruner;
-import io.datafibre.fibre.planner.PartitionColumnFilter;
-import io.datafibre.fibre.sql.optimizer.operator.ColumnFilterConverter;
-import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalOlapScanOperator;
+import com.starrocks.catalog.DistributionInfo;
+import com.starrocks.catalog.HashDistributionInfo;
+import com.starrocks.catalog.MaterializedIndex;
+import com.starrocks.catalog.OlapTable;
+import com.starrocks.catalog.Partition;
+import com.starrocks.catalog.PhysicalPartition;
+import com.starrocks.catalog.Table;
+import com.starrocks.common.AnalysisException;
+import com.starrocks.planner.DistributionPruner;
+import com.starrocks.planner.HashDistributionPruner;
+import com.starrocks.planner.PartitionColumnFilter;
+import com.starrocks.sql.optimizer.operator.ColumnFilterConverter;
+import com.starrocks.sql.optimizer.operator.logical.LogicalOlapScanOperator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

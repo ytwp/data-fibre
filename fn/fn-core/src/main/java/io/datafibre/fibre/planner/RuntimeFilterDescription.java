@@ -12,20 +12,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.planner;
+package com.starrocks.planner;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.datafibre.fibre.analysis.Expr;
-import io.datafibre.fibre.analysis.SortInfo;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.qe.SessionVariable;
-import io.datafibre.fibre.thrift.*;
+import com.starrocks.analysis.Expr;
+import com.starrocks.analysis.SortInfo;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.qe.SessionVariable;
+import com.starrocks.thrift.TNetworkAddress;
+import com.starrocks.thrift.TRuntimeFilterBuildJoinMode;
+import com.starrocks.thrift.TRuntimeFilterBuildType;
+import com.starrocks.thrift.TRuntimeFilterDescription;
+import com.starrocks.thrift.TRuntimeFilterDestination;
+import com.starrocks.thrift.TRuntimeFilterLayout;
+import com.starrocks.thrift.TRuntimeFilterLayoutMode;
+import com.starrocks.thrift.TUniqueId;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.datafibre.fibre.planner.JoinNode.DistributionMode.*;
+import static com.starrocks.planner.JoinNode.DistributionMode.BROADCAST;
+import static com.starrocks.planner.JoinNode.DistributionMode.COLOCATE;
+import static com.starrocks.planner.JoinNode.DistributionMode.LOCAL_HASH_BUCKET;
+import static com.starrocks.planner.JoinNode.DistributionMode.PARTITIONED;
+import static com.starrocks.planner.JoinNode.DistributionMode.REPLICATED;
+import static com.starrocks.planner.JoinNode.DistributionMode.SHUFFLE_HASH_BUCKET;
 
 // this class is to describe a runtime filter.
 // this class is almost identical to TRuntimeFilterDescription in PlanNodes.thrift

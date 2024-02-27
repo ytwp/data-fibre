@@ -13,13 +13,13 @@
 // limitations under the License.
 
 
-package io.datafibre.fibre.sql.optimizer.operator.physical;
+package com.starrocks.sql.optimizer.operator.physical;
 
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
-import io.datafibre.fibre.sql.optimizer.base.DistributionSpec;
-import io.datafibre.fibre.sql.optimizer.base.OrderSpec;
-import io.datafibre.fibre.sql.optimizer.operator.Operator;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
+import com.starrocks.sql.optimizer.base.ColumnRefSet;
+import com.starrocks.sql.optimizer.base.DistributionSpec;
+import com.starrocks.sql.optimizer.base.OrderSpec;
+import com.starrocks.sql.optimizer.operator.Operator;
+import com.starrocks.sql.optimizer.operator.OperatorType;
 
 import java.util.Objects;
 import java.util.Set;
@@ -98,7 +98,7 @@ public abstract class PhysicalOperator extends Operator {
         return Objects.hash(super.hashCode(), orderSpec, distributionSpec);
     }
 
-    public abstract static class Builder<O extends PhysicalOperator, B extends Builder>
+    public abstract static class Builder<O extends PhysicalOperator, B extends PhysicalOperator.Builder>
             extends Operator.Builder<O, B> {
         @Override
         public B withOperator(O operator) {

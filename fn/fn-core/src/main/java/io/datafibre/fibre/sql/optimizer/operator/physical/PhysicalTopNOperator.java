@@ -12,24 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.sql.optimizer.operator.physical;
+package com.starrocks.sql.optimizer.operator.physical;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.sql.optimizer.OptExpression;
-import io.datafibre.fibre.sql.optimizer.OptExpressionVisitor;
-import io.datafibre.fibre.sql.optimizer.RowOutputInfo;
-import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
-import io.datafibre.fibre.sql.optimizer.base.OrderSpec;
-import io.datafibre.fibre.sql.optimizer.base.Ordering;
-import io.datafibre.fibre.sql.optimizer.operator.ColumnOutputInfo;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
-import io.datafibre.fibre.sql.optimizer.operator.OperatorVisitor;
-import io.datafibre.fibre.sql.optimizer.operator.Projection;
-import io.datafibre.fibre.sql.optimizer.operator.SortPhase;
-import io.datafibre.fibre.sql.optimizer.operator.TopNType;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
-import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import com.starrocks.sql.optimizer.OptExpression;
+import com.starrocks.sql.optimizer.OptExpressionVisitor;
+import com.starrocks.sql.optimizer.RowOutputInfo;
+import com.starrocks.sql.optimizer.base.ColumnRefSet;
+import com.starrocks.sql.optimizer.base.OrderSpec;
+import com.starrocks.sql.optimizer.base.Ordering;
+import com.starrocks.sql.optimizer.operator.ColumnOutputInfo;
+import com.starrocks.sql.optimizer.operator.OperatorType;
+import com.starrocks.sql.optimizer.operator.OperatorVisitor;
+import com.starrocks.sql.optimizer.operator.Projection;
+import com.starrocks.sql.optimizer.operator.SortPhase;
+import com.starrocks.sql.optimizer.operator.TopNType;
+import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
 
 import java.util.List;
 import java.util.Objects;
@@ -161,18 +161,18 @@ public class PhysicalTopNOperator extends PhysicalOperator {
         return false;
     }
 
-    public static Builder builder() {
-        return new Builder();
+    public static PhysicalTopNOperator.Builder builder() {
+        return new PhysicalTopNOperator.Builder();
     }
 
-    public static class Builder extends PhysicalOperator.Builder<PhysicalTopNOperator, Builder> {
+    public static class Builder extends PhysicalOperator.Builder<PhysicalTopNOperator, PhysicalTopNOperator.Builder> {
         @Override
         protected PhysicalTopNOperator newInstance() {
             return new PhysicalTopNOperator();
         }
 
         @Override
-        public Builder withOperator(PhysicalTopNOperator operator) {
+        public PhysicalTopNOperator.Builder withOperator(PhysicalTopNOperator operator) {
             super.withOperator(operator);
             builder.offset = operator.offset;
             builder.partitionByColumns = operator.partitionByColumns;

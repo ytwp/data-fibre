@@ -12,18 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.datafibre.fibre.qe.scheduler.dag;
+package com.starrocks.qe.scheduler.dag;
 
 import com.google.common.collect.Maps;
-import io.datafibre.fibre.common.util.DebugUtil;
-import io.datafibre.fibre.planner.*;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.qe.scheduler.ExplainBuilder;
-import io.datafibre.fibre.sql.optimizer.Utils;
-import io.datafibre.fibre.system.ComputeNode;
-import io.datafibre.fibre.thrift.*;
+import com.starrocks.common.util.DebugUtil;
+import com.starrocks.planner.DataSink;
+import com.starrocks.planner.HiveTableSink;
+import com.starrocks.planner.IcebergTableSink;
+import com.starrocks.planner.PlanFragment;
+import com.starrocks.planner.PlanFragmentId;
+import com.starrocks.planner.PlanNodeId;
+import com.starrocks.planner.ScanNode;
+import com.starrocks.planner.TableFunctionTableSink;
+import com.starrocks.qe.ConnectContext;
+import com.starrocks.qe.scheduler.ExplainBuilder;
+import com.starrocks.sql.optimizer.Utils;
+import com.starrocks.system.ComputeNode;
+import com.starrocks.thrift.TInternalScanRange;
+import com.starrocks.thrift.TPlanFragmentDestination;
+import com.starrocks.thrift.TScanRange;
+import com.starrocks.thrift.TScanRangeParams;
+import com.starrocks.thrift.TUniqueId;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
