@@ -78,14 +78,18 @@ public class FrontendOptions {
     public static void init(String[] args) throws UnknownHostException {
         localAddr = null;
         if (!"0.0.0.0".equals(Config.frontend_address)) {
+            // 不是设置的所以人都能访问
             if (!InetAddressValidator.getInstance().isValidInet4Address(Config.frontend_address)) {
+                //不是有效的 IPv4 地址
                 throw new UnknownHostException("invalid frontend_address: " + Config.frontend_address);
             }
+            //是有限的 IPv4 地址
             localAddr = InetAddress.getByName(Config.frontend_address);
             LOG.info("use configured address. {}", localAddr);
             return;
         }
 
+        //获取主机的所有网络地址列表
         List<InetAddress> hosts = NetUtils.getHosts();
         if (hosts.isEmpty()) {
             LOG.error("fail to get localhost");
@@ -96,10 +100,13 @@ public class FrontendOptions {
 
         for (int i = 0; i < args.length; i++) {
             if (args[i].equalsIgnoreCase("-host_type")) {
+                // 有指定fe 使用ip或fqdn
                 if (i + 1 >= args.length) {
+                    // 没找到枚举，退出
                     System.out.println("-host_type need parameter FQDN or IP");
                     System.exit(-1);
                 }
+                // 拿到值，设置上
                 String inputHostType = args[i + 1];
                 try {
                     inputHostType = inputHostType.toUpperCase();
@@ -112,15 +119,18 @@ public class FrontendOptions {
         } 
 
         if (specifiedHostType == HostType.FQDN) {
+            // 指定域名
             initAddrUseFqdn(hosts);
             return;
         }
         if (specifiedHostType == HostType.IP) {
+            // 指定IP
             initAddrUseIp(hosts);
             return;
         }
 
         // Check if it is a new cluster, new clusters start with IP by default
+        // 检查是否为新群集，默认情况下新群集以IP开头，不走域名
         String roleFilePath = Config.meta_dir + ROLE_FILE_PATH;
         File roleFile = new File(roleFilePath);
         if (!roleFile.exists()) {
@@ -154,6 +164,7 @@ public class FrontendOptions {
         useFqdn = true;
 
         // Try to get FQDN from host
+        // host 中过去域名的IP
         String fqdnString = null;
         try {
             fqdnString = InetAddress.getLocalHost().getCanonicalHostName();
@@ -169,6 +180,7 @@ public class FrontendOptions {
             System.exit(-1);
         }
 
+        // 域名尝试获取地址
         // Try to parse FQDN to get InetAddress
         InetAddress uncheckedInetAddress = null;
         try {
@@ -178,7 +190,7 @@ public class FrontendOptions {
                     + "FQDN: {}, message: {}", fqdnString, e.getMessage());
             System.exit(-1);
         }
-
+        // 没有拿到ip，退出
         if (null == uncheckedInetAddress) {
             LOG.error("uncheckedInetAddress is null");
             System.exit(-1);
@@ -188,6 +200,7 @@ public class FrontendOptions {
             LOG.error("The FQDN of the parsed address [{}] is not the same as " + 
                     "the FQDN obtained from the host [{}]", 
                     uncheckedInetAddress.getCanonicalHostName(), fqdnString);
+            // 域名不同退出？
             System.exit(-1);
         }
         
@@ -195,6 +208,7 @@ public class FrontendOptions {
         boolean hasInetAddr = false;
         LOG.debug("fqdnString is {}", fqdnString);
         for (InetAddress addr : hosts) {
+            // 所以ip中匹配解析到的ip
             LOG.debug("Try to match addr, ip: {}, FQDN: {}", 
                     addr.getHostAddress(), addr.getCanonicalHostName());
             if (addr.getCanonicalHostName().equals(uncheckedInetAddress.getCanonicalHostName())) {
@@ -204,8 +218,10 @@ public class FrontendOptions {
         }
 
         if (hasInetAddr) {
+            //找的ip了
             localAddr = uncheckedInetAddress;
         } else {
+            //没找到 退出
             LOG.error("Fail to find right address to start fe by using fqdn");
             System.exit(-1);
         }
@@ -225,14 +241,17 @@ public class FrontendOptions {
             LOG.debug("check ip address: {}", addr);
             if (addr instanceof Inet4Address) {
                 if (addr.isLoopbackAddress()) {
+                    // 是环回地址，环回地址是 127.0.0.1，在 IPv6 中，是 ::1
                     loopBack = addr;
                 } else if (!PRIORITY_CIDRS.isEmpty()) {
+                    // 优先级
                     if (isInPriorNetwork(addr.getHostAddress())) {
                         localAddr = addr;
                         hasMatchedIp = true;
                         break;
                     }
                 } else {
+                    // 一般是内网ip
                     localAddr = addr;
                     break;
                 }
@@ -240,10 +259,12 @@ public class FrontendOptions {
         }
         //if all ips not match the priority_networks then print the warning log
         if (!PRIORITY_CIDRS.isEmpty() && !hasMatchedIp) {
+            // 配了优先级，但是没走
             LOG.warn("ip address range configured for priority_networks does not include the current IP address");
         }
         // nothing found, use loopback addr
         if (localAddr == null) {
+            // 没找到，就用环回地址
             localAddr = loopBack;
         }
         LOG.info("Use IP init local addr, IP: {}", localAddr);
