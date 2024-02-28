@@ -89,12 +89,14 @@ public class BDBTool {
         try {
             if (options.isListDbs()) {
                 // list all databases
+                // 打印bdb je中的数据库列表
                 List<String> dbNames = env.getDatabaseNames();
                 JSONArray jsonArray = new JSONArray(dbNames);
                 System.out.println(jsonArray);
                 return true;
             } else {
                 // db operations
+                // 指定的
                 String dbName = options.getDbName();
                 Preconditions.checkState(!Strings.isNullOrEmpty(dbName));
                 DatabaseConfig dbConfig = new DatabaseConfig();

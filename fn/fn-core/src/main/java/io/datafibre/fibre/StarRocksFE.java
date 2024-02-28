@@ -36,11 +36,7 @@ package io.datafibre.fibre;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Strings;
-import io.datafibre.fibre.common.CommandLineOptions;
-import io.datafibre.fibre.common.Config;
-import io.datafibre.fibre.common.Log4jConfig;
-import io.datafibre.fibre.common.ThreadPoolManager;
-import io.datafibre.fibre.common.Version;
+import io.datafibre.fibre.common.*;
 import io.datafibre.fibre.ha.StateChangeExecutor;
 import io.datafibre.fibre.http.HttpServer;
 import io.datafibre.fibre.journal.Journal;
@@ -57,11 +53,7 @@ import io.datafibre.fibre.service.ExecuteEnv;
 import io.datafibre.fibre.service.FeServer;
 import io.datafibre.fibre.service.FrontendOptions;
 import io.datafibre.fibre.staros.StarMgrServer;
-import org.apache.commons.cli.BasicParser;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -86,16 +78,17 @@ public class StarRocksFE {
 
     // entrance for starrocks frontend
     public static void start(String starRocksDir, String pidDir, String[] args) {
+        // 检验
         if (Strings.isNullOrEmpty(starRocksDir)) {
             System.err.println("env STARROCKS_HOME is not set.");
             return;
         }
-
         if (Strings.isNullOrEmpty(pidDir)) {
             System.err.println("env PID_DIR is not set.");
             return;
         }
 
+        // 解析参数
         CommandLineOptions cmdLineOpts = parseArgs(args);
 
         try {
@@ -107,17 +100,27 @@ public class StarRocksFE {
             // init config
             new Config().init(starRocksDir + "/conf/fe.conf");
 
+            // 初始化log配置和启动
             Log4jConfig.initLogging();
 
             // set dns cache ttl
+            // 这行代码设置了Java安全性属性，将网络地址缓存的生存时间（TTL）设置为60秒。
+            // 这可以影响Java应用程序中对网络地址的缓存时间，使其在60秒后过期并重新获取最新的网络地址信息。
+            // 网络地址缓存的默认生存时间（TTL）是-1，表示缓存永不过期。
             java.security.Security.setProperty("networkaddress.cache.ttl", "60");
+
             // Need to put if before `GlobalStateMgr.getCurrentState().waitForReady()`, because it may access aws service
+            // 将AWS HTTP客户端设置（默认）为UrlConnectionHttpClient
             setAWSHttpClient();
 
             // check command line options
+            // 运行 Berkeley DB debug模式 or 打印版本号
             checkCommandLineOptions(cmdLineOpts);
 
             // check meta dir
+            // 检查新旧元数据目录或用户设置元数据目录
+            // 同时，还会检查数据目录磁盘空间是否足够
+            // 检测目前是否有元数据，已经是否需要从备份恢复元数据
             MetaHelper.checkMetaDir();
 
             LOG.info("StarRocks FE starting, version: {}-{}", Version.STARROCKS_VERSION, Version.STARROCKS_COMMIT_HASH);
@@ -214,6 +217,10 @@ public class StarRocksFE {
      *              is community meta version, second is StarRocks meta version
      *
      */
+
+    /**
+     * 解析参数
+     */
     private static CommandLineOptions parseArgs(String[] args) {
         CommandLineParser commandLineParser = new BasicParser();
         Options options = new Options();
@@ -228,7 +235,7 @@ public class StarRocksFE {
         options.addOption("t", "to", true, "Specify the end scan key");
         options.addOption("m", "metaversion", true,
                 "Specify the meta version to decode log value, separated by ',', first is community meta" +
-                        " version, second is StarRocks meta version");
+                " version, second is StarRocks meta version");
 
         CommandLine cmd = null;
         try {
@@ -243,12 +250,16 @@ public class StarRocksFE {
         if (cmd.hasOption('v') || cmd.hasOption("version")) {
             return new CommandLineOptions(true, null);
         } else if (cmd.hasOption('b') || cmd.hasOption("bdb")) {
+            // 运行 Berkeley DB debug
+            // Berkeley DB = bdb
             if (cmd.hasOption('l') || cmd.hasOption("listdb")) {
                 // list bdb je databases
+                // 打印bdb je中的数据库列表
                 BDBToolOptions bdbOpts = new BDBToolOptions(true, "", false, "", "", 0, 0);
                 return new CommandLineOptions(false, bdbOpts);
             } else if (cmd.hasOption('d') || cmd.hasOption("db")) {
                 // specify a database
+                // 打印bdb je中的指定数据库
                 String dbName = cmd.getOptionValue("db");
                 if (Strings.isNullOrEmpty(dbName)) {
                     System.err.println("BDBJE database name is missing");
@@ -322,6 +333,9 @@ public class StarRocksFE {
     // The UrlConnectionHttpClient is introduced by #16602, and it causes the exception.
     // So we set the default HTTP client to UrlConnectionHttpClient.
     // TODO: remove this after we remove ApacheHttpClient
+    // 代码的作用是解决在类路径上发现多个HTTP实现时可能导致的问题。
+    // 为了避免加载不确定的HTTP实现，需要明确指定要使用的AWS HTTP客户端。
+    // 在这里，通过设置系统属性，将默认的AWS HTTP客户端设置为UrlConnectionHttpClient，以解决冲突并确保使用指定的HTTP客户端实现。
     private static void setAWSHttpClient() {
         System.setProperty("software.amazon.awssdk.http.service.impl",
                 "software.amazon.awssdk.http.urlconnection.UrlConnectionSdkHttpService");
@@ -329,6 +343,7 @@ public class StarRocksFE {
 
     private static void checkCommandLineOptions(CommandLineOptions cmdLineOpts) {
         if (cmdLineOpts.isVersion()) {
+            //指定了 -v 就是打印版本号退出
             System.out.println("Build version: " + Version.STARROCKS_VERSION);
             System.out.println("Commit hash: " + Version.STARROCKS_COMMIT_HASH);
             System.out.println("Build type: " + Version.STARROCKS_BUILD_TYPE);
@@ -337,7 +352,7 @@ public class StarRocksFE {
             System.out.println("Java compile version: " + Version.STARROCKS_JAVA_COMPILE_VERSION);
             System.exit(0);
         } else if (cmdLineOpts.runBdbTools()) {
-            
+            // 运行 Berkeley DB debug模式
             BDBTool bdbTool = new BDBTool(BDBEnvironment.getBdbDir(), cmdLineOpts.getBdbToolOpts());
             if (bdbTool.run()) {
                 System.exit(0);

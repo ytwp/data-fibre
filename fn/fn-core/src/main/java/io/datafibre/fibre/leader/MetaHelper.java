@@ -44,12 +44,7 @@ import io.datafibre.fibre.server.GlobalStateMgr;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.FileStore;
@@ -128,21 +123,24 @@ public class MetaHelper {
     }
 
     public static void checkMetaDir() throws InvalidMetaDirException,
-                                             IOException {
+            IOException {
         // check meta dir
         //   if metaDir is the default config: StarRocksFE.STARROCKS_HOME_DIR + "/meta",
         //   we should check whether both the new default dir (STARROCKS_HOME_DIR + "/meta")
         //   and the old default dir (DORIS_HOME_DIR + "/doris-meta") are present. If both are present,
         //   we need to let users keep only one to avoid starting from outdated metadata.
+        // 可能有新旧两个，只能有一个
         Path oldDefaultMetaDir = Paths.get(System.getenv("DORIS_HOME") + "/doris-meta");
         Path newDefaultMetaDir = Paths.get(System.getenv("STARROCKS_HOME") + "/meta");
+        // 用户指定的meta dir
         Path metaDir = Paths.get(Config.meta_dir);
         if (metaDir.equals(newDefaultMetaDir)) {
             File oldMeta = new File(oldDefaultMetaDir.toUri());
             File newMeta = new File(newDefaultMetaDir.toUri());
             if (oldMeta.exists() && newMeta.exists()) {
+                // 新老都在不行！！
                 LOG.error("New default meta dir: {} and Old default meta dir: {} are both present. " +
-                                "Please make sure {} has the latest data, and remove the another one.",
+                          "Please make sure {} has the latest data, and remove the another one.",
                         newDefaultMetaDir, oldDefaultMetaDir, newDefaultMetaDir);
                 throw new InvalidMetaDirException();
             }
@@ -153,10 +151,12 @@ public class MetaHelper {
             // If metaDir is not the default config, it means the user has specified the other directory
             // We should not use the oldDefaultMetaDir.
             // Just exit in this case
+            // 如果用户指定的，并且不存在，退出
             if (!metaDir.equals(newDefaultMetaDir)) {
                 LOG.error("meta dir {} dose not exist", metaDir);
                 throw new InvalidMetaDirException();
             }
+            // 旧的存在就兼容，不存在就退出
             File oldMeta = new File(oldDefaultMetaDir.toUri());
             if (oldMeta.exists()) {
                 // For backward compatible
@@ -167,15 +167,19 @@ public class MetaHelper {
             }
         }
 
+        // Berkeley DB 默认的阈值
         long lowerFreeDiskSize = Long.parseLong(EnvironmentParams.FREE_DISK.getDefault());
         FileStore store = Files.getFileStore(Paths.get(Config.meta_dir));
         if (store.getUsableSpace() < lowerFreeDiskSize) {
+            // 可用空间小于默认阈值，退出
             LOG.error("Free capacity left for meta dir: {} is less than {}",
                     Config.meta_dir, new ByteSizeValue(lowerFreeDiskSize));
             throw new InvalidMetaDirException();
         }
 
+        //mate镜像备份目录
         Path imageDir = Paths.get(Config.meta_dir + GlobalStateMgr.IMAGE_DIR);
+        //mate目录
         Path bdbDir = Paths.get(BDBEnvironment.getBdbDir());
         boolean haveImageData = false;
         if (Files.exists(imageDir)) {
@@ -190,9 +194,10 @@ public class MetaHelper {
             }
         }
         if (haveImageData && !haveBDBData && !Config.start_with_incomplete_meta) {
+            // 有备份，没有当前的，并且没有开启恢复，退出
             LOG.error("image exists, but bdb dir is empty, " +
-                    "set start_with_incomplete_meta to true if you want to forcefully recover from image data, " +
-                    "this may end with stale meta data, so please be careful.");
+                      "set start_with_incomplete_meta to true if you want to forcefully recover from image data, " +
+                      "this may end with stale meta data, so please be careful.");
             throw new InvalidMetaDirException();
         }
     }

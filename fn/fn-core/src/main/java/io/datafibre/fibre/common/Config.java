@@ -578,6 +578,7 @@ public class Config extends ConfigBase {
 
     /**
      * If the bdb data is corrupted, and you want to start the cluster only with image, set this param to true
+     * 如果bdb数据已损坏，并且您希望仅使用映像启动集群，请将此参数设置为true
      */
     @ConfField
     public static boolean start_with_incomplete_meta = false;

@@ -56,135 +56,136 @@ import java.util.Set;
 public class Log4jConfig extends XmlConfiguration {
     private static final Set<String> DEBUG_LEVELS = ImmutableSet.of("FATAL", "ERROR", "WARN", "INFO", "DEBUG");
 
+    // 日志xml模版
     private static final String APPENDER_TEMPLATE = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
-            "\n" +
-            "<Configuration status=\"info\" packages=\"io.datafibre.fibre.common\">\n" +
-            "  <Appenders>\n" +
-            "    <Console name=\"ConsoleErr\" target=\"SYSTEM_ERR\" follow=\"true\">\n" +
-            "      <PatternLayout pattern=\"%d{yyyy-MM-dd HH:mm:ss,SSS} %p (%t|%tid) [%C{1}.%M():%L] %m%n\"/>\n" +
-            "    </Console>\n" +
-            "    <RollingFile name=\"Sys\" fileName=\"${sys_log_dir}/fe.log\" filePattern=\"${sys_log_dir}/fe.log.${sys_file_pattern}-%i\">\n" +
-            "      <PatternLayout charset=\"UTF-8\">\n" +
-            "        <Pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} %p (%t|%tid) [%C{1}.%M():%L] %m%n</Pattern>\n" +
-            "      </PatternLayout>\n" +
-            "      <Policies>\n" +
-            "        <TimeBasedTriggeringPolicy/>\n" +
-            "        <SizeBasedTriggeringPolicy size=\"${sys_roll_maxsize}MB\"/>\n" +
-            "      </Policies>\n" +
-            "      <DefaultRolloverStrategy max=\"${sys_roll_num}\" fileIndex=\"min\">\n" +
-            "        <Delete basePath=\"${sys_log_dir}/\" maxDepth=\"1\" followLinks=\"true\">\n" +
-            "          <IfFileName glob=\"fe.log.*\" />\n" +
-            "          <IfLastModified age=\"${sys_log_delete_age}\" />\n" +
-            "        </Delete>\n" +
-            "      </DefaultRolloverStrategy>\n" +
-            "    </RollingFile>\n" +
-            "    <RollingFile name=\"SysWF\" fileName=\"${sys_log_dir}/fe.warn.log\" filePattern=\"${sys_log_dir}/fe.warn.log.${sys_file_pattern}-%i\">\n" +
-            "      <PatternLayout charset=\"UTF-8\">\n" +
-            "        <Pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} %p (%t|%tid) [%C{1}.%M():%L] %m%n</Pattern>\n" +
-            "      </PatternLayout>\n" +
-            "      <Policies>\n" +
-            "        <TimeBasedTriggeringPolicy/>\n" +
-            "        <SizeBasedTriggeringPolicy size=\"${sys_roll_maxsize}MB\"/>\n" +
-            "      </Policies>\n" +
-            "      <DefaultRolloverStrategy max=\"${sys_roll_num}\" fileIndex=\"min\">\n" +
-            "        <Delete basePath=\"${sys_log_dir}/\" maxDepth=\"1\" followLinks=\"true\">\n" +
-            "          <IfFileName glob=\"fe.warn.log.*\" />\n" +
-            "          <IfLastModified age=\"${sys_log_delete_age}\" />\n" +
-            "        </Delete>\n" +
-            "      </DefaultRolloverStrategy>\n" +
-            "    </RollingFile>\n" +
-            "    <RollingFile name=\"Auditfile\" fileName=\"${audit_log_dir}/fe.audit.log\" filePattern=\"${audit_log_dir}/fe.audit.log.${audit_file_pattern}-%i\">\n" +
-            "      <PatternLayout charset=\"UTF-8\">\n" +
-            "        <Pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} [%c{1}] %m%n</Pattern>\n" +
-            "      </PatternLayout>\n" +
-            "      <Policies>\n" +
-            "        <TimeBasedTriggeringPolicy/>\n" +
-            "        <SizeBasedTriggeringPolicy size=\"${audit_roll_maxsize}MB\"/>\n" +
-            "      </Policies>\n" +
-            "      <DefaultRolloverStrategy max=\"${sys_roll_num}\" fileIndex=\"min\">\n" +
-            "        <Delete basePath=\"${audit_log_dir}/\" maxDepth=\"1\" followLinks=\"true\">\n" +
-            "          <IfFileName glob=\"fe.audit.log.*\" />\n" +
-            "          <IfLastModified age=\"${audit_log_delete_age}\" />\n" +
-            "        </Delete>\n" +
-            "      </DefaultRolloverStrategy>\n" +
-            "    </RollingFile>\n" +
-            "    <RollingFile name=\"dumpFile\" fileName=\"${dump_log_dir}/fe.dump.log\" filePattern=\"${dump_log_dir}/fe.dump.log.${dump_file_pattern}-%i\">\n" +
-            "      <PatternLayout charset=\"UTF-8\">\n" +
-            "        <Pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} [%c{1}] %m%n</Pattern>\n" +
-            "      </PatternLayout>\n" +
-            "      <Policies>\n" +
-            "        <TimeBasedTriggeringPolicy/>\n" +
-            "        <SizeBasedTriggeringPolicy size=\"${dump_roll_maxsize}MB\"/>\n" +
-            "      </Policies>\n" +
-            "      <DefaultRolloverStrategy max=\"${dump_roll_num}\" fileIndex=\"min\">\n" +
-            "        <Delete basePath=\"${dump_log_dir}/\" maxDepth=\"1\" followLinks=\"true\">\n" +
-            "          <IfFileName glob=\"fe.dump.log.*\" />\n" +
-            "          <IfLastModified age=\"${dump_log_delete_age}\" />\n" +
-            "        </Delete>\n" +
-            "      </DefaultRolloverStrategy>\n" +
-            "    </RollingFile>\n" +
-            "    <RollingFile name=\"BigQueryFile\" fileName=\"${big_query_log_dir}/fe.big_query.log\" filePattern=\"${big_query_log_dir}/fe.big_query.log.${big_query_file_pattern}-%i\">\n" +
-            "      <PatternLayout charset=\"UTF-8\">\n" +
-            "        <Pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} [%c{1}] %m%n</Pattern>\n" +
-            "      </PatternLayout>\n" +
-            "      <Policies>\n" +
-            "        <TimeBasedTriggeringPolicy/>\n" +
-            "        <SizeBasedTriggeringPolicy size=\"${big_query_roll_maxsize}MB\"/>\n" +
-            "      </Policies>\n" +
-            "      <DefaultRolloverStrategy max=\"${sys_roll_num}\" fileIndex=\"min\">\n" +
-            "        <Delete basePath=\"${big_query_log_dir}/\" maxDepth=\"1\" followLinks=\"true\">\n" +
-            "          <IfFileName glob=\"fe.big_query.log.*\" />\n" +
-            "          <IfLastModified age=\"${big_query_log_delete_age}\" />\n" +
-            "        </Delete>\n" +
-            "      </DefaultRolloverStrategy>\n" +
-            "    </RollingFile>\n" +
-            "    <RollingFile name=\"InternalFile\" fileName=\"${internal_log_dir}/fe.internal.log\" filePattern=\"${internal_log_dir}/fe.internal.log.${internal_file_pattern}-%i\">\n" +
-            "      <PatternLayout charset=\"UTF-8\">\n" +
-            "        <Pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} %p (%t|%tid) [%C{1}.%M():%L] %m%n</Pattern>\n" +
-            "      </PatternLayout>\n" +
-            "      <Policies>\n" +
-            "        <TimeBasedTriggeringPolicy/>\n" +
-            "        <SizeBasedTriggeringPolicy size=\"${internal_roll_maxsize}MB\"/>\n" +
-            "      </Policies>\n" +
-            "      <DefaultRolloverStrategy max=\"${sys_roll_num}\" fileIndex=\"min\">\n" +
-            "        <Delete basePath=\"${internal_log_dir}/\" maxDepth=\"1\" followLinks=\"true\">\n" +
-            "          <IfFileName glob=\"fe.internal.log.*\" />\n" +
-            "          <IfLastModified age=\"${internal_log_delete_age}\" />\n" +
-            "        </Delete>\n" +
-            "      </DefaultRolloverStrategy>\n" +
-            "    </RollingFile>\n" +
-            "  </Appenders>\n";
+                                                    "\n" +
+                                                    "<Configuration status=\"info\" packages=\"io.datafibre.fibre.common\">\n" +
+                                                    "  <Appenders>\n" +
+                                                    "    <Console name=\"ConsoleErr\" target=\"SYSTEM_ERR\" follow=\"true\">\n" +
+                                                    "      <PatternLayout pattern=\"%d{yyyy-MM-dd HH:mm:ss,SSS} %p (%t|%tid) [%C{1}.%M():%L] %m%n\"/>\n" +
+                                                    "    </Console>\n" +
+                                                    "    <RollingFile name=\"Sys\" fileName=\"${sys_log_dir}/fe.log\" filePattern=\"${sys_log_dir}/fe.log.${sys_file_pattern}-%i\">\n" +
+                                                    "      <PatternLayout charset=\"UTF-8\">\n" +
+                                                    "        <Pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} %p (%t|%tid) [%C{1}.%M():%L] %m%n</Pattern>\n" +
+                                                    "      </PatternLayout>\n" +
+                                                    "      <Policies>\n" +
+                                                    "        <TimeBasedTriggeringPolicy/>\n" +
+                                                    "        <SizeBasedTriggeringPolicy size=\"${sys_roll_maxsize}MB\"/>\n" +
+                                                    "      </Policies>\n" +
+                                                    "      <DefaultRolloverStrategy max=\"${sys_roll_num}\" fileIndex=\"min\">\n" +
+                                                    "        <Delete basePath=\"${sys_log_dir}/\" maxDepth=\"1\" followLinks=\"true\">\n" +
+                                                    "          <IfFileName glob=\"fe.log.*\" />\n" +
+                                                    "          <IfLastModified age=\"${sys_log_delete_age}\" />\n" +
+                                                    "        </Delete>\n" +
+                                                    "      </DefaultRolloverStrategy>\n" +
+                                                    "    </RollingFile>\n" +
+                                                    "    <RollingFile name=\"SysWF\" fileName=\"${sys_log_dir}/fe.warn.log\" filePattern=\"${sys_log_dir}/fe.warn.log.${sys_file_pattern}-%i\">\n" +
+                                                    "      <PatternLayout charset=\"UTF-8\">\n" +
+                                                    "        <Pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} %p (%t|%tid) [%C{1}.%M():%L] %m%n</Pattern>\n" +
+                                                    "      </PatternLayout>\n" +
+                                                    "      <Policies>\n" +
+                                                    "        <TimeBasedTriggeringPolicy/>\n" +
+                                                    "        <SizeBasedTriggeringPolicy size=\"${sys_roll_maxsize}MB\"/>\n" +
+                                                    "      </Policies>\n" +
+                                                    "      <DefaultRolloverStrategy max=\"${sys_roll_num}\" fileIndex=\"min\">\n" +
+                                                    "        <Delete basePath=\"${sys_log_dir}/\" maxDepth=\"1\" followLinks=\"true\">\n" +
+                                                    "          <IfFileName glob=\"fe.warn.log.*\" />\n" +
+                                                    "          <IfLastModified age=\"${sys_log_delete_age}\" />\n" +
+                                                    "        </Delete>\n" +
+                                                    "      </DefaultRolloverStrategy>\n" +
+                                                    "    </RollingFile>\n" +
+                                                    "    <RollingFile name=\"Auditfile\" fileName=\"${audit_log_dir}/fe.audit.log\" filePattern=\"${audit_log_dir}/fe.audit.log.${audit_file_pattern}-%i\">\n" +
+                                                    "      <PatternLayout charset=\"UTF-8\">\n" +
+                                                    "        <Pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} [%c{1}] %m%n</Pattern>\n" +
+                                                    "      </PatternLayout>\n" +
+                                                    "      <Policies>\n" +
+                                                    "        <TimeBasedTriggeringPolicy/>\n" +
+                                                    "        <SizeBasedTriggeringPolicy size=\"${audit_roll_maxsize}MB\"/>\n" +
+                                                    "      </Policies>\n" +
+                                                    "      <DefaultRolloverStrategy max=\"${sys_roll_num}\" fileIndex=\"min\">\n" +
+                                                    "        <Delete basePath=\"${audit_log_dir}/\" maxDepth=\"1\" followLinks=\"true\">\n" +
+                                                    "          <IfFileName glob=\"fe.audit.log.*\" />\n" +
+                                                    "          <IfLastModified age=\"${audit_log_delete_age}\" />\n" +
+                                                    "        </Delete>\n" +
+                                                    "      </DefaultRolloverStrategy>\n" +
+                                                    "    </RollingFile>\n" +
+                                                    "    <RollingFile name=\"dumpFile\" fileName=\"${dump_log_dir}/fe.dump.log\" filePattern=\"${dump_log_dir}/fe.dump.log.${dump_file_pattern}-%i\">\n" +
+                                                    "      <PatternLayout charset=\"UTF-8\">\n" +
+                                                    "        <Pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} [%c{1}] %m%n</Pattern>\n" +
+                                                    "      </PatternLayout>\n" +
+                                                    "      <Policies>\n" +
+                                                    "        <TimeBasedTriggeringPolicy/>\n" +
+                                                    "        <SizeBasedTriggeringPolicy size=\"${dump_roll_maxsize}MB\"/>\n" +
+                                                    "      </Policies>\n" +
+                                                    "      <DefaultRolloverStrategy max=\"${dump_roll_num}\" fileIndex=\"min\">\n" +
+                                                    "        <Delete basePath=\"${dump_log_dir}/\" maxDepth=\"1\" followLinks=\"true\">\n" +
+                                                    "          <IfFileName glob=\"fe.dump.log.*\" />\n" +
+                                                    "          <IfLastModified age=\"${dump_log_delete_age}\" />\n" +
+                                                    "        </Delete>\n" +
+                                                    "      </DefaultRolloverStrategy>\n" +
+                                                    "    </RollingFile>\n" +
+                                                    "    <RollingFile name=\"BigQueryFile\" fileName=\"${big_query_log_dir}/fe.big_query.log\" filePattern=\"${big_query_log_dir}/fe.big_query.log.${big_query_file_pattern}-%i\">\n" +
+                                                    "      <PatternLayout charset=\"UTF-8\">\n" +
+                                                    "        <Pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} [%c{1}] %m%n</Pattern>\n" +
+                                                    "      </PatternLayout>\n" +
+                                                    "      <Policies>\n" +
+                                                    "        <TimeBasedTriggeringPolicy/>\n" +
+                                                    "        <SizeBasedTriggeringPolicy size=\"${big_query_roll_maxsize}MB\"/>\n" +
+                                                    "      </Policies>\n" +
+                                                    "      <DefaultRolloverStrategy max=\"${sys_roll_num}\" fileIndex=\"min\">\n" +
+                                                    "        <Delete basePath=\"${big_query_log_dir}/\" maxDepth=\"1\" followLinks=\"true\">\n" +
+                                                    "          <IfFileName glob=\"fe.big_query.log.*\" />\n" +
+                                                    "          <IfLastModified age=\"${big_query_log_delete_age}\" />\n" +
+                                                    "        </Delete>\n" +
+                                                    "      </DefaultRolloverStrategy>\n" +
+                                                    "    </RollingFile>\n" +
+                                                    "    <RollingFile name=\"InternalFile\" fileName=\"${internal_log_dir}/fe.internal.log\" filePattern=\"${internal_log_dir}/fe.internal.log.${internal_file_pattern}-%i\">\n" +
+                                                    "      <PatternLayout charset=\"UTF-8\">\n" +
+                                                    "        <Pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} %p (%t|%tid) [%C{1}.%M():%L] %m%n</Pattern>\n" +
+                                                    "      </PatternLayout>\n" +
+                                                    "      <Policies>\n" +
+                                                    "        <TimeBasedTriggeringPolicy/>\n" +
+                                                    "        <SizeBasedTriggeringPolicy size=\"${internal_roll_maxsize}MB\"/>\n" +
+                                                    "      </Policies>\n" +
+                                                    "      <DefaultRolloverStrategy max=\"${sys_roll_num}\" fileIndex=\"min\">\n" +
+                                                    "        <Delete basePath=\"${internal_log_dir}/\" maxDepth=\"1\" followLinks=\"true\">\n" +
+                                                    "          <IfFileName glob=\"fe.internal.log.*\" />\n" +
+                                                    "          <IfLastModified age=\"${internal_log_delete_age}\" />\n" +
+                                                    "        </Delete>\n" +
+                                                    "      </DefaultRolloverStrategy>\n" +
+                                                    "    </RollingFile>\n" +
+                                                    "  </Appenders>\n";
 
     // Predefined loggers to write log to file
     private static final String FILE_LOGGER_TEMPLATE = "  <Loggers>\n" +
-            "    <Root level=\"${sys_log_level}\">\n" +
-            "      <AppenderRef ref=\"Sys\"/>\n" +
-            "      <AppenderRef ref=\"SysWF\" level=\"WARN\"/>\n" +
-            "    </Root>\n" +
-            "    <Logger name=\"audit\" level=\"ERROR\" additivity=\"false\">\n" +
-            "      <AppenderRef ref=\"Auditfile\"/>\n" +
-            "    </Logger>\n" +
-            "    <Logger name=\"dump\" level=\"ERROR\" additivity=\"false\">\n" +
-            "      <AppenderRef ref=\"dumpFile\"/>\n" +
-            "    </Logger>\n" +
-            "    <Logger name=\"big_query\" level=\"ERROR\" additivity=\"false\">\n" +
-            "      <AppenderRef ref=\"BigQueryFile\"/>\n" +
-            "    </Logger>\n" +
-            "    <Logger name=\"org.apache.kafka\" level=\"WARN\"> \n" +
-            "      <AppenderRef ref=\"SysWF\"/>\n" +
-            "    </Logger>\n" +
-            "    <!--REPLACED BY AUDIT AND VERBOSE MODULE NAMES-->\n" +
-            "  </Loggers>\n" +
-            "</Configuration>";
+                                                       "    <Root level=\"${sys_log_level}\">\n" +
+                                                       "      <AppenderRef ref=\"Sys\"/>\n" +
+                                                       "      <AppenderRef ref=\"SysWF\" level=\"WARN\"/>\n" +
+                                                       "    </Root>\n" +
+                                                       "    <Logger name=\"audit\" level=\"ERROR\" additivity=\"false\">\n" +
+                                                       "      <AppenderRef ref=\"Auditfile\"/>\n" +
+                                                       "    </Logger>\n" +
+                                                       "    <Logger name=\"dump\" level=\"ERROR\" additivity=\"false\">\n" +
+                                                       "      <AppenderRef ref=\"dumpFile\"/>\n" +
+                                                       "    </Logger>\n" +
+                                                       "    <Logger name=\"big_query\" level=\"ERROR\" additivity=\"false\">\n" +
+                                                       "      <AppenderRef ref=\"BigQueryFile\"/>\n" +
+                                                       "    </Logger>\n" +
+                                                       "    <Logger name=\"org.apache.kafka\" level=\"WARN\"> \n" +
+                                                       "      <AppenderRef ref=\"SysWF\"/>\n" +
+                                                       "    </Logger>\n" +
+                                                       "    <!--REPLACED BY AUDIT AND VERBOSE MODULE NAMES-->\n" +
+                                                       "  </Loggers>\n" +
+                                                       "</Configuration>";
 
     // Predefined console logger, all logs will be written to console
     private static final String CONSOLE_LOGGER_TEMPLATE = "  <Loggers>\n" +
-            "    <Root level=\"${sys_log_level}\">\n" +
-            "      <AppenderRef ref=\"ConsoleErr\"/>\n" +
-            "    </Root>\n" +
-            "    <!--REPLACED BY AUDIT AND VERBOSE MODULE NAMES-->\n" +
-            "  </Loggers>\n" +
-            "</Configuration>";
+                                                          "    <Root level=\"${sys_log_level}\">\n" +
+                                                          "      <AppenderRef ref=\"ConsoleErr\"/>\n" +
+                                                          "    </Root>\n" +
+                                                          "    <!--REPLACED BY AUDIT AND VERBOSE MODULE NAMES-->\n" +
+                                                          "  </Loggers>\n" +
+                                                          "</Configuration>";
     private static StrSubstitutor strSub;
     private static String sysLogLevel;
     private static String[] verboseModules;
@@ -197,9 +198,12 @@ public class Log4jConfig extends XmlConfiguration {
         Map<String, String> properties = Maps.newHashMap();
 
         // sys log config
+        // 必须是 "FATAL", "ERROR", "WARN", "INFO", "DEBUG" 其中一个
         if (!DEBUG_LEVELS.contains(StringUtils.upperCase(sysLogLevel))) {
             throw new IOException("sys_log_level config error");
         }
+
+        // 下面是配置一些日志
         properties.put("sys_log_dir", Config.sys_log_dir);
         properties.put("sys_roll_maxsize", String.valueOf(Config.log_roll_size_mb));
         properties.put("sys_roll_num", String.valueOf(Config.sys_log_roll_num));
@@ -239,10 +243,12 @@ public class Log4jConfig extends XmlConfiguration {
         properties.put("internal_file_pattern",
                 getIntervalPattern("big_query_log_roll_interval", Config.internal_log_roll_interval));
 
+        // 将properties配置转成xml
         String xmlConfTemplate = generateXmlConfTemplate();
         strSub = new StrSubstitutor(new Interpolator(properties));
+        // 替换目录等等的参数
         xmlConfTemplate = strSub.replace(xmlConfTemplate);
-
+        // ？？？？？
         if (!FeConstants.runningUnitTest && !FeConstants.isReplayFromQueryDump) {
             System.out.println("=====");
             System.out.println(xmlConfTemplate);
@@ -250,15 +256,20 @@ public class Log4jConfig extends XmlConfiguration {
         }
 
         // new SimpleLog4jConfiguration with xmlConfTemplate
+        // 建了一个基于XML模板的Log4j配置，并将其转换为字节流。然后，通过创建配置源和Log4j配置对象，将配置应用到日志系统中
         ByteArrayInputStream bis = new ByteArrayInputStream(xmlConfTemplate.getBytes(StandardCharsets.UTF_8));
         ConfigurationSource source = new ConfigurationSource(bis);
         Log4jConfig config = new Log4jConfig(source);
 
         // LoggerContext.start(new Configuration)
+        // 通过获取LoggerContext并启动配置，实现了Log4j2日志框架的初始化和配置。
         LoggerContext context = (LoggerContext) LogManager.getContext(LogManager.class.getClassLoader(), false);
         context.start(config);
     }
 
+    /**
+     * 生成xml日志配置文件模版
+     */
     private static String generateXmlConfTemplate() {
         // verbose modules and audit log modules
         StringBuilder sb = new StringBuilder();
@@ -283,7 +294,9 @@ public class Log4jConfig extends XmlConfiguration {
         }
 
         String newXmlConfTemplate = APPENDER_TEMPLATE;
+        // 判断系统日志是打印到控制台还是文件
         newXmlConfTemplate += Config.sys_log_to_console ? CONSOLE_LOGGER_TEMPLATE : FILE_LOGGER_TEMPLATE;
+        // 替换Modules的日志配置
         newXmlConfTemplate = newXmlConfTemplate.replaceAll("<!--REPLACED BY AUDIT AND VERBOSE MODULE NAMES-->",
                 sb.toString());
         return newXmlConfTemplate;
@@ -309,12 +322,19 @@ public class Log4jConfig extends XmlConfiguration {
     }
 
     public static synchronized void initLogging() throws IOException {
+        // 日子级别，默认INFO
         sysLogLevel = Config.sys_log_level;
+        // 系统日志模块，？区分不同模块不同级别日志？
         verboseModules = Config.sys_log_verbose_modules;
+        // 审查日志模块，？区分不同模块不同级别日志？
         auditModules = Config.audit_log_modules;
+        // 转储日志模块，？区分不同模块不同级别日志？
         dumpModules = Config.dump_log_modules;
+        // 大查询日志模块，？区分不同模块不同级别日志？
         bigQueryModules = Config.big_query_log_modules;
+        // 内部日志模块，？区分不同模块不同级别日志？
         internalModules = Config.internal_log_modules;
+        // 重新配置
         reconfig();
     }
 
