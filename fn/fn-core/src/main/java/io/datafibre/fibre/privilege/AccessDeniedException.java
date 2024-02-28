@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.privilege;
+package io.datafibre.fibre.privilege;
 
-import com.starrocks.catalog.InternalCatalog;
-import com.starrocks.common.ErrorCode;
-import com.starrocks.common.ErrorReportException;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.analyzer.Authorizer;
-import com.starrocks.sql.ast.UserIdentity;
+import io.datafibre.fibre.catalog.InternalCatalog;
+import io.datafibre.fibre.common.ErrorCode;
+import io.datafibre.fibre.common.ErrorReportException;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.analyzer.Authorizer;
+import io.datafibre.fibre.sql.ast.UserIdentity;
 
 import java.util.ArrayList;
 import java.util.List;

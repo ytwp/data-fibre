@@ -13,14 +13,14 @@
 // limitations under the License.
 
 
-package com.starrocks.connector;
+package io.datafibre.fibre.connector;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.UncheckedExecutionException;
-import com.starrocks.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

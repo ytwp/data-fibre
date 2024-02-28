@@ -12,20 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.hive;
+package io.datafibre.fibre.connector.hive;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.HiveMetaStoreTable;
-import com.starrocks.catalog.HiveTable;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.Config;
-import com.starrocks.connector.ConnectorTableId;
-import com.starrocks.connector.MetastoreType;
-import com.starrocks.connector.PartitionUtil;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.connector.hive.events.MetastoreNotificationFetchException;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.HiveMetaStoreTable;
+import io.datafibre.fibre.catalog.HiveTable;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.connector.ConnectorTableId;
+import io.datafibre.fibre.connector.MetastoreType;
+import io.datafibre.fibre.connector.PartitionUtil;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.connector.hive.events.MetastoreNotificationFetchException;
 import org.apache.hadoop.hive.metastore.api.ColumnStatisticsObj;
 import org.apache.hadoop.hive.metastore.api.FieldSchema;
 import org.apache.hadoop.hive.metastore.api.NotificationEventResponse;
@@ -45,13 +45,13 @@ import java.util.stream.Collectors;
 import static com.google.common.collect.ImmutableList.toImmutableList;
 import static com.google.common.collect.ImmutableMap.toImmutableMap;
 import static com.google.common.collect.Iterables.getOnlyElement;
-import static com.starrocks.connector.PartitionUtil.toHivePartitionName;
-import static com.starrocks.connector.hive.HiveMetastoreApiConverter.toHiveCommonStats;
-import static com.starrocks.connector.hive.HiveMetastoreApiConverter.toMetastoreApiTable;
-import static com.starrocks.connector.hive.HiveMetastoreApiConverter.updateStatisticsParameters;
-import static com.starrocks.connector.hive.HiveMetastoreApiConverter.validateHiveTableType;
-import static com.starrocks.connector.hive.HiveMetastoreOperations.LOCATION_PROPERTY;
-import static com.starrocks.connector.hive.Partition.TRANSIENT_LAST_DDL_TIME;
+import static io.datafibre.fibre.connector.PartitionUtil.toHivePartitionName;
+import static io.datafibre.fibre.connector.hive.HiveMetastoreApiConverter.toHiveCommonStats;
+import static io.datafibre.fibre.connector.hive.HiveMetastoreApiConverter.toMetastoreApiTable;
+import static io.datafibre.fibre.connector.hive.HiveMetastoreApiConverter.updateStatisticsParameters;
+import static io.datafibre.fibre.connector.hive.HiveMetastoreApiConverter.validateHiveTableType;
+import static io.datafibre.fibre.connector.hive.HiveMetastoreOperations.LOCATION_PROPERTY;
+import static io.datafibre.fibre.connector.hive.Partition.TRANSIENT_LAST_DDL_TIME;
 
 public class HiveMetastore implements IHiveMetastore {
 

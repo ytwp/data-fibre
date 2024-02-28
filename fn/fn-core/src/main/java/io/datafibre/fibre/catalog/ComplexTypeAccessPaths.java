@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.collect.ImmutableList;
 

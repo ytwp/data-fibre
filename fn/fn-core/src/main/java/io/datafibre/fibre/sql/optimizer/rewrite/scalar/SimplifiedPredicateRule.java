@@ -12,30 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.rewrite.scalar;
+package io.datafibre.fibre.sql.optimizer.rewrite.scalar;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.starrocks.analysis.BinaryType;
-import com.starrocks.analysis.Expr;
-import com.starrocks.catalog.Function;
-import com.starrocks.catalog.FunctionSet;
-import com.starrocks.catalog.ScalarFunction;
-import com.starrocks.catalog.Type;
-import com.starrocks.sql.optimizer.operator.scalar.BinaryPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CaseWhenOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CompoundPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ConstantOperator;
-import com.starrocks.sql.optimizer.operator.scalar.InPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.LambdaFunctionOperator;
-import com.starrocks.sql.optimizer.operator.scalar.LikePredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.operator.scalar.SubqueryOperator;
-import com.starrocks.sql.optimizer.rewrite.EliminateNegationsRewriter;
-import com.starrocks.sql.optimizer.rewrite.ScalarOperatorRewriteContext;
+import io.datafibre.fibre.analysis.BinaryType;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.catalog.Function;
+import io.datafibre.fibre.catalog.FunctionSet;
+import io.datafibre.fibre.catalog.ScalarFunction;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.BinaryPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CallOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CaseWhenOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CompoundPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.InPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.LambdaFunctionOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.LikePredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.SubqueryOperator;
+import io.datafibre.fibre.sql.optimizer.rewrite.EliminateNegationsRewriter;
+import io.datafibre.fibre.sql.optimizer.rewrite.ScalarOperatorRewriteContext;
 
 import java.util.Arrays;
 import java.util.List;

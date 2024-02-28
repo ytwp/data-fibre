@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common;
+package io.datafibre.fibre.common;
 
 public class FeConstants {
     public static final long DEFAULT_DB_DATA_QUOTA_BYTES = Long.MAX_VALUE;

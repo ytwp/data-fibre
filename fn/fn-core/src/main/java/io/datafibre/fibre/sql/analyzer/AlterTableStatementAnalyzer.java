@@ -12,27 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
-import com.starrocks.analysis.TableName;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.ErrorCode;
-import com.starrocks.common.ErrorReport;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.ast.AddColumnClause;
-import com.starrocks.sql.ast.AlterClause;
-import com.starrocks.sql.ast.AlterTableColumnClause;
-import com.starrocks.sql.ast.AlterTableStmt;
-import com.starrocks.sql.ast.CreateIndexClause;
-import com.starrocks.sql.ast.DropColumnClause;
-import com.starrocks.sql.ast.DropIndexClause;
-import com.starrocks.sql.common.MetaUtils;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.ErrorCode;
+import io.datafibre.fibre.common.ErrorReport;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.ast.AddColumnClause;
+import io.datafibre.fibre.sql.ast.AlterClause;
+import io.datafibre.fibre.sql.ast.AlterTableColumnClause;
+import io.datafibre.fibre.sql.ast.AlterTableStmt;
+import io.datafibre.fibre.sql.ast.CreateIndexClause;
+import io.datafibre.fibre.sql.ast.DropColumnClause;
+import io.datafibre.fibre.sql.ast.DropIndexClause;
+import io.datafibre.fibre.sql.common.MetaUtils;
 
 import java.util.List;
 
-import static com.starrocks.common.util.PropertyAnalyzer.PROPERTIES_BF_COLUMNS;
+import static io.datafibre.fibre.common.util.PropertyAnalyzer.PROPERTIES_BF_COLUMNS;
 
 public class AlterTableStatementAnalyzer {
     public static void analyze(AlterTableStmt statement, ConnectContext context) {

@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
-import com.starrocks.catalog.MaterializedIndex.IndexExtState;
+import io.datafibre.fibre.catalog.MaterializedIndex.IndexExtState;
 
 import java.util.List;
 

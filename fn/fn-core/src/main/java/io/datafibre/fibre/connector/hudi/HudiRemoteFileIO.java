@@ -13,16 +13,16 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.hudi;
+package io.datafibre.fibre.connector.hudi;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.starrocks.connector.ObjectStorageUtils;
-import com.starrocks.connector.RemoteFileDesc;
-import com.starrocks.connector.RemoteFileIO;
-import com.starrocks.connector.RemotePathKey;
-import com.starrocks.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.connector.ObjectStorageUtils;
+import io.datafibre.fibre.connector.RemoteFileDesc;
+import io.datafibre.fibre.connector.RemoteFileIO;
+import io.datafibre.fibre.connector.RemotePathKey;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.Path;

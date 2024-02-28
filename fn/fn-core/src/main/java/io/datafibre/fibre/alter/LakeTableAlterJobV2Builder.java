@@ -12,23 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.alter;
+package io.datafibre.fibre.alter;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.staros.proto.FileCacheInfo;
 import com.staros.proto.FilePathInfo;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.MaterializedIndex;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.PhysicalPartition;
-import com.starrocks.catalog.Tablet;
-import com.starrocks.catalog.TabletMeta;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.UserException;
-import com.starrocks.lake.LakeTablet;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.thrift.TStorageMedium;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.MaterializedIndex;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.PhysicalPartition;
+import io.datafibre.fibre.catalog.Tablet;
+import io.datafibre.fibre.catalog.TabletMeta;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.lake.LakeTablet;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.thrift.TStorageMedium;
 
 import java.util.HashMap;
 import java.util.List;

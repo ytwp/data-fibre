@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.iceberg;
+package io.datafibre.fibre.connector.iceberg;
 
-import com.starrocks.sql.optimizer.operator.scalar.ConstantOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
 
 import java.util.Objects;
 

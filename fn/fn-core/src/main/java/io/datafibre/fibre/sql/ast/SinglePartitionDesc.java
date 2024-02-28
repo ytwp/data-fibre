@@ -12,23 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.starrocks.analysis.DateLiteral;
-import com.starrocks.catalog.DataProperty;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.util.DateUtils;
-import com.starrocks.common.util.PropertyAnalyzer;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.lake.DataCacheInfo;
-import com.starrocks.server.RunMode;
-import com.starrocks.sql.parser.NodePosition;
-import com.starrocks.thrift.TStorageMedium;
-import com.starrocks.thrift.TTabletType;
+import io.datafibre.fibre.analysis.DateLiteral;
+import io.datafibre.fibre.catalog.DataProperty;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.util.DateUtils;
+import io.datafibre.fibre.common.util.PropertyAnalyzer;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.lake.DataCacheInfo;
+import io.datafibre.fibre.server.RunMode;
+import io.datafibre.fibre.sql.parser.NodePosition;
+import io.datafibre.fibre.thrift.TStorageMedium;
+import io.datafibre.fibre.thrift.TTabletType;
 import org.apache.logging.log4j.util.Strings;
 import org.threeten.extra.PeriodDuration;
 

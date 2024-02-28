@@ -32,17 +32,17 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.load;
+package io.datafibre.fibre.load;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
-import com.starrocks.common.FeConstants;
-import com.starrocks.common.LoadException;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.LoadStmt;
-import com.starrocks.thrift.TPriority;
+import io.datafibre.fibre.common.FeConstants;
+import io.datafibre.fibre.common.LoadException;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.LoadStmt;
+import io.datafibre.fibre.thrift.TPriority;
 
 import java.io.DataInput;
 import java.io.DataOutput;

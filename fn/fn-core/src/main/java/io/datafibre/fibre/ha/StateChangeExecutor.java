@@ -13,13 +13,13 @@
 // limitations under the License.
 
 
-package com.starrocks.ha;
+package io.datafibre.fibre.ha;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Queues;
-import com.starrocks.common.util.Daemon;
-import com.starrocks.common.util.Util;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.common.util.Daemon;
+import io.datafibre.fibre.common.util.Util;
+import io.datafibre.fibre.server.GlobalStateMgr;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

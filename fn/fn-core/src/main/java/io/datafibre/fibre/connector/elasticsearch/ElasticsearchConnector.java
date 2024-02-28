@@ -13,13 +13,13 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.elasticsearch;
+package io.datafibre.fibre.connector.elasticsearch;
 
-import com.starrocks.connector.Connector;
-import com.starrocks.connector.ConnectorContext;
-import com.starrocks.connector.ConnectorMetadata;
-import com.starrocks.connector.config.ConnectorConfig;
-import com.starrocks.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.connector.Connector;
+import io.datafibre.fibre.connector.ConnectorContext;
+import io.datafibre.fibre.connector.ConnectorMetadata;
+import io.datafibre.fibre.connector.config.ConnectorConfig;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

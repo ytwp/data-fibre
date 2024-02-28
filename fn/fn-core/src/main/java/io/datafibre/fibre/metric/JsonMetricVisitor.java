@@ -32,11 +32,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.metric;
+package io.datafibre.fibre.metric;
 
 import com.codahale.metrics.Histogram;
-import com.starrocks.monitor.jvm.GcNames;
-import com.starrocks.monitor.jvm.JvmStats;
+import io.datafibre.fibre.monitor.jvm.GcNames;
+import io.datafibre.fibre.monitor.jvm.JvmStats;
 
 import java.util.List;
 

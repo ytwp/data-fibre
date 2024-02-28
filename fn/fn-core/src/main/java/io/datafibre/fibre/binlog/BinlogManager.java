@@ -12,21 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.binlog;
+package io.datafibre.fibre.binlog;
 
-import com.starrocks.alter.SchemaChangeHandler;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.PhysicalPartition;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.util.PropertyAnalyzer;
-import com.starrocks.common.util.concurrent.QueryableReentrantReadWriteLock;
-import com.starrocks.common.util.concurrent.lock.LockType;
-import com.starrocks.common.util.concurrent.lock.Locker;
-import com.starrocks.persist.ModifyTablePropertyOperationLog;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.thrift.TTabletMetaType;
+import io.datafibre.fibre.alter.SchemaChangeHandler;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.PhysicalPartition;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.util.PropertyAnalyzer;
+import io.datafibre.fibre.common.util.concurrent.QueryableReentrantReadWriteLock;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.persist.ModifyTablePropertyOperationLog;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.thrift.TTabletMetaType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

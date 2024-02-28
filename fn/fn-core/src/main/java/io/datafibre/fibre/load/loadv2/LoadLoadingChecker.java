@@ -32,10 +32,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.load.loadv2;
+package io.datafibre.fibre.load.loadv2;
 
-import com.starrocks.common.Config;
-import com.starrocks.common.util.FrontendDaemon;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.util.FrontendDaemon;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

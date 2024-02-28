@@ -13,19 +13,19 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.operator.physical;
+package io.datafibre.fibre.sql.optimizer.operator.physical;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.common.Pair;
-import com.starrocks.sql.optimizer.OptExpression;
-import com.starrocks.sql.optimizer.OptExpressionVisitor;
-import com.starrocks.sql.optimizer.RowOutputInfo;
-import com.starrocks.sql.optimizer.base.DistributionSpec;
-import com.starrocks.sql.optimizer.operator.OperatorType;
-import com.starrocks.sql.optimizer.operator.OperatorVisitor;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.statistics.ColumnDict;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.sql.optimizer.OptExpression;
+import io.datafibre.fibre.sql.optimizer.OptExpressionVisitor;
+import io.datafibre.fibre.sql.optimizer.RowOutputInfo;
+import io.datafibre.fibre.sql.optimizer.base.DistributionSpec;
+import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
+import io.datafibre.fibre.sql.optimizer.operator.OperatorVisitor;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.statistics.ColumnDict;
 
 import java.util.List;
 import java.util.Map;

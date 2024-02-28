@@ -13,13 +13,13 @@
 // limitations under the License.
 
 
-package com.starrocks.authentication;
+package io.datafibre.fibre.authentication;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.common.Config;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.Pair;
-import com.starrocks.sql.ast.SetUserPropertyVar;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.sql.ast.SetUserPropertyVar;
 
 import java.util.List;
 

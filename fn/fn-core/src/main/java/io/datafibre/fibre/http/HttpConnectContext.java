@@ -29,12 +29,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.http;
+package io.datafibre.fibre.http;
 
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.StmtExecutor;
-import com.starrocks.sql.ast.StatementBase;
-import com.starrocks.thrift.TResultSinkFormatType;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.StmtExecutor;
+import io.datafibre.fibre.sql.ast.StatementBase;
+import io.datafibre.fibre.thrift.TResultSinkFormatType;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import org.apache.logging.log4j.LogManager;

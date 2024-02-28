@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.rule.transformation.materialization.equivalent;
+package io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.equivalent;
 
-import com.starrocks.sql.optimizer.operator.scalar.ConstantOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
 
 /**
  * Two expression can be equivalent even they are not the same expressions especially for partition datetime functions,

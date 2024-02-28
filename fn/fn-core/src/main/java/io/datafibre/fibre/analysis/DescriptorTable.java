@@ -32,15 +32,15 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.analysis;
+package io.datafibre.fibre.analysis;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.starrocks.catalog.PartitionKey;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.IdGenerator;
-import com.starrocks.thrift.TDescriptorTable;
+import io.datafibre.fibre.catalog.PartitionKey;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.IdGenerator;
+import io.datafibre.fibre.thrift.TDescriptorTable;
 
 import java.util.ArrayList;
 import java.util.Collection;

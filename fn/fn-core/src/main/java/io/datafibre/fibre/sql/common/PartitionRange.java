@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.common;
+package io.datafibre.fibre.sql.common;
 
 import com.google.common.collect.Range;
-import com.starrocks.catalog.PartitionKey;
+import io.datafibre.fibre.catalog.PartitionKey;
 
 import java.util.Objects;
 

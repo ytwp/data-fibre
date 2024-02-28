@@ -32,12 +32,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.clone;
+package io.datafibre.fibre.clone;
 
 import com.google.common.collect.Lists;
-import com.starrocks.clone.TabletScheduler.PathSlot;
-import com.starrocks.task.AgentBatchTask;
-import com.starrocks.thrift.TStorageMedium;
+import io.datafibre.fibre.clone.TabletScheduler.PathSlot;
+import io.datafibre.fibre.task.AgentBatchTask;
+import io.datafibre.fibre.thrift.TStorageMedium;
 
 import java.util.List;
 import java.util.Map;

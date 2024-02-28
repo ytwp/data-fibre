@@ -32,15 +32,15 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.http.meta;
+package io.datafibre.fibre.http.meta;
 
-import com.starrocks.http.ActionController;
-import com.starrocks.http.BaseRequest;
-import com.starrocks.http.BaseResponse;
-import com.starrocks.http.action.WebBaseAction;
-import com.starrocks.leader.MetaHelper;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.system.Frontend;
+import io.datafibre.fibre.http.ActionController;
+import io.datafibre.fibre.http.BaseRequest;
+import io.datafibre.fibre.http.BaseResponse;
+import io.datafibre.fibre.http.action.WebBaseAction;
+import io.datafibre.fibre.leader.MetaHelper;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.system.Frontend;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

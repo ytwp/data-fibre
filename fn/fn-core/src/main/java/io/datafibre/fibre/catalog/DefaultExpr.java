@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.FunctionCallExpr;
-import com.starrocks.analysis.FunctionName;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.FunctionCallExpr;
+import io.datafibre.fibre.analysis.FunctionName;
 
 import java.util.Set;
 

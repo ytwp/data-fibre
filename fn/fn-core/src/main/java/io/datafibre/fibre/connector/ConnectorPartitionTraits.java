@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector;
+package io.datafibre.fibre.connector;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
@@ -20,36 +20,36 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
 import com.google.common.collect.Sets;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.LiteralExpr;
-import com.starrocks.analysis.NullLiteral;
-import com.starrocks.catalog.BaseTableInfo;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.DeltaLakePartitionKey;
-import com.starrocks.catalog.DeltaLakeTable;
-import com.starrocks.catalog.HiveMetaStoreTable;
-import com.starrocks.catalog.HivePartitionKey;
-import com.starrocks.catalog.HiveTable;
-import com.starrocks.catalog.HudiPartitionKey;
-import com.starrocks.catalog.IcebergPartitionKey;
-import com.starrocks.catalog.IcebergTable;
-import com.starrocks.catalog.JDBCPartitionKey;
-import com.starrocks.catalog.JDBCTable;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.catalog.NullablePartitionKey;
-import com.starrocks.catalog.OdpsPartitionKey;
-import com.starrocks.catalog.OdpsTable;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.PaimonPartitionKey;
-import com.starrocks.catalog.PaimonTable;
-import com.starrocks.catalog.Partition;
-import com.starrocks.catalog.PartitionKey;
-import com.starrocks.catalog.PhysicalPartition;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.connector.iceberg.IcebergPartitionUtils;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.LiteralExpr;
+import io.datafibre.fibre.analysis.NullLiteral;
+import io.datafibre.fibre.catalog.BaseTableInfo;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.DeltaLakePartitionKey;
+import io.datafibre.fibre.catalog.DeltaLakeTable;
+import io.datafibre.fibre.catalog.HiveMetaStoreTable;
+import io.datafibre.fibre.catalog.HivePartitionKey;
+import io.datafibre.fibre.catalog.HiveTable;
+import io.datafibre.fibre.catalog.HudiPartitionKey;
+import io.datafibre.fibre.catalog.IcebergPartitionKey;
+import io.datafibre.fibre.catalog.IcebergTable;
+import io.datafibre.fibre.catalog.JDBCPartitionKey;
+import io.datafibre.fibre.catalog.JDBCTable;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.catalog.NullablePartitionKey;
+import io.datafibre.fibre.catalog.OdpsPartitionKey;
+import io.datafibre.fibre.catalog.OdpsTable;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.PaimonPartitionKey;
+import io.datafibre.fibre.catalog.PaimonTable;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.catalog.PartitionKey;
+import io.datafibre.fibre.catalog.PhysicalPartition;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.connector.iceberg.IcebergPartitionUtils;
+import io.datafibre.fibre.server.GlobalStateMgr;
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.iceberg.PartitionField;
 import org.apache.iceberg.Snapshot;
@@ -257,7 +257,7 @@ public abstract class ConnectorPartitionTraits {
                                                     MaterializedView.AsyncRefreshContext context) {
             Table baseTable = table;
             Set<String> result = Sets.newHashSet();
-            Map<String, com.starrocks.connector.PartitionInfo> latestPartitionInfo =
+            Map<String, io.datafibre.fibre.connector.PartitionInfo> latestPartitionInfo =
                     getPartitionNameWithPartitionInfo();
 
             for (BaseTableInfo baseTableInfo : baseTables) {
@@ -268,7 +268,7 @@ public abstract class ConnectorPartitionTraits {
                         context.getBaseTableRefreshInfo(baseTableInfo);
 
                 // check whether there are partitions added
-                for (Map.Entry<String, com.starrocks.connector.PartitionInfo> entry : latestPartitionInfo.entrySet()) {
+                for (Map.Entry<String, io.datafibre.fibre.connector.PartitionInfo> entry : latestPartitionInfo.entrySet()) {
                     if (!versionMap.containsKey(entry.getKey())) {
                         result.add(entry.getKey());
                     }
@@ -408,11 +408,11 @@ public abstract class ConnectorPartitionTraits {
 
         @Override
         public Optional<Long> maxPartitionRefreshTs() {
-            Map<String, com.starrocks.connector.PartitionInfo> partitionNameWithPartition =
+            Map<String, io.datafibre.fibre.connector.PartitionInfo> partitionNameWithPartition =
                     getPartitionNameWithPartitionInfo();
             return
                     partitionNameWithPartition.values().stream()
-                            .map(com.starrocks.connector.PartitionInfo::getModifiedTime)
+                            .map(io.datafibre.fibre.connector.PartitionInfo::getModifiedTime)
                             .max(Long::compareTo);
         }
     }
@@ -582,8 +582,8 @@ public abstract class ConnectorPartitionTraits {
                 List<PartitionInfo> changedPartitionInfo = metadata.getChangedPartitionInfo(baseTable,
                         mvLatestSnapShotID);
                 for (PartitionInfo partitionInfo : changedPartitionInfo) {
-                    com.starrocks.connector.paimon.Partition info =
-                            (com.starrocks.connector.paimon.Partition) partitionInfo;
+                    io.datafibre.fibre.connector.paimon.Partition info =
+                            (io.datafibre.fibre.connector.paimon.Partition) partitionInfo;
                     // Change log record partition which has been deleted.
                     if (!partitions.contains(info.getPartitionName())) {
                         continue;
@@ -648,10 +648,10 @@ public abstract class ConnectorPartitionTraits {
 
         @Override
         public Optional<Long> maxPartitionRefreshTs() {
-            Map<String, com.starrocks.connector.PartitionInfo> partitionNameWithPartition =
+            Map<String, io.datafibre.fibre.connector.PartitionInfo> partitionNameWithPartition =
                     getPartitionNameWithPartitionInfo();
             return partitionNameWithPartition.values().stream()
-                    .map(com.starrocks.connector.PartitionInfo::getModifiedTime)
+                    .map(io.datafibre.fibre.connector.PartitionInfo::getModifiedTime)
                     .max(Long::compareTo);
         }
     }

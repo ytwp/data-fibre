@@ -13,31 +13,31 @@
 // limitations under the License.
 
 
-package com.starrocks.authentication;
+package io.datafibre.fibre.authentication;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.StarRocksFE;
-import com.starrocks.common.Config;
-import com.starrocks.common.ConfigBase;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.Pair;
-import com.starrocks.mysql.MysqlPassword;
-import com.starrocks.mysql.privilege.AuthPlugin;
-import com.starrocks.persist.metablock.SRMetaBlockEOFException;
-import com.starrocks.persist.metablock.SRMetaBlockException;
-import com.starrocks.persist.metablock.SRMetaBlockID;
-import com.starrocks.persist.metablock.SRMetaBlockReader;
-import com.starrocks.persist.metablock.SRMetaBlockWriter;
-import com.starrocks.privilege.AuthorizationMgr;
-import com.starrocks.privilege.PrivilegeBuiltinConstants;
-import com.starrocks.privilege.PrivilegeException;
-import com.starrocks.privilege.UserPrivilegeCollectionV2;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.ast.CreateUserStmt;
-import com.starrocks.sql.ast.DropUserStmt;
-import com.starrocks.sql.ast.UserIdentity;
+import io.datafibre.fibre.StarRocksFE;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.ConfigBase;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.mysql.MysqlPassword;
+import io.datafibre.fibre.mysql.privilege.AuthPlugin;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockEOFException;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockException;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockID;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockReader;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockWriter;
+import io.datafibre.fibre.privilege.AuthorizationMgr;
+import io.datafibre.fibre.privilege.PrivilegeBuiltinConstants;
+import io.datafibre.fibre.privilege.PrivilegeException;
+import io.datafibre.fibre.privilege.UserPrivilegeCollectionV2;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.ast.CreateUserStmt;
+import io.datafibre.fibre.sql.ast.DropUserStmt;
+import io.datafibre.fibre.sql.ast.UserIdentity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -606,7 +606,7 @@ public class AuthenticationMgr {
     }
 
     private Class<?> authClazz = null;
-    public static final String KRB5_AUTH_CLASS_NAME = "com.starrocks.plugins.auth.KerberosAuthentication";
+    public static final String KRB5_AUTH_CLASS_NAME = "io.datafibre.fibre.plugins.auth.KerberosAuthentication";
     public static final String KRB5_AUTH_JAR_PATH = StarRocksFE.STARROCKS_HOME_DIR + "/lib/starrocks-kerberos.jar";
 
     public boolean isSupportKerberosAuth() {

@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.connector.elasticsearch;
+package io.datafibre.fibre.connector.elasticsearch;
 
 /**
  * Request version from remote ES Cluster. If request fails, set the version with `LATEST`

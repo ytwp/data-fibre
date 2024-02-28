@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.mysql.privilege;
+package io.datafibre.fibre.mysql.privilege;
 
 public enum AuthPlugin {
     MYSQL_NATIVE_PASSWORD,

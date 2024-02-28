@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.warehouse;
+package io.datafibre.fibre.warehouse;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.thrift.TWarehouseInfo;
+import io.datafibre.fibre.thrift.TWarehouseInfo;
 
 import java.util.Objects;
 

@@ -12,37 +12,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.rule.tree;
+package io.datafibre.fibre.sql.optimizer.rule.tree;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.starrocks.catalog.FunctionSet;
-import com.starrocks.sql.optimizer.base.ColumnRefFactory;
-import com.starrocks.sql.optimizer.operator.OperatorType;
-import com.starrocks.sql.optimizer.operator.Projection;
-import com.starrocks.sql.optimizer.operator.scalar.BinaryPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CaseWhenOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CastOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CloneOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CollectionElementOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CompoundPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.DictMappingOperator;
-import com.starrocks.sql.optimizer.operator.scalar.DictionaryGetOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ExistsPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.InPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.IsNullPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.LambdaFunctionOperator;
-import com.starrocks.sql.optimizer.operator.scalar.LikePredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperatorVisitor;
-import com.starrocks.sql.optimizer.operator.scalar.SubfieldOperator;
-import com.starrocks.sql.optimizer.rewrite.scalar.NormalizePredicateRule;
-import com.starrocks.sql.optimizer.rewrite.scalar.ScalarOperatorRewriteRule;
+import io.datafibre.fibre.catalog.FunctionSet;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefFactory;
+import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
+import io.datafibre.fibre.sql.optimizer.operator.Projection;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.BinaryPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CallOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CaseWhenOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CastOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CloneOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CollectionElementOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CompoundPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.DictMappingOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.DictionaryGetOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ExistsPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.InPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.IsNullPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.LambdaFunctionOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.LikePredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperatorVisitor;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.SubfieldOperator;
+import io.datafibre.fibre.sql.optimizer.rewrite.scalar.NormalizePredicateRule;
+import io.datafibre.fibre.sql.optimizer.rewrite.scalar.ScalarOperatorRewriteRule;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -425,8 +425,8 @@ public class ScalarOperatorsReuse {
             Map<ColumnRefOperator, ScalarOperator> newMap =
                     Maps.newTreeMap(Comparator.comparingInt(ColumnRefOperator::getId));
             // Apply to normalize rule to eliminate invalid ColumnRef usage for in-predicate
-            com.starrocks.sql.optimizer.rewrite.ScalarOperatorRewriter rewriter =
-                    new com.starrocks.sql.optimizer.rewrite.ScalarOperatorRewriter();
+            io.datafibre.fibre.sql.optimizer.rewrite.ScalarOperatorRewriter rewriter =
+                    new io.datafibre.fibre.sql.optimizer.rewrite.ScalarOperatorRewriter();
             List<ScalarOperatorRewriteRule> rules = Collections.singletonList(new NormalizePredicateRule());
             for (Map.Entry<ColumnRefOperator, ScalarOperator> kv : columnRefMap.entrySet()) {
                 ScalarOperator rewriteOperator =

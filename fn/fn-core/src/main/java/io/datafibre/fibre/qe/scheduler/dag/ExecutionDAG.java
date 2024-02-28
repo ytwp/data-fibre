@@ -12,28 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.qe.scheduler.dag;
+package io.datafibre.fibre.qe.scheduler.dag;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.planner.DataPartition;
-import com.starrocks.planner.DataSink;
-import com.starrocks.planner.DataStreamSink;
-import com.starrocks.planner.MultiCastDataSink;
-import com.starrocks.planner.MultiCastPlanFragment;
-import com.starrocks.planner.PlanFragment;
-import com.starrocks.planner.PlanFragmentId;
-import com.starrocks.planner.ScanNode;
-import com.starrocks.qe.QueryStatisticsItem;
-import com.starrocks.qe.scheduler.NonRecoverableException;
-import com.starrocks.qe.scheduler.SchedulerException;
-import com.starrocks.sql.common.ErrorType;
-import com.starrocks.sql.common.StarRocksPlannerException;
-import com.starrocks.system.ComputeNode;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.thrift.TPlanFragmentDestination;
-import com.starrocks.thrift.TUniqueId;
+import io.datafibre.fibre.planner.DataPartition;
+import io.datafibre.fibre.planner.DataSink;
+import io.datafibre.fibre.planner.DataStreamSink;
+import io.datafibre.fibre.planner.MultiCastDataSink;
+import io.datafibre.fibre.planner.MultiCastPlanFragment;
+import io.datafibre.fibre.planner.PlanFragment;
+import io.datafibre.fibre.planner.PlanFragmentId;
+import io.datafibre.fibre.planner.ScanNode;
+import io.datafibre.fibre.qe.QueryStatisticsItem;
+import io.datafibre.fibre.qe.scheduler.NonRecoverableException;
+import io.datafibre.fibre.qe.scheduler.SchedulerException;
+import io.datafibre.fibre.sql.common.ErrorType;
+import io.datafibre.fibre.sql.common.StarRocksPlannerException;
+import io.datafibre.fibre.system.ComputeNode;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TPlanFragmentDestination;
+import io.datafibre.fibre.thrift.TUniqueId;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

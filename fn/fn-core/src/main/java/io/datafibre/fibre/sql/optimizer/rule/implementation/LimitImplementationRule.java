@@ -13,18 +13,18 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.rule.implementation;
+package io.datafibre.fibre.sql.optimizer.rule.implementation;
 
 import com.google.common.collect.Lists;
-import com.starrocks.sql.common.ErrorType;
-import com.starrocks.sql.common.StarRocksPlannerException;
-import com.starrocks.sql.optimizer.OptExpression;
-import com.starrocks.sql.optimizer.OptimizerContext;
-import com.starrocks.sql.optimizer.operator.OperatorType;
-import com.starrocks.sql.optimizer.operator.logical.LogicalLimitOperator;
-import com.starrocks.sql.optimizer.operator.pattern.Pattern;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalLimitOperator;
-import com.starrocks.sql.optimizer.rule.RuleType;
+import io.datafibre.fibre.sql.common.ErrorType;
+import io.datafibre.fibre.sql.common.StarRocksPlannerException;
+import io.datafibre.fibre.sql.optimizer.OptExpression;
+import io.datafibre.fibre.sql.optimizer.OptimizerContext;
+import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalLimitOperator;
+import io.datafibre.fibre.sql.optimizer.operator.pattern.Pattern;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalLimitOperator;
+import io.datafibre.fibre.sql.optimizer.rule.RuleType;
 
 import java.util.List;
 

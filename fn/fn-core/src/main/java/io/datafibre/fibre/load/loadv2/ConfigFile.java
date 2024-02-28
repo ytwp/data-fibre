@@ -32,9 +32,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.load.loadv2;
+package io.datafibre.fibre.load.loadv2;
 
-import com.starrocks.common.LoadException;
+import io.datafibre.fibre.common.LoadException;
 
 // The config file required to run the yarn command.
 // Each time before running the yarn command, we need to check that the

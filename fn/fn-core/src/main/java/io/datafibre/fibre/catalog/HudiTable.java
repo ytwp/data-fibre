@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
@@ -27,21 +27,21 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.analysis.DescriptorTable;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.LiteralExpr;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.connector.RemoteFileInfo;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.server.CatalogMgr;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.thrift.TColumn;
-import com.starrocks.thrift.THdfsPartition;
-import com.starrocks.thrift.THdfsPartitionLocation;
-import com.starrocks.thrift.THudiTable;
-import com.starrocks.thrift.TTableDescriptor;
-import com.starrocks.thrift.TTableType;
+import io.datafibre.fibre.analysis.DescriptorTable;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.LiteralExpr;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.connector.RemoteFileInfo;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.server.CatalogMgr;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.thrift.TColumn;
+import io.datafibre.fibre.thrift.THdfsPartition;
+import io.datafibre.fibre.thrift.THdfsPartitionLocation;
+import io.datafibre.fibre.thrift.THudiTable;
+import io.datafibre.fibre.thrift.TTableDescriptor;
+import io.datafibre.fibre.thrift.TTableType;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hudi.common.model.HoodieTableType;
 import org.apache.hudi.common.table.HoodieTableMetaClient;
@@ -60,8 +60,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.starrocks.server.CatalogMgr.ResourceMappingCatalog.getResourceMappingCatalogName;
-import static com.starrocks.server.CatalogMgr.ResourceMappingCatalog.isResourceMappingCatalog;
+import static io.datafibre.fibre.server.CatalogMgr.ResourceMappingCatalog.getResourceMappingCatalogName;
+import static io.datafibre.fibre.server.CatalogMgr.ResourceMappingCatalog.isResourceMappingCatalog;
 
 
 /**

@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.trino;
+package io.datafibre.fibre.connector.trino;
 
-import com.starrocks.catalog.ArrayType;
-import com.starrocks.catalog.MapType;
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.catalog.StructField;
-import com.starrocks.catalog.StructType;
-import com.starrocks.catalog.Type;
-import com.starrocks.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.catalog.ArrayType;
+import io.datafibre.fibre.catalog.MapType;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.catalog.StructField;
+import io.datafibre.fibre.catalog.StructType;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,11 +30,11 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.starrocks.connector.ColumnTypeConverter.getCharLength;
-import static com.starrocks.connector.ColumnTypeConverter.getPrecisionAndScale;
-import static com.starrocks.connector.ColumnTypeConverter.getTypeKeyword;
-import static com.starrocks.connector.ColumnTypeConverter.getVarcharLength;
-import static com.starrocks.connector.ColumnTypeConverter.splitByFirstLevel;
+import static io.datafibre.fibre.connector.ColumnTypeConverter.getCharLength;
+import static io.datafibre.fibre.connector.ColumnTypeConverter.getPrecisionAndScale;
+import static io.datafibre.fibre.connector.ColumnTypeConverter.getTypeKeyword;
+import static io.datafibre.fibre.connector.ColumnTypeConverter.getVarcharLength;
+import static io.datafibre.fibre.connector.ColumnTypeConverter.splitByFirstLevel;
 
 public class TrinoViewColumnTypeConverter {
 

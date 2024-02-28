@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.replication;
+package io.datafibre.fibre.replication;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.annotations.SerializedName;

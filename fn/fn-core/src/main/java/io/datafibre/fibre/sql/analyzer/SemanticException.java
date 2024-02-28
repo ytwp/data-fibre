@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
-import com.starrocks.sql.common.ErrorType;
-import com.starrocks.sql.common.StarRocksPlannerException;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.sql.common.ErrorType;
+import io.datafibre.fibre.sql.common.StarRocksPlannerException;
+import io.datafibre.fibre.sql.parser.NodePosition;
 import org.apache.commons.lang3.StringUtils;
 
-import static com.starrocks.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
+import static io.datafibre.fibre.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
 import static java.lang.String.format;
 
 public class SemanticException extends StarRocksPlannerException {

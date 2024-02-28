@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
@@ -40,15 +40,15 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.analysis.DescriptorTable.ReferencedPartitionInfo;
-import com.starrocks.catalog.system.SystemTable;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.lake.LakeMaterializedView;
-import com.starrocks.lake.LakeTable;
-import com.starrocks.persist.gson.GsonPostProcessable;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.thrift.TTableDescriptor;
+import io.datafibre.fibre.analysis.DescriptorTable.ReferencedPartitionInfo;
+import io.datafibre.fibre.catalog.system.SystemTable;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.lake.LakeMaterializedView;
+import io.datafibre.fibre.lake.LakeTable;
+import io.datafibre.fibre.persist.gson.GsonPostProcessable;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.thrift.TTableDescriptor;
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

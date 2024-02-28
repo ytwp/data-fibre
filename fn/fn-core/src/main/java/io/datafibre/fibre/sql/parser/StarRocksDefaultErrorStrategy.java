@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.parser;
+package io.datafibre.fibre.sql.parser;
 
 import com.google.common.collect.Lists;
 import org.antlr.v4.runtime.DefaultErrorStrategy;
@@ -35,7 +35,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringJoiner;
 
-import static com.starrocks.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
+import static io.datafibre.fibre.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
 
 public class StarRocksDefaultErrorStrategy extends DefaultErrorStrategy {
 

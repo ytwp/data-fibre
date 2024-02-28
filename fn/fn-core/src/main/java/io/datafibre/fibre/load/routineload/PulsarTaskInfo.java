@@ -13,25 +13,25 @@
 // limitations under the License.
 
 
-package com.starrocks.load.routineload;
+package io.datafibre.fibre.load.routineload;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.Config;
-import com.starrocks.common.MetaNotFoundException;
-import com.starrocks.common.UserException;
-import com.starrocks.common.util.PulsarUtil;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.thrift.TExecPlanFragmentParams;
-import com.starrocks.thrift.TFileFormatType;
-import com.starrocks.thrift.TLoadSourceType;
-import com.starrocks.thrift.TPlanFragment;
-import com.starrocks.thrift.TPulsarLoadInfo;
-import com.starrocks.thrift.TRoutineLoadTask;
-import com.starrocks.thrift.TUniqueId;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.MetaNotFoundException;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.util.PulsarUtil;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.thrift.TExecPlanFragmentParams;
+import io.datafibre.fibre.thrift.TFileFormatType;
+import io.datafibre.fibre.thrift.TLoadSourceType;
+import io.datafibre.fibre.thrift.TPlanFragment;
+import io.datafibre.fibre.thrift.TPulsarLoadInfo;
+import io.datafibre.fibre.thrift.TRoutineLoadTask;
+import io.datafibre.fibre.thrift.TUniqueId;
 
 import java.util.List;
 import java.util.Map;

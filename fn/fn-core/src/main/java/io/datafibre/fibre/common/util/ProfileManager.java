@@ -32,14 +32,14 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.util;
+package io.datafibre.fibre.common.util;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.common.Config;
-import com.starrocks.memory.MemoryTrackable;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.memory.MemoryTrackable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.spark.util.SizeEstimator;

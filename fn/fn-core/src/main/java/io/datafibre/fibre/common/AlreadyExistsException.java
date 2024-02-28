@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.common;
+package io.datafibre.fibre.common;
 
 /**
  * Thrown for SQL statements that Create while Exist.

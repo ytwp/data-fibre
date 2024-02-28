@@ -12,32 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.rule.tree.prunesubfield;
+package io.datafibre.fibre.sql.optimizer.rule.tree.prunesubfield;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.sql.optimizer.OptExpression;
-import com.starrocks.sql.optimizer.OptExpressionVisitor;
-import com.starrocks.sql.optimizer.base.ColumnRefFactory;
-import com.starrocks.sql.optimizer.base.ColumnRefSet;
-import com.starrocks.sql.optimizer.base.Ordering;
-import com.starrocks.sql.optimizer.operator.logical.LogicalCTEAnchorOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalCTEConsumeOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalFilterOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalJoinOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalProjectOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalUnionOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalWindowOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CollectionElementOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.operator.scalar.SubfieldOperator;
-import com.starrocks.sql.optimizer.rewrite.BaseScalarOperatorShuttle;
-import com.starrocks.sql.optimizer.rewrite.ReplaceColumnRefRewriter;
-import com.starrocks.sql.optimizer.rule.tree.TreeRewriteRule;
-import com.starrocks.sql.optimizer.task.TaskContext;
+import io.datafibre.fibre.sql.optimizer.OptExpression;
+import io.datafibre.fibre.sql.optimizer.OptExpressionVisitor;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefFactory;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
+import io.datafibre.fibre.sql.optimizer.base.Ordering;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalCTEAnchorOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalCTEConsumeOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalFilterOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalJoinOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalProjectOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalUnionOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalWindowOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CallOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CollectionElementOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.SubfieldOperator;
+import io.datafibre.fibre.sql.optimizer.rewrite.BaseScalarOperatorShuttle;
+import io.datafibre.fibre.sql.optimizer.rewrite.ReplaceColumnRefRewriter;
+import io.datafibre.fibre.sql.optimizer.rule.tree.TreeRewriteRule;
+import io.datafibre.fibre.sql.optimizer.task.TaskContext;
 
 import java.util.List;
 import java.util.Map;

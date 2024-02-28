@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.healthchecker;
+package io.datafibre.fibre.healthchecker;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.starrocks.catalog.DiskInfo;
-import com.starrocks.common.Config;
-import com.starrocks.common.util.FrontendDaemon;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.system.Backend;
+import io.datafibre.fibre.catalog.DiskInfo;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.util.FrontendDaemon;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.system.Backend;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

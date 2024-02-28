@@ -15,9 +15,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.analysis;
+package io.datafibre.fibre.analysis;
 
-import com.starrocks.thrift.TExprNode;
+import io.datafibre.fibre.thrift.TExprNode;
 
 import java.io.DataInput;
 import java.io.DataOutput;

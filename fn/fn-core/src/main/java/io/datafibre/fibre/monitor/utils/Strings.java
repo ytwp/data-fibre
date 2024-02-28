@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.monitor.utils;
+package io.datafibre.fibre.monitor.utils;
 
 /**
  * String utility method for jvm data

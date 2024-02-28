@@ -13,12 +13,12 @@
 // limitations under the License.
 
 
-package com.starrocks.privilege;
+package io.datafibre.fibre.privilege;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.catalog.ResourceGroup;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.common.MetaNotFoundException;
+import io.datafibre.fibre.catalog.ResourceGroup;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.common.MetaNotFoundException;
 
 import java.util.List;
 import java.util.Objects;

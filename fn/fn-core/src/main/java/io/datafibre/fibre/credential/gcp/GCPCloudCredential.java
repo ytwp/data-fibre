@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.credential.gcp;
+package io.datafibre.fibre.credential.gcp;
 
 import com.google.common.base.Preconditions;
 import com.staros.proto.FileStoreInfo;
-import com.starrocks.credential.CloudCredential;
+import io.datafibre.fibre.credential.CloudCredential;
 import org.apache.hadoop.conf.Configuration;
 
 import java.util.HashMap;

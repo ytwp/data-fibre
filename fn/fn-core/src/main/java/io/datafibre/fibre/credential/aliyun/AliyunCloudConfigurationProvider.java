@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.credential.aliyun;
+package io.datafibre.fibre.credential.aliyun;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.credential.CloudConfiguration;
-import com.starrocks.credential.CloudConfigurationProvider;
+import io.datafibre.fibre.credential.CloudConfiguration;
+import io.datafibre.fibre.credential.CloudConfigurationProvider;
 
 import java.util.Map;
 
-import static com.starrocks.credential.CloudConfigurationConstants.ALIYUN_OSS_ACCESS_KEY;
-import static com.starrocks.credential.CloudConfigurationConstants.ALIYUN_OSS_ENDPOINT;
-import static com.starrocks.credential.CloudConfigurationConstants.ALIYUN_OSS_SECRET_KEY;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.ALIYUN_OSS_ACCESS_KEY;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.ALIYUN_OSS_ENDPOINT;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.ALIYUN_OSS_SECRET_KEY;
 
 public class AliyunCloudConfigurationProvider implements CloudConfigurationProvider {
 

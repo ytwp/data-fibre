@@ -32,19 +32,19 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.load.loadv2;
+package io.datafibre.fibre.load.loadv2;
 
 import com.google.common.collect.Queues;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.Config;
-import com.starrocks.common.DuplicatedRequestException;
-import com.starrocks.common.LabelAlreadyUsedException;
-import com.starrocks.common.LoadException;
-import com.starrocks.common.util.FrontendDaemon;
-import com.starrocks.common.util.LogBuilder;
-import com.starrocks.common.util.LogKey;
-import com.starrocks.load.FailMsg;
-import com.starrocks.transaction.RunningTxnExceedException;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.DuplicatedRequestException;
+import io.datafibre.fibre.common.LabelAlreadyUsedException;
+import io.datafibre.fibre.common.LoadException;
+import io.datafibre.fibre.common.util.FrontendDaemon;
+import io.datafibre.fibre.common.util.LogBuilder;
+import io.datafibre.fibre.common.util.LogKey;
+import io.datafibre.fibre.load.FailMsg;
+import io.datafibre.fibre.transaction.RunningTxnExceedException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

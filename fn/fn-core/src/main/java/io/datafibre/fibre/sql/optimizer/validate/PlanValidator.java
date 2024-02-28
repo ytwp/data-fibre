@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.validate;
+package io.datafibre.fibre.sql.optimizer.validate;
 
 import com.google.common.collect.ImmutableList;
-import com.starrocks.common.profile.Timer;
-import com.starrocks.common.profile.Tracers;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.common.ErrorType;
-import com.starrocks.sql.common.StarRocksPlannerException;
-import com.starrocks.sql.optimizer.OptExpression;
-import com.starrocks.sql.optimizer.task.TaskContext;
+import io.datafibre.fibre.common.profile.Timer;
+import io.datafibre.fibre.common.profile.Tracers;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.common.ErrorType;
+import io.datafibre.fibre.sql.common.StarRocksPlannerException;
+import io.datafibre.fibre.sql.optimizer.OptExpression;
+import io.datafibre.fibre.sql.optimizer.task.TaskContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

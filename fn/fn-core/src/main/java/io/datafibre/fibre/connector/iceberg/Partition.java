@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.iceberg;
+package io.datafibre.fibre.connector.iceberg;
 
-import com.starrocks.connector.PartitionInfo;
+import io.datafibre.fibre.connector.PartitionInfo;
 
 public class Partition implements PartitionInfo {
     private final long modifiedTime;

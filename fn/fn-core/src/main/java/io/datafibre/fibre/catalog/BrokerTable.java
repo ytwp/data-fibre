@@ -32,18 +32,18 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.analysis.DescriptorTable.ReferencedPartitionInfo;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.io.Text;
-import com.starrocks.thrift.TBrokerTable;
-import com.starrocks.thrift.TTableDescriptor;
-import com.starrocks.thrift.TTableType;
+import io.datafibre.fibre.analysis.DescriptorTable.ReferencedPartitionInfo;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.thrift.TBrokerTable;
+import io.datafibre.fibre.thrift.TTableDescriptor;
+import io.datafibre.fibre.thrift.TTableType;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

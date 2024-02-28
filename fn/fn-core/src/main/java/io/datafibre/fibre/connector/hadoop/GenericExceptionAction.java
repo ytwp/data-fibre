@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.hadoop;
+package io.datafibre.fibre.connector.hadoop;
 
 public interface GenericExceptionAction<R, E extends Exception> {
     R run() throws E;

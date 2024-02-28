@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.load.pipe;
+package io.datafibre.fibre.load.pipe;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.scheduler.Constants;
-import com.starrocks.scheduler.Task;
-import com.starrocks.scheduler.TaskManager;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.scheduler.Constants;
+import io.datafibre.fibre.scheduler.Task;
+import io.datafibre.fibre.scheduler.TaskManager;
+import io.datafibre.fibre.server.GlobalStateMgr;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

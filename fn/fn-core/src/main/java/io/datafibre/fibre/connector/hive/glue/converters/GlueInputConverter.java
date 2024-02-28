@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.hive.glue.converters;
+package io.datafibre.fibre.connector.hive.glue.converters;
 
 import com.amazonaws.services.glue.model.DatabaseInput;
 import com.amazonaws.services.glue.model.PartitionInput;

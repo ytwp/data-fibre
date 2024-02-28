@@ -13,14 +13,14 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.hive.glue.converters;
+package io.datafibre.fibre.connector.hive.glue.converters;
 
 import com.amazonaws.services.glue.model.ErrorDetail;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
 import org.apache.hadoop.hive.metastore.api.AlreadyExistsException;
 import org.apache.hadoop.hive.metastore.api.Database;
 import org.apache.hadoop.hive.metastore.api.FieldSchema;
@@ -52,9 +52,9 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import static com.starrocks.connector.hive.HiveClassNames.MAPRED_PARQUET_INPUT_FORMAT_CLASS;
-import static com.starrocks.connector.unified.UnifiedMetadata.isDeltaLakeTable;
-import static com.starrocks.connector.unified.UnifiedMetadata.isIcebergTable;
+import static io.datafibre.fibre.connector.hive.HiveClassNames.MAPRED_PARQUET_INPUT_FORMAT_CLASS;
+import static io.datafibre.fibre.connector.unified.UnifiedMetadata.isDeltaLakeTable;
+import static io.datafibre.fibre.connector.unified.UnifiedMetadata.isIcebergTable;
 import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 
 public class CatalogToHiveConverter {

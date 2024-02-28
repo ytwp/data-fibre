@@ -12,21 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.rule.transformation.materialization;
+package io.datafibre.fibre.sql.optimizer.rule.transformation.materialization;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.catalog.MvPlanContext;
-import com.starrocks.sql.optimizer.CachingMvPlanContextBuilder;
-import com.starrocks.sql.optimizer.ExpressionContext;
-import com.starrocks.sql.optimizer.OptExpression;
-import com.starrocks.sql.optimizer.OptimizerContext;
-import com.starrocks.sql.optimizer.operator.logical.LogicalAggregationOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalOlapScanOperator;
-import com.starrocks.sql.optimizer.statistics.Statistics;
-import com.starrocks.sql.optimizer.statistics.StatisticsCalculator;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.catalog.MvPlanContext;
+import io.datafibre.fibre.sql.optimizer.CachingMvPlanContextBuilder;
+import io.datafibre.fibre.sql.optimizer.ExpressionContext;
+import io.datafibre.fibre.sql.optimizer.OptExpression;
+import io.datafibre.fibre.sql.optimizer.OptimizerContext;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalAggregationOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalOlapScanOperator;
+import io.datafibre.fibre.sql.optimizer.statistics.Statistics;
+import io.datafibre.fibre.sql.optimizer.statistics.StatisticsCalculator;
 
 import java.util.Comparator;
 import java.util.List;

@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.scheduler;
+package io.datafibre.fibre.scheduler;
 
 import com.google.api.client.util.Lists;
 import com.google.common.collect.Range;
-import com.starrocks.catalog.PartitionKey;
-import com.starrocks.catalog.Table;
-import com.starrocks.sql.common.PartitionRange;
+import io.datafibre.fibre.catalog.PartitionKey;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.sql.common.PartitionRange;
 
 import java.util.List;
 import java.util.Map;

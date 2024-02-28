@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.analysis.DescriptorTable;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.connector.odps.EntityConvertUtils;
-import com.starrocks.thrift.THdfsTable;
-import com.starrocks.thrift.TTableDescriptor;
-import com.starrocks.thrift.TTableType;
+import io.datafibre.fibre.analysis.DescriptorTable;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.connector.odps.EntityConvertUtils;
+import io.datafibre.fibre.thrift.THdfsTable;
+import io.datafibre.fibre.thrift.TTableDescriptor;
+import io.datafibre.fibre.thrift.TTableType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.starrocks.connector.ConnectorTableId.CONNECTOR_ID_GENERATOR;
+import static io.datafibre.fibre.connector.ConnectorTableId.CONNECTOR_ID_GENERATOR;
 
 public class OdpsTable extends Table implements HiveMetaStoreTable {
     private static final Logger LOG = LogManager.getLogger(OdpsTable.class);

@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.load.pipe;
+package io.datafibre.fibre.load.pipe;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.util.DateUtils;
-import com.starrocks.load.pipe.filelist.FileListRepo;
-import com.starrocks.thrift.TResultBatch;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.util.DateUtils;
+import io.datafibre.fibre.load.pipe.filelist.FileListRepo;
+import io.datafibre.fibre.thrift.TResultBatch;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.apache.commons.collections4.ListUtils;

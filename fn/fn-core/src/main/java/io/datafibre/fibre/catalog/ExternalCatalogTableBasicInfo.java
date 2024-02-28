@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
-import com.starrocks.server.CatalogMgr;
+import io.datafibre.fibre.server.CatalogMgr;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.starrocks.service.InformationSchemaDataSource.DEFAULT_EMPTY_NUM;
+import static io.datafibre.fibre.service.InformationSchemaDataSource.DEFAULT_EMPTY_NUM;
 
 public class ExternalCatalogTableBasicInfo implements BasicTable {
     private final String catalogName;

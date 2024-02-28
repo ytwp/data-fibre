@@ -13,15 +13,15 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
 import com.google.common.base.Strings;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.ast.AstVisitor;
-import com.starrocks.sql.ast.CreateFileStmt;
-import com.starrocks.sql.ast.DropFileStmt;
-import com.starrocks.sql.ast.ShowSmallFilesStmt;
-import com.starrocks.sql.ast.StatementBase;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.ast.AstVisitor;
+import io.datafibre.fibre.sql.ast.CreateFileStmt;
+import io.datafibre.fibre.sql.ast.DropFileStmt;
+import io.datafibre.fibre.sql.ast.ShowSmallFilesStmt;
+import io.datafibre.fibre.sql.ast.StatementBase;
 
 import java.util.Optional;
 

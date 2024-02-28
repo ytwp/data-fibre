@@ -32,16 +32,16 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.http.rest;
+package io.datafibre.fibre.http.rest;
 
 import com.google.common.base.Strings;
-import com.starrocks.common.util.SmallFileMgr;
-import com.starrocks.common.util.SmallFileMgr.SmallFile;
-import com.starrocks.http.ActionController;
-import com.starrocks.http.BaseRequest;
-import com.starrocks.http.BaseResponse;
-import com.starrocks.http.IllegalArgException;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.common.util.SmallFileMgr;
+import io.datafibre.fibre.common.util.SmallFileMgr.SmallFile;
+import io.datafibre.fibre.http.ActionController;
+import io.datafibre.fibre.http.BaseRequest;
+import io.datafibre.fibre.http.BaseResponse;
+import io.datafibre.fibre.http.IllegalArgException;
+import io.datafibre.fibre.server.GlobalStateMgr;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.logging.log4j.LogManager;

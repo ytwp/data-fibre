@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.ha.FrontendNodeType;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.ha.FrontendNodeType;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 public class DropObserverClause extends FrontendClause {
 

@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.analysis.ParseNode;
-import com.starrocks.analysis.Predicate;
-import com.starrocks.catalog.ResourceGroup;
-import com.starrocks.catalog.ResourceGroupClassifier;
-import com.starrocks.sql.analyzer.ResourceGroupAnalyzer;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.ParseNode;
+import io.datafibre.fibre.analysis.Predicate;
+import io.datafibre.fibre.catalog.ResourceGroup;
+import io.datafibre.fibre.catalog.ResourceGroupClassifier;
+import io.datafibre.fibre.sql.analyzer.ResourceGroupAnalyzer;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.ArrayList;
 import java.util.Collections;

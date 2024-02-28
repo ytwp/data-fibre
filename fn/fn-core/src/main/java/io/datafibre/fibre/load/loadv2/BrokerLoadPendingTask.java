@@ -32,19 +32,19 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.load.loadv2;
+package io.datafibre.fibre.load.loadv2;
 
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.BrokerDesc;
-import com.starrocks.common.UserException;
-import com.starrocks.common.util.BrokerUtil;
-import com.starrocks.common.util.LogBuilder;
-import com.starrocks.common.util.LogKey;
-import com.starrocks.fs.HdfsUtil;
-import com.starrocks.load.BrokerFileGroup;
-import com.starrocks.load.BrokerFileGroupAggInfo.FileGroupAggKey;
-import com.starrocks.load.FailMsg;
-import com.starrocks.thrift.TBrokerFileStatus;
+import io.datafibre.fibre.analysis.BrokerDesc;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.util.BrokerUtil;
+import io.datafibre.fibre.common.util.LogBuilder;
+import io.datafibre.fibre.common.util.LogKey;
+import io.datafibre.fibre.fs.HdfsUtil;
+import io.datafibre.fibre.load.BrokerFileGroup;
+import io.datafibre.fibre.load.BrokerFileGroupAggInfo.FileGroupAggKey;
+import io.datafibre.fibre.load.FailMsg;
+import io.datafibre.fibre.thrift.TBrokerFileStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

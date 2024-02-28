@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer;
+package io.datafibre.fibre.sql.optimizer;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.Pair;
-import com.starrocks.sql.optimizer.operator.logical.LogicalOlapScanOperator;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalOlapScanOperator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

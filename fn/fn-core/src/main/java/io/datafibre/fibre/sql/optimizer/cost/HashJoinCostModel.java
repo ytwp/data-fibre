@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.cost;
+package io.datafibre.fibre.sql.optimizer.cost;
 
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.optimizer.ExpressionContext;
-import com.starrocks.sql.optimizer.base.ColumnRefSet;
-import com.starrocks.sql.optimizer.base.PhysicalPropertySet;
-import com.starrocks.sql.optimizer.operator.scalar.BinaryPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.statistics.ColumnStatistic;
-import com.starrocks.sql.optimizer.statistics.ExpressionStatisticCalculator;
-import com.starrocks.sql.optimizer.statistics.Statistics;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.optimizer.ExpressionContext;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
+import io.datafibre.fibre.sql.optimizer.base.PhysicalPropertySet;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.BinaryPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.statistics.ColumnStatistic;
+import io.datafibre.fibre.sql.optimizer.statistics.ExpressionStatisticCalculator;
+import io.datafibre.fibre.sql.optimizer.statistics.Statistics;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

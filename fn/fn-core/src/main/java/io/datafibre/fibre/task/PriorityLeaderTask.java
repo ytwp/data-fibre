@@ -13,9 +13,9 @@
 // limitations under the License.
 
 
-package com.starrocks.task;
+package io.datafibre.fibre.task;
 
-import com.starrocks.common.PriorityRunnable;
+import io.datafibre.fibre.common.PriorityRunnable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

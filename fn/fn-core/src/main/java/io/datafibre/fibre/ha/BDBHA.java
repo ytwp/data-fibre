@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.ha;
+package io.datafibre.fibre.ha;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
@@ -52,9 +52,9 @@ import com.sleepycat.je.rep.ReplicationMutableConfig;
 import com.sleepycat.je.rep.ReplicationNode;
 import com.sleepycat.je.rep.UnknownMasterException;
 import com.sleepycat.je.rep.util.ReplicationGroupAdmin;
-import com.starrocks.journal.bdbje.BDBEnvironment;
-import com.starrocks.journal.bdbje.CloseSafeDatabase;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.journal.bdbje.BDBEnvironment;
+import io.datafibre.fibre.journal.bdbje.CloseSafeDatabase;
+import io.datafibre.fibre.server.GlobalStateMgr;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

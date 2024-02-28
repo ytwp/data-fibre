@@ -32,10 +32,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.connector.elasticsearch;
+package io.datafibre.fibre.connector.elasticsearch;
 
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.thrift.TNetworkAddress;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.thrift.TNetworkAddress;
 
 import java.util.List;
 import java.util.Map;

@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package com.starrocks.persist.metablock;
+package io.datafibre.fibre.persist.metablock;
 
-import com.starrocks.common.io.Text;
-import com.starrocks.persist.gson.GsonUtils;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.persist.gson.GsonUtils;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -40,7 +40,7 @@ import java.util.zip.CheckedOutputStream;
  * |      footer      | {"checksum": xxx}
  * +------------------+
  * <p>
- * Usage see com.starrocks.persist.metablock.SRMetaBlockTest#testSimple()
+ * Usage see io.datafibre.fibre.persist.metablock.SRMetaBlockTest#testSimple()
  */
 public class SRMetaBlockWriter {
     private final CheckedOutputStream checkedOutputStream;

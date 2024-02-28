@@ -15,12 +15,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.proc;
+package io.datafibre.fibre.common.proc;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import com.starrocks.alter.RollupJobV2;
-import com.starrocks.common.AnalysisException;
+import io.datafibre.fibre.alter.RollupJobV2;
+import io.datafibre.fibre.common.AnalysisException;
 
 import java.util.List;
 

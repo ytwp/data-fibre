@@ -12,34 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Streams;
-import com.starrocks.analysis.AnalyticExpr;
-import com.starrocks.analysis.CastExpr;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.FunctionCallExpr;
-import com.starrocks.analysis.GroupByClause;
-import com.starrocks.analysis.GroupingFunctionCallExpr;
-import com.starrocks.analysis.IntLiteral;
-import com.starrocks.analysis.LimitElement;
-import com.starrocks.analysis.OrderByElement;
-import com.starrocks.analysis.ParseNode;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.catalog.FunctionSet;
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.TreeNode;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.ast.AstVisitor;
-import com.starrocks.sql.ast.FieldReference;
-import com.starrocks.sql.ast.Relation;
-import com.starrocks.sql.ast.SelectList;
-import com.starrocks.sql.ast.SelectListItem;
-import com.starrocks.sql.common.StarRocksPlannerException;
+import io.datafibre.fibre.analysis.AnalyticExpr;
+import io.datafibre.fibre.analysis.CastExpr;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.FunctionCallExpr;
+import io.datafibre.fibre.analysis.GroupByClause;
+import io.datafibre.fibre.analysis.GroupingFunctionCallExpr;
+import io.datafibre.fibre.analysis.IntLiteral;
+import io.datafibre.fibre.analysis.LimitElement;
+import io.datafibre.fibre.analysis.OrderByElement;
+import io.datafibre.fibre.analysis.ParseNode;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.catalog.FunctionSet;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.TreeNode;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.ast.AstVisitor;
+import io.datafibre.fibre.sql.ast.FieldReference;
+import io.datafibre.fibre.sql.ast.Relation;
+import io.datafibre.fibre.sql.ast.SelectList;
+import io.datafibre.fibre.sql.ast.SelectListItem;
+import io.datafibre.fibre.sql.common.StarRocksPlannerException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,8 +52,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static com.starrocks.analysis.Expr.pushNegationToOperands;
-import static com.starrocks.sql.common.ErrorType.INTERNAL_ERROR;
+import static io.datafibre.fibre.analysis.Expr.pushNegationToOperands;
+import static io.datafibre.fibre.sql.common.ErrorType.INTERNAL_ERROR;
 
 public class SelectAnalyzer {
     private final ConnectContext session;

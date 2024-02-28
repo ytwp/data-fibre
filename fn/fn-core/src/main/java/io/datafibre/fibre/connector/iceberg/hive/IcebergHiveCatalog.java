@@ -12,22 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.iceberg.hive;
+package io.datafibre.fibre.connector.iceberg.hive;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
-import com.starrocks.catalog.Database;
-import com.starrocks.common.Config;
-import com.starrocks.common.MetaNotFoundException;
-import com.starrocks.common.util.Util;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.connector.iceberg.IcebergAwsClientFactory;
-import com.starrocks.connector.iceberg.IcebergCatalog;
-import com.starrocks.connector.iceberg.IcebergCatalogType;
-import com.starrocks.connector.iceberg.cost.IcebergMetricsReporter;
-import com.starrocks.connector.iceberg.io.IcebergCachingFileIO;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.MetaNotFoundException;
+import io.datafibre.fibre.common.util.Util;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.connector.iceberg.IcebergAwsClientFactory;
+import io.datafibre.fibre.connector.iceberg.IcebergCatalog;
+import io.datafibre.fibre.connector.iceberg.IcebergCatalogType;
+import io.datafibre.fibre.connector.iceberg.cost.IcebergMetricsReporter;
+import io.datafibre.fibre.connector.iceberg.io.IcebergCachingFileIO;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -51,11 +51,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.starrocks.connector.ConnectorTableId.CONNECTOR_ID_GENERATOR;
-import static com.starrocks.connector.iceberg.IcebergConnector.HIVE_METASTORE_TIMEOUT;
-import static com.starrocks.connector.iceberg.IcebergConnector.HIVE_METASTORE_URIS;
-import static com.starrocks.connector.iceberg.IcebergConnector.ICEBERG_METASTORE_URIS;
-import static com.starrocks.connector.iceberg.IcebergMetadata.LOCATION_PROPERTY;
+import static io.datafibre.fibre.connector.ConnectorTableId.CONNECTOR_ID_GENERATOR;
+import static io.datafibre.fibre.connector.iceberg.IcebergConnector.HIVE_METASTORE_TIMEOUT;
+import static io.datafibre.fibre.connector.iceberg.IcebergConnector.HIVE_METASTORE_URIS;
+import static io.datafibre.fibre.connector.iceberg.IcebergConnector.ICEBERG_METASTORE_URIS;
+import static io.datafibre.fibre.connector.iceberg.IcebergMetadata.LOCATION_PROPERTY;
 import static org.apache.hadoop.hive.conf.HiveConf.ConfVars.METASTOREWAREHOUSE;
 
 public class IcebergHiveCatalog implements IcebergCatalog {

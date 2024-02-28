@@ -13,21 +13,21 @@
 // limitations under the License.
 
 
-package com.starrocks.statistic;
+package io.datafibre.fibre.statistic;
 
 import com.google.common.collect.Lists;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.InternalCatalog;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.MetaNotFoundException;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.qe.ShowResultSet;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.common.MetaUtils;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.InternalCatalog;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.MetaNotFoundException;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.qe.ShowResultSet;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.common.MetaUtils;
 
 import java.io.DataInput;
 import java.io.DataOutput;

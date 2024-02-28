@@ -32,18 +32,18 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.connector.elasticsearch;
+package io.datafibre.fibre.connector.elasticsearch;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.EsTable;
-import com.starrocks.catalog.PartitionInfo;
-import com.starrocks.catalog.PartitionKey;
-import com.starrocks.catalog.RangePartitionInfo;
-import com.starrocks.catalog.SinglePartitionInfo;
-import com.starrocks.common.DdlException;
-import com.starrocks.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.EsTable;
+import io.datafibre.fibre.catalog.PartitionInfo;
+import io.datafibre.fibre.catalog.PartitionKey;
+import io.datafibre.fibre.catalog.RangePartitionInfo;
+import io.datafibre.fibre.catalog.SinglePartitionInfo;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

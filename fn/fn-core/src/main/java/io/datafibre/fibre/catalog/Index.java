@@ -32,21 +32,21 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.analysis.IndexDef;
-import com.starrocks.analysis.IndexDef.IndexType;
-import com.starrocks.common.InvertedIndexParams.CommonIndexParamKey;
-import com.starrocks.common.InvertedIndexParams.IndexParamsKey;
-import com.starrocks.common.InvertedIndexParams.SearchParamsKey;
-import com.starrocks.common.NgramBfIndexParamsKey;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.common.util.PrintableMap;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.thrift.TIndexType;
-import com.starrocks.thrift.TOlapTableIndex;
+import io.datafibre.fibre.analysis.IndexDef;
+import io.datafibre.fibre.analysis.IndexDef.IndexType;
+import io.datafibre.fibre.common.InvertedIndexParams.CommonIndexParamKey;
+import io.datafibre.fibre.common.InvertedIndexParams.IndexParamsKey;
+import io.datafibre.fibre.common.InvertedIndexParams.SearchParamsKey;
+import io.datafibre.fibre.common.NgramBfIndexParamsKey;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.common.util.PrintableMap;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.thrift.TIndexType;
+import io.datafibre.fibre.thrift.TOlapTableIndex;
 
 import java.io.DataInput;
 import java.io.DataOutput;

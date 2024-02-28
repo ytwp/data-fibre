@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.qe;
+package io.datafibre.fibre.qe;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
-import com.starrocks.common.FeConstants;
-import com.starrocks.common.util.DebugUtil;
-import com.starrocks.proto.PPlanFragmentCancelReason;
-import com.starrocks.qe.scheduler.Coordinator;
+import io.datafibre.fibre.common.FeConstants;
+import io.datafibre.fibre.common.util.DebugUtil;
+import io.datafibre.fibre.proto.PPlanFragmentCancelReason;
+import io.datafibre.fibre.qe.scheduler.Coordinator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

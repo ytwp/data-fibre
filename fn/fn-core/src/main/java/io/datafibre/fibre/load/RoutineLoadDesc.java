@@ -32,16 +32,16 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.load;
+package io.datafibre.fibre.load;
 
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.sql.ast.ColumnSeparator;
-import com.starrocks.sql.ast.ImportColumnDesc;
-import com.starrocks.sql.ast.ImportColumnsStmt;
-import com.starrocks.sql.ast.ImportWhereStmt;
-import com.starrocks.sql.ast.PartitionNames;
-import com.starrocks.sql.ast.RowDelimiter;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.sql.ast.ColumnSeparator;
+import io.datafibre.fibre.sql.ast.ImportColumnDesc;
+import io.datafibre.fibre.sql.ast.ImportColumnsStmt;
+import io.datafibre.fibre.sql.ast.ImportWhereStmt;
+import io.datafibre.fibre.sql.ast.PartitionNames;
+import io.datafibre.fibre.sql.ast.RowDelimiter;
 
 import java.util.ArrayList;
 import java.util.List;

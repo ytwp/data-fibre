@@ -32,9 +32,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.util;
+package io.datafibre.fibre.common.util;
 
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.server.GlobalStateMgr;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

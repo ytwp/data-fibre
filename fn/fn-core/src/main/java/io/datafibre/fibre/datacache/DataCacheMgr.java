@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.datacache;
+package io.datafibre.fibre.datacache;
 
-import com.starrocks.analysis.Expr;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.ast.QualifiedName;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.ast.QualifiedName;
 
 import java.util.ArrayList;
 import java.util.Comparator;

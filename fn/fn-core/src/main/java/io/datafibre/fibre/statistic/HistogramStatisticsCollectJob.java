@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.statistic;
+package io.datafibre.fibre.statistic;
 
 import com.google.common.base.Joiner;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.Config;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.thrift.TStatisticData;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.thrift.TStatisticData;
 import org.apache.velocity.VelocityContext;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.starrocks.statistic.StatsConstants.HISTOGRAM_STATISTICS_TABLE_NAME;
+import static io.datafibre.fibre.statistic.StatsConstants.HISTOGRAM_STATISTICS_TABLE_NAME;
 
 public class HistogramStatisticsCollectJob extends StatisticsCollectJob {
     private static final String COLLECT_HISTOGRAM_STATISTIC_TEMPLATE =

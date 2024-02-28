@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.hive;
+package io.datafibre.fibre.connector.hive;
 
 import org.apache.hadoop.hive.metastore.api.BooleanColumnStatsData;
 import org.apache.hadoop.hive.metastore.api.ColumnStatisticsData;

@@ -11,11 +11,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.starrocks.sql.optimizer.rule.tree;
+package io.datafibre.fibre.sql.optimizer.rule.tree;
 
-import com.starrocks.sql.optimizer.OptExpression;
-import com.starrocks.sql.optimizer.rule.tree.pdagg.PushDownDistinctAggregateRewriter;
-import com.starrocks.sql.optimizer.task.TaskContext;
+import io.datafibre.fibre.sql.optimizer.OptExpression;
+import io.datafibre.fibre.sql.optimizer.rule.tree.pdagg.PushDownDistinctAggregateRewriter;
+import io.datafibre.fibre.sql.optimizer.task.TaskContext;
 
 public class PushDownDistinctAggregateRule implements TreeRewriteRule {
 

@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.alter;
+package io.datafibre.fibre.alter;
 
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.catalog.Database;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.util.PropertyAnalyzer;
-import com.starrocks.lake.LakeTable;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.task.TabletMetadataUpdateAgentTask;
-import com.starrocks.task.TabletMetadataUpdateAgentTaskFactory;
-import com.starrocks.thrift.TTabletMetaType;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.util.PropertyAnalyzer;
+import io.datafibre.fibre.lake.LakeTable;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.task.TabletMetadataUpdateAgentTask;
+import io.datafibre.fibre.task.TabletMetadataUpdateAgentTaskFactory;
+import io.datafibre.fibre.thrift.TTabletMetaType;
 
 import java.io.DataOutput;
 import java.io.IOException;

@@ -15,17 +15,17 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.sql;
+package io.datafibre.fibre.sql;
 
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.KeysType;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Table;
-import com.starrocks.sql.optimizer.OptExpression;
-import com.starrocks.sql.optimizer.Utils;
-import com.starrocks.sql.optimizer.operator.logical.LogicalScanOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.statistics.IDictManager;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.KeysType;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.sql.optimizer.OptExpression;
+import io.datafibre.fibre.sql.optimizer.Utils;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalScanOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.statistics.IDictManager;
 
 import java.util.List;
 import java.util.stream.Collectors;

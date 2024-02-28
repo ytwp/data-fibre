@@ -32,31 +32,31 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.alter.SchemaChangeHandler;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.IndexDef;
-import com.starrocks.analysis.NullLiteral;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.analysis.StringLiteral;
-import com.starrocks.analysis.TypeDef;
-import com.starrocks.common.CaseSensibility;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.persist.gson.GsonPostProcessable;
-import com.starrocks.persist.gson.GsonPreProcessable;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.SqlModeHelper;
-import com.starrocks.sql.ast.ColumnDef;
-import com.starrocks.sql.parser.SqlParser;
-import com.starrocks.thrift.TColumn;
+import io.datafibre.fibre.alter.SchemaChangeHandler;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.IndexDef;
+import io.datafibre.fibre.analysis.NullLiteral;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.analysis.StringLiteral;
+import io.datafibre.fibre.analysis.TypeDef;
+import io.datafibre.fibre.common.CaseSensibility;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.persist.gson.GsonPostProcessable;
+import io.datafibre.fibre.persist.gson.GsonPreProcessable;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.SqlModeHelper;
+import io.datafibre.fibre.sql.ast.ColumnDef;
+import io.datafibre.fibre.sql.parser.SqlParser;
+import io.datafibre.fibre.thrift.TColumn;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -68,7 +68,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import static com.starrocks.common.util.DateUtils.DATE_TIME_FORMATTER;
+import static io.datafibre.fibre.common.util.DateUtils.DATE_TIME_FORMATTER;
 
 /**
  * This class represents the column-related metadata.

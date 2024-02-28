@@ -32,13 +32,13 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.proc;
+package io.datafibre.fibre.common.proc;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.Column;
-import com.starrocks.common.AnalysisException;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.common.AnalysisException;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Arrays;

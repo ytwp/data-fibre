@@ -32,27 +32,27 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.http.action;
+package io.datafibre.fibre.http.action;
 
 import com.google.common.base.Strings;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.Config;
-import com.starrocks.common.proc.ProcNodeInterface;
-import com.starrocks.common.proc.ProcService;
-import com.starrocks.common.util.UUIDUtil;
-import com.starrocks.http.ActionController;
-import com.starrocks.http.BaseAction;
-import com.starrocks.http.BaseRequest;
-import com.starrocks.http.BaseResponse;
-import com.starrocks.http.HttpAuthManager;
-import com.starrocks.http.HttpAuthManager.SessionValue;
-import com.starrocks.http.rest.RestBaseResult;
-import com.starrocks.privilege.AccessDeniedException;
-import com.starrocks.privilege.PrivilegeType;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.analyzer.Authorizer;
-import com.starrocks.sql.ast.UserIdentity;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.proc.ProcNodeInterface;
+import io.datafibre.fibre.common.proc.ProcService;
+import io.datafibre.fibre.common.util.UUIDUtil;
+import io.datafibre.fibre.http.ActionController;
+import io.datafibre.fibre.http.BaseAction;
+import io.datafibre.fibre.http.BaseRequest;
+import io.datafibre.fibre.http.BaseResponse;
+import io.datafibre.fibre.http.HttpAuthManager;
+import io.datafibre.fibre.http.HttpAuthManager.SessionValue;
+import io.datafibre.fibre.http.rest.RestBaseResult;
+import io.datafibre.fibre.privilege.AccessDeniedException;
+import io.datafibre.fibre.privilege.PrivilegeType;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.analyzer.Authorizer;
+import io.datafibre.fibre.sql.ast.UserIdentity;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;

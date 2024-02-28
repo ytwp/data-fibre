@@ -15,10 +15,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.mysql;
+package io.datafibre.fibre.mysql;
 
-import com.starrocks.common.ErrorCode;
-import com.starrocks.qe.QueryState;
+import io.datafibre.fibre.common.ErrorCode;
+import io.datafibre.fibre.qe.QueryState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

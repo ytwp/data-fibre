@@ -13,11 +13,11 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.hive.events;
+package io.datafibre.fibre.connector.hive.events;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.connector.hive.CacheUpdateProcessor;
+import io.datafibre.fibre.connector.hive.CacheUpdateProcessor;
 import org.apache.hadoop.hive.metastore.api.NotificationEvent;
 import org.apache.hadoop.hive.metastore.messaging.CreateTableMessage;
 

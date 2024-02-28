@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.common.util.concurrent;
+package io.datafibre.fibre.common.util.concurrent;
 
 import com.google.common.collect.Lists;
 

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.hive.events;
+package io.datafibre.fibre.connector.hive.events;
 
 /**
  * Currently we only support handling some events.

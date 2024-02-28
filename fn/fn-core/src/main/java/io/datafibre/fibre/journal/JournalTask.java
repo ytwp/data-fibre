@@ -13,9 +13,9 @@
 // limitations under the License.
 
 
-package com.starrocks.journal;
+package io.datafibre.fibre.journal;
 
-import com.starrocks.common.io.DataOutputBuffer;
+import io.datafibre.fibre.common.io.DataOutputBuffer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CountDownLatch;

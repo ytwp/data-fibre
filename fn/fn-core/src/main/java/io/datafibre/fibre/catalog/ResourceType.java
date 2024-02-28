@@ -32,10 +32,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.collect.ImmutableSortedMap;
-import com.starrocks.thrift.TResourceType;
+import io.datafibre.fibre.thrift.TResourceType;
 
 // ResourceType used to identify what kind of resource
 // Set /sys/block/sdx/queue/schedule/group_idle,slice_idle to zero

@@ -32,19 +32,19 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.http.rest;
+package io.datafibre.fibre.http.rest;
 
 import com.google.common.base.Strings;
-import com.starrocks.common.DdlException;
-import com.starrocks.http.ActionController;
-import com.starrocks.http.BaseRequest;
-import com.starrocks.http.BaseResponse;
-import com.starrocks.http.IllegalArgException;
-import com.starrocks.load.Load;
-import com.starrocks.privilege.AccessDeniedException;
-import com.starrocks.privilege.PrivilegeType;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.analyzer.Authorizer;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.http.ActionController;
+import io.datafibre.fibre.http.BaseRequest;
+import io.datafibre.fibre.http.BaseResponse;
+import io.datafibre.fibre.http.IllegalArgException;
+import io.datafibre.fibre.load.Load;
+import io.datafibre.fibre.privilege.AccessDeniedException;
+import io.datafibre.fibre.privilege.PrivilegeType;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.analyzer.Authorizer;
 import io.netty.handler.codec.http.HttpMethod;
 
 // Get load information of one load job

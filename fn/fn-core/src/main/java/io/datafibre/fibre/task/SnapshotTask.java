@@ -32,12 +32,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.task;
+package io.datafibre.fibre.task;
 
-import com.starrocks.thrift.TResourceInfo;
-import com.starrocks.thrift.TSnapshotRequest;
-import com.starrocks.thrift.TTaskType;
-import com.starrocks.thrift.TypesConstants;
+import io.datafibre.fibre.thrift.TResourceInfo;
+import io.datafibre.fibre.thrift.TSnapshotRequest;
+import io.datafibre.fibre.thrift.TTaskType;
+import io.datafibre.fibre.thrift.TypesConstants;
 
 public class SnapshotTask extends AgentTask {
     private long jobId;

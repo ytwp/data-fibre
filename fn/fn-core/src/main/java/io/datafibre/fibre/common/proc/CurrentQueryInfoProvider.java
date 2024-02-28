@@ -32,24 +32,24 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.proc;
+package io.datafibre.fibre.common.proc;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.Pair;
-import com.starrocks.common.util.DebugUtil;
-import com.starrocks.proto.PCollectQueryStatistics;
-import com.starrocks.proto.PCollectQueryStatisticsResult;
-import com.starrocks.proto.PUniqueId;
-import com.starrocks.qe.QueryStatisticsItem;
-import com.starrocks.rpc.BackendServiceClient;
-import com.starrocks.rpc.PCollectQueryStatisticsRequest;
-import com.starrocks.rpc.RpcException;
-import com.starrocks.system.SystemInfoService;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.thrift.TUniqueId;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.util.DebugUtil;
+import io.datafibre.fibre.proto.PCollectQueryStatistics;
+import io.datafibre.fibre.proto.PCollectQueryStatisticsResult;
+import io.datafibre.fibre.proto.PUniqueId;
+import io.datafibre.fibre.qe.QueryStatisticsItem;
+import io.datafibre.fibre.rpc.BackendServiceClient;
+import io.datafibre.fibre.rpc.PCollectQueryStatisticsRequest;
+import io.datafibre.fibre.rpc.RpcException;
+import io.datafibre.fibre.system.SystemInfoService;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TUniqueId;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

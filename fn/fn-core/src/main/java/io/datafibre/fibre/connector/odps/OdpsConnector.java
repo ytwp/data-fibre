@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.odps;
+package io.datafibre.fibre.connector.odps;
 
 import com.aliyun.odps.Odps;
 import com.aliyun.odps.account.Account;
 import com.aliyun.odps.account.AliyunAccount;
-import com.starrocks.connector.Connector;
-import com.starrocks.connector.ConnectorContext;
-import com.starrocks.connector.ConnectorMetadata;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.credential.aliyun.AliyunCloudCredential;
+import io.datafibre.fibre.connector.Connector;
+import io.datafibre.fibre.connector.ConnectorContext;
+import io.datafibre.fibre.connector.ConnectorMetadata;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.credential.aliyun.AliyunCloudCredential;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

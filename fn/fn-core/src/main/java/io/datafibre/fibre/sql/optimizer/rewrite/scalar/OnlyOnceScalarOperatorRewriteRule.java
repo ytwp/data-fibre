@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.rewrite.scalar;
+package io.datafibre.fibre.sql.optimizer.rewrite.scalar;
 
 // OnlyOnceScalarOperatorRewriteRule is not equivalence-transform Rule. non-equivalence transform Rule
 // is used to escalate or degrade predicates to make the predicates simple and applicable to index.

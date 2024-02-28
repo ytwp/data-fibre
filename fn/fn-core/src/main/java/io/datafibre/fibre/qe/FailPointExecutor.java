@@ -12,22 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.qe;
+package io.datafibre.fibre.qe;
 
 import com.google.api.client.util.Lists;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.Pair;
-import com.starrocks.proto.PUpdateFailPointStatusRequest;
-import com.starrocks.proto.PUpdateFailPointStatusResponse;
-import com.starrocks.rpc.BackendServiceClient;
-import com.starrocks.rpc.RpcException;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.StatementBase;
-import com.starrocks.sql.ast.UpdateFailPointStatusStatement;
-import com.starrocks.system.Backend;
-import com.starrocks.system.SystemInfoService;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.thrift.TStatusCode;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.proto.PUpdateFailPointStatusRequest;
+import io.datafibre.fibre.proto.PUpdateFailPointStatusResponse;
+import io.datafibre.fibre.rpc.BackendServiceClient;
+import io.datafibre.fibre.rpc.RpcException;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.StatementBase;
+import io.datafibre.fibre.sql.ast.UpdateFailPointStatusStatement;
+import io.datafibre.fibre.system.Backend;
+import io.datafibre.fibre.system.SystemInfoService;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TStatusCode;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 

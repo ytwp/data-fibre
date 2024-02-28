@@ -15,15 +15,15 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.task;
+package io.datafibre.fibre.task;
 
-import com.starrocks.catalog.FsBroker;
-import com.starrocks.common.Config;
-import com.starrocks.thrift.TDownloadReq;
-import com.starrocks.thrift.THdfsProperties;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.thrift.TResourceInfo;
-import com.starrocks.thrift.TTaskType;
+import io.datafibre.fibre.catalog.FsBroker;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.thrift.TDownloadReq;
+import io.datafibre.fibre.thrift.THdfsProperties;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TResourceInfo;
+import io.datafibre.fibre.thrift.TTaskType;
 
 import java.util.Map;
 

@@ -12,21 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.hive;
+package io.datafibre.fibre.connector.hive;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimaps;
-import com.starrocks.connector.PartitionUtil;
-import com.starrocks.thrift.THiveFileInfo;
+import io.datafibre.fibre.connector.PartitionUtil;
+import io.datafibre.fibre.thrift.THiveFileInfo;
 import org.apache.hadoop.fs.Path;
 
 import java.util.Collection;
 import java.util.List;
 
-import static com.starrocks.connector.PartitionUtil.getPathWithSlash;
+import static io.datafibre.fibre.connector.PartitionUtil.getPathWithSlash;
 
 public class PartitionUpdate {
     private final String name;

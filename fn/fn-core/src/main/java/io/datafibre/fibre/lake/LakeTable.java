@@ -12,31 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.lake;
+package io.datafibre.fibre.lake;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.staros.proto.FileCacheInfo;
 import com.staros.proto.FilePathInfo;
-import com.starrocks.alter.AlterJobV2Builder;
-import com.starrocks.backup.Status;
-import com.starrocks.catalog.CatalogUtils;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.DistributionInfo;
-import com.starrocks.catalog.KeysType;
-import com.starrocks.catalog.MaterializedIndex;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Partition;
-import com.starrocks.catalog.PartitionInfo;
-import com.starrocks.catalog.TableIndexes;
-import com.starrocks.catalog.TableProperty;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.io.DeepCopy;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.util.PropertyAnalyzer;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.server.StorageVolumeMgr;
+import io.datafibre.fibre.alter.AlterJobV2Builder;
+import io.datafibre.fibre.backup.Status;
+import io.datafibre.fibre.catalog.CatalogUtils;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.DistributionInfo;
+import io.datafibre.fibre.catalog.KeysType;
+import io.datafibre.fibre.catalog.MaterializedIndex;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.catalog.PartitionInfo;
+import io.datafibre.fibre.catalog.TableIndexes;
+import io.datafibre.fibre.catalog.TableProperty;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.io.DeepCopy;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.util.PropertyAnalyzer;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.server.StorageVolumeMgr;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

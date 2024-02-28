@@ -32,18 +32,18 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.leader;
+package io.datafibre.fibre.leader;
 
-import com.starrocks.common.Config;
-import com.starrocks.common.FeConstants;
-import com.starrocks.common.util.FrontendDaemon;
-import com.starrocks.journal.Journal;
-import com.starrocks.metric.MetricRepo;
-import com.starrocks.persist.MetaCleaner;
-import com.starrocks.persist.Storage;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.staros.StarMgrServer;
-import com.starrocks.system.Frontend;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.FeConstants;
+import io.datafibre.fibre.common.util.FrontendDaemon;
+import io.datafibre.fibre.journal.Journal;
+import io.datafibre.fibre.metric.MetricRepo;
+import io.datafibre.fibre.persist.MetaCleaner;
+import io.datafibre.fibre.persist.Storage;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.staros.StarMgrServer;
+import io.datafibre.fibre.system.Frontend;
 import org.apache.commons.io.output.NullOutputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

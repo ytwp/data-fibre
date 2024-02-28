@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.base;
+package io.datafibre.fibre.sql.optimizer.base;
 
-import com.starrocks.sql.common.ErrorType;
-import com.starrocks.sql.common.StarRocksPlannerException;
-import com.starrocks.sql.optimizer.Group;
-import com.starrocks.sql.optimizer.GroupExpression;
+import io.datafibre.fibre.sql.common.ErrorType;
+import io.datafibre.fibre.sql.common.StarRocksPlannerException;
+import io.datafibre.fibre.sql.optimizer.Group;
+import io.datafibre.fibre.sql.optimizer.GroupExpression;
 
 public class EmptyDistributionProperty extends DistributionProperty {
 

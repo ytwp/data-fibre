@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
 import com.google.common.base.Strings;
-import com.starrocks.alter.SchemaChangeHandler;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.Config;
-import com.starrocks.common.ErrorCode;
-import com.starrocks.common.ErrorReport;
+import io.datafibre.fibre.alter.SchemaChangeHandler;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.ErrorCode;
+import io.datafibre.fibre.common.ErrorReport;
 
 import java.util.HashSet;
 import java.util.Set;

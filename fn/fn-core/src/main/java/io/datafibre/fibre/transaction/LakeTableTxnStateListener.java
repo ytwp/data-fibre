@@ -12,27 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.transaction;
+package io.datafibre.fibre.transaction;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.starrocks.catalog.MaterializedIndex;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.PhysicalPartition;
-import com.starrocks.catalog.Tablet;
-import com.starrocks.catalog.TabletInvertedIndex;
-import com.starrocks.catalog.TabletMeta;
-import com.starrocks.common.Config;
-import com.starrocks.lake.CommitRateLimiter;
-import com.starrocks.lake.compaction.CompactionMgr;
-import com.starrocks.proto.AbortTxnRequest;
-import com.starrocks.proto.TxnTypePB;
-import com.starrocks.replication.ReplicationTxnCommitAttachment;
-import com.starrocks.rpc.BrpcProxy;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.system.ComputeNode;
+import io.datafibre.fibre.catalog.MaterializedIndex;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.PhysicalPartition;
+import io.datafibre.fibre.catalog.Tablet;
+import io.datafibre.fibre.catalog.TabletInvertedIndex;
+import io.datafibre.fibre.catalog.TabletMeta;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.lake.CommitRateLimiter;
+import io.datafibre.fibre.lake.compaction.CompactionMgr;
+import io.datafibre.fibre.proto.AbortTxnRequest;
+import io.datafibre.fibre.proto.TxnTypePB;
+import io.datafibre.fibre.replication.ReplicationTxnCommitAttachment;
+import io.datafibre.fibre.rpc.BrpcProxy;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.system.ComputeNode;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

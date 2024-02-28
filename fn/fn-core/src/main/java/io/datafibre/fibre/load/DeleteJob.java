@@ -32,25 +32,25 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.load;
+package io.datafibre.fibre.load;
 
-import com.starrocks.analysis.Predicate;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.Partition;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.UserException;
-import com.starrocks.qe.QueryState;
-import com.starrocks.qe.QueryStateException;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.DeleteStmt;
-import com.starrocks.transaction.AbstractTxnStateChangeCallback;
-import com.starrocks.transaction.GlobalTransactionMgr;
-import com.starrocks.transaction.TabletCommitInfo;
-import com.starrocks.transaction.TabletFailInfo;
-import com.starrocks.transaction.TransactionAlreadyCommitException;
-import com.starrocks.transaction.TransactionState;
-import com.starrocks.transaction.TransactionStatus;
+import io.datafibre.fibre.analysis.Predicate;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.qe.QueryState;
+import io.datafibre.fibre.qe.QueryStateException;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.DeleteStmt;
+import io.datafibre.fibre.transaction.AbstractTxnStateChangeCallback;
+import io.datafibre.fibre.transaction.GlobalTransactionMgr;
+import io.datafibre.fibre.transaction.TabletCommitInfo;
+import io.datafibre.fibre.transaction.TabletFailInfo;
+import io.datafibre.fibre.transaction.TransactionAlreadyCommitException;
+import io.datafibre.fibre.transaction.TransactionState;
+import io.datafibre.fibre.transaction.TransactionStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

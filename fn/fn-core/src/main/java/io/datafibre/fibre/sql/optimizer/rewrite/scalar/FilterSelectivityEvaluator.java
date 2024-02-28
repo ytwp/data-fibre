@@ -12,26 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.rewrite.scalar;
+package io.datafibre.fibre.sql.optimizer.rewrite.scalar;
 
 import com.google.common.collect.Lists;
-import com.starrocks.common.Pair;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.optimizer.ConstantOperatorUtils;
-import com.starrocks.sql.optimizer.Utils;
-import com.starrocks.sql.optimizer.operator.scalar.BinaryPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CompoundPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CompoundPredicateOperator.CompoundType;
-import com.starrocks.sql.optimizer.operator.scalar.ConstantOperator;
-import com.starrocks.sql.optimizer.operator.scalar.InPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.IsNullPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperatorVisitor;
-import com.starrocks.sql.optimizer.statistics.BinaryPredicateStatisticCalculator;
-import com.starrocks.sql.optimizer.statistics.ColumnStatistic;
-import com.starrocks.sql.optimizer.statistics.Statistics;
-import com.starrocks.sql.optimizer.statistics.StatisticsEstimateCoefficient;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.optimizer.ConstantOperatorUtils;
+import io.datafibre.fibre.sql.optimizer.Utils;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.BinaryPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CompoundPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CompoundPredicateOperator.CompoundType;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.InPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.IsNullPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperatorVisitor;
+import io.datafibre.fibre.sql.optimizer.statistics.BinaryPredicateStatisticCalculator;
+import io.datafibre.fibre.sql.optimizer.statistics.ColumnStatistic;
+import io.datafibre.fibre.sql.optimizer.statistics.Statistics;
+import io.datafibre.fibre.sql.optimizer.statistics.StatisticsEstimateCoefficient;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

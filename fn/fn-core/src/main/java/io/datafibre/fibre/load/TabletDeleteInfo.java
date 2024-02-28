@@ -32,10 +32,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.load;
+package io.datafibre.fibre.load;
 
 import com.google.common.collect.Sets;
-import com.starrocks.catalog.Replica;
+import io.datafibre.fibre.catalog.Replica;
 
 import java.util.Set;
 

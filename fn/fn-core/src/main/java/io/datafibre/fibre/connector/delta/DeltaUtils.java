@@ -13,15 +13,15 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.delta;
+package io.datafibre.fibre.connector.delta;
 
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.DeltaLakeTable;
-import com.starrocks.catalog.Type;
-import com.starrocks.connector.ColumnTypeConverter;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.connector.hive.RemoteFileInputFormat;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.DeltaLakeTable;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.connector.ColumnTypeConverter;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.connector.hive.RemoteFileInputFormat;
 import io.delta.standalone.DeltaLog;
 import io.delta.standalone.actions.Metadata;
 import io.delta.standalone.types.DataType;
@@ -33,7 +33,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
-import static com.starrocks.connector.ConnectorTableId.CONNECTOR_ID_GENERATOR;
+import static io.datafibre.fibre.connector.ConnectorTableId.CONNECTOR_ID_GENERATOR;
 
 public class DeltaUtils {
     private static final Logger LOG = LogManager.getLogger(DeltaUtils.class);

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.common.util;
+package io.datafibre.fibre.common.util;
 
 import java.util.List;
 

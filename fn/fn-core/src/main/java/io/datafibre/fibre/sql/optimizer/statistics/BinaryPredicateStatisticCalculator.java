@@ -13,14 +13,14 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.statistics;
+package io.datafibre.fibre.sql.optimizer.statistics;
 
-import com.starrocks.analysis.BinaryType;
-import com.starrocks.sql.optimizer.operator.scalar.BinaryPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ConstantOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.statistic.StatisticUtils;
+import io.datafibre.fibre.analysis.BinaryType;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.BinaryPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.statistic.StatisticUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -32,11 +32,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.io;
+package io.datafibre.fibre.common.io;
 
-import com.starrocks.common.FeConstants;
-import com.starrocks.meta.MetaContext;
-import com.starrocks.persist.gson.GsonUtils;
+import io.datafibre.fibre.common.FeConstants;
+import io.datafibre.fibre.meta.MetaContext;
+import io.datafibre.fibre.persist.gson.GsonUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

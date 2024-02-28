@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.analysis;
+package io.datafibre.fibre.analysis;
 
 import com.google.common.collect.ImmutableSortedSet;
-import com.starrocks.sql.parser.NodePosition;
-import com.starrocks.sql.parser.ParsingException;
+import io.datafibre.fibre.sql.parser.NodePosition;
+import io.datafibre.fibre.sql.parser.ParsingException;
 
 import java.util.Set;
 
-import static com.starrocks.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
+import static io.datafibre.fibre.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
 
 public class OdbcScalarFunctionCall implements ParseNode {
     private final Expr function;

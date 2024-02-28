@@ -32,11 +32,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.http;
+package io.datafibre.fibre.http;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableSet;
-import com.starrocks.common.path.PathTrie;
+import io.datafibre.fibre.common.path.PathTrie;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URI;

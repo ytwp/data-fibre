@@ -12,23 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.rule.transformation;
+package io.datafibre.fibre.sql.optimizer.rule.transformation;
 
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.Column;
-import com.starrocks.sql.optimizer.OptExpression;
-import com.starrocks.sql.optimizer.OptimizerContext;
-import com.starrocks.sql.optimizer.Utils;
-import com.starrocks.sql.optimizer.base.ColumnRefSet;
-import com.starrocks.sql.optimizer.operator.Operator;
-import com.starrocks.sql.optimizer.operator.OperatorBuilderFactory;
-import com.starrocks.sql.optimizer.operator.OperatorType;
-import com.starrocks.sql.optimizer.operator.logical.LogicalOlapScanOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalScanOperator;
-import com.starrocks.sql.optimizer.operator.pattern.Pattern;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.rule.RuleType;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.sql.optimizer.OptExpression;
+import io.datafibre.fibre.sql.optimizer.OptimizerContext;
+import io.datafibre.fibre.sql.optimizer.Utils;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
+import io.datafibre.fibre.sql.optimizer.operator.Operator;
+import io.datafibre.fibre.sql.optimizer.operator.OperatorBuilderFactory;
+import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalOlapScanOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalScanOperator;
+import io.datafibre.fibre.sql.optimizer.operator.pattern.Pattern;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.rule.RuleType;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.Collections;

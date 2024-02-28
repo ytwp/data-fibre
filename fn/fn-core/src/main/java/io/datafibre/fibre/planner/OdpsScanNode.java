@@ -12,34 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
 import com.aliyun.odps.table.read.split.InputSplit;
 import com.aliyun.odps.table.read.split.impl.IndexedInputSplit;
 import com.aliyun.odps.table.read.split.impl.RowRangeInputSplit;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
-import com.starrocks.analysis.TupleDescriptor;
-import com.starrocks.catalog.OdpsTable;
-import com.starrocks.catalog.PartitionKey;
-import com.starrocks.connector.CatalogConnector;
-import com.starrocks.connector.RemoteFileDesc;
-import com.starrocks.connector.RemoteFileInfo;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.connector.odps.OdpsSplitsInfo;
-import com.starrocks.credential.CloudConfiguration;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.plan.HDFSScanNodePredicates;
-import com.starrocks.thrift.TCloudConfiguration;
-import com.starrocks.thrift.TCloudType;
-import com.starrocks.thrift.TExplainLevel;
-import com.starrocks.thrift.THdfsScanNode;
-import com.starrocks.thrift.THdfsScanRange;
-import com.starrocks.thrift.TPlanNode;
-import com.starrocks.thrift.TPlanNodeType;
-import com.starrocks.thrift.TScanRange;
-import com.starrocks.thrift.TScanRangeLocations;
+import io.datafibre.fibre.analysis.TupleDescriptor;
+import io.datafibre.fibre.catalog.OdpsTable;
+import io.datafibre.fibre.catalog.PartitionKey;
+import io.datafibre.fibre.connector.CatalogConnector;
+import io.datafibre.fibre.connector.RemoteFileDesc;
+import io.datafibre.fibre.connector.RemoteFileInfo;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.connector.odps.OdpsSplitsInfo;
+import io.datafibre.fibre.credential.CloudConfiguration;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.plan.HDFSScanNodePredicates;
+import io.datafibre.fibre.thrift.TCloudConfiguration;
+import io.datafibre.fibre.thrift.TCloudType;
+import io.datafibre.fibre.thrift.TExplainLevel;
+import io.datafibre.fibre.thrift.THdfsScanNode;
+import io.datafibre.fibre.thrift.THdfsScanRange;
+import io.datafibre.fibre.thrift.TPlanNode;
+import io.datafibre.fibre.thrift.TPlanNodeType;
+import io.datafibre.fibre.thrift.TScanRange;
+import io.datafibre.fibre.thrift.TScanRangeLocations;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -128,9 +128,9 @@ public class OdpsScanNode extends ScanNode {
             TScanRange scanRange = new TScanRange();
             scanRange.setHdfs_scan_range(hdfsScanRange);
             scanRangeLocations.setScan_range(scanRange);
-            com.starrocks.thrift.TScanRangeLocation
+            io.datafibre.fibre.thrift.TScanRangeLocation
                     scanRangeLocation =
-                    new com.starrocks.thrift.TScanRangeLocation(new com.starrocks.thrift.TNetworkAddress("-1", -1));
+                    new io.datafibre.fibre.thrift.TScanRangeLocation(new io.datafibre.fibre.thrift.TNetworkAddress("-1", -1));
             scanRangeLocations.addToLocations(scanRangeLocation);
             scanRangeLocationsList.add(scanRangeLocations);
         }

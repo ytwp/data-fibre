@@ -32,35 +32,35 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.load;
+package io.datafibre.fibre.load;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.starrocks.analysis.Delimiter;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.catalog.AggregateType;
-import com.starrocks.catalog.BrokerTable;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.HiveTable;
-import com.starrocks.catalog.KeysType;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.OlapTable.OlapTableState;
-import com.starrocks.catalog.Partition;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.TableFunctionTable;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.CsvFormat;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.Pair;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.sql.ast.DataDescription;
-import com.starrocks.sql.ast.ImportColumnDesc;
-import com.starrocks.sql.ast.PartitionNames;
+import io.datafibre.fibre.analysis.Delimiter;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.catalog.AggregateType;
+import io.datafibre.fibre.catalog.BrokerTable;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.HiveTable;
+import io.datafibre.fibre.catalog.KeysType;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.OlapTable.OlapTableState;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.TableFunctionTable;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.CsvFormat;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.sql.ast.DataDescription;
+import io.datafibre.fibre.sql.ast.ImportColumnDesc;
+import io.datafibre.fibre.sql.ast.PartitionNames;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

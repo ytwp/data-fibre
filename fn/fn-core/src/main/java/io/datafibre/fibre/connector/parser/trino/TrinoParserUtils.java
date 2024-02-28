@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.parser.trino;
+package io.datafibre.fibre.connector.parser.trino;
 
-import com.starrocks.analysis.CastExpr;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.FunctionCallExpr;
-import com.starrocks.analysis.StringLiteral;
-import com.starrocks.analysis.TimestampArithmeticExpr;
-import com.starrocks.catalog.FunctionSet;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.util.DateUtils;
-import com.starrocks.sql.ast.StatementBase;
+import io.datafibre.fibre.analysis.CastExpr;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.FunctionCallExpr;
+import io.datafibre.fibre.analysis.StringLiteral;
+import io.datafibre.fibre.analysis.TimestampArithmeticExpr;
+import io.datafibre.fibre.catalog.FunctionSet;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.util.DateUtils;
+import io.datafibre.fibre.sql.ast.StatementBase;
 import io.trino.sql.tree.CreateTableAsSelect;
 import io.trino.sql.tree.Explain;
 import io.trino.sql.tree.ExplainAnalyze;

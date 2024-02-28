@@ -15,11 +15,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.rpc;
+package io.datafibre.fibre.rpc;
 
 import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
 import com.baidu.bjf.remoting.protobuf.annotation.ProtobufClass;
-import com.starrocks.proto.PUniqueId;
+import io.datafibre.fibre.proto.PUniqueId;
 
 @ProtobufClass
 public class PFetchDataRequest extends AttachmentRequest {

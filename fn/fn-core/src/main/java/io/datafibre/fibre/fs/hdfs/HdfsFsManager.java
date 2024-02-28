@@ -15,24 +15,24 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.fs.hdfs;
+package io.datafibre.fibre.fs.hdfs;
 
 import com.amazonaws.util.AwsHostNameUtils;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.starrocks.common.Config;
-import com.starrocks.common.NotImplementedException;
-import com.starrocks.common.UserException;
-import com.starrocks.credential.CloudConfiguration;
-import com.starrocks.credential.CloudConfigurationFactory;
-import com.starrocks.credential.CloudType;
-import com.starrocks.credential.azure.AzureCloudConfigurationProvider;
-import com.starrocks.thrift.TBrokerFD;
-import com.starrocks.thrift.TBrokerFileStatus;
-import com.starrocks.thrift.TCloudConfiguration;
-import com.starrocks.thrift.THdfsProperties;
-import com.starrocks.thrift.TObjectStoreType;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.NotImplementedException;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.credential.CloudConfiguration;
+import io.datafibre.fibre.credential.CloudConfigurationFactory;
+import io.datafibre.fibre.credential.CloudType;
+import io.datafibre.fibre.credential.azure.AzureCloudConfigurationProvider;
+import io.datafibre.fibre.thrift.TBrokerFD;
+import io.datafibre.fibre.thrift.TBrokerFileStatus;
+import io.datafibre.fibre.thrift.TCloudConfiguration;
+import io.datafibre.fibre.thrift.THdfsProperties;
+import io.datafibre.fibre.thrift.TObjectStoreType;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.CommonConfigurationKeysPublic;
 import org.apache.hadoop.fs.FSDataInputStream;

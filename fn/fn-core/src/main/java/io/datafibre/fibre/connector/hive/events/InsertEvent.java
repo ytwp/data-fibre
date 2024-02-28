@@ -13,16 +13,16 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.hive.events;
+package io.datafibre.fibre.connector.hive.events;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.HiveTable;
-import com.starrocks.connector.hive.CacheUpdateProcessor;
-import com.starrocks.connector.hive.HiveCommonStats;
-import com.starrocks.connector.hive.HiveMetastoreApiConverter;
-import com.starrocks.connector.hive.HivePartitionName;
-import com.starrocks.connector.hive.HiveTableName;
+import io.datafibre.fibre.catalog.HiveTable;
+import io.datafibre.fibre.connector.hive.CacheUpdateProcessor;
+import io.datafibre.fibre.connector.hive.HiveCommonStats;
+import io.datafibre.fibre.connector.hive.HiveMetastoreApiConverter;
+import io.datafibre.fibre.connector.hive.HivePartitionName;
+import io.datafibre.fibre.connector.hive.HiveTableName;
 import org.apache.hadoop.hive.common.FileUtils;
 import org.apache.hadoop.hive.metastore.api.FieldSchema;
 import org.apache.hadoop.hive.metastore.api.NotificationEvent;
@@ -35,8 +35,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.starrocks.connector.hive.HiveMetastoreApiConverter.toHiveCommonStats;
-import static com.starrocks.connector.hive.events.MetastoreEventType.INSERT;
+import static io.datafibre.fibre.connector.hive.HiveMetastoreApiConverter.toHiveCommonStats;
+import static io.datafibre.fibre.connector.hive.events.MetastoreEventType.INSERT;
 
 /**
  * Metastore event handler for INSERT events. Handles insert events at both table and partition scopes.
@@ -121,7 +121,7 @@ public class InsertEvent extends MetastoreTableEvent {
 
         try {
             HiveTable hiveTable = HiveMetastoreApiConverter.toHiveTable(hmsTbl, catalogName);
-            com.starrocks.connector.hive.Partition partition;
+            io.datafibre.fibre.connector.hive.Partition partition;
             HiveCommonStats hiveCommonStats;
             if (hiveTable.isUnPartitioned()) {
                 partition = HiveMetastoreApiConverter.toPartition(hmsTbl.getSd(), hmsTbl.getParameters());

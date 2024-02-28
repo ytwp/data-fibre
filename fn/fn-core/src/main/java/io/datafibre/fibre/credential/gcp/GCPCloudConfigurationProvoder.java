@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.credential.gcp;
+package io.datafibre.fibre.credential.gcp;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.credential.CloudConfiguration;
-import com.starrocks.credential.CloudConfigurationProvider;
+import io.datafibre.fibre.credential.CloudConfiguration;
+import io.datafibre.fibre.credential.CloudConfigurationProvider;
 
 import java.util.Map;
 
-import static com.starrocks.credential.CloudConfigurationConstants.GCP_GCS_SERVICE_ACCOUNT_EMAIL;
-import static com.starrocks.credential.CloudConfigurationConstants.GCP_GCS_SERVICE_ACCOUNT_IMPERSONATION_SERVICE_ACCOUNT;
-import static com.starrocks.credential.CloudConfigurationConstants.GCP_GCS_SERVICE_ACCOUNT_PRIVATE_KEY;
-import static com.starrocks.credential.CloudConfigurationConstants.GCP_GCS_SERVICE_ACCOUNT_PRIVATE_KEY_ID;
-import static com.starrocks.credential.CloudConfigurationConstants.GCP_GCS_USE_COMPUTE_ENGINE_SERVICE_ACCOUNT;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.GCP_GCS_SERVICE_ACCOUNT_EMAIL;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.GCP_GCS_SERVICE_ACCOUNT_IMPERSONATION_SERVICE_ACCOUNT;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.GCP_GCS_SERVICE_ACCOUNT_PRIVATE_KEY;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.GCP_GCS_SERVICE_ACCOUNT_PRIVATE_KEY_ID;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.GCP_GCS_USE_COMPUTE_ENGINE_SERVICE_ACCOUNT;
 
 public class GCPCloudConfigurationProvoder implements CloudConfigurationProvider {
 

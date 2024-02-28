@@ -32,9 +32,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.server.GlobalStateMgr;
 
 // This new Id generator is just same as TransactionIdGenerator.
 // But we can't just use TransactionIdGenerator to replace the old globalStateMgr's 'nextId' for compatibility reason.

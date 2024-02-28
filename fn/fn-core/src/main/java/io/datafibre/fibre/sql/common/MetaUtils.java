@@ -12,33 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.common;
+package io.datafibre.fibre.sql.common;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.TableName;
-import com.starrocks.catalog.Catalog;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.ExternalOlapTable;
-import com.starrocks.catalog.InternalCatalog;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.ErrorCode;
-import com.starrocks.common.ErrorReport;
-import com.starrocks.common.util.DebugUtil;
-import com.starrocks.external.starrocks.TableMetaSyncer;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.OriginStatement;
-import com.starrocks.qe.SqlModeHelper;
-import com.starrocks.server.CatalogMgr;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.ast.CreateMaterializedViewStmt;
-import com.starrocks.sql.ast.StatementBase;
-import com.starrocks.sql.optimizer.rule.mv.MVUtils;
-import com.starrocks.sql.parser.SqlParser;
-import com.starrocks.thrift.TUniqueId;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.catalog.Catalog;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.ExternalOlapTable;
+import io.datafibre.fibre.catalog.InternalCatalog;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.ErrorCode;
+import io.datafibre.fibre.common.ErrorReport;
+import io.datafibre.fibre.common.util.DebugUtil;
+import io.datafibre.fibre.external.starrocks.TableMetaSyncer;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.OriginStatement;
+import io.datafibre.fibre.qe.SqlModeHelper;
+import io.datafibre.fibre.server.CatalogMgr;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.ast.CreateMaterializedViewStmt;
+import io.datafibre.fibre.sql.ast.StatementBase;
+import io.datafibre.fibre.sql.optimizer.rule.mv.MVUtils;
+import io.datafibre.fibre.sql.parser.SqlParser;
+import io.datafibre.fibre.thrift.TUniqueId;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

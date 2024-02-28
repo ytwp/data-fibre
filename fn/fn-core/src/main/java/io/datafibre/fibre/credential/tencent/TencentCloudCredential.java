@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.credential.tencent;
+package io.datafibre.fibre.credential.tencent;
 
 import com.staros.proto.FileStoreInfo;
-import com.starrocks.credential.CloudConfigurationConstants;
-import com.starrocks.credential.CloudCredential;
+import io.datafibre.fibre.credential.CloudConfigurationConstants;
+import io.datafibre.fibre.credential.CloudCredential;
 import org.apache.hadoop.conf.Configuration;
 
 import java.util.Map;

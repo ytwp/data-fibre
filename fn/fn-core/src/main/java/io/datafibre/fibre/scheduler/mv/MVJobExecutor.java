@@ -13,9 +13,9 @@
 // limitations under the License.
 
 
-package com.starrocks.scheduler.mv;
+package io.datafibre.fibre.scheduler.mv;
 
-import com.starrocks.common.util.FrontendDaemon;
+import io.datafibre.fibre.common.util.FrontendDaemon;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

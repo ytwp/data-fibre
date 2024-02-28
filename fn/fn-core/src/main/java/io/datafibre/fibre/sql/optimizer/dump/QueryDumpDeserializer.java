@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.dump;
+package io.datafibre.fibre.sql.optimizer.dump;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonArray;
@@ -23,9 +23,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
-import com.starrocks.catalog.Resource;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.sql.optimizer.statistics.ColumnStatistic;
+import io.datafibre.fibre.catalog.Resource;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.sql.optimizer.statistics.ColumnStatistic;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

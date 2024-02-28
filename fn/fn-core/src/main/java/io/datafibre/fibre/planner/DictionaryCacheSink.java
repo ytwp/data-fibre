@@ -12,31 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.alter.SchemaChangeHandler;
-import com.starrocks.analysis.SlotDescriptor;
-import com.starrocks.analysis.SlotId;
-import com.starrocks.analysis.TupleDescriptor;
-import com.starrocks.analysis.TupleId;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.Dictionary;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Table;
-import com.starrocks.planner.OlapTableSink;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.thrift.TColumn;
-import com.starrocks.thrift.TDataSink;
-import com.starrocks.thrift.TDataSinkType;
-import com.starrocks.thrift.TDictionaryCacheSink;
-import com.starrocks.thrift.TExplainLevel;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.thrift.TOlapTableColumnParam;
-import com.starrocks.thrift.TOlapTableIndexSchema;
-import com.starrocks.thrift.TOlapTableSchemaParam;
+import io.datafibre.fibre.alter.SchemaChangeHandler;
+import io.datafibre.fibre.analysis.SlotDescriptor;
+import io.datafibre.fibre.analysis.SlotId;
+import io.datafibre.fibre.analysis.TupleDescriptor;
+import io.datafibre.fibre.analysis.TupleId;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.Dictionary;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.planner.OlapTableSink;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.thrift.TColumn;
+import io.datafibre.fibre.thrift.TDataSink;
+import io.datafibre.fibre.thrift.TDataSinkType;
+import io.datafibre.fibre.thrift.TDictionaryCacheSink;
+import io.datafibre.fibre.thrift.TExplainLevel;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TOlapTableColumnParam;
+import io.datafibre.fibre.thrift.TOlapTableIndexSchema;
+import io.datafibre.fibre.thrift.TOlapTableSchemaParam;
 
 import java.util.HashMap;
 import java.util.List;

@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.parser.trino;
+package io.datafibre.fibre.connector.parser.trino;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.FunctionCallExpr;
-import com.starrocks.sql.ast.AstVisitor;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.FunctionCallExpr;
+import io.datafibre.fibre.sql.ast.AstVisitor;
 
 import java.util.Arrays;
 import java.util.List;

@@ -12,51 +12,51 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.rule.transformation;
+package io.datafibre.fibre.sql.optimizer.rule.transformation;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.analysis.BinaryType;
-import com.starrocks.analysis.JoinOperator;
-import com.starrocks.sql.optimizer.OptExpression;
-import com.starrocks.sql.optimizer.OptimizerContext;
-import com.starrocks.sql.optimizer.base.ColumnRefFactory;
-import com.starrocks.sql.optimizer.base.ColumnRefSet;
-import com.starrocks.sql.optimizer.operator.ColumnOutputInfo;
-import com.starrocks.sql.optimizer.operator.OperatorType;
-import com.starrocks.sql.optimizer.operator.logical.LogicalJoinOperator;
-import com.starrocks.sql.optimizer.operator.pattern.Pattern;
-import com.starrocks.sql.optimizer.operator.scalar.ArrayOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ArraySliceOperator;
-import com.starrocks.sql.optimizer.operator.scalar.BetweenPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.BinaryPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CaseWhenOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CastOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CollectionElementOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CompoundPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ExistsPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.InPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.IsNullPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.LikePredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.rewrite.BaseScalarOperatorShuttle;
-import com.starrocks.sql.optimizer.rewrite.ScalarOperatorRewriter;
-import com.starrocks.sql.optimizer.rewrite.scalar.NormalizePredicateRule;
-import com.starrocks.sql.optimizer.rule.RuleType;
-import com.starrocks.sql.optimizer.rule.join.JoinReorderHelper;
-import com.starrocks.sql.optimizer.rule.join.JoinReorderProperty;
+import io.datafibre.fibre.analysis.BinaryType;
+import io.datafibre.fibre.analysis.JoinOperator;
+import io.datafibre.fibre.sql.optimizer.OptExpression;
+import io.datafibre.fibre.sql.optimizer.OptimizerContext;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefFactory;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
+import io.datafibre.fibre.sql.optimizer.operator.ColumnOutputInfo;
+import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalJoinOperator;
+import io.datafibre.fibre.sql.optimizer.operator.pattern.Pattern;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ArrayOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ArraySliceOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.BetweenPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.BinaryPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CallOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CaseWhenOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CastOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CollectionElementOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CompoundPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ExistsPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.InPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.IsNullPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.LikePredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.rewrite.BaseScalarOperatorShuttle;
+import io.datafibre.fibre.sql.optimizer.rewrite.ScalarOperatorRewriter;
+import io.datafibre.fibre.sql.optimizer.rewrite.scalar.NormalizePredicateRule;
+import io.datafibre.fibre.sql.optimizer.rule.RuleType;
+import io.datafibre.fibre.sql.optimizer.rule.join.JoinReorderHelper;
+import io.datafibre.fibre.sql.optimizer.rule.join.JoinReorderProperty;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Map;
 
-import static com.starrocks.sql.optimizer.rule.join.JoinReorderProperty.ASSOCIATIVITY_BOTTOM_MASK;
-import static com.starrocks.sql.optimizer.rule.join.JoinReorderProperty.ASSOCIATIVITY_TOP_MASK;
-import static com.starrocks.sql.optimizer.rule.join.JoinReorderProperty.LEFT_ASSCOM_BOTTOM_MASK;
-import static com.starrocks.sql.optimizer.rule.join.JoinReorderProperty.LEFT_ASSCOM_TOP_MASK;
+import static io.datafibre.fibre.sql.optimizer.rule.join.JoinReorderProperty.ASSOCIATIVITY_BOTTOM_MASK;
+import static io.datafibre.fibre.sql.optimizer.rule.join.JoinReorderProperty.ASSOCIATIVITY_TOP_MASK;
+import static io.datafibre.fibre.sql.optimizer.rule.join.JoinReorderProperty.LEFT_ASSCOM_BOTTOM_MASK;
+import static io.datafibre.fibre.sql.optimizer.rule.join.JoinReorderProperty.LEFT_ASSCOM_TOP_MASK;
 
 /*       Join            Join
  *      /    \          /    \

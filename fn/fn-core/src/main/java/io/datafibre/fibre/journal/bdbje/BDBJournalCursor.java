@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.journal.bdbje;
+package io.datafibre.fibre.journal.bdbje;
 
 import com.sleepycat.bind.tuple.TupleBinding;
 import com.sleepycat.je.DatabaseEntry;
@@ -42,10 +42,10 @@ import com.sleepycat.je.LockMode;
 import com.sleepycat.je.OperationStatus;
 import com.sleepycat.je.rep.InsufficientLogException;
 import com.sleepycat.je.rep.RestartRequiredException;
-import com.starrocks.journal.JournalCursor;
-import com.starrocks.journal.JournalEntity;
-import com.starrocks.journal.JournalException;
-import com.starrocks.journal.JournalInconsistentException;
+import io.datafibre.fibre.journal.JournalCursor;
+import io.datafibre.fibre.journal.JournalEntity;
+import io.datafibre.fibre.journal.JournalException;
+import io.datafibre.fibre.journal.JournalInconsistentException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

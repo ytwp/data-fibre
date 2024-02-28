@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.catalog.MaterializedIndex.IndexExtState;
-import com.starrocks.catalog.MaterializedIndex.IndexState;
-import com.starrocks.common.FeConstants;
+import io.datafibre.fibre.catalog.MaterializedIndex.IndexExtState;
+import io.datafibre.fibre.catalog.MaterializedIndex.IndexState;
+import io.datafibre.fibre.common.FeConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

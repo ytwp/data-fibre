@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.iceberg.cost;
+package io.datafibre.fibre.connector.iceberg.cost;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;

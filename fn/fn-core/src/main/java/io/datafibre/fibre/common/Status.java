@@ -32,11 +32,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common;
+package io.datafibre.fibre.common;
 
-import com.starrocks.proto.StatusPB;
-import com.starrocks.thrift.TStatus;
-import com.starrocks.thrift.TStatusCode;
+import io.datafibre.fibre.proto.StatusPB;
+import io.datafibre.fibre.thrift.TStatus;
+import io.datafibre.fibre.thrift.TStatusCode;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;

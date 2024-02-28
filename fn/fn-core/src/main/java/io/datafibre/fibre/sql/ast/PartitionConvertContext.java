@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.catalog.Type;
+import io.datafibre.fibre.catalog.Type;
 
 import java.util.Map;
 

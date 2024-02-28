@@ -13,11 +13,11 @@
 // limitations under the License.
 
 
-package com.starrocks.analysis;
+package io.datafibre.fibre.analysis;
 
-import com.starrocks.common.AnalysisException;
-import com.starrocks.thrift.TExprNode;
-import com.starrocks.thrift.TExprNodeType;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.thrift.TExprNode;
+import io.datafibre.fibre.thrift.TExprNodeType;
 
 // DictMappingExpr.
 // The original expression will be rewritten as a dictionary mapping function in the global field optimization.

@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.server;
+package io.datafibre.fibre.server;
 
-import com.starrocks.common.Config;
-import com.starrocks.thrift.TRunMode;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.thrift.TRunMode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -13,12 +13,12 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.parser;
+package io.datafibre.fibre.sql.parser;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-import static com.starrocks.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
+import static io.datafibre.fibre.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
 
 public class PostProcessListener extends StarRocksBaseListener {
 

@@ -15,9 +15,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.monitor.jvm;
+package io.datafibre.fibre.monitor.jvm;
 
-import com.starrocks.monitor.unit.ByteSizeValue;
+import io.datafibre.fibre.monitor.unit.ByteSizeValue;
 
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;

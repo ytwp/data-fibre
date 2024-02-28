@@ -13,11 +13,11 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.jdbc;
+package io.datafibre.fibre.connector.jdbc;
 
 import com.google.gson.JsonObject;
-import com.starrocks.connector.PartitionInfo;
-import com.starrocks.persist.gson.GsonUtils;
+import io.datafibre.fibre.connector.PartitionInfo;
+import io.datafibre.fibre.persist.gson.GsonUtils;
 
 import java.util.Objects;
 

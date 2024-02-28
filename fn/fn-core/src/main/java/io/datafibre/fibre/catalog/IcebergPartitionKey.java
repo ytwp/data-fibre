@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.collect.ImmutableList;
-import com.starrocks.connector.iceberg.IcebergApiConverter;
+import io.datafibre.fibre.connector.iceberg.IcebergApiConverter;
 
 import java.util.List;
 

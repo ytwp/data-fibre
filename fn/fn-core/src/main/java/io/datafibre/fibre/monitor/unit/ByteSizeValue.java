@@ -15,9 +15,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.monitor.unit;
+package io.datafibre.fibre.monitor.unit;
 
-import com.starrocks.monitor.utils.Strings;
+import io.datafibre.fibre.monitor.utils.Strings;
 
 public class ByteSizeValue implements Comparable<ByteSizeValue> {
 

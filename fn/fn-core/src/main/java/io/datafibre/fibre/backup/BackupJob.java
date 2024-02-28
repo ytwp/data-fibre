@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.backup;
+package io.datafibre.fibre.backup;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
@@ -43,43 +43,43 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.analysis.BrokerDesc;
-import com.starrocks.analysis.TableRef;
-import com.starrocks.backup.Status.ErrCode;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.FsBroker;
-import com.starrocks.catalog.LocalTablet;
-import com.starrocks.catalog.MaterializedIndex;
-import com.starrocks.catalog.MaterializedIndex.IndexExtState;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Partition;
-import com.starrocks.catalog.PhysicalPartition;
-import com.starrocks.catalog.Replica;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.Tablet;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.Config;
-import com.starrocks.common.UserException;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.common.util.UUIDUtil;
-import com.starrocks.common.util.concurrent.lock.LockType;
-import com.starrocks.common.util.concurrent.lock.Locker;
-import com.starrocks.fs.HdfsUtil;
-import com.starrocks.metric.MetricRepo;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.task.AgentBatchTask;
-import com.starrocks.task.AgentTask;
-import com.starrocks.task.AgentTaskExecutor;
-import com.starrocks.task.AgentTaskQueue;
-import com.starrocks.task.ReleaseSnapshotTask;
-import com.starrocks.task.SnapshotTask;
-import com.starrocks.task.UploadTask;
-import com.starrocks.thrift.TFinishTaskRequest;
-import com.starrocks.thrift.THdfsProperties;
-import com.starrocks.thrift.TStatusCode;
-import com.starrocks.thrift.TTaskType;
+import io.datafibre.fibre.analysis.BrokerDesc;
+import io.datafibre.fibre.analysis.TableRef;
+import io.datafibre.fibre.backup.Status.ErrCode;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.FsBroker;
+import io.datafibre.fibre.catalog.LocalTablet;
+import io.datafibre.fibre.catalog.MaterializedIndex;
+import io.datafibre.fibre.catalog.MaterializedIndex.IndexExtState;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.catalog.PhysicalPartition;
+import io.datafibre.fibre.catalog.Replica;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.Tablet;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.common.util.UUIDUtil;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.fs.HdfsUtil;
+import io.datafibre.fibre.metric.MetricRepo;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.task.AgentBatchTask;
+import io.datafibre.fibre.task.AgentTask;
+import io.datafibre.fibre.task.AgentTaskExecutor;
+import io.datafibre.fibre.task.AgentTaskQueue;
+import io.datafibre.fibre.task.ReleaseSnapshotTask;
+import io.datafibre.fibre.task.SnapshotTask;
+import io.datafibre.fibre.task.UploadTask;
+import io.datafibre.fibre.thrift.TFinishTaskRequest;
+import io.datafibre.fibre.thrift.THdfsProperties;
+import io.datafibre.fibre.thrift.TStatusCode;
+import io.datafibre.fibre.thrift.TTaskType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -99,7 +99,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.starrocks.scheduler.MVActiveChecker.MV_BACKUP_INACTIVE_REASON;
+import static io.datafibre.fibre.scheduler.MVActiveChecker.MV_BACKUP_INACTIVE_REASON;
 
 public class BackupJob extends AbstractJob {
     private static final Logger LOG = LogManager.getLogger(BackupJob.class);

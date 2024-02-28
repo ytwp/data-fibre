@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.memory;
+package io.datafibre.fibre.memory;
 
 import org.apache.spark.util.SizeEstimator;
 

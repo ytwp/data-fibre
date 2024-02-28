@@ -13,12 +13,12 @@
 // limitations under the License.
 
 
-package com.starrocks.alter;
+package io.datafibre.fibre.alter;
 
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.common.UserException;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.OptimizeClause;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.OptimizeClause;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

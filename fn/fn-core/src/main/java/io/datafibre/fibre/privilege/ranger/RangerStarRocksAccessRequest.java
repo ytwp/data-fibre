@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.privilege.ranger;
+package io.datafibre.fibre.privilege.ranger;
 
-import com.starrocks.common.Config;
-import com.starrocks.sql.ast.UserIdentity;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.sql.ast.UserIdentity;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

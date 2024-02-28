@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.system;
+package io.datafibre.fibre.system;
 
 /**
  * it means that which has computing capabilities

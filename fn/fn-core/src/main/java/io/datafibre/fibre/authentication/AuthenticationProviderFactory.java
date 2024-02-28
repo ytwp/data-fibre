@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.authentication;
+package io.datafibre.fibre.authentication;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

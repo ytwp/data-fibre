@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.transaction;
+package io.datafibre.fibre.transaction;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.common.UserException;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.lake.compaction.Quantiles;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.system.ComputeNode;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.lake.compaction.Quantiles;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.system.ComputeNode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

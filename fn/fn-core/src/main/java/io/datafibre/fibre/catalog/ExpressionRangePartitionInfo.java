@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 
 import com.google.common.base.Joiner;
@@ -20,21 +20,21 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.analysis.CastExpr;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.FunctionCallExpr;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.analysis.TableName;
-import com.starrocks.common.io.Text;
-import com.starrocks.persist.gson.GsonPostProcessable;
-import com.starrocks.persist.gson.GsonPreProcessable;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.qe.SqlModeHelper;
-import com.starrocks.sql.analyzer.AnalyzerUtils;
-import com.starrocks.sql.analyzer.PartitionExprAnalyzer;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.ast.AstVisitor;
-import com.starrocks.sql.parser.SqlParser;
+import io.datafibre.fibre.analysis.CastExpr;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.FunctionCallExpr;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.persist.gson.GsonPostProcessable;
+import io.datafibre.fibre.persist.gson.GsonPreProcessable;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.qe.SqlModeHelper;
+import io.datafibre.fibre.sql.analyzer.AnalyzerUtils;
+import io.datafibre.fibre.sql.analyzer.PartitionExprAnalyzer;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.ast.AstVisitor;
+import io.datafibre.fibre.sql.parser.SqlParser;
 import org.apache.commons.collections4.map.CaseInsensitiveMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

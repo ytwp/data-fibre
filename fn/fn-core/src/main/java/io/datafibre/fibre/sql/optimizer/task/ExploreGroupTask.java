@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.task;
+package io.datafibre.fibre.sql.optimizer.task;
 
-import com.starrocks.sql.optimizer.Group;
-import com.starrocks.sql.optimizer.GroupExpression;
+import io.datafibre.fibre.sql.optimizer.Group;
+import io.datafibre.fibre.sql.optimizer.GroupExpression;
 
 /*
  * Explore group logical transform

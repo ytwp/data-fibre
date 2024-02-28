@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.analysis;
+package io.datafibre.fibre.analysis;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.ast.AstVisitor;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.ast.AstVisitor;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.List;
 

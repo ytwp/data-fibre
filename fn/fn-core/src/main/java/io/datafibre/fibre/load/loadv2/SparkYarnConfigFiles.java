@@ -32,14 +32,14 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.load.loadv2;
+package io.datafibre.fibre.load.loadv2;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.common.Config;
-import com.starrocks.common.LoadException;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.LoadException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;

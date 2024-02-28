@@ -13,12 +13,12 @@
 // limitations under the License.
 
 
-package com.starrocks.lake;
+package io.datafibre.fibre.lake;
 
 import com.google.gson.annotations.SerializedName;
 import com.staros.proto.FileCacheInfo;
-import com.starrocks.persist.gson.GsonPostProcessable;
-import com.starrocks.persist.gson.GsonPreProcessable;
+import io.datafibre.fibre.persist.gson.GsonPostProcessable;
+import io.datafibre.fibre.persist.gson.GsonPreProcessable;
 
 import java.io.IOException;
 

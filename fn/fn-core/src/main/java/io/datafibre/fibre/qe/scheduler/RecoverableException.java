@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.qe.scheduler;
+package io.datafibre.fibre.qe.scheduler;
 
 public class RecoverableException extends SchedulerException {
     public RecoverableException(String msg) {

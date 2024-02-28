@@ -12,22 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.hive;
+package io.datafibre.fibre.connector.hive;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.TableName;
-import com.starrocks.catalog.HiveTable;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.Pair;
-import com.starrocks.common.Version;
-import com.starrocks.connector.RemoteFileOperations;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.catalog.HiveTable;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.Version;
+import io.datafibre.fibre.connector.RemoteFileOperations;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.Path;
 import org.apache.logging.log4j.LogManager;
@@ -49,12 +49,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.Verify.verify;
-import static com.starrocks.connector.PartitionUtil.toPartitionValues;
-import static com.starrocks.connector.hive.HiveMetadata.STARROCKS_QUERY_ID;
-import static com.starrocks.connector.hive.HivePartitionStats.ReduceOperator.SUBTRACT;
-import static com.starrocks.connector.hive.HivePartitionStats.fromCommonStats;
-import static com.starrocks.connector.hive.HiveWriteUtils.fileCreatedByQuery;
-import static com.starrocks.connector.hive.HiveWriteUtils.isS3Url;
+import static io.datafibre.fibre.connector.PartitionUtil.toPartitionValues;
+import static io.datafibre.fibre.connector.hive.HiveMetadata.STARROCKS_QUERY_ID;
+import static io.datafibre.fibre.connector.hive.HivePartitionStats.ReduceOperator.SUBTRACT;
+import static io.datafibre.fibre.connector.hive.HivePartitionStats.fromCommonStats;
+import static io.datafibre.fibre.connector.hive.HiveWriteUtils.fileCreatedByQuery;
+import static io.datafibre.fibre.connector.hive.HiveWriteUtils.isS3Url;
 import static io.airlift.concurrent.MoreFutures.getFutureValue;
 import static java.util.Objects.requireNonNull;
 

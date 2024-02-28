@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common;
+package io.datafibre.fibre.common;
 
 /*
  * This exception throws when the request from Backend is duplicated.

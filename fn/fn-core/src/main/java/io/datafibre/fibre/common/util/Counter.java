@@ -32,13 +32,13 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.util;
+package io.datafibre.fibre.common.util;
 
-import com.starrocks.thrift.TCounterAggregateType;
-import com.starrocks.thrift.TCounterMergeType;
-import com.starrocks.thrift.TCounterMinMaxType;
-import com.starrocks.thrift.TCounterStrategy;
-import com.starrocks.thrift.TUnit;
+import io.datafibre.fibre.thrift.TCounterAggregateType;
+import io.datafibre.fibre.thrift.TCounterMergeType;
+import io.datafibre.fibre.thrift.TCounterMinMaxType;
+import io.datafibre.fibre.thrift.TCounterStrategy;
+import io.datafibre.fibre.thrift.TUnit;
 
 import java.util.List;
 import java.util.Objects;

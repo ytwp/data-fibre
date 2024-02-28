@@ -13,9 +13,9 @@
 // limitations under the License.
 
 
-package com.starrocks.connector;
+package io.datafibre.fibre.connector;
 
-import com.starrocks.connector.hive.RemoteFileInputFormat;
+import io.datafibre.fibre.connector.hive.RemoteFileInputFormat;
 
 import java.util.ArrayList;
 import java.util.List;

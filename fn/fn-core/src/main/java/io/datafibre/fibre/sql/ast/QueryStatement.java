@@ -13,11 +13,11 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.analysis.OutFileClause;
-import com.starrocks.analysis.RedirectStatus;
-import com.starrocks.qe.OriginStatement;
+import io.datafibre.fibre.analysis.OutFileClause;
+import io.datafibre.fibre.analysis.RedirectStatus;
+import io.datafibre.fibre.qe.OriginStatement;
 
 public class QueryStatement extends StatementBase {
     private final QueryRelation queryRelation;

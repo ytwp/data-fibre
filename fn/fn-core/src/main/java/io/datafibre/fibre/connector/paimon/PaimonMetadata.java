@@ -12,31 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.paimon;
+package io.datafibre.fibre.connector.paimon;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.PaimonTable;
-import com.starrocks.catalog.PartitionKey;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.Type;
-import com.starrocks.connector.ColumnTypeConverter;
-import com.starrocks.connector.ConnectorMetadata;
-import com.starrocks.connector.HdfsEnvironment;
-import com.starrocks.connector.PartitionInfo;
-import com.starrocks.connector.RemoteFileDesc;
-import com.starrocks.connector.RemoteFileInfo;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.credential.CloudConfiguration;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.optimizer.OptimizerContext;
-import com.starrocks.sql.optimizer.Utils;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.statistics.ColumnStatistic;
-import com.starrocks.sql.optimizer.statistics.Statistics;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.PaimonTable;
+import io.datafibre.fibre.catalog.PartitionKey;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.connector.ColumnTypeConverter;
+import io.datafibre.fibre.connector.ConnectorMetadata;
+import io.datafibre.fibre.connector.HdfsEnvironment;
+import io.datafibre.fibre.connector.PartitionInfo;
+import io.datafibre.fibre.connector.RemoteFileDesc;
+import io.datafibre.fibre.connector.RemoteFileInfo;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.credential.CloudConfiguration;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.optimizer.OptimizerContext;
+import io.datafibre.fibre.sql.optimizer.Utils;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.statistics.ColumnStatistic;
+import io.datafibre.fibre.sql.optimizer.statistics.Statistics;
 import org.apache.hadoop.hive.common.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -70,7 +70,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import static com.starrocks.connector.ConnectorTableId.CONNECTOR_ID_GENERATOR;
+import static io.datafibre.fibre.connector.ConnectorTableId.CONNECTOR_ID_GENERATOR;
 
 public class PaimonMetadata implements ConnectorMetadata {
     private static final Logger LOG = LogManager.getLogger(PaimonMetadata.class);
@@ -396,7 +396,7 @@ public class PaimonMetadata implements ConnectorMetadata {
      * TODO: Rewrite this method after paimon provide interface.
      */
     @Override
-    public List<com.starrocks.connector.PartitionInfo> getPartitions(Table table, List<String> partitionNames) {
+    public List<io.datafibre.fibre.connector.PartitionInfo> getPartitions(Table table, List<String> partitionNames) {
         PaimonTable paimonTable = (PaimonTable) table;
         FileMonitorTable fileMonitorTable = new FileMonitorTable((AbstractFileStoreTable) paimonTable.getNativeTable());
         Long latestSnapshotId = fileMonitorTable.snapshotManager().latestSnapshotId();

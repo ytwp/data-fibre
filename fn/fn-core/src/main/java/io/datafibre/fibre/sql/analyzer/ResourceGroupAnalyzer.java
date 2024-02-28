@@ -12,22 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
 import com.google.common.base.Splitter;
-import com.starrocks.analysis.BinaryPredicate;
-import com.starrocks.analysis.BinaryType;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.InPredicate;
-import com.starrocks.analysis.Predicate;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.analysis.StringLiteral;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.ResourceGroup;
-import com.starrocks.catalog.ResourceGroupClassifier;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.system.BackendCoreStat;
-import com.starrocks.thrift.TWorkGroupType;
+import io.datafibre.fibre.analysis.BinaryPredicate;
+import io.datafibre.fibre.analysis.BinaryType;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.InPredicate;
+import io.datafibre.fibre.analysis.Predicate;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.analysis.StringLiteral;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.ResourceGroup;
+import io.datafibre.fibre.catalog.ResourceGroupClassifier;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.system.BackendCoreStat;
+import io.datafibre.fibre.thrift.TWorkGroupType;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.net.util.SubnetUtils;
 

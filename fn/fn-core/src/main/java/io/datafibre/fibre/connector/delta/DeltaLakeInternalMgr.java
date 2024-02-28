@@ -12,29 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.delta;
+package io.datafibre.fibre.connector.delta;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.starrocks.common.util.Util;
-import com.starrocks.connector.HdfsEnvironment;
-import com.starrocks.connector.MetastoreType;
-import com.starrocks.connector.ReentrantExecutor;
-import com.starrocks.connector.hive.CachingHiveMetastore;
-import com.starrocks.connector.hive.CachingHiveMetastoreConf;
-import com.starrocks.connector.hive.HiveMetaClient;
-import com.starrocks.connector.hive.HiveMetastore;
-import com.starrocks.connector.hive.IHiveMetastore;
-import com.starrocks.sql.analyzer.SemanticException;
+import io.datafibre.fibre.common.util.Util;
+import io.datafibre.fibre.connector.HdfsEnvironment;
+import io.datafibre.fibre.connector.MetastoreType;
+import io.datafibre.fibre.connector.ReentrantExecutor;
+import io.datafibre.fibre.connector.hive.CachingHiveMetastore;
+import io.datafibre.fibre.connector.hive.CachingHiveMetastoreConf;
+import io.datafibre.fibre.connector.hive.HiveMetaClient;
+import io.datafibre.fibre.connector.hive.HiveMetastore;
+import io.datafibre.fibre.connector.hive.IHiveMetastore;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
 
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.starrocks.connector.hive.HiveConnector.HIVE_METASTORE_TYPE;
-import static com.starrocks.connector.hive.HiveConnector.HIVE_METASTORE_URIS;
+import static io.datafibre.fibre.connector.hive.HiveConnector.HIVE_METASTORE_TYPE;
+import static io.datafibre.fibre.connector.hive.HiveConnector.HIVE_METASTORE_URIS;
 
 public class DeltaLakeInternalMgr {
     public static final List<String> SUPPORTED_METASTORE_TYPE = ImmutableList.of("hive", "glue");

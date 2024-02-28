@@ -13,15 +13,15 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.operator;
+package io.datafibre.fibre.sql.optimizer.operator;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.PartitionKey;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.PartitionKey;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
 
 import java.util.ArrayList;
 import java.util.Collection;

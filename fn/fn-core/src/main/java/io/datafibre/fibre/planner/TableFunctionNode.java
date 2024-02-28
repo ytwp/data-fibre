@@ -12,20 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
-import com.starrocks.analysis.TupleDescriptor;
-import com.starrocks.catalog.TableFunction;
-import com.starrocks.thrift.TExplainLevel;
-import com.starrocks.thrift.TExpr;
-import com.starrocks.thrift.TExprNode;
-import com.starrocks.thrift.TExprNodeType;
-import com.starrocks.thrift.TNormalPlanNode;
-import com.starrocks.thrift.TNormalTableFunctionNode;
-import com.starrocks.thrift.TPlanNode;
-import com.starrocks.thrift.TPlanNodeType;
-import com.starrocks.thrift.TTableFunctionNode;
-import com.starrocks.thrift.TTypeDesc;
+import io.datafibre.fibre.analysis.TupleDescriptor;
+import io.datafibre.fibre.catalog.TableFunction;
+import io.datafibre.fibre.thrift.TExplainLevel;
+import io.datafibre.fibre.thrift.TExpr;
+import io.datafibre.fibre.thrift.TExprNode;
+import io.datafibre.fibre.thrift.TExprNodeType;
+import io.datafibre.fibre.thrift.TNormalPlanNode;
+import io.datafibre.fibre.thrift.TNormalTableFunctionNode;
+import io.datafibre.fibre.thrift.TPlanNode;
+import io.datafibre.fibre.thrift.TPlanNodeType;
+import io.datafibre.fibre.thrift.TTableFunctionNode;
+import io.datafibre.fibre.thrift.TTypeDesc;
 
 import java.util.List;
 

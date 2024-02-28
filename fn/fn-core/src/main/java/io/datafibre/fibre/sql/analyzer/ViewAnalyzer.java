@@ -12,23 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.View;
-import com.starrocks.common.ErrorCode;
-import com.starrocks.common.ErrorReport;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.ast.AlterClause;
-import com.starrocks.sql.ast.AlterViewClause;
-import com.starrocks.sql.ast.AlterViewStmt;
-import com.starrocks.sql.ast.AstVisitor;
-import com.starrocks.sql.ast.ColWithComment;
-import com.starrocks.sql.ast.CreateViewStmt;
-import com.starrocks.sql.ast.QueryRelation;
-import com.starrocks.sql.ast.StatementBase;
-import com.starrocks.sql.common.MetaUtils;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.View;
+import io.datafibre.fibre.common.ErrorCode;
+import io.datafibre.fibre.common.ErrorReport;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.ast.AlterClause;
+import io.datafibre.fibre.sql.ast.AlterViewClause;
+import io.datafibre.fibre.sql.ast.AlterViewStmt;
+import io.datafibre.fibre.sql.ast.AstVisitor;
+import io.datafibre.fibre.sql.ast.ColWithComment;
+import io.datafibre.fibre.sql.ast.CreateViewStmt;
+import io.datafibre.fibre.sql.ast.QueryRelation;
+import io.datafibre.fibre.sql.ast.StatementBase;
+import io.datafibre.fibre.sql.common.MetaUtils;
 
 import java.util.HashSet;
 import java.util.List;

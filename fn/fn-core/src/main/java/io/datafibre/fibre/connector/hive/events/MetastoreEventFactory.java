@@ -13,14 +13,14 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.hive.events;
+package io.datafibre.fibre.connector.hive.events;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.connector.hive.CacheUpdateProcessor;
-import com.starrocks.connector.hive.HivePartitionName;
-import com.starrocks.connector.hive.HiveTableName;
+import io.datafibre.fibre.connector.hive.CacheUpdateProcessor;
+import io.datafibre.fibre.connector.hive.HivePartitionName;
+import io.datafibre.fibre.connector.hive.HiveTableName;
 import org.apache.hadoop.hive.metastore.api.NotificationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.starrocks.server.CatalogMgr.ResourceMappingCatalog.isResourceMappingCatalog;
+import static io.datafibre.fibre.server.CatalogMgr.ResourceMappingCatalog.isResourceMappingCatalog;
 
 /**
  * Factory class to create various MetastoreEvents.

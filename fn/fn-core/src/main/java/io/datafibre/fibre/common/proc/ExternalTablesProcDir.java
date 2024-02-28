@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.common.proc;
+package io.datafibre.fibre.common.proc;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.util.ProcResultUtils;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.server.MetadataMgr;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.util.ProcResultUtils;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.server.MetadataMgr;
 
 import java.util.ArrayList;
 import java.util.List;

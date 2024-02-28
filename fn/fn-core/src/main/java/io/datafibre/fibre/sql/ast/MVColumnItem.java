@@ -32,13 +32,13 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.analysis.Expr;
-import com.starrocks.catalog.AggregateType;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Type;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.catalog.AggregateType;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Type;
 
 import java.util.Set;
 

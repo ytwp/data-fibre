@@ -46,7 +46,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.connector.hive;
+package io.datafibre.fibre.connector.hive;
 
 import com.aliyun.datalake.metastore.common.DataLakeConfig;
 import com.aliyun.datalake.metastore.common.ProxyMode;

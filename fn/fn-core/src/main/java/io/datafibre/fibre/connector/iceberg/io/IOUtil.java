@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.connector.iceberg.io;
+package io.datafibre.fibre.connector.iceberg.io;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -50,7 +50,7 @@ import java.io.OutputStream;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
 
-import static com.starrocks.connector.iceberg.io.IcebergCachingFileIO.METADATA_CACHE_DISK_PATH;
+import static io.datafibre.fibre.connector.iceberg.io.IcebergCachingFileIO.METADATA_CACHE_DISK_PATH;
 
 public class IOUtil {
     private static final Logger LOG = LogManager.getLogger(IOUtil.class);

@@ -13,17 +13,17 @@
 // limitations under the License.
 
 
-package com.starrocks.persist;
+package io.datafibre.fibre.persist;
 
 import com.google.common.collect.Range;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.catalog.DataProperty;
-import com.starrocks.catalog.Partition;
-import com.starrocks.catalog.PartitionKey;
-import com.starrocks.common.util.RangeUtils;
-import com.starrocks.lake.DataCacheInfo;
-import com.starrocks.persist.gson.GsonPostProcessable;
-import com.starrocks.persist.gson.GsonPreProcessable;
+import io.datafibre.fibre.catalog.DataProperty;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.catalog.PartitionKey;
+import io.datafibre.fibre.common.util.RangeUtils;
+import io.datafibre.fibre.lake.DataCacheInfo;
+import io.datafibre.fibre.persist.gson.GsonPostProcessable;
+import io.datafibre.fibre.persist.gson.GsonPreProcessable;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

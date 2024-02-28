@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.persist;
+package io.datafibre.fibre.persist;
 
 /**
  * This class is designed for sending storage information from master to standby master.

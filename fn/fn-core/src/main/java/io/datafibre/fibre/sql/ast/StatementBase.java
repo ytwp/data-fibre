@@ -32,15 +32,15 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.analysis.HintNode;
-import com.starrocks.analysis.ParseNode;
-import com.starrocks.analysis.RedirectStatus;
-import com.starrocks.common.profile.Tracers;
-import com.starrocks.qe.OriginStatement;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.HintNode;
+import io.datafibre.fibre.analysis.ParseNode;
+import io.datafibre.fibre.analysis.RedirectStatus;
+import io.datafibre.fibre.common.profile.Tracers;
+import io.datafibre.fibre.qe.OriginStatement;
+import io.datafibre.fibre.sql.parser.NodePosition;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;

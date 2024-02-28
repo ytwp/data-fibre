@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.load.loadv2;
+package io.datafibre.fibre.load.loadv2;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
@@ -40,23 +40,23 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.starrocks.analysis.BrokerDesc;
-import com.starrocks.catalog.SparkResource;
-import com.starrocks.common.Config;
-import com.starrocks.common.FeConstants;
-import com.starrocks.common.LoadException;
-import com.starrocks.common.UserException;
-import com.starrocks.common.util.BrokerUtil;
-import com.starrocks.common.util.CommandResult;
-import com.starrocks.common.util.Util;
-import com.starrocks.fs.HdfsUtil;
-import com.starrocks.load.EtlStatus;
-import com.starrocks.load.loadv2.SparkLoadAppHandle.State;
-import com.starrocks.load.loadv2.dpp.DppResult;
-import com.starrocks.load.loadv2.etl.EtlJobConfig;
-import com.starrocks.load.loadv2.etl.SparkEtlJob;
-import com.starrocks.thrift.TBrokerFileStatus;
-import com.starrocks.thrift.TEtlState;
+import io.datafibre.fibre.analysis.BrokerDesc;
+import io.datafibre.fibre.catalog.SparkResource;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.FeConstants;
+import io.datafibre.fibre.common.LoadException;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.util.BrokerUtil;
+import io.datafibre.fibre.common.util.CommandResult;
+import io.datafibre.fibre.common.util.Util;
+import io.datafibre.fibre.fs.HdfsUtil;
+import io.datafibre.fibre.load.EtlStatus;
+import io.datafibre.fibre.load.loadv2.SparkLoadAppHandle.State;
+import io.datafibre.fibre.load.loadv2.dpp.DppResult;
+import io.datafibre.fibre.load.loadv2.etl.EtlJobConfig;
+import io.datafibre.fibre.load.loadv2.etl.SparkEtlJob;
+import io.datafibre.fibre.thrift.TBrokerFileStatus;
+import io.datafibre.fibre.thrift.TEtlState;
 import org.apache.hadoop.yarn.api.records.ApplicationReport;
 import org.apache.hadoop.yarn.api.records.FinalApplicationStatus;
 import org.apache.hadoop.yarn.api.records.YarnApplicationState;

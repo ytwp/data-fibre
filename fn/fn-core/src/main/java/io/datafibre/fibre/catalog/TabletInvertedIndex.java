@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
@@ -43,25 +43,25 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Table;
-import com.starrocks.catalog.Replica.ReplicaState;
-import com.starrocks.common.Config;
-import com.starrocks.common.Pair;
-import com.starrocks.common.util.concurrent.lock.LockType;
-import com.starrocks.common.util.concurrent.lock.Locker;
-import com.starrocks.lake.LakeTablet;
-import com.starrocks.memory.MemoryTrackable;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.server.LocalMetastore;
-import com.starrocks.system.Backend;
-import com.starrocks.thrift.TPartitionVersionInfo;
-import com.starrocks.thrift.TStorageMedium;
-import com.starrocks.thrift.TTablet;
-import com.starrocks.thrift.TTabletInfo;
-import com.starrocks.transaction.GlobalTransactionMgr;
-import com.starrocks.transaction.PartitionCommitInfo;
-import com.starrocks.transaction.TableCommitInfo;
-import com.starrocks.transaction.TransactionState;
-import com.starrocks.transaction.TransactionStatus;
+import io.datafibre.fibre.catalog.Replica.ReplicaState;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.lake.LakeTablet;
+import io.datafibre.fibre.memory.MemoryTrackable;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.server.LocalMetastore;
+import io.datafibre.fibre.system.Backend;
+import io.datafibre.fibre.thrift.TPartitionVersionInfo;
+import io.datafibre.fibre.thrift.TStorageMedium;
+import io.datafibre.fibre.thrift.TTablet;
+import io.datafibre.fibre.thrift.TTabletInfo;
+import io.datafibre.fibre.transaction.GlobalTransactionMgr;
+import io.datafibre.fibre.transaction.PartitionCommitInfo;
+import io.datafibre.fibre.transaction.TableCommitInfo;
+import io.datafibre.fibre.transaction.TransactionState;
+import io.datafibre.fibre.transaction.TransactionStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -333,11 +333,11 @@ public class TabletInvertedIndex implements MemoryTrackable {
     }
 
     /**
-     * Check the consistency between {@link com.starrocks.catalog.TabletInvertedIndex} and
-     * {@link com.starrocks.server.LocalMetastore}.
+     * Check the consistency between {@link io.datafibre.fibre.catalog.TabletInvertedIndex} and
+     * {@link io.datafibre.fibre.server.LocalMetastore}.
      * <p>
      * If we find an invalid tablet, i.e. it's neither in current catalog nor in recycle bin,
-     * we will remove it from {@link com.starrocks.catalog.TabletInvertedIndex} directly.
+     * we will remove it from {@link io.datafibre.fibre.catalog.TabletInvertedIndex} directly.
      * And this process will also output a report in `fe.log`, including valid number of
      * tablet and number of tablet in recycle bin for each backend.
      */
@@ -390,7 +390,7 @@ public class TabletInvertedIndex implements MemoryTrackable {
 
                     // validate table
                     long tableId = tabletMeta.getTableId();
-                    com.starrocks.catalog.Table table = db.getTable(tableId);
+                    io.datafibre.fibre.catalog.Table table = db.getTable(tableId);
                     if (table == null) {
                         table = recycleBin.getTable(dbId, tableId);
                         if (table != null) {
@@ -543,7 +543,7 @@ public class TabletInvertedIndex implements MemoryTrackable {
             Database db = GlobalStateMgr.getCurrentState().getDb(dbId);
             if (db != null) {
                 // getTable is thread-safe for caller, lock free
-                com.starrocks.catalog.Table tbl = db.getTable(tableId);
+                io.datafibre.fibre.catalog.Table tbl = db.getTable(tableId);
                 if (tbl != null && tbl instanceof OlapTable) {
                     OlapTable olapTable = (OlapTable) tbl;
                     if (olapTable.getState() == OlapTable.OlapTableState.RESTORE) {

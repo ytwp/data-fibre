@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.hive.glue.metastore;
+package io.datafibre.fibre.connector.hive.glue.metastore;
 
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.AWSCredentialsProvider;
@@ -23,9 +23,9 @@ import com.amazonaws.services.glue.AWSGlue;
 import com.amazonaws.services.glue.AWSGlueClientBuilder;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.starrocks.connector.hive.glue.util.AWSGlueConfig;
-import com.starrocks.credential.CloudConfigurationFactory;
-import com.starrocks.credential.aws.AWSCloudCredential;
+import io.datafibre.fibre.connector.hive.glue.util.AWSGlueConfig;
+import io.datafibre.fibre.credential.CloudConfigurationFactory;
+import io.datafibre.fibre.credential.aws.AWSCloudCredential;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.metastore.api.MetaException;

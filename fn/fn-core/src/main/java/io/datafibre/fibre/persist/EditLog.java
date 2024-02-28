@@ -32,90 +32,90 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.persist;
+package io.datafibre.fibre.persist;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.alter.AlterJobV2;
-import com.starrocks.alter.BatchAlterJobPersistInfo;
-import com.starrocks.authentication.UserAuthenticationInfo;
-import com.starrocks.authentication.UserProperty;
-import com.starrocks.authentication.UserPropertyInfo;
-import com.starrocks.backup.BackupJob;
-import com.starrocks.backup.Repository;
-import com.starrocks.backup.RestoreJob;
-import com.starrocks.catalog.BrokerMgr;
-import com.starrocks.catalog.Catalog;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.Dictionary;
-import com.starrocks.catalog.Function;
-import com.starrocks.catalog.FunctionSearchDesc;
-import com.starrocks.catalog.MetaVersion;
-import com.starrocks.catalog.Resource;
-import com.starrocks.cluster.Cluster;
-import com.starrocks.common.Config;
-import com.starrocks.common.FeConstants;
-import com.starrocks.common.Pair;
-import com.starrocks.common.io.DataOutputBuffer;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.common.util.SmallFileMgr.SmallFile;
-import com.starrocks.ha.LeaderInfo;
-import com.starrocks.journal.JournalEntity;
-import com.starrocks.journal.JournalInconsistentException;
-import com.starrocks.journal.JournalTask;
-import com.starrocks.journal.bdbje.Timestamp;
-import com.starrocks.load.DeleteInfo;
-import com.starrocks.load.DeleteMgr;
-import com.starrocks.load.ExportFailMsg;
-import com.starrocks.load.ExportJob;
-import com.starrocks.load.ExportMgr;
-import com.starrocks.load.LoadErrorHub;
-import com.starrocks.load.MultiDeleteInfo;
-import com.starrocks.load.loadv2.LoadJob.LoadJobStateUpdateInfo;
-import com.starrocks.load.loadv2.LoadJobFinalOperation;
-import com.starrocks.load.routineload.RoutineLoadJob;
-import com.starrocks.load.streamload.StreamLoadTask;
-import com.starrocks.meta.MetaContext;
-import com.starrocks.metric.MetricRepo;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.plugin.PluginInfo;
-import com.starrocks.privilege.RolePrivilegeCollectionV2;
-import com.starrocks.privilege.UserPrivilegeCollectionV2;
-import com.starrocks.qe.SessionVariable;
-import com.starrocks.qe.VariableMgr;
-import com.starrocks.replication.ReplicationJob;
-import com.starrocks.scheduler.Task;
-import com.starrocks.scheduler.mv.MVEpoch;
-import com.starrocks.scheduler.mv.MVMaintenanceJob;
-import com.starrocks.scheduler.mv.MaterializedViewMgr;
-import com.starrocks.scheduler.persist.DropTaskRunsLog;
-import com.starrocks.scheduler.persist.DropTasksLog;
-import com.starrocks.scheduler.persist.TaskRunPeriodStatusChange;
-import com.starrocks.scheduler.persist.TaskRunStatus;
-import com.starrocks.scheduler.persist.TaskRunStatusChange;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.server.LocalMetastore;
-import com.starrocks.server.RunMode;
-import com.starrocks.sql.ast.UserIdentity;
-import com.starrocks.staros.StarMgrJournal;
-import com.starrocks.staros.StarMgrServer;
-import com.starrocks.statistic.AnalyzeJob;
-import com.starrocks.statistic.AnalyzeStatus;
-import com.starrocks.statistic.BasicStatsMeta;
-import com.starrocks.statistic.ExternalAnalyzeJob;
-import com.starrocks.statistic.ExternalAnalyzeStatus;
-import com.starrocks.statistic.ExternalBasicStatsMeta;
-import com.starrocks.statistic.HistogramStatsMeta;
-import com.starrocks.statistic.NativeAnalyzeJob;
-import com.starrocks.statistic.NativeAnalyzeStatus;
-import com.starrocks.storagevolume.StorageVolume;
-import com.starrocks.system.Backend;
-import com.starrocks.system.ComputeNode;
-import com.starrocks.system.Frontend;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.transaction.TransactionState;
-import com.starrocks.transaction.TransactionStateBatch;
+import io.datafibre.fibre.alter.AlterJobV2;
+import io.datafibre.fibre.alter.BatchAlterJobPersistInfo;
+import io.datafibre.fibre.authentication.UserAuthenticationInfo;
+import io.datafibre.fibre.authentication.UserProperty;
+import io.datafibre.fibre.authentication.UserPropertyInfo;
+import io.datafibre.fibre.backup.BackupJob;
+import io.datafibre.fibre.backup.Repository;
+import io.datafibre.fibre.backup.RestoreJob;
+import io.datafibre.fibre.catalog.BrokerMgr;
+import io.datafibre.fibre.catalog.Catalog;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.Dictionary;
+import io.datafibre.fibre.catalog.Function;
+import io.datafibre.fibre.catalog.FunctionSearchDesc;
+import io.datafibre.fibre.catalog.MetaVersion;
+import io.datafibre.fibre.catalog.Resource;
+import io.datafibre.fibre.cluster.Cluster;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.FeConstants;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.io.DataOutputBuffer;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.common.util.SmallFileMgr.SmallFile;
+import io.datafibre.fibre.ha.LeaderInfo;
+import io.datafibre.fibre.journal.JournalEntity;
+import io.datafibre.fibre.journal.JournalInconsistentException;
+import io.datafibre.fibre.journal.JournalTask;
+import io.datafibre.fibre.journal.bdbje.Timestamp;
+import io.datafibre.fibre.load.DeleteInfo;
+import io.datafibre.fibre.load.DeleteMgr;
+import io.datafibre.fibre.load.ExportFailMsg;
+import io.datafibre.fibre.load.ExportJob;
+import io.datafibre.fibre.load.ExportMgr;
+import io.datafibre.fibre.load.LoadErrorHub;
+import io.datafibre.fibre.load.MultiDeleteInfo;
+import io.datafibre.fibre.load.loadv2.LoadJob.LoadJobStateUpdateInfo;
+import io.datafibre.fibre.load.loadv2.LoadJobFinalOperation;
+import io.datafibre.fibre.load.routineload.RoutineLoadJob;
+import io.datafibre.fibre.load.streamload.StreamLoadTask;
+import io.datafibre.fibre.meta.MetaContext;
+import io.datafibre.fibre.metric.MetricRepo;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.plugin.PluginInfo;
+import io.datafibre.fibre.privilege.RolePrivilegeCollectionV2;
+import io.datafibre.fibre.privilege.UserPrivilegeCollectionV2;
+import io.datafibre.fibre.qe.SessionVariable;
+import io.datafibre.fibre.qe.VariableMgr;
+import io.datafibre.fibre.replication.ReplicationJob;
+import io.datafibre.fibre.scheduler.Task;
+import io.datafibre.fibre.scheduler.mv.MVEpoch;
+import io.datafibre.fibre.scheduler.mv.MVMaintenanceJob;
+import io.datafibre.fibre.scheduler.mv.MaterializedViewMgr;
+import io.datafibre.fibre.scheduler.persist.DropTaskRunsLog;
+import io.datafibre.fibre.scheduler.persist.DropTasksLog;
+import io.datafibre.fibre.scheduler.persist.TaskRunPeriodStatusChange;
+import io.datafibre.fibre.scheduler.persist.TaskRunStatus;
+import io.datafibre.fibre.scheduler.persist.TaskRunStatusChange;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.server.LocalMetastore;
+import io.datafibre.fibre.server.RunMode;
+import io.datafibre.fibre.sql.ast.UserIdentity;
+import io.datafibre.fibre.staros.StarMgrJournal;
+import io.datafibre.fibre.staros.StarMgrServer;
+import io.datafibre.fibre.statistic.AnalyzeJob;
+import io.datafibre.fibre.statistic.AnalyzeStatus;
+import io.datafibre.fibre.statistic.BasicStatsMeta;
+import io.datafibre.fibre.statistic.ExternalAnalyzeJob;
+import io.datafibre.fibre.statistic.ExternalAnalyzeStatus;
+import io.datafibre.fibre.statistic.ExternalBasicStatsMeta;
+import io.datafibre.fibre.statistic.HistogramStatsMeta;
+import io.datafibre.fibre.statistic.NativeAnalyzeJob;
+import io.datafibre.fibre.statistic.NativeAnalyzeStatus;
+import io.datafibre.fibre.storagevolume.StorageVolume;
+import io.datafibre.fibre.system.Backend;
+import io.datafibre.fibre.system.ComputeNode;
+import io.datafibre.fibre.system.Frontend;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.transaction.TransactionState;
+import io.datafibre.fibre.transaction.TransactionStateBatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -722,8 +722,8 @@ public class EditLog {
                 }
                 case OperationType.OP_CREATE_LOAD_JOB_V2:
                 case OperationType.OP_CREATE_LOAD_JOB: {
-                    com.starrocks.load.loadv2.LoadJob loadJob =
-                            (com.starrocks.load.loadv2.LoadJob) journal.getData();
+                    io.datafibre.fibre.load.loadv2.LoadJob loadJob =
+                            (io.datafibre.fibre.load.loadv2.LoadJob) journal.getData();
                     globalStateMgr.getLoadMgr().replayCreateLoadJob(loadJob);
                     break;
                 }
@@ -1617,7 +1617,7 @@ public class EditLog {
         logJsonObject(OperationType.OP_CREATE_STREAM_LOAD_TASK_V2, streamLoadTask);
     }
 
-    public void logCreateLoadJob(com.starrocks.load.loadv2.LoadJob loadJob) {
+    public void logCreateLoadJob(io.datafibre.fibre.load.loadv2.LoadJob loadJob) {
         logJsonObject(OperationType.OP_CREATE_LOAD_JOB_V2, loadJob);
     }
 

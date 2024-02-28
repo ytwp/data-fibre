@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.load.pipe;
+package io.datafibre.fibre.load.pipe;
 
-import com.starrocks.common.Config;
-import com.starrocks.common.util.FrontendDaemon;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.util.FrontendDaemon;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

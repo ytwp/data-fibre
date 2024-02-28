@@ -13,11 +13,11 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.analysis.TableName;
-import com.starrocks.sql.ast.ShowAlterStmt.AlterType;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.sql.ast.ShowAlterStmt.AlterType;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.List;
 

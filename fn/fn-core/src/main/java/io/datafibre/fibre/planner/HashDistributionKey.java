@@ -13,12 +13,12 @@
 // limitations under the License.
 
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.LiteralExpr;
-import com.starrocks.catalog.PartitionKey;
-import com.starrocks.catalog.Type;
+import io.datafibre.fibre.analysis.LiteralExpr;
+import io.datafibre.fibre.catalog.PartitionKey;
+import io.datafibre.fibre.catalog.Type;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -12,32 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
-import com.starrocks.analysis.DescriptorTable;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.SlotDescriptor;
-import com.starrocks.analysis.TupleDescriptor;
-import com.starrocks.catalog.HiveTable;
-import com.starrocks.catalog.Type;
-import com.starrocks.connector.CatalogConnector;
-import com.starrocks.connector.RemoteScanRangeLocations;
-import com.starrocks.credential.CloudConfiguration;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.optimizer.ScanOptimzeOption;
-import com.starrocks.sql.plan.HDFSScanNodePredicates;
-import com.starrocks.thrift.TCloudConfiguration;
-import com.starrocks.thrift.TExplainLevel;
-import com.starrocks.thrift.THdfsScanNode;
-import com.starrocks.thrift.TPlanNode;
-import com.starrocks.thrift.TPlanNodeType;
-import com.starrocks.thrift.TScanRangeLocations;
+import io.datafibre.fibre.analysis.DescriptorTable;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.SlotDescriptor;
+import io.datafibre.fibre.analysis.TupleDescriptor;
+import io.datafibre.fibre.catalog.HiveTable;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.connector.CatalogConnector;
+import io.datafibre.fibre.connector.RemoteScanRangeLocations;
+import io.datafibre.fibre.credential.CloudConfiguration;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.optimizer.ScanOptimzeOption;
+import io.datafibre.fibre.sql.plan.HDFSScanNodePredicates;
+import io.datafibre.fibre.thrift.TCloudConfiguration;
+import io.datafibre.fibre.thrift.TExplainLevel;
+import io.datafibre.fibre.thrift.THdfsScanNode;
+import io.datafibre.fibre.thrift.TPlanNode;
+import io.datafibre.fibre.thrift.TPlanNodeType;
+import io.datafibre.fibre.thrift.TScanRangeLocations;
 
 import java.util.List;
 
-import static com.starrocks.thrift.TExplainLevel.VERBOSE;
+import static io.datafibre.fibre.thrift.TExplainLevel.VERBOSE;
 
 /**
  * Scan node for HDFS files, like hive table.

@@ -13,15 +13,15 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.base;
+package io.datafibre.fibre.sql.optimizer.base;
 
 import com.google.common.collect.Lists;
-import com.starrocks.sql.optimizer.Group;
-import com.starrocks.sql.optimizer.GroupExpression;
-import com.starrocks.sql.optimizer.operator.Operator;
-import com.starrocks.sql.optimizer.operator.SortPhase;
-import com.starrocks.sql.optimizer.operator.TopNType;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalTopNOperator;
+import io.datafibre.fibre.sql.optimizer.Group;
+import io.datafibre.fibre.sql.optimizer.GroupExpression;
+import io.datafibre.fibre.sql.optimizer.operator.Operator;
+import io.datafibre.fibre.sql.optimizer.operator.SortPhase;
+import io.datafibre.fibre.sql.optimizer.operator.TopNType;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalTopNOperator;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;

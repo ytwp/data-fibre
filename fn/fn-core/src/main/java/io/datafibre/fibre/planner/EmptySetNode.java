@@ -32,14 +32,14 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.analysis.Analyzer;
-import com.starrocks.analysis.TupleId;
-import com.starrocks.thrift.TNormalPlanNode;
-import com.starrocks.thrift.TPlanNode;
-import com.starrocks.thrift.TPlanNodeType;
+import io.datafibre.fibre.analysis.Analyzer;
+import io.datafibre.fibre.analysis.TupleId;
+import io.datafibre.fibre.thrift.TNormalPlanNode;
+import io.datafibre.fibre.thrift.TPlanNode;
+import io.datafibre.fibre.thrift.TPlanNodeType;
 
 import java.util.ArrayList;
 

@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.util;
+package io.datafibre.fibre.common.util;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
@@ -43,40 +43,40 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Streams;
-import com.starrocks.analysis.BloomFilterIndexUtil;
-import com.starrocks.analysis.DateLiteral;
-import com.starrocks.analysis.TableName;
-import com.starrocks.catalog.AggregateType;
-import com.starrocks.catalog.BaseTableInfo;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.DataProperty;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.ForeignKeyConstraint;
-import com.starrocks.catalog.InternalCatalog;
-import com.starrocks.catalog.KeysType;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Partition;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.Type;
-import com.starrocks.catalog.UniqueConstraint;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.Config;
-import com.starrocks.common.Pair;
-import com.starrocks.lake.DataCacheInfo;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.server.RunMode;
-import com.starrocks.sql.analyzer.AnalyzerUtils;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.ast.Property;
-import com.starrocks.system.Backend;
-import com.starrocks.system.SystemInfoService;
-import com.starrocks.thrift.TCompressionType;
-import com.starrocks.thrift.TPersistentIndexType;
-import com.starrocks.thrift.TStorageMedium;
-import com.starrocks.thrift.TStorageType;
-import com.starrocks.thrift.TTabletType;
+import io.datafibre.fibre.analysis.BloomFilterIndexUtil;
+import io.datafibre.fibre.analysis.DateLiteral;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.catalog.AggregateType;
+import io.datafibre.fibre.catalog.BaseTableInfo;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.DataProperty;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.ForeignKeyConstraint;
+import io.datafibre.fibre.catalog.InternalCatalog;
+import io.datafibre.fibre.catalog.KeysType;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.catalog.UniqueConstraint;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.lake.DataCacheInfo;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.server.RunMode;
+import io.datafibre.fibre.sql.analyzer.AnalyzerUtils;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.ast.Property;
+import io.datafibre.fibre.system.Backend;
+import io.datafibre.fibre.system.SystemInfoService;
+import io.datafibre.fibre.thrift.TCompressionType;
+import io.datafibre.fibre.thrift.TPersistentIndexType;
+import io.datafibre.fibre.thrift.TStorageMedium;
+import io.datafibre.fibre.thrift.TStorageType;
+import io.datafibre.fibre.thrift.TTabletType;
 import org.apache.commons.collections.MapUtils;
 import org.threeten.extra.PeriodDuration;
 
@@ -91,7 +91,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static com.starrocks.catalog.TableProperty.INVALID;
+import static io.datafibre.fibre.catalog.TableProperty.INVALID;
 
 public class PropertyAnalyzer {
     private static final String COMMA_SEPARATOR = ",";

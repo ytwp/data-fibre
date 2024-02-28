@@ -32,10 +32,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.task;
+package io.datafibre.fibre.task;
 
-import com.starrocks.thrift.TDropTabletReq;
-import com.starrocks.thrift.TTaskType;
+import io.datafibre.fibre.thrift.TDropTabletReq;
+import io.datafibre.fibre.thrift.TTaskType;
 
 public class DropReplicaTask extends AgentTask {
     private int schemaHash; // set -1L as unknown

@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
 import com.google.common.collect.Maps;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.Map;
 

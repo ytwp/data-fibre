@@ -13,9 +13,9 @@
 // limitations under the License.
 
 
-package com.starrocks.connector;
+package io.datafibre.fibre.connector;
 
-import com.starrocks.common.Config;
+import io.datafibre.fibre.common.Config;
 
 import java.util.Map;
 

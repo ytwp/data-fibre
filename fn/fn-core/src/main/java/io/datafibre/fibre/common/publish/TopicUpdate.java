@@ -15,12 +15,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.publish;
+package io.datafibre.fibre.common.publish;
 
 import com.google.common.collect.Lists;
-import com.starrocks.thrift.TTopicItem;
-import com.starrocks.thrift.TTopicType;
-import com.starrocks.thrift.TTopicUpdate;
+import io.datafibre.fibre.thrift.TTopicItem;
+import io.datafibre.fibre.thrift.TTopicType;
+import io.datafibre.fibre.thrift.TTopicUpdate;
 
 import java.util.List;
 

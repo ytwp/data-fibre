@@ -32,15 +32,15 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
-import com.starrocks.sql.ast.AssertNumRowsElement;
-import com.starrocks.thrift.TAssertNumRowsNode;
-import com.starrocks.thrift.TExplainLevel;
-import com.starrocks.thrift.TNormalAssertNumRowsNode;
-import com.starrocks.thrift.TNormalPlanNode;
-import com.starrocks.thrift.TPlanNode;
-import com.starrocks.thrift.TPlanNodeType;
+import io.datafibre.fibre.sql.ast.AssertNumRowsElement;
+import io.datafibre.fibre.thrift.TAssertNumRowsNode;
+import io.datafibre.fibre.thrift.TExplainLevel;
+import io.datafibre.fibre.thrift.TNormalAssertNumRowsNode;
+import io.datafibre.fibre.thrift.TNormalPlanNode;
+import io.datafibre.fibre.thrift.TPlanNode;
+import io.datafibre.fibre.thrift.TPlanNodeType;
 
 /**
  * Assert num rows node is used to determine whether the number of rows is less then desired num of rows.

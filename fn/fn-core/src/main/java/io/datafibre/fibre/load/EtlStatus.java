@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.load;
+package io.datafibre.fibre.load;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
@@ -42,15 +42,15 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Table;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.common.util.DebugUtil;
-import com.starrocks.load.loadv2.dpp.DppResult;
-import com.starrocks.metric.TableMetricsEntity;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.thrift.TEtlState;
-import com.starrocks.thrift.TReportExecStatusParams;
-import com.starrocks.thrift.TUniqueId;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.common.util.DebugUtil;
+import io.datafibre.fibre.load.loadv2.dpp.DppResult;
+import io.datafibre.fibre.metric.TableMetricsEntity;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.thrift.TEtlState;
+import io.datafibre.fibre.thrift.TReportExecStatusParams;
+import io.datafibre.fibre.thrift.TUniqueId;
 import org.apache.commons.collections.map.HashedMap;
 
 import java.io.DataInput;

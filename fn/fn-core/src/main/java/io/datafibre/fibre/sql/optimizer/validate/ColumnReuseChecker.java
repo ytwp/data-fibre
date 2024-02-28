@@ -11,18 +11,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.starrocks.sql.optimizer.validate;
+package io.datafibre.fibre.sql.optimizer.validate;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.sql.optimizer.OptExpression;
-import com.starrocks.sql.optimizer.OptExpressionVisitor;
-import com.starrocks.sql.optimizer.operator.Operator;
-import com.starrocks.sql.optimizer.operator.Projection;
-import com.starrocks.sql.optimizer.operator.logical.LogicalProjectOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalProjectOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.task.TaskContext;
+import io.datafibre.fibre.sql.optimizer.OptExpression;
+import io.datafibre.fibre.sql.optimizer.OptExpressionVisitor;
+import io.datafibre.fibre.sql.optimizer.operator.Operator;
+import io.datafibre.fibre.sql.optimizer.operator.Projection;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalProjectOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalProjectOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.task.TaskContext;
 
 import java.util.List;
 import java.util.Map;

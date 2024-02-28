@@ -32,17 +32,17 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.system;
+package io.datafibre.fibre.system;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.common.Config;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.ha.BDBHA;
-import com.starrocks.ha.FrontendNodeType;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.system.HeartbeatResponse.HbStatus;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.ha.BDBHA;
+import io.datafibre.fibre.ha.FrontendNodeType;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.system.HeartbeatResponse.HbStatus;
 
 import java.io.DataInput;
 import java.io.DataOutput;

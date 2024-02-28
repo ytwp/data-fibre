@@ -12,31 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.transformer;
+package io.datafibre.fibre.sql.optimizer.transformer;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.starrocks.analysis.AnalyticExpr;
-import com.starrocks.analysis.AnalyticWindow;
-import com.starrocks.analysis.DecimalLiteral;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.FunctionCallExpr;
-import com.starrocks.analysis.FunctionName;
-import com.starrocks.analysis.IntLiteral;
-import com.starrocks.analysis.NullLiteral;
-import com.starrocks.analysis.OrderByElement;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.SessionVariable;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.optimizer.base.ColumnRefFactory;
-import com.starrocks.sql.optimizer.base.Ordering;
-import com.starrocks.sql.optimizer.operator.logical.LogicalWindowOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.analysis.AnalyticExpr;
+import io.datafibre.fibre.analysis.AnalyticWindow;
+import io.datafibre.fibre.analysis.DecimalLiteral;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.FunctionCallExpr;
+import io.datafibre.fibre.analysis.FunctionName;
+import io.datafibre.fibre.analysis.IntLiteral;
+import io.datafibre.fibre.analysis.NullLiteral;
+import io.datafibre.fibre.analysis.OrderByElement;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.SessionVariable;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefFactory;
+import io.datafibre.fibre.sql.optimizer.base.Ordering;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalWindowOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CallOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.math.BigDecimal;

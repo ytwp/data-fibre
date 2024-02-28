@@ -15,10 +15,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.analysis;
+package io.datafibre.fibre.analysis;
 
-import com.starrocks.catalog.Type;
-import com.starrocks.common.AnalysisException;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.AnalysisException;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.io.DataInput;

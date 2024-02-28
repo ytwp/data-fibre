@@ -13,9 +13,9 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.paimon;
+package io.datafibre.fibre.connector.paimon;
 
-import com.starrocks.connector.PartitionInfo;
+import io.datafibre.fibre.connector.PartitionInfo;
 
 public class Partition implements PartitionInfo {
 

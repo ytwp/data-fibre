@@ -13,22 +13,22 @@
 // limitations under the License.
 
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.starrocks.analysis.DescriptorTable;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.LiteralExpr;
-import com.starrocks.connector.delta.DeltaUtils;
-import com.starrocks.server.CatalogMgr;
-import com.starrocks.thrift.TColumn;
-import com.starrocks.thrift.TDeltaLakeTable;
-import com.starrocks.thrift.THdfsPartition;
-import com.starrocks.thrift.THdfsPartitionLocation;
-import com.starrocks.thrift.TTableDescriptor;
-import com.starrocks.thrift.TTableType;
+import io.datafibre.fibre.analysis.DescriptorTable;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.LiteralExpr;
+import io.datafibre.fibre.connector.delta.DeltaUtils;
+import io.datafibre.fibre.server.CatalogMgr;
+import io.datafibre.fibre.thrift.TColumn;
+import io.datafibre.fibre.thrift.TDeltaLakeTable;
+import io.datafibre.fibre.thrift.THdfsPartition;
+import io.datafibre.fibre.thrift.THdfsPartitionLocation;
+import io.datafibre.fibre.thrift.TTableDescriptor;
+import io.datafibre.fibre.thrift.TTableType;
 import io.delta.standalone.DeltaLog;
 import io.delta.standalone.actions.Metadata;
 

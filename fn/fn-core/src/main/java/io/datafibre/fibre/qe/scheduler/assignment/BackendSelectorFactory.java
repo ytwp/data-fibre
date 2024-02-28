@@ -12,30 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.qe.scheduler.assignment;
+package io.datafibre.fibre.qe.scheduler.assignment;
 
-import com.starrocks.planner.DeltaLakeScanNode;
-import com.starrocks.planner.FileTableScanNode;
-import com.starrocks.planner.HdfsScanNode;
-import com.starrocks.planner.HudiScanNode;
-import com.starrocks.planner.IcebergScanNode;
-import com.starrocks.planner.OdpsScanNode;
-import com.starrocks.planner.OlapScanNode;
-import com.starrocks.planner.PaimonScanNode;
-import com.starrocks.planner.ScanNode;
-import com.starrocks.planner.SchemaScanNode;
-import com.starrocks.qe.BackendSelector;
-import com.starrocks.qe.ColocatedBackendSelector;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.FragmentScanRangeAssignment;
-import com.starrocks.qe.HDFSBackendSelector;
-import com.starrocks.qe.NoopBackendSelector;
-import com.starrocks.qe.NormalBackendSelector;
-import com.starrocks.qe.ReplicatedBackendSelector;
-import com.starrocks.qe.SessionVariable;
-import com.starrocks.qe.scheduler.WorkerProvider;
-import com.starrocks.qe.scheduler.dag.ExecutionFragment;
-import com.starrocks.thrift.TScanRangeLocations;
+import io.datafibre.fibre.planner.DeltaLakeScanNode;
+import io.datafibre.fibre.planner.FileTableScanNode;
+import io.datafibre.fibre.planner.HdfsScanNode;
+import io.datafibre.fibre.planner.HudiScanNode;
+import io.datafibre.fibre.planner.IcebergScanNode;
+import io.datafibre.fibre.planner.OdpsScanNode;
+import io.datafibre.fibre.planner.OlapScanNode;
+import io.datafibre.fibre.planner.PaimonScanNode;
+import io.datafibre.fibre.planner.ScanNode;
+import io.datafibre.fibre.planner.SchemaScanNode;
+import io.datafibre.fibre.qe.BackendSelector;
+import io.datafibre.fibre.qe.ColocatedBackendSelector;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.FragmentScanRangeAssignment;
+import io.datafibre.fibre.qe.HDFSBackendSelector;
+import io.datafibre.fibre.qe.NoopBackendSelector;
+import io.datafibre.fibre.qe.NormalBackendSelector;
+import io.datafibre.fibre.qe.ReplicatedBackendSelector;
+import io.datafibre.fibre.qe.SessionVariable;
+import io.datafibre.fibre.qe.scheduler.WorkerProvider;
+import io.datafibre.fibre.qe.scheduler.dag.ExecutionFragment;
+import io.datafibre.fibre.thrift.TScanRangeLocations;
 
 import java.util.List;
 import java.util.Set;

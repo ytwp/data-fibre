@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
-import com.starrocks.catalog.TableFunctionTable;
-import com.starrocks.credential.CloudConfiguration;
-import com.starrocks.credential.CloudConfigurationFactory;
-import com.starrocks.thrift.TCloudConfiguration;
-import com.starrocks.thrift.TDataSink;
-import com.starrocks.thrift.TDataSinkType;
-import com.starrocks.thrift.TExplainLevel;
-import com.starrocks.thrift.TTableFunctionTableSink;
+import io.datafibre.fibre.catalog.TableFunctionTable;
+import io.datafibre.fibre.credential.CloudConfiguration;
+import io.datafibre.fibre.credential.CloudConfigurationFactory;
+import io.datafibre.fibre.thrift.TCloudConfiguration;
+import io.datafibre.fibre.thrift.TDataSink;
+import io.datafibre.fibre.thrift.TDataSinkType;
+import io.datafibre.fibre.thrift.TExplainLevel;
+import io.datafibre.fibre.thrift.TTableFunctionTableSink;
 
 public class TableFunctionTableSink extends DataSink {
     private final TableFunctionTable table;

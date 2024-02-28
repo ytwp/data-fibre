@@ -13,15 +13,15 @@
 // limitations under the License.
 
 
-package com.starrocks.rpc;
+package io.datafibre.fibre.rpc;
 
 import com.baidu.bjf.remoting.protobuf.utils.JDKCompilerHelper;
 import com.baidu.bjf.remoting.protobuf.utils.compiler.JdkCompiler;
 import com.baidu.jprotobuf.pbrpc.client.ProtobufRpcProxy;
 import com.baidu.jprotobuf.pbrpc.transport.RpcClient;
 import com.baidu.jprotobuf.pbrpc.transport.RpcClientOptions;
-import com.starrocks.common.Config;
-import com.starrocks.thrift.TNetworkAddress;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.thrift.TNetworkAddress;
 
 import java.util.concurrent.ConcurrentHashMap;
 

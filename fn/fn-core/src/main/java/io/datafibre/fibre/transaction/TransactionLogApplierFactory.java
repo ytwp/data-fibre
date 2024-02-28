@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package com.starrocks.transaction;
+package io.datafibre.fibre.transaction;
 
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Table;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Table;
 
 public class TransactionLogApplierFactory {
     public TransactionLogApplier create(Table table) {

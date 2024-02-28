@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.http;
+package io.datafibre.fibre.http;
 
 public class HttpRequestException extends RuntimeException {
     public HttpRequestException(String message) {

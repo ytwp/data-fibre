@@ -12,25 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.analysis.AnalyticExpr;
-import com.starrocks.analysis.AnalyticWindow;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.FunctionCallExpr;
-import com.starrocks.analysis.NullLiteral;
-import com.starrocks.analysis.OrderByElement;
-import com.starrocks.catalog.AggregateFunction;
-import com.starrocks.catalog.Function;
-import com.starrocks.catalog.FunctionSet;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.util.ExprUtil;
+import io.datafibre.fibre.analysis.AnalyticExpr;
+import io.datafibre.fibre.analysis.AnalyticWindow;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.FunctionCallExpr;
+import io.datafibre.fibre.analysis.NullLiteral;
+import io.datafibre.fibre.analysis.OrderByElement;
+import io.datafibre.fibre.catalog.AggregateFunction;
+import io.datafibre.fibre.catalog.Function;
+import io.datafibre.fibre.catalog.FunctionSet;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.util.ExprUtil;
 
 import java.math.BigDecimal;
 
-import static com.starrocks.catalog.FunctionSet.STATISTIC_FUNCTIONS;
+import static io.datafibre.fibre.catalog.FunctionSet.STATISTIC_FUNCTIONS;
 
 public class AnalyticAnalyzer {
     public static void verifyAnalyticExpression(AnalyticExpr analyticExpr) {

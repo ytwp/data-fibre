@@ -13,20 +13,20 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.rewrite;
+package io.datafibre.fibre.sql.optimizer.rewrite;
 
 import com.google.common.collect.ImmutableList;
-import com.starrocks.catalog.Type;
-import com.starrocks.sql.optimizer.operator.OperatorType;
-import com.starrocks.sql.optimizer.operator.scalar.BinaryPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CompoundPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CompoundPredicateOperator.CompoundType;
-import com.starrocks.sql.optimizer.operator.scalar.ConstantOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ExistsPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.InPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.IsNullPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperatorVisitor;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.BinaryPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CompoundPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CompoundPredicateOperator.CompoundType;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ExistsPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.InPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.IsNullPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperatorVisitor;
 
 import java.util.List;
 

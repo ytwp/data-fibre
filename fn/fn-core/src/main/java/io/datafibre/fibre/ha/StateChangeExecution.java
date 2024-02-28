@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.ha;
+package io.datafibre.fibre.ha;
 
 public interface StateChangeExecution {
     public void transferToLeader();

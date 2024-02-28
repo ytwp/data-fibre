@@ -12,23 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.catalog.system.sys;
+package io.datafibre.fibre.catalog.system.sys;
 
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.system.SystemId;
-import com.starrocks.catalog.system.SystemTable;
-import com.starrocks.memory.MemoryUsageTracker;
-import com.starrocks.privilege.AccessDeniedException;
-import com.starrocks.privilege.PrivilegeType;
-import com.starrocks.sql.analyzer.Authorizer;
-import com.starrocks.sql.ast.UserIdentity;
-import com.starrocks.thrift.TAuthInfo;
-import com.starrocks.thrift.TFeMemoryItem;
-import com.starrocks.thrift.TFeMemoryReq;
-import com.starrocks.thrift.TFeMemoryRes;
-import com.starrocks.thrift.TSchemaTableType;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.system.SystemId;
+import io.datafibre.fibre.catalog.system.SystemTable;
+import io.datafibre.fibre.memory.MemoryUsageTracker;
+import io.datafibre.fibre.privilege.AccessDeniedException;
+import io.datafibre.fibre.privilege.PrivilegeType;
+import io.datafibre.fibre.sql.analyzer.Authorizer;
+import io.datafibre.fibre.sql.ast.UserIdentity;
+import io.datafibre.fibre.thrift.TAuthInfo;
+import io.datafibre.fibre.thrift.TFeMemoryItem;
+import io.datafibre.fibre.thrift.TFeMemoryReq;
+import io.datafibre.fibre.thrift.TFeMemoryRes;
+import io.datafibre.fibre.thrift.TSchemaTableType;
 import org.apache.thrift.TException;
 
 

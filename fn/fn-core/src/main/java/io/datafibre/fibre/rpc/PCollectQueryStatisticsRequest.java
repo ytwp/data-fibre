@@ -13,13 +13,13 @@
 // limitations under the License.
 
 
-package com.starrocks.rpc;
+package io.datafibre.fibre.rpc;
 
 import com.baidu.bjf.remoting.protobuf.FieldType;
 import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
 import com.baidu.bjf.remoting.protobuf.annotation.ProtobufClass;
 import com.google.common.collect.Lists;
-import com.starrocks.proto.PUniqueId;
+import io.datafibre.fibre.proto.PUniqueId;
 
 import java.util.List;
 

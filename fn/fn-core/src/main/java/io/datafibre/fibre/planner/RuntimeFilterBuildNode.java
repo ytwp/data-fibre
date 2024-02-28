@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
-import com.starrocks.analysis.DescriptorTable;
-import com.starrocks.common.IdGenerator;
+import io.datafibre.fibre.analysis.DescriptorTable;
+import io.datafibre.fibre.common.IdGenerator;
 
 import java.util.List;
 

@@ -12,31 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.starrocks.analysis.TableName;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.Config;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.CatalogMgr;
-import com.starrocks.sql.ast.AnalyzeHistogramDesc;
-import com.starrocks.sql.ast.AnalyzeStmt;
-import com.starrocks.sql.ast.AnalyzeTypeDesc;
-import com.starrocks.sql.ast.AstVisitor;
-import com.starrocks.sql.ast.CreateAnalyzeJobStmt;
-import com.starrocks.sql.ast.DropHistogramStmt;
-import com.starrocks.sql.ast.DropStatsStmt;
-import com.starrocks.sql.ast.StatementBase;
-import com.starrocks.sql.common.MetaUtils;
-import com.starrocks.statistic.StatisticUtils;
-import com.starrocks.statistic.StatsConstants;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.CatalogMgr;
+import io.datafibre.fibre.sql.ast.AnalyzeHistogramDesc;
+import io.datafibre.fibre.sql.ast.AnalyzeStmt;
+import io.datafibre.fibre.sql.ast.AnalyzeTypeDesc;
+import io.datafibre.fibre.sql.ast.AstVisitor;
+import io.datafibre.fibre.sql.ast.CreateAnalyzeJobStmt;
+import io.datafibre.fibre.sql.ast.DropHistogramStmt;
+import io.datafibre.fibre.sql.ast.DropStatsStmt;
+import io.datafibre.fibre.sql.ast.StatementBase;
+import io.datafibre.fibre.sql.common.MetaUtils;
+import io.datafibre.fibre.statistic.StatisticUtils;
+import io.datafibre.fibre.statistic.StatsConstants;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.math.BigDecimal;

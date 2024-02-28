@@ -13,25 +13,25 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.hive;
+package io.datafibre.fibre.connector.hive;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.HiveMetaStoreTable;
-import com.starrocks.catalog.HiveTable;
-import com.starrocks.catalog.PartitionKey;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.MetaNotFoundException;
-import com.starrocks.connector.ConnectorTableId;
-import com.starrocks.connector.MetastoreType;
-import com.starrocks.connector.PartitionUtil;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.sql.ast.CreateTableLikeStmt;
-import com.starrocks.sql.ast.CreateTableStmt;
-import com.starrocks.sql.ast.ListPartitionDesc;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.HiveMetaStoreTable;
+import io.datafibre.fibre.catalog.HiveTable;
+import io.datafibre.fibre.catalog.PartitionKey;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.MetaNotFoundException;
+import io.datafibre.fibre.connector.ConnectorTableId;
+import io.datafibre.fibre.connector.MetastoreType;
+import io.datafibre.fibre.connector.PartitionUtil;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.sql.ast.CreateTableLikeStmt;
+import io.datafibre.fibre.sql.ast.CreateTableStmt;
+import io.datafibre.fibre.sql.ast.ListPartitionDesc;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -48,12 +48,12 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkState;
-import static com.starrocks.connector.PartitionUtil.executeInNewThread;
-import static com.starrocks.connector.hive.HiveWriteUtils.checkLocationProperties;
-import static com.starrocks.connector.hive.HiveWriteUtils.createDirectory;
-import static com.starrocks.connector.hive.HiveWriteUtils.isDirectory;
-import static com.starrocks.connector.hive.HiveWriteUtils.pathExists;
-import static com.starrocks.server.CatalogMgr.ResourceMappingCatalog.toResourceName;
+import static io.datafibre.fibre.connector.PartitionUtil.executeInNewThread;
+import static io.datafibre.fibre.connector.hive.HiveWriteUtils.checkLocationProperties;
+import static io.datafibre.fibre.connector.hive.HiveWriteUtils.createDirectory;
+import static io.datafibre.fibre.connector.hive.HiveWriteUtils.isDirectory;
+import static io.datafibre.fibre.connector.hive.HiveWriteUtils.pathExists;
+import static io.datafibre.fibre.server.CatalogMgr.ResourceMappingCatalog.toResourceName;
 
 public class HiveMetastoreOperations {
     private static final Logger LOG = LogManager.getLogger(HiveMetastoreOperations.class);

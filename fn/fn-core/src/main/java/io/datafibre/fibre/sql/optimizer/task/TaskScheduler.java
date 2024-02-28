@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.task;
+package io.datafibre.fibre.sql.optimizer.task;
 
 // The scheduler for optimizer task
 // Store tasks in a stack

@@ -13,14 +13,14 @@
 // limitations under the License.
 
 
-package com.starrocks.leader;
+package io.datafibre.fibre.leader;
 
-import com.starrocks.common.FeConstants;
-import com.starrocks.common.util.FrontendDaemon;
-import com.starrocks.scheduler.TaskRun;
-import com.starrocks.scheduler.TaskRunManager;
-import com.starrocks.scheduler.persist.TaskRunPeriodStatusChange;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.common.FeConstants;
+import io.datafibre.fibre.common.util.FrontendDaemon;
+import io.datafibre.fibre.scheduler.TaskRun;
+import io.datafibre.fibre.scheduler.TaskRunManager;
+import io.datafibre.fibre.scheduler.persist.TaskRunPeriodStatusChange;
+import io.datafibre.fibre.server.GlobalStateMgr;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

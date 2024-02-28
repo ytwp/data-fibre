@@ -12,25 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.load.pipe;
+package io.datafibre.fibre.load.pipe;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.catalog.Database;
-import com.starrocks.common.CloseableLock;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.ErrorCode;
-import com.starrocks.common.ErrorReport;
-import com.starrocks.common.Pair;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.pipe.AlterPipeClause;
-import com.starrocks.sql.ast.pipe.AlterPipeClauseRetry;
-import com.starrocks.sql.ast.pipe.AlterPipePauseResume;
-import com.starrocks.sql.ast.pipe.AlterPipeSetProperty;
-import com.starrocks.sql.ast.pipe.AlterPipeStmt;
-import com.starrocks.sql.ast.pipe.CreatePipeStmt;
-import com.starrocks.sql.ast.pipe.DropPipeStmt;
-import com.starrocks.sql.ast.pipe.PipeName;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.common.CloseableLock;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.ErrorCode;
+import io.datafibre.fibre.common.ErrorReport;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.pipe.AlterPipeClause;
+import io.datafibre.fibre.sql.ast.pipe.AlterPipeClauseRetry;
+import io.datafibre.fibre.sql.ast.pipe.AlterPipePauseResume;
+import io.datafibre.fibre.sql.ast.pipe.AlterPipeSetProperty;
+import io.datafibre.fibre.sql.ast.pipe.AlterPipeStmt;
+import io.datafibre.fibre.sql.ast.pipe.CreatePipeStmt;
+import io.datafibre.fibre.sql.ast.pipe.DropPipeStmt;
+import io.datafibre.fibre.sql.ast.pipe.PipeName;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

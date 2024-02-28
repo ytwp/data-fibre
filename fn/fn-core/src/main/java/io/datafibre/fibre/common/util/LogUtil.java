@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.common.util;
+package io.datafibre.fibre.common.util;
 
-import com.starrocks.common.Config;
-import com.starrocks.mysql.MysqlAuthPacket;
-import com.starrocks.plugin.AuditEvent;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.QueryDetail;
-import com.starrocks.qe.QueryDetailQueue;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.service.FrontendOptions;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.mysql.MysqlAuthPacket;
+import io.datafibre.fibre.plugin.AuditEvent;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.QueryDetail;
+import io.datafibre.fibre.qe.QueryDetailQueue;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.service.FrontendOptions;
 
 import java.util.Arrays;
 import java.util.List;

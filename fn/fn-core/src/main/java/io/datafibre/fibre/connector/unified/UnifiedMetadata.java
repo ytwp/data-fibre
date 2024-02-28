@@ -12,39 +12,39 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.unified;
+package io.datafibre.fibre.connector.unified;
 
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.PartitionKey;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.AlreadyExistsException;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.MetaNotFoundException;
-import com.starrocks.common.profile.Tracers;
-import com.starrocks.connector.ConnectorMetadata;
-import com.starrocks.connector.MetaPreparationItem;
-import com.starrocks.connector.PartitionInfo;
-import com.starrocks.connector.RemoteFileInfo;
-import com.starrocks.connector.hive.HiveMetadata;
-import com.starrocks.credential.CloudConfiguration;
-import com.starrocks.sql.ast.CreateTableStmt;
-import com.starrocks.sql.ast.DropTableStmt;
-import com.starrocks.sql.optimizer.OptimizerContext;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.statistics.Statistics;
-import com.starrocks.thrift.TSinkCommitInfo;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.PartitionKey;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.AlreadyExistsException;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.MetaNotFoundException;
+import io.datafibre.fibre.common.profile.Tracers;
+import io.datafibre.fibre.connector.ConnectorMetadata;
+import io.datafibre.fibre.connector.MetaPreparationItem;
+import io.datafibre.fibre.connector.PartitionInfo;
+import io.datafibre.fibre.connector.RemoteFileInfo;
+import io.datafibre.fibre.connector.hive.HiveMetadata;
+import io.datafibre.fibre.credential.CloudConfiguration;
+import io.datafibre.fibre.sql.ast.CreateTableStmt;
+import io.datafibre.fibre.sql.ast.DropTableStmt;
+import io.datafibre.fibre.sql.optimizer.OptimizerContext;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.statistics.Statistics;
+import io.datafibre.fibre.thrift.TSinkCommitInfo;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.starrocks.catalog.Table.TableType.DELTALAKE;
-import static com.starrocks.catalog.Table.TableType.HIVE;
-import static com.starrocks.catalog.Table.TableType.HUDI;
-import static com.starrocks.catalog.Table.TableType.ICEBERG;
+import static io.datafibre.fibre.catalog.Table.TableType.DELTALAKE;
+import static io.datafibre.fibre.catalog.Table.TableType.HIVE;
+import static io.datafibre.fibre.catalog.Table.TableType.HUDI;
+import static io.datafibre.fibre.catalog.Table.TableType.ICEBERG;
 import static java.util.Objects.requireNonNull;
 
 public class UnifiedMetadata implements ConnectorMetadata {

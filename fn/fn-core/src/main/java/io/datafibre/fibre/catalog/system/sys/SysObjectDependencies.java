@@ -12,25 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.catalog.system.sys;
+package io.datafibre.fibre.catalog.system.sys;
 
-import com.starrocks.catalog.BaseTableInfo;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.InternalCatalog;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.system.SystemId;
-import com.starrocks.catalog.system.SystemTable;
-import com.starrocks.privilege.AccessDeniedException;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.analyzer.Authorizer;
-import com.starrocks.sql.ast.UserIdentity;
-import com.starrocks.thrift.TAuthInfo;
-import com.starrocks.thrift.TObjectDependencyItem;
-import com.starrocks.thrift.TObjectDependencyReq;
-import com.starrocks.thrift.TObjectDependencyRes;
-import com.starrocks.thrift.TSchemaTableType;
+import io.datafibre.fibre.catalog.BaseTableInfo;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.InternalCatalog;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.system.SystemId;
+import io.datafibre.fibre.catalog.system.SystemTable;
+import io.datafibre.fibre.privilege.AccessDeniedException;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.analyzer.Authorizer;
+import io.datafibre.fibre.sql.ast.UserIdentity;
+import io.datafibre.fibre.thrift.TAuthInfo;
+import io.datafibre.fibre.thrift.TObjectDependencyItem;
+import io.datafibre.fibre.thrift.TObjectDependencyReq;
+import io.datafibre.fibre.thrift.TObjectDependencyRes;
+import io.datafibre.fibre.thrift.TSchemaTableType;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

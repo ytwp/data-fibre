@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.http;
+package io.datafibre.fibre.http;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;

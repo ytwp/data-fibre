@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.operator.pattern;
+package io.datafibre.fibre.sql.optimizer.operator.pattern;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import com.starrocks.sql.optimizer.GroupExpression;
-import com.starrocks.sql.optimizer.OptExpression;
-import com.starrocks.sql.optimizer.operator.OperatorType;
+import io.datafibre.fibre.sql.optimizer.GroupExpression;
+import io.datafibre.fibre.sql.optimizer.OptExpression;
+import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
 
 import java.util.Arrays;
 import java.util.List;

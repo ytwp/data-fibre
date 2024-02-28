@@ -12,22 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.iceberg;
+package io.datafibre.fibre.connector.iceberg;
 
 import com.google.common.base.Strings;
-import com.starrocks.common.Config;
-import com.starrocks.connector.Connector;
-import com.starrocks.connector.ConnectorContext;
-import com.starrocks.connector.ConnectorMetadata;
-import com.starrocks.connector.HdfsEnvironment;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.connector.iceberg.glue.IcebergGlueCatalog;
-import com.starrocks.connector.iceberg.hadoop.IcebergHadoopCatalog;
-import com.starrocks.connector.iceberg.hive.IcebergHiveCatalog;
-import com.starrocks.connector.iceberg.rest.IcebergRESTCatalog;
-import com.starrocks.credential.CloudConfiguration;
-import com.starrocks.credential.CloudConfigurationFactory;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.connector.Connector;
+import io.datafibre.fibre.connector.ConnectorContext;
+import io.datafibre.fibre.connector.ConnectorMetadata;
+import io.datafibre.fibre.connector.HdfsEnvironment;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.connector.iceberg.glue.IcebergGlueCatalog;
+import io.datafibre.fibre.connector.iceberg.hadoop.IcebergHadoopCatalog;
+import io.datafibre.fibre.connector.iceberg.hive.IcebergHiveCatalog;
+import io.datafibre.fibre.connector.iceberg.rest.IcebergRESTCatalog;
+import io.datafibre.fibre.credential.CloudConfiguration;
+import io.datafibre.fibre.credential.CloudConfigurationFactory;
+import io.datafibre.fibre.server.GlobalStateMgr;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.iceberg.util.ThreadPools;
 import org.apache.logging.log4j.LogManager;
@@ -37,7 +37,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 
-import static com.starrocks.server.CatalogMgr.ResourceMappingCatalog.isResourceMappingCatalog;
+import static io.datafibre.fibre.server.CatalogMgr.ResourceMappingCatalog.isResourceMappingCatalog;
 import static org.apache.iceberg.util.ThreadPools.newWorkerPool;
 
 public class IcebergConnector implements Connector {

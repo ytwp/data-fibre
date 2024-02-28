@@ -15,10 +15,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.persist;
+package io.datafibre.fibre.persist;
 
-import com.starrocks.common.io.DataOutputBuffer;
-import com.starrocks.common.io.Writable;
+import io.datafibre.fibre.common.io.DataOutputBuffer;
+import io.datafibre.fibre.common.io.Writable;
 
 import java.io.File;
 import java.io.FileOutputStream;

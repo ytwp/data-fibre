@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.rule.mv;
+package io.datafibre.fibre.sql.optimizer.rule.mv;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.MaterializedIndexMeta;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.sql.optimizer.OptExpression;
-import com.starrocks.sql.optimizer.OptExpressionVisitor;
-import com.starrocks.sql.optimizer.operator.OperatorType;
-import com.starrocks.sql.optimizer.operator.logical.LogicalOlapScanOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.MaterializedIndexMeta;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.sql.optimizer.OptExpression;
+import io.datafibre.fibre.sql.optimizer.OptExpressionVisitor;
+import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalOlapScanOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
 
 import java.util.List;
 import java.util.Map;

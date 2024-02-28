@@ -32,14 +32,14 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.connector.elasticsearch;
+package io.datafibre.fibre.connector.elasticsearch;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
-import com.starrocks.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
 import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -71,8 +71,8 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import static com.starrocks.connector.elasticsearch.EsUtil.getFromJSONArray;
-import static com.starrocks.connector.elasticsearch.EsUtil.readTree;
+import static io.datafibre.fibre.connector.elasticsearch.EsUtil.getFromJSONArray;
+import static io.datafibre.fibre.connector.elasticsearch.EsUtil.readTree;
 
 public class EsRestClient {
 

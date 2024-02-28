@@ -32,11 +32,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.http;
+package io.datafibre.fibre.http;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
-import com.starrocks.common.DdlException;
+import io.datafibre.fibre.common.DdlException;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpHeaderNames;

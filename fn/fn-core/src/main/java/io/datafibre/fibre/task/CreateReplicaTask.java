@@ -32,27 +32,27 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.task;
+package io.datafibre.fibre.task;
 
-import com.starrocks.alter.SchemaChangeHandler;
-import com.starrocks.binlog.BinlogConfig;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Index;
-import com.starrocks.catalog.KeysType;
-import com.starrocks.common.Status;
-import com.starrocks.common.util.concurrent.MarkedCountDownLatch;
-import com.starrocks.thrift.TBinlogConfig;
-import com.starrocks.thrift.TColumn;
-import com.starrocks.thrift.TCompressionType;
-import com.starrocks.thrift.TCreateTabletReq;
-import com.starrocks.thrift.TOlapTableIndex;
-import com.starrocks.thrift.TPersistentIndexType;
-import com.starrocks.thrift.TStatusCode;
-import com.starrocks.thrift.TStorageMedium;
-import com.starrocks.thrift.TStorageType;
-import com.starrocks.thrift.TTabletSchema;
-import com.starrocks.thrift.TTabletType;
-import com.starrocks.thrift.TTaskType;
+import io.datafibre.fibre.alter.SchemaChangeHandler;
+import io.datafibre.fibre.binlog.BinlogConfig;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Index;
+import io.datafibre.fibre.catalog.KeysType;
+import io.datafibre.fibre.common.Status;
+import io.datafibre.fibre.common.util.concurrent.MarkedCountDownLatch;
+import io.datafibre.fibre.thrift.TBinlogConfig;
+import io.datafibre.fibre.thrift.TColumn;
+import io.datafibre.fibre.thrift.TCompressionType;
+import io.datafibre.fibre.thrift.TCreateTabletReq;
+import io.datafibre.fibre.thrift.TOlapTableIndex;
+import io.datafibre.fibre.thrift.TPersistentIndexType;
+import io.datafibre.fibre.thrift.TStatusCode;
+import io.datafibre.fibre.thrift.TStorageMedium;
+import io.datafibre.fibre.thrift.TStorageType;
+import io.datafibre.fibre.thrift.TTabletSchema;
+import io.datafibre.fibre.thrift.TTabletType;
+import io.datafibre.fibre.thrift.TTaskType;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

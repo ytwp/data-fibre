@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.rpc;
+package io.datafibre.fibre.rpc;
 
 import com.baidu.bjf.remoting.protobuf.annotation.ProtobufClass;
 

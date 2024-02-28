@@ -32,18 +32,18 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.publish;
+package io.datafibre.fibre.common.publish;
 
-import com.starrocks.common.ClientPool;
-import com.starrocks.common.ThreadPoolManager;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.system.Backend;
-import com.starrocks.system.SystemInfoService;
-import com.starrocks.thrift.BackendService;
-import com.starrocks.thrift.TAgentPublishRequest;
-import com.starrocks.thrift.TAgentResult;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.thrift.TStatusCode;
+import io.datafibre.fibre.common.ClientPool;
+import io.datafibre.fibre.common.ThreadPoolManager;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.system.Backend;
+import io.datafibre.fibre.system.SystemInfoService;
+import io.datafibre.fibre.thrift.BackendService;
+import io.datafibre.fibre.thrift.TAgentPublishRequest;
+import io.datafibre.fibre.thrift.TAgentResult;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TStatusCode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.thrift.TException;

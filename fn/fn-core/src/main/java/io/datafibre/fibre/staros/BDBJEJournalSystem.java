@@ -13,24 +13,24 @@
 // limitations under the License.
 
 
-package com.starrocks.staros;
+package io.datafibre.fibre.staros;
 
 import com.staros.exception.ExceptionCode;
 import com.staros.exception.StarException;
 import com.staros.journal.Journal;
 import com.staros.journal.JournalSystem;
-import com.starrocks.common.Config;
-import com.starrocks.common.util.Daemon;
-import com.starrocks.common.util.Util;
-import com.starrocks.journal.JournalCursor;
-import com.starrocks.journal.JournalEntity;
-import com.starrocks.journal.JournalException;
-import com.starrocks.journal.JournalInconsistentException;
-import com.starrocks.journal.JournalTask;
-import com.starrocks.journal.JournalWriter;
-import com.starrocks.journal.bdbje.BDBEnvironment;
-import com.starrocks.journal.bdbje.BDBJEJournal;
-import com.starrocks.persist.EditLog;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.util.Daemon;
+import io.datafibre.fibre.common.util.Util;
+import io.datafibre.fibre.journal.JournalCursor;
+import io.datafibre.fibre.journal.JournalEntity;
+import io.datafibre.fibre.journal.JournalException;
+import io.datafibre.fibre.journal.JournalInconsistentException;
+import io.datafibre.fibre.journal.JournalTask;
+import io.datafibre.fibre.journal.JournalWriter;
+import io.datafibre.fibre.journal.bdbje.BDBEnvironment;
+import io.datafibre.fibre.journal.bdbje.BDBJEJournal;
+import io.datafibre.fibre.persist.EditLog;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

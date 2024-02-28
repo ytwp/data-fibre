@@ -32,13 +32,13 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
-import com.starrocks.catalog.MysqlTable;
-import com.starrocks.thrift.TDataSink;
-import com.starrocks.thrift.TDataSinkType;
-import com.starrocks.thrift.TExplainLevel;
-import com.starrocks.thrift.TMysqlTableSink;
+import io.datafibre.fibre.catalog.MysqlTable;
+import io.datafibre.fibre.thrift.TDataSink;
+import io.datafibre.fibre.thrift.TDataSinkType;
+import io.datafibre.fibre.thrift.TExplainLevel;
+import io.datafibre.fibre.thrift.TMysqlTableSink;
 
 public class MysqlTableSink extends DataSink {
     private final String host;

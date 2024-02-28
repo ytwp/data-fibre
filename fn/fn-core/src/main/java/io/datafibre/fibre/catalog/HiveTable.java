@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
@@ -48,28 +48,28 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.analysis.DescriptorTable.ReferencedPartitionInfo;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.LiteralExpr;
-import com.starrocks.common.Config;
-import com.starrocks.common.StarRocksFEMetaVersion;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.common.util.concurrent.lock.LockType;
-import com.starrocks.common.util.concurrent.lock.Locker;
-import com.starrocks.connector.RemoteFileInfo;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.connector.hive.HiveStorageFormat;
-import com.starrocks.persist.ModifyTableColumnOperationLog;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.CatalogMgr;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.thrift.TColumn;
-import com.starrocks.thrift.THdfsPartition;
-import com.starrocks.thrift.THdfsPartitionLocation;
-import com.starrocks.thrift.THdfsTable;
-import com.starrocks.thrift.TTableDescriptor;
-import com.starrocks.thrift.TTableType;
+import io.datafibre.fibre.analysis.DescriptorTable.ReferencedPartitionInfo;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.LiteralExpr;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.StarRocksFEMetaVersion;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.connector.RemoteFileInfo;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.connector.hive.HiveStorageFormat;
+import io.datafibre.fibre.persist.ModifyTableColumnOperationLog;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.CatalogMgr;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.thrift.TColumn;
+import io.datafibre.fibre.thrift.THdfsPartition;
+import io.datafibre.fibre.thrift.THdfsPartitionLocation;
+import io.datafibre.fibre.thrift.THdfsTable;
+import io.datafibre.fibre.thrift.TTableDescriptor;
+import io.datafibre.fibre.thrift.TTableType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -83,8 +83,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.starrocks.server.CatalogMgr.ResourceMappingCatalog.getResourceMappingCatalogName;
-import static com.starrocks.server.CatalogMgr.ResourceMappingCatalog.isResourceMappingCatalog;
+import static io.datafibre.fibre.server.CatalogMgr.ResourceMappingCatalog.getResourceMappingCatalogName;
+import static io.datafibre.fibre.server.CatalogMgr.ResourceMappingCatalog.isResourceMappingCatalog;
 
 public class HiveTable extends Table implements HiveMetaStoreTable {
     public enum HiveTableType {

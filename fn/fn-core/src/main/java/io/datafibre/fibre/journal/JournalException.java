@@ -13,9 +13,9 @@
 // limitations under the License.
 
 
-package com.starrocks.journal;
+package io.datafibre.fibre.journal;
 
-import com.starrocks.persist.OperationType;
+import io.datafibre.fibre.persist.OperationType;
 
 /**
  * exception on journals

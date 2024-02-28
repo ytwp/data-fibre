@@ -32,10 +32,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.collect.Lists;
-import com.starrocks.thrift.TAggregationType;
+import io.datafibre.fibre.thrift.TAggregationType;
 
 import java.util.EnumMap;
 import java.util.EnumSet;

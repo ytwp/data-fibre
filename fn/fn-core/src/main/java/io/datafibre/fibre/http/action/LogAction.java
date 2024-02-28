@@ -15,16 +15,16 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.http.action;
+package io.datafibre.fibre.http.action;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.starrocks.common.Config;
-import com.starrocks.common.Log4jConfig;
-import com.starrocks.http.ActionController;
-import com.starrocks.http.BaseRequest;
-import com.starrocks.http.BaseResponse;
-import com.starrocks.http.IllegalArgException;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.Log4jConfig;
+import io.datafibre.fibre.http.ActionController;
+import io.datafibre.fibre.http.BaseRequest;
+import io.datafibre.fibre.http.BaseResponse;
+import io.datafibre.fibre.http.IllegalArgException;
 import groovy.lang.Tuple3;
 import io.netty.handler.codec.http.HttpMethod;
 import org.apache.commons.lang.StringUtils;

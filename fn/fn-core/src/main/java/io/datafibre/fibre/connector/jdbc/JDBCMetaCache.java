@@ -13,11 +13,11 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.jdbc;
+package io.datafibre.fibre.connector.jdbc;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import com.starrocks.common.Config;
+import io.datafibre.fibre.common.Config;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.Map;

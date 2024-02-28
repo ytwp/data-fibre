@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.qe;
+package io.datafibre.fibre.qe;
 
 /**
  * A trivial implementation of {@link BackendSelector}.

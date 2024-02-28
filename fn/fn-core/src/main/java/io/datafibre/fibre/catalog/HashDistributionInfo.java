@@ -32,15 +32,15 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.planner.OlapScanNode;
-import com.starrocks.sql.ast.DistributionDesc;
-import com.starrocks.sql.ast.HashDistributionDesc;
+import io.datafibre.fibre.planner.OlapScanNode;
+import io.datafibre.fibre.sql.ast.DistributionDesc;
+import io.datafibre.fibre.sql.ast.HashDistributionDesc;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

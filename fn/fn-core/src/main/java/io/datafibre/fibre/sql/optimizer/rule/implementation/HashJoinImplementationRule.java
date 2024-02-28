@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.rule.implementation;
+package io.datafibre.fibre.sql.optimizer.rule.implementation;
 
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.JoinOperator;
-import com.starrocks.sql.optimizer.OptExpression;
-import com.starrocks.sql.optimizer.OptimizerContext;
-import com.starrocks.sql.optimizer.operator.logical.LogicalJoinOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalHashJoinOperator;
-import com.starrocks.sql.optimizer.operator.scalar.BinaryPredicateOperator;
-import com.starrocks.sql.optimizer.rule.RuleType;
+import io.datafibre.fibre.analysis.JoinOperator;
+import io.datafibre.fibre.sql.optimizer.OptExpression;
+import io.datafibre.fibre.sql.optimizer.OptimizerContext;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalJoinOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalHashJoinOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.BinaryPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.rule.RuleType;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.List;

@@ -32,24 +32,24 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.http.rest;
+package io.datafibre.fibre.http.rest;
 
 import com.google.common.base.Strings;
-import com.starrocks.common.DdlException;
-import com.starrocks.http.ActionController;
-import com.starrocks.http.BaseRequest;
-import com.starrocks.http.BaseResponse;
-import com.starrocks.http.IllegalArgException;
-import com.starrocks.privilege.AccessDeniedException;
-import com.starrocks.privilege.PrivilegeType;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.server.RunMode;
-import com.starrocks.sql.analyzer.Authorizer;
-import com.starrocks.system.ComputeNode;
-import com.starrocks.system.SystemInfoService;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.warehouse.Warehouse;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.http.ActionController;
+import io.datafibre.fibre.http.BaseRequest;
+import io.datafibre.fibre.http.BaseResponse;
+import io.datafibre.fibre.http.IllegalArgException;
+import io.datafibre.fibre.privilege.AccessDeniedException;
+import io.datafibre.fibre.privilege.PrivilegeType;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.server.RunMode;
+import io.datafibre.fibre.sql.analyzer.Authorizer;
+import io.datafibre.fibre.system.ComputeNode;
+import io.datafibre.fibre.system.SystemInfoService;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.warehouse.Warehouse;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
 import org.apache.commons.collections.CollectionUtils;

@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.operator.scalar;
+package io.datafibre.fibre.sql.optimizer.operator.scalar;
 
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.FunctionCallExpr;
-import com.starrocks.catalog.AggregateFunction;
-import com.starrocks.catalog.Function;
-import com.starrocks.catalog.FunctionSet;
-import com.starrocks.catalog.Type;
-import com.starrocks.sql.optimizer.base.ColumnRefSet;
-import com.starrocks.sql.optimizer.operator.OperatorType;
+import io.datafibre.fibre.analysis.FunctionCallExpr;
+import io.datafibre.fibre.catalog.AggregateFunction;
+import io.datafibre.fibre.catalog.Function;
+import io.datafibre.fibre.catalog.FunctionSet;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
+import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
 
 import java.util.ArrayList;
 import java.util.List;

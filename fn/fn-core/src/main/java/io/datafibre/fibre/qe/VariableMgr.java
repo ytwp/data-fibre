@@ -32,29 +32,29 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.qe;
+package io.datafibre.fibre.qe;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.collect.Lists;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.analysis.VariableExpr;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.ErrorCode;
-import com.starrocks.common.ErrorReport;
-import com.starrocks.common.PatternMatcher;
-import com.starrocks.persist.EditLog;
-import com.starrocks.persist.GlobalVarPersistInfo;
-import com.starrocks.persist.metablock.SRMetaBlockEOFException;
-import com.starrocks.persist.metablock.SRMetaBlockException;
-import com.starrocks.persist.metablock.SRMetaBlockID;
-import com.starrocks.persist.metablock.SRMetaBlockReader;
-import com.starrocks.persist.metablock.SRMetaBlockWriter;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.SetType;
-import com.starrocks.sql.ast.SystemVariable;
+import io.datafibre.fibre.analysis.VariableExpr;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.ErrorCode;
+import io.datafibre.fibre.common.ErrorReport;
+import io.datafibre.fibre.common.PatternMatcher;
+import io.datafibre.fibre.persist.EditLog;
+import io.datafibre.fibre.persist.GlobalVarPersistInfo;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockEOFException;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockException;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockID;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockReader;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockWriter;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.SetType;
+import io.datafibre.fibre.sql.ast.SystemVariable;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.similarity.JaroWinklerDistance;
 import org.apache.logging.log4j.LogManager;

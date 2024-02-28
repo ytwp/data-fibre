@@ -12,37 +12,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.task;
+package io.datafibre.fibre.sql.optimizer.task;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.JoinOperator;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.SessionVariable;
-import com.starrocks.sql.optimizer.ChildOutputPropertyGuarantor;
-import com.starrocks.sql.optimizer.Group;
-import com.starrocks.sql.optimizer.GroupExpression;
-import com.starrocks.sql.optimizer.JoinHelper;
-import com.starrocks.sql.optimizer.OutputPropertyDeriver;
-import com.starrocks.sql.optimizer.RequiredPropertyDeriver;
-import com.starrocks.sql.optimizer.Utils;
-import com.starrocks.sql.optimizer.base.CTEProperty;
-import com.starrocks.sql.optimizer.base.ColumnRefSet;
-import com.starrocks.sql.optimizer.base.DistributionSpec;
-import com.starrocks.sql.optimizer.base.EmptyDistributionProperty;
-import com.starrocks.sql.optimizer.base.EmptySortProperty;
-import com.starrocks.sql.optimizer.base.PhysicalPropertySet;
-import com.starrocks.sql.optimizer.cost.CostModel;
-import com.starrocks.sql.optimizer.operator.OperatorType;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalCTEConsumeOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalDistributionOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalHashAggregateOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalJoinOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalNoCTEOperator;
-import com.starrocks.sql.optimizer.operator.scalar.BinaryPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
-import com.starrocks.sql.optimizer.statistics.ColumnStatistic;
-import com.starrocks.sql.optimizer.statistics.Statistics;
+import io.datafibre.fibre.analysis.JoinOperator;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.SessionVariable;
+import io.datafibre.fibre.sql.optimizer.ChildOutputPropertyGuarantor;
+import io.datafibre.fibre.sql.optimizer.Group;
+import io.datafibre.fibre.sql.optimizer.GroupExpression;
+import io.datafibre.fibre.sql.optimizer.JoinHelper;
+import io.datafibre.fibre.sql.optimizer.OutputPropertyDeriver;
+import io.datafibre.fibre.sql.optimizer.RequiredPropertyDeriver;
+import io.datafibre.fibre.sql.optimizer.Utils;
+import io.datafibre.fibre.sql.optimizer.base.CTEProperty;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
+import io.datafibre.fibre.sql.optimizer.base.DistributionSpec;
+import io.datafibre.fibre.sql.optimizer.base.EmptyDistributionProperty;
+import io.datafibre.fibre.sql.optimizer.base.EmptySortProperty;
+import io.datafibre.fibre.sql.optimizer.base.PhysicalPropertySet;
+import io.datafibre.fibre.sql.optimizer.cost.CostModel;
+import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalCTEConsumeOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalDistributionOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalHashAggregateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalJoinOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalNoCTEOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.BinaryPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CallOperator;
+import io.datafibre.fibre.sql.optimizer.statistics.ColumnStatistic;
+import io.datafibre.fibre.sql.optimizer.statistics.Statistics;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

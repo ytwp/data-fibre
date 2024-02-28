@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.persist.metablock;
+package io.datafibre.fibre.persist.metablock;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -32,13 +32,13 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.mysql;
+package io.datafibre.fibre.mysql;
 
 import com.google.common.collect.ImmutableMap;
-import com.starrocks.authentication.UserAuthenticationInfo;
-import com.starrocks.common.Config;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.UserIdentity;
+import io.datafibre.fibre.authentication.UserAuthenticationInfo;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.UserIdentity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -13,9 +13,9 @@
 // limitations under the License.
 
 
-package com.starrocks.authentication;
+package io.datafibre.fibre.authentication;
 
-import com.starrocks.mysql.privilege.AuthPlugin;
+import io.datafibre.fibre.mysql.privilege.AuthPlugin;
 
 import java.util.HashMap;
 import java.util.Map;

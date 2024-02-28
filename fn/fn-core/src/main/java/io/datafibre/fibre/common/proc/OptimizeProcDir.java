@@ -15,23 +15,23 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.proc;
+package io.datafibre.fibre.common.proc;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.starrocks.alter.SchemaChangeHandler;
-import com.starrocks.analysis.BinaryPredicate;
-import com.starrocks.analysis.BinaryType;
-import com.starrocks.analysis.DateLiteral;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.LimitElement;
-import com.starrocks.analysis.StringLiteral;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.util.ListComparator;
-import com.starrocks.common.util.OrderByPair;
+import io.datafibre.fibre.alter.SchemaChangeHandler;
+import io.datafibre.fibre.analysis.BinaryPredicate;
+import io.datafibre.fibre.analysis.BinaryType;
+import io.datafibre.fibre.analysis.DateLiteral;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.LimitElement;
+import io.datafibre.fibre.analysis.StringLiteral;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.util.ListComparator;
+import io.datafibre.fibre.common.util.OrderByPair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

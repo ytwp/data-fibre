@@ -32,35 +32,35 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.Analyzer;
-import com.starrocks.analysis.TupleDescriptor;
-import com.starrocks.catalog.InternalCatalog;
-import com.starrocks.catalog.system.SystemTable;
-import com.starrocks.common.Config;
-import com.starrocks.common.UserException;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.system.Backend;
-import com.starrocks.system.Frontend;
-import com.starrocks.thrift.TFrontend;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.thrift.TPlanNode;
-import com.starrocks.thrift.TPlanNodeType;
-import com.starrocks.thrift.TScanRange;
-import com.starrocks.thrift.TScanRangeLocation;
-import com.starrocks.thrift.TScanRangeLocations;
-import com.starrocks.thrift.TSchemaScanNode;
-import com.starrocks.thrift.TUserIdentity;
+import io.datafibre.fibre.analysis.Analyzer;
+import io.datafibre.fibre.analysis.TupleDescriptor;
+import io.datafibre.fibre.catalog.InternalCatalog;
+import io.datafibre.fibre.catalog.system.SystemTable;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.system.Backend;
+import io.datafibre.fibre.system.Frontend;
+import io.datafibre.fibre.thrift.TFrontend;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TPlanNode;
+import io.datafibre.fibre.thrift.TPlanNodeType;
+import io.datafibre.fibre.thrift.TScanRange;
+import io.datafibre.fibre.thrift.TScanRangeLocation;
+import io.datafibre.fibre.thrift.TScanRangeLocations;
+import io.datafibre.fibre.thrift.TSchemaScanNode;
+import io.datafibre.fibre.thrift.TUserIdentity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
-import static com.starrocks.catalog.InternalCatalog.DEFAULT_INTERNAL_CATALOG_NAME;
+import static io.datafibre.fibre.catalog.InternalCatalog.DEFAULT_INTERNAL_CATALOG_NAME;
 
 /**
  * Full scan of an SCHEMA table.

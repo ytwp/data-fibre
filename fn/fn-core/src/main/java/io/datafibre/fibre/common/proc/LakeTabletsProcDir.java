@@ -13,22 +13,22 @@
 // limitations under the License.
 
 
-package com.starrocks.common.proc;
+package io.datafibre.fibre.common.proc;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.MaterializedIndex;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Tablet;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.util.ListComparator;
-import com.starrocks.common.util.concurrent.lock.LockType;
-import com.starrocks.common.util.concurrent.lock.Locker;
-import com.starrocks.lake.LakeTablet;
-import com.starrocks.monitor.unit.ByteSizeValue;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.MaterializedIndex;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Tablet;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.util.ListComparator;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.lake.LakeTablet;
+import io.datafibre.fibre.monitor.unit.ByteSizeValue;
 
 import java.util.Arrays;
 import java.util.Collections;

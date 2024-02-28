@@ -12,23 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.rule.transformation.materialization.equivalent;
+package io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.equivalent;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.Expr;
-import com.starrocks.catalog.ArrayType;
-import com.starrocks.catalog.Function;
-import com.starrocks.catalog.FunctionSet;
-import com.starrocks.catalog.Type;
-import com.starrocks.sql.optimizer.operator.OperatorType;
-import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.catalog.ArrayType;
+import io.datafibre.fibre.catalog.Function;
+import io.datafibre.fibre.catalog.FunctionSet;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CallOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
 
 import java.util.Map;
 
-import static com.starrocks.catalog.FunctionSet.MULTI_DISTINCT_COUNT;
+import static io.datafibre.fibre.catalog.FunctionSet.MULTI_DISTINCT_COUNT;
 
 /**
  * Rewrite array_agg function

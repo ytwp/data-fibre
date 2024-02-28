@@ -12,20 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.delta;
+package io.datafibre.fibre.connector.delta;
 
-import com.starrocks.connector.HdfsEnvironment;
-import com.starrocks.connector.MetastoreType;
-import com.starrocks.connector.hive.CachingHiveMetastore;
-import com.starrocks.connector.hive.CachingHiveMetastoreConf;
-import com.starrocks.connector.hive.HiveMetastoreOperations;
-import com.starrocks.connector.hive.IHiveMetastore;
+import io.datafibre.fibre.connector.HdfsEnvironment;
+import io.datafibre.fibre.connector.MetastoreType;
+import io.datafibre.fibre.connector.hive.CachingHiveMetastore;
+import io.datafibre.fibre.connector.hive.CachingHiveMetastoreConf;
+import io.datafibre.fibre.connector.hive.HiveMetastoreOperations;
+import io.datafibre.fibre.connector.hive.IHiveMetastore;
 import org.apache.hadoop.hive.metastore.conf.MetastoreConf;
 
 import java.util.Map;
 
-import static com.starrocks.connector.delta.DeltaLakeConnector.HIVE_METASTORE_URIS;
-import static com.starrocks.connector.hive.CachingHiveMetastore.createQueryLevelInstance;
+import static io.datafibre.fibre.connector.delta.DeltaLakeConnector.HIVE_METASTORE_URIS;
+import static io.datafibre.fibre.connector.hive.CachingHiveMetastore.createQueryLevelInstance;
 
 public class DeltaLakeMetadataFactory {
     private final String catalogName;

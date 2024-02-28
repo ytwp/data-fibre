@@ -32,23 +32,23 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.proc;
+package io.datafibre.fibre.common.proc;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.InternalCatalog;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Replica;
-import com.starrocks.common.Pair;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.privilege.AccessDeniedException;
-import com.starrocks.privilege.ObjectType;
-import com.starrocks.privilege.PrivilegeType;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.analyzer.Authorizer;
-import com.starrocks.system.Backend;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.InternalCatalog;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Replica;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.privilege.AccessDeniedException;
+import io.datafibre.fibre.privilege.ObjectType;
+import io.datafibre.fibre.privilege.PrivilegeType;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.analyzer.Authorizer;
+import io.datafibre.fibre.system.Backend;
 
 import java.util.Arrays;
 import java.util.List;

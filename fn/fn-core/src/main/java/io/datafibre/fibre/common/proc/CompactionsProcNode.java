@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.common.proc;
+package io.datafibre.fibre.common.proc;
 
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.lake.compaction.CompactionMgr;
-import com.starrocks.lake.compaction.CompactionRecord;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.lake.compaction.CompactionMgr;
+import io.datafibre.fibre.lake.compaction.CompactionRecord;
+import io.datafibre.fibre.server.GlobalStateMgr;
 
 import java.util.ArrayList;
 import java.util.Arrays;

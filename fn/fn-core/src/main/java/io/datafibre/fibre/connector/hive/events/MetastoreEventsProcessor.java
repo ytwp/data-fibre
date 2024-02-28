@@ -13,14 +13,14 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.hive.events;
+package io.datafibre.fibre.connector.hive.events;
 
 import com.google.common.collect.Lists;
-import com.starrocks.common.Config;
-import com.starrocks.common.ThreadPoolManager;
-import com.starrocks.common.util.FrontendDaemon;
-import com.starrocks.connector.hive.CacheUpdateProcessor;
-import com.starrocks.server.CatalogMgr;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.ThreadPoolManager;
+import io.datafibre.fibre.common.util.FrontendDaemon;
+import io.datafibre.fibre.connector.hive.CacheUpdateProcessor;
+import io.datafibre.fibre.server.CatalogMgr;
 import org.apache.hadoop.hive.metastore.IMetaStoreClient;
 import org.apache.hadoop.hive.metastore.api.NotificationEvent;
 import org.apache.hadoop.hive.metastore.api.NotificationEventResponse;
@@ -49,7 +49,7 @@ import javax.annotation.Nullable;
  * Metastore clients like Apache Hive or Apache Spark configured to talk with the same metastore.
  * <p>
  * This class is used to poll metastore for such events at a given frequency. By observing
- * such events, we can take appropriate action on the {@link com.starrocks.connector.hive.CachingHiveMetastore}
+ * such events, we can take appropriate action on the {@link io.datafibre.fibre.connector.hive.CachingHiveMetastore}
  * (refresh/invalidate/add/remove) so that represents the latest information
  * available in metastore. We keep track of the last synced event id in each polling
  * iteration so the next batch can be requested appropriately. The current batch size is

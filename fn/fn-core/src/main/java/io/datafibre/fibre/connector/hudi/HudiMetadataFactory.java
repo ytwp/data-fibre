@@ -12,25 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.hudi;
+package io.datafibre.fibre.connector.hudi;
 
-import com.starrocks.connector.CachingRemoteFileConf;
-import com.starrocks.connector.CachingRemoteFileIO;
-import com.starrocks.connector.HdfsEnvironment;
-import com.starrocks.connector.MetastoreType;
-import com.starrocks.connector.RemoteFileIO;
-import com.starrocks.connector.RemoteFileOperations;
-import com.starrocks.connector.hive.CacheUpdateProcessor;
-import com.starrocks.connector.hive.CachingHiveMetastore;
-import com.starrocks.connector.hive.CachingHiveMetastoreConf;
-import com.starrocks.connector.hive.HiveMetastoreOperations;
-import com.starrocks.connector.hive.HiveStatisticsProvider;
-import com.starrocks.connector.hive.IHiveMetastore;
+import io.datafibre.fibre.connector.CachingRemoteFileConf;
+import io.datafibre.fibre.connector.CachingRemoteFileIO;
+import io.datafibre.fibre.connector.HdfsEnvironment;
+import io.datafibre.fibre.connector.MetastoreType;
+import io.datafibre.fibre.connector.RemoteFileIO;
+import io.datafibre.fibre.connector.RemoteFileOperations;
+import io.datafibre.fibre.connector.hive.CacheUpdateProcessor;
+import io.datafibre.fibre.connector.hive.CachingHiveMetastore;
+import io.datafibre.fibre.connector.hive.CachingHiveMetastoreConf;
+import io.datafibre.fibre.connector.hive.HiveMetastoreOperations;
+import io.datafibre.fibre.connector.hive.HiveStatisticsProvider;
+import io.datafibre.fibre.connector.hive.IHiveMetastore;
 
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 
-import static com.starrocks.connector.hive.CachingHiveMetastore.createQueryLevelInstance;
+import static io.datafibre.fibre.connector.hive.CachingHiveMetastore.createQueryLevelInstance;
 
 public class HudiMetadataFactory {
     private final String catalogName;

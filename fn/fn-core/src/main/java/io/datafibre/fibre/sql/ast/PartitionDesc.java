@@ -13,18 +13,18 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.analysis.ParseNode;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.DataProperty;
-import com.starrocks.catalog.PartitionInfo;
-import com.starrocks.catalog.PartitionType;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.DdlException;
-import com.starrocks.lake.DataCacheInfo;
-import com.starrocks.sql.parser.NodePosition;
-import com.starrocks.thrift.TTabletType;
+import io.datafibre.fibre.analysis.ParseNode;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.DataProperty;
+import io.datafibre.fibre.catalog.PartitionInfo;
+import io.datafibre.fibre.catalog.PartitionType;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.lake.DataCacheInfo;
+import io.datafibre.fibre.sql.parser.NodePosition;
+import io.datafibre.fibre.thrift.TTabletType;
 import org.apache.commons.lang.NotImplementedException;
 
 import java.util.List;

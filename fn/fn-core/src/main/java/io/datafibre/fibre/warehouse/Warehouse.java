@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.warehouse;
+package io.datafibre.fibre.warehouse;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.common.proc.BaseProcResult;
-import com.starrocks.common.proc.ProcResult;
-import com.starrocks.persist.gson.GsonUtils;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.common.proc.BaseProcResult;
+import io.datafibre.fibre.common.proc.ProcResult;
+import io.datafibre.fibre.persist.gson.GsonUtils;
 
 import java.io.DataInput;
 import java.io.DataOutput;

@@ -32,16 +32,16 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.proc;
+package io.datafibre.fibre.common.proc;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.util.QueryStatisticsFormatter;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.qe.QeProcessorImpl;
-import com.starrocks.qe.QueryStatisticsItem;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.util.QueryStatisticsFormatter;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.qe.QeProcessorImpl;
+import io.datafibre.fibre.qe.QueryStatisticsItem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

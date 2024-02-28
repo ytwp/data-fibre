@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.task;
+package io.datafibre.fibre.sql.optimizer.task;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.common.profile.Timer;
-import com.starrocks.common.profile.Tracers;
-import com.starrocks.qe.SessionVariable;
-import com.starrocks.sql.optimizer.ExpressionContext;
-import com.starrocks.sql.optimizer.OptExpression;
-import com.starrocks.sql.optimizer.OptimizerTraceUtil;
-import com.starrocks.sql.optimizer.operator.OperatorType;
-import com.starrocks.sql.optimizer.operator.pattern.Pattern;
-import com.starrocks.sql.optimizer.rule.Rule;
+import io.datafibre.fibre.common.profile.Timer;
+import io.datafibre.fibre.common.profile.Tracers;
+import io.datafibre.fibre.qe.SessionVariable;
+import io.datafibre.fibre.sql.optimizer.ExpressionContext;
+import io.datafibre.fibre.sql.optimizer.OptExpression;
+import io.datafibre.fibre.sql.optimizer.OptimizerTraceUtil;
+import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
+import io.datafibre.fibre.sql.optimizer.operator.pattern.Pattern;
+import io.datafibre.fibre.sql.optimizer.rule.Rule;
 
 import java.util.List;
 

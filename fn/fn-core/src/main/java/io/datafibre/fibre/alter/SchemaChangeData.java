@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.alter;
+package io.datafibre.fibre.alter;
 
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.Index;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.common.Config;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.Index;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.common.Config;
 
 import java.util.Collections;
 import java.util.HashMap;

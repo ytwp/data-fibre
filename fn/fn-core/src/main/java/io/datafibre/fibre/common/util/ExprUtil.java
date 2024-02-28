@@ -11,11 +11,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.starrocks.common.util;
+package io.datafibre.fibre.common.util;
 
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.IntLiteral;
-import com.starrocks.analysis.LargeIntLiteral;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.IntLiteral;
+import io.datafibre.fibre.analysis.LargeIntLiteral;
 
 public abstract class ExprUtil {
     public static boolean isPositiveConstantInteger(Expr expr) {

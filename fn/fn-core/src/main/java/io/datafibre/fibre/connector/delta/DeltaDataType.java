@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.delta;
+package io.datafibre.fibre.connector.delta;
 
 import io.delta.standalone.types.ArrayType;
 import io.delta.standalone.types.BinaryType;
@@ -81,7 +81,7 @@ public enum DeltaDataType {
 
     /**
      * @param deltaDataType A concrete implementation of {@link DataType} class that we would
-     *                        like to map to {@link com.starrocks.catalog.Type} instance.
+     *                        like to map to {@link io.datafibre.fibre.catalog.Type} instance.
      * @return mapped instance of {@link DeltaDataType} Enum.
      */
     public static DeltaDataType instanceFrom(Class<? extends DataType> deltaDataType) {

@@ -32,28 +32,28 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.starrocks.analysis.Expr;
-import com.starrocks.common.Pair;
-import com.starrocks.common.TreeNode;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.SessionVariable;
-import com.starrocks.sql.optimizer.Utils;
-import com.starrocks.sql.optimizer.statistics.ColumnDict;
-import com.starrocks.thrift.TCacheParam;
-import com.starrocks.thrift.TDataSink;
-import com.starrocks.thrift.TExplainLevel;
-import com.starrocks.thrift.TExpr;
-import com.starrocks.thrift.TGlobalDict;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.thrift.TPartitionType;
-import com.starrocks.thrift.TPlanFragment;
-import com.starrocks.thrift.TResultSinkType;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.TreeNode;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.SessionVariable;
+import io.datafibre.fibre.sql.optimizer.Utils;
+import io.datafibre.fibre.sql.optimizer.statistics.ColumnDict;
+import io.datafibre.fibre.thrift.TCacheParam;
+import io.datafibre.fibre.thrift.TDataSink;
+import io.datafibre.fibre.thrift.TExplainLevel;
+import io.datafibre.fibre.thrift.TExpr;
+import io.datafibre.fibre.thrift.TGlobalDict;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TPartitionType;
+import io.datafibre.fibre.thrift.TPlanFragment;
+import io.datafibre.fibre.thrift.TResultSinkType;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 

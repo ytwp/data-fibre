@@ -12,27 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.load.pipe;
+package io.datafibre.fibre.load.pipe;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.analysis.BrokerDesc;
-import com.starrocks.catalog.TableFunctionTable;
-import com.starrocks.common.UserException;
-import com.starrocks.fs.HdfsUtil;
-import com.starrocks.load.pipe.filelist.FileListRepo;
-import com.starrocks.load.pipe.filelist.FileListTableRepo;
-import com.starrocks.persist.gson.GsonPostProcessable;
-import com.starrocks.qe.OriginStatement;
-import com.starrocks.qe.SessionVariable;
-import com.starrocks.sql.analyzer.AstToSQLBuilder;
-import com.starrocks.sql.ast.FileTableFunctionRelation;
-import com.starrocks.sql.ast.InsertStmt;
-import com.starrocks.sql.ast.SelectRelation;
-import com.starrocks.sql.ast.StatementBase;
-import com.starrocks.sql.parser.NodePosition;
-import com.starrocks.sql.parser.SqlParser;
+import io.datafibre.fibre.analysis.BrokerDesc;
+import io.datafibre.fibre.catalog.TableFunctionTable;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.fs.HdfsUtil;
+import io.datafibre.fibre.load.pipe.filelist.FileListRepo;
+import io.datafibre.fibre.load.pipe.filelist.FileListTableRepo;
+import io.datafibre.fibre.persist.gson.GsonPostProcessable;
+import io.datafibre.fibre.qe.OriginStatement;
+import io.datafibre.fibre.qe.SessionVariable;
+import io.datafibre.fibre.sql.analyzer.AstToSQLBuilder;
+import io.datafibre.fibre.sql.ast.FileTableFunctionRelation;
+import io.datafibre.fibre.sql.ast.InsertStmt;
+import io.datafibre.fibre.sql.ast.SelectRelation;
+import io.datafibre.fibre.sql.ast.StatementBase;
+import io.datafibre.fibre.sql.parser.NodePosition;
+import io.datafibre.fibre.sql.parser.SqlParser;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.hadoop.fs.FileStatus;

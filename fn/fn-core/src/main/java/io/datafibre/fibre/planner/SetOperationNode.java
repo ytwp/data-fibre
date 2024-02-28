@@ -32,29 +32,29 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.starrocks.analysis.Analyzer;
-import com.starrocks.analysis.DescriptorTable;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.SlotDescriptor;
-import com.starrocks.analysis.SlotId;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.analysis.TupleId;
-import com.starrocks.thrift.TExceptNode;
-import com.starrocks.thrift.TExplainLevel;
-import com.starrocks.thrift.TExpr;
-import com.starrocks.thrift.TIntersectNode;
-import com.starrocks.thrift.TNormalPlanNode;
-import com.starrocks.thrift.TNormalSetOperationNode;
-import com.starrocks.thrift.TPlanNode;
-import com.starrocks.thrift.TPlanNodeType;
-import com.starrocks.thrift.TUnionNode;
+import io.datafibre.fibre.analysis.Analyzer;
+import io.datafibre.fibre.analysis.DescriptorTable;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.SlotDescriptor;
+import io.datafibre.fibre.analysis.SlotId;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.analysis.TupleId;
+import io.datafibre.fibre.thrift.TExceptNode;
+import io.datafibre.fibre.thrift.TExplainLevel;
+import io.datafibre.fibre.thrift.TExpr;
+import io.datafibre.fibre.thrift.TIntersectNode;
+import io.datafibre.fibre.thrift.TNormalPlanNode;
+import io.datafibre.fibre.thrift.TNormalSetOperationNode;
+import io.datafibre.fibre.thrift.TPlanNode;
+import io.datafibre.fibre.thrift.TPlanNodeType;
+import io.datafibre.fibre.thrift.TUnionNode;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

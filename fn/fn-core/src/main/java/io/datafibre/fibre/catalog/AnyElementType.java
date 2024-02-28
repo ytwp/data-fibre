@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 public class AnyElementType extends PseudoType {
     @Override

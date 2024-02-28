@@ -32,12 +32,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.persist;
+package io.datafibre.fibre.persist;
 
 import com.google.common.collect.Lists;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.common.Pair;
-import com.starrocks.common.io.Writable;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.io.Writable;
 
 import java.io.DataInput;
 import java.io.DataOutput;

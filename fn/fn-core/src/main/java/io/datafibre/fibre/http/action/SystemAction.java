@@ -32,24 +32,24 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.http.action;
+package io.datafibre.fibre.http.action;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.starrocks.analysis.RedirectStatus;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.proc.ProcDirInterface;
-import com.starrocks.common.proc.ProcNodeInterface;
-import com.starrocks.common.proc.ProcResult;
-import com.starrocks.http.ActionController;
-import com.starrocks.http.BaseRequest;
-import com.starrocks.http.BaseResponse;
-import com.starrocks.http.IllegalArgException;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.LeaderOpExecutor;
-import com.starrocks.qe.OriginStatement;
-import com.starrocks.qe.ShowResultSet;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.analysis.RedirectStatus;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.proc.ProcDirInterface;
+import io.datafibre.fibre.common.proc.ProcNodeInterface;
+import io.datafibre.fibre.common.proc.ProcResult;
+import io.datafibre.fibre.http.ActionController;
+import io.datafibre.fibre.http.BaseRequest;
+import io.datafibre.fibre.http.BaseResponse;
+import io.datafibre.fibre.http.IllegalArgException;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.LeaderOpExecutor;
+import io.datafibre.fibre.qe.OriginStatement;
+import io.datafibre.fibre.qe.ShowResultSet;
+import io.datafibre.fibre.server.GlobalStateMgr;
 import io.netty.handler.codec.http.HttpMethod;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.apache.logging.log4j.LogManager;

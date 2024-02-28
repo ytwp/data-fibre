@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.privilege;
+package io.datafibre.fibre.privilege;
 
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.InternalCatalog;
-import com.starrocks.catalog.Table;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.InternalCatalog;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.server.GlobalStateMgr;
 
 import java.util.List;
 import java.util.Objects;

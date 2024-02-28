@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.util.concurrent;
+package io.datafibre.fibre.common.util.concurrent;
 
 import java.util.concurrent.locks.ReentrantLock;
 

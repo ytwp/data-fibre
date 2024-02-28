@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.transaction;
+package io.datafibre.fibre.transaction;
 
 public class TabletQuorumFailedException extends TransactionException {
     public TabletQuorumFailedException(String msg) {

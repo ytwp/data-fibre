@@ -13,20 +13,20 @@
 // limitations under the License.
 
 
-package com.starrocks.http.meta;
+package io.datafibre.fibre.http.meta;
 
 import com.google.common.base.Strings;
-import com.starrocks.common.DdlException;
-import com.starrocks.http.ActionController;
-import com.starrocks.http.BaseRequest;
-import com.starrocks.http.BaseResponse;
-import com.starrocks.http.IllegalArgException;
-import com.starrocks.http.rest.RestBaseAction;
-import com.starrocks.http.rest.RestBaseResult;
-import com.starrocks.privilege.AccessDeniedException;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.UserIdentity;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.http.ActionController;
+import io.datafibre.fibre.http.BaseRequest;
+import io.datafibre.fibre.http.BaseResponse;
+import io.datafibre.fibre.http.IllegalArgException;
+import io.datafibre.fibre.http.rest.RestBaseAction;
+import io.datafibre.fibre.http.rest.RestBaseResult;
+import io.datafibre.fibre.privilege.AccessDeniedException;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.UserIdentity;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.logging.log4j.LogManager;

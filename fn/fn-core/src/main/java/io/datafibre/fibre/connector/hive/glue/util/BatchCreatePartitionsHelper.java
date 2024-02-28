@@ -13,15 +13,15 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.hive.glue.util;
+package io.datafibre.fibre.connector.hive.glue.util;
 
 import com.amazonaws.services.glue.model.EntityNotFoundException;
 import com.amazonaws.services.glue.model.Partition;
 import com.amazonaws.services.glue.model.PartitionError;
 import com.google.common.collect.Lists;
-import com.starrocks.connector.hive.glue.converters.CatalogToHiveConverter;
-import com.starrocks.connector.hive.glue.converters.GlueInputConverter;
-import com.starrocks.connector.hive.glue.metastore.AWSGlueMetastore;
+import io.datafibre.fibre.connector.hive.glue.converters.CatalogToHiveConverter;
+import io.datafibre.fibre.connector.hive.glue.converters.GlueInputConverter;
+import io.datafibre.fibre.connector.hive.glue.metastore.AWSGlueMetastore;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.hive.metastore.api.AlreadyExistsException;
 import org.apache.logging.log4j.LogManager;

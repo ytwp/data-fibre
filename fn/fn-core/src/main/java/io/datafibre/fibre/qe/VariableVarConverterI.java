@@ -15,9 +15,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.qe;
+package io.datafibre.fibre.qe;
 
-import com.starrocks.common.DdlException;
+import io.datafibre.fibre.common.DdlException;
 
 public interface VariableVarConverterI {
     public String convert(String value) throws DdlException;

@@ -13,24 +13,24 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer;
+package io.datafibre.fibre.sql.optimizer;
 
 import com.google.common.collect.Lists;
-import com.starrocks.sql.optimizer.base.DistributionCol;
-import com.starrocks.sql.optimizer.base.DistributionProperty;
-import com.starrocks.sql.optimizer.base.DistributionSpec;
-import com.starrocks.sql.optimizer.base.HashDistributionDesc;
-import com.starrocks.sql.optimizer.base.HashDistributionSpec;
-import com.starrocks.sql.optimizer.base.PhysicalPropertySet;
-import com.starrocks.sql.optimizer.operator.Operator;
-import com.starrocks.sql.optimizer.operator.OperatorVisitor;
+import io.datafibre.fibre.sql.optimizer.base.DistributionCol;
+import io.datafibre.fibre.sql.optimizer.base.DistributionProperty;
+import io.datafibre.fibre.sql.optimizer.base.DistributionSpec;
+import io.datafibre.fibre.sql.optimizer.base.HashDistributionDesc;
+import io.datafibre.fibre.sql.optimizer.base.HashDistributionSpec;
+import io.datafibre.fibre.sql.optimizer.base.PhysicalPropertySet;
+import io.datafibre.fibre.sql.optimizer.operator.Operator;
+import io.datafibre.fibre.sql.optimizer.operator.OperatorVisitor;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.starrocks.sql.optimizer.base.HashDistributionDesc.SourceType.SHUFFLE_JOIN;
+import static io.datafibre.fibre.sql.optimizer.base.HashDistributionDesc.SourceType.SHUFFLE_JOIN;
 
 public abstract class PropertyDeriverBase<R, C> extends OperatorVisitor<R, C> {
 

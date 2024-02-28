@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.iceberg;
+package io.datafibre.fibre.connector.iceberg;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.Database;
-import com.starrocks.common.MetaNotFoundException;
-import com.starrocks.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.common.MetaNotFoundException;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
 import org.apache.iceberg.BaseTable;
 import org.apache.iceberg.PartitionSpec;
 import org.apache.iceberg.Schema;

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.hive.glue.metastore;
+package io.datafibre.fibre.connector.hive.glue.metastore;
 
 import com.amazonaws.services.glue.model.Database;
 import com.amazonaws.services.glue.model.DatabaseInput;
@@ -23,7 +23,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Ticker;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.starrocks.connector.hive.glue.util.AWSGlueConfig;
+import io.datafibre.fibre.connector.hive.glue.util.AWSGlueConfig;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

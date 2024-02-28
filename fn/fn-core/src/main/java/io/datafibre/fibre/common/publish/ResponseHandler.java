@@ -15,10 +15,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.publish;
+package io.datafibre.fibre.common.publish;
 
 import com.google.common.collect.Sets;
-import com.starrocks.system.Backend;
+import io.datafibre.fibre.system.Backend;
 
 import java.util.Collection;
 import java.util.Set;

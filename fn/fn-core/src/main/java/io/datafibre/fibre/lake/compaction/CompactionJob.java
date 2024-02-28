@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.lake.compaction;
+package io.datafibre.fibre.lake.compaction;
 
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.PhysicalPartition;
-import com.starrocks.catalog.Table;
-import com.starrocks.transaction.TabletCommitInfo;
-import com.starrocks.transaction.VisibleStateWaiter;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.PhysicalPartition;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.transaction.TabletCommitInfo;
+import io.datafibre.fibre.transaction.VisibleStateWaiter;
 
 import java.util.List;
 import java.util.Objects;

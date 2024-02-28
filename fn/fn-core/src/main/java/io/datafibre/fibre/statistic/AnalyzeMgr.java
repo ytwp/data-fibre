@@ -12,39 +12,39 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.statistic;
+package io.datafibre.fibre.statistic;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Partition;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.Config;
-import com.starrocks.common.MetaNotFoundException;
-import com.starrocks.common.Pair;
-import com.starrocks.common.ThreadPoolManager;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.load.loadv2.LoadJobFinalOperation;
-import com.starrocks.load.loadv2.ManualLoadTxnCommitAttachment;
-import com.starrocks.load.routineload.RLTaskTxnCommitAttachment;
-import com.starrocks.metric.TableMetricsEntity;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.persist.metablock.SRMetaBlockEOFException;
-import com.starrocks.persist.metablock.SRMetaBlockException;
-import com.starrocks.persist.metablock.SRMetaBlockID;
-import com.starrocks.persist.metablock.SRMetaBlockReader;
-import com.starrocks.persist.metablock.SRMetaBlockWriter;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.common.MetaUtils;
-import com.starrocks.transaction.InsertTxnCommitAttachment;
-import com.starrocks.transaction.TransactionState;
-import com.starrocks.transaction.TxnCommitAttachment;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.MetaNotFoundException;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.ThreadPoolManager;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.load.loadv2.LoadJobFinalOperation;
+import io.datafibre.fibre.load.loadv2.ManualLoadTxnCommitAttachment;
+import io.datafibre.fibre.load.routineload.RLTaskTxnCommitAttachment;
+import io.datafibre.fibre.metric.TableMetricsEntity;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockEOFException;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockException;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockID;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockReader;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockWriter;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.common.MetaUtils;
+import io.datafibre.fibre.transaction.InsertTxnCommitAttachment;
+import io.datafibre.fibre.transaction.TransactionState;
+import io.datafibre.fibre.transaction.TxnCommitAttachment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

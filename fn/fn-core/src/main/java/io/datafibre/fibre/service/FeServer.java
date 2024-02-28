@@ -32,10 +32,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.service;
+package io.datafibre.fibre.service;
 
-import com.starrocks.common.ThriftServer;
-import com.starrocks.thrift.FrontendService;
+import io.datafibre.fibre.common.ThriftServer;
+import io.datafibre.fibre.thrift.FrontendService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.thrift.TProcessor;

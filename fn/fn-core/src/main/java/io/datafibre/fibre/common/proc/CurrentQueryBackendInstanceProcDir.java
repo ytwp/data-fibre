@@ -15,15 +15,15 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.proc;
+package io.datafibre.fibre.common.proc;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.util.DebugUtil;
-import com.starrocks.qe.QeProcessorImpl;
-import com.starrocks.qe.QueryStatisticsItem;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.util.DebugUtil;
+import io.datafibre.fibre.qe.QeProcessorImpl;
+import io.datafibre.fibre.qe.QueryStatisticsItem;
 
 import java.util.Comparator;
 import java.util.List;

@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.metric;
+package io.datafibre.fibre.metric;
 
 /*
  * Counter metric can only be increased

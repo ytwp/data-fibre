@@ -13,16 +13,16 @@
 // limitations under the License.
 
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.thrift.TDataSink;
-import com.starrocks.thrift.TDataSinkType;
-import com.starrocks.thrift.TDataStreamSink;
-import com.starrocks.thrift.TExplainLevel;
-import com.starrocks.thrift.TMultiCastDataStreamSink;
-import com.starrocks.thrift.TPlanFragmentDestination;
+import io.datafibre.fibre.thrift.TDataSink;
+import io.datafibre.fibre.thrift.TDataSinkType;
+import io.datafibre.fibre.thrift.TDataStreamSink;
+import io.datafibre.fibre.thrift.TExplainLevel;
+import io.datafibre.fibre.thrift.TMultiCastDataStreamSink;
+import io.datafibre.fibre.thrift.TPlanFragmentDestination;
 
 import java.util.List;
 import java.util.stream.Collectors;

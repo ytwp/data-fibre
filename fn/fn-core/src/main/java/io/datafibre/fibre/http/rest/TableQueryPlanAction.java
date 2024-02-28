@@ -32,47 +32,47 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.http.rest;
+package io.datafibre.fibre.http.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
-import com.starrocks.analysis.TableName;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.FeConstants;
-import com.starrocks.common.StarRocksHttpException;
-import com.starrocks.common.util.concurrent.lock.LockType;
-import com.starrocks.common.util.concurrent.lock.Locker;
-import com.starrocks.http.ActionController;
-import com.starrocks.http.BaseRequest;
-import com.starrocks.http.BaseResponse;
-import com.starrocks.http.IllegalArgException;
-import com.starrocks.planner.PlanFragment;
-import com.starrocks.privilege.AccessDeniedException;
-import com.starrocks.privilege.PrivilegeType;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.StatementPlanner;
-import com.starrocks.sql.analyzer.AnalyzerUtils;
-import com.starrocks.sql.analyzer.Authorizer;
-import com.starrocks.sql.ast.QueryStatement;
-import com.starrocks.sql.ast.SelectRelation;
-import com.starrocks.sql.ast.StatementBase;
-import com.starrocks.sql.ast.SubqueryRelation;
-import com.starrocks.sql.ast.TableRelation;
-import com.starrocks.sql.plan.ExecPlan;
-import com.starrocks.thrift.TDataSink;
-import com.starrocks.thrift.TDataSinkType;
-import com.starrocks.thrift.TInternalScanRange;
-import com.starrocks.thrift.TMemoryScratchSink;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.thrift.TPlanFragment;
-import com.starrocks.thrift.TQueryPlanInfo;
-import com.starrocks.thrift.TScanRangeLocations;
-import com.starrocks.thrift.TTabletVersionInfo;
-import com.starrocks.thrift.TUniqueId;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.FeConstants;
+import io.datafibre.fibre.common.StarRocksHttpException;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.http.ActionController;
+import io.datafibre.fibre.http.BaseRequest;
+import io.datafibre.fibre.http.BaseResponse;
+import io.datafibre.fibre.http.IllegalArgException;
+import io.datafibre.fibre.planner.PlanFragment;
+import io.datafibre.fibre.privilege.AccessDeniedException;
+import io.datafibre.fibre.privilege.PrivilegeType;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.StatementPlanner;
+import io.datafibre.fibre.sql.analyzer.AnalyzerUtils;
+import io.datafibre.fibre.sql.analyzer.Authorizer;
+import io.datafibre.fibre.sql.ast.QueryStatement;
+import io.datafibre.fibre.sql.ast.SelectRelation;
+import io.datafibre.fibre.sql.ast.StatementBase;
+import io.datafibre.fibre.sql.ast.SubqueryRelation;
+import io.datafibre.fibre.sql.ast.TableRelation;
+import io.datafibre.fibre.sql.plan.ExecPlan;
+import io.datafibre.fibre.thrift.TDataSink;
+import io.datafibre.fibre.thrift.TDataSinkType;
+import io.datafibre.fibre.thrift.TInternalScanRange;
+import io.datafibre.fibre.thrift.TMemoryScratchSink;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TPlanFragment;
+import io.datafibre.fibre.thrift.TQueryPlanInfo;
+import io.datafibre.fibre.thrift.TScanRangeLocations;
+import io.datafibre.fibre.thrift.TTabletVersionInfo;
+import io.datafibre.fibre.thrift.TUniqueId;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.logging.log4j.LogManager;
@@ -212,7 +212,7 @@ public class TableQueryPlanAction extends RestBaseAction {
              */
             context.getSessionVariable().setSingleNodeExecPlan(true);
             statementBase =
-                    com.starrocks.sql.parser.SqlParser.parse(sql, context.getSessionVariable()).get(0);
+                    io.datafibre.fibre.sql.parser.SqlParser.parse(sql, context.getSessionVariable()).get(0);
             execPlan = new StatementPlanner().plan(statementBase, context);
             context.getSessionVariable().setSingleNodeExecPlan(false);
         } catch (Exception e) {

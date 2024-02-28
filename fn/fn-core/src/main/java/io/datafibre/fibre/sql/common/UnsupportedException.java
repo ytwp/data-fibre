@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.common;
+package io.datafibre.fibre.sql.common;
 
 public class UnsupportedException extends StarRocksPlannerException {
     private UnsupportedException(String formatString) {

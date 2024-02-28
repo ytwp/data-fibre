@@ -15,11 +15,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.task;
+package io.datafibre.fibre.task;
 
-import com.starrocks.thrift.TClearTransactionTaskRequest;
-import com.starrocks.thrift.TTaskType;
-import com.starrocks.thrift.TTxnType;
+import io.datafibre.fibre.thrift.TClearTransactionTaskRequest;
+import io.datafibre.fibre.thrift.TTaskType;
+import io.datafibre.fibre.thrift.TTxnType;
 
 import java.util.List;
 

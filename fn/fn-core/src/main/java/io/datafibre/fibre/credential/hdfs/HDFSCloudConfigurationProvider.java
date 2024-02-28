@@ -12,26 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.credential.hdfs;
+package io.datafibre.fibre.credential.hdfs;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.credential.CloudConfiguration;
-import com.starrocks.credential.CloudConfigurationProvider;
+import io.datafibre.fibre.credential.CloudConfiguration;
+import io.datafibre.fibre.credential.CloudConfigurationProvider;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.starrocks.credential.CloudConfigurationConstants.HADOOP_KERBEROS_KEYTAB;
-import static com.starrocks.credential.CloudConfigurationConstants.HADOOP_KERBEROS_KEYTAB_CONTENT;
-import static com.starrocks.credential.CloudConfigurationConstants.HDFS_AUTHENTICATION;
-import static com.starrocks.credential.CloudConfigurationConstants.HDFS_KERBEROS_KEYTAB_CONTENT_DEPRECATED;
-import static com.starrocks.credential.CloudConfigurationConstants.HDFS_KERBEROS_KEYTAB_DEPRECATED;
-import static com.starrocks.credential.CloudConfigurationConstants.HDFS_KERBEROS_PRINCIPAL;
-import static com.starrocks.credential.CloudConfigurationConstants.HDFS_KERBEROS_PRINCIPAL_DEPRECATED;
-import static com.starrocks.credential.CloudConfigurationConstants.HDFS_PASSWORD;
-import static com.starrocks.credential.CloudConfigurationConstants.HDFS_PASSWORD_DEPRECATED;
-import static com.starrocks.credential.CloudConfigurationConstants.HDFS_USERNAME;
-import static com.starrocks.credential.CloudConfigurationConstants.HDFS_USERNAME_DEPRECATED;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.HADOOP_KERBEROS_KEYTAB;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.HADOOP_KERBEROS_KEYTAB_CONTENT;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.HDFS_AUTHENTICATION;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.HDFS_KERBEROS_KEYTAB_CONTENT_DEPRECATED;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.HDFS_KERBEROS_KEYTAB_DEPRECATED;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.HDFS_KERBEROS_PRINCIPAL;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.HDFS_KERBEROS_PRINCIPAL_DEPRECATED;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.HDFS_PASSWORD;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.HDFS_PASSWORD_DEPRECATED;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.HDFS_USERNAME;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.HDFS_USERNAME_DEPRECATED;
 
 public class HDFSCloudConfigurationProvider implements CloudConfigurationProvider {
 

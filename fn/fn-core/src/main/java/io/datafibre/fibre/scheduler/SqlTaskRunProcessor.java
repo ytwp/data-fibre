@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.scheduler;
+package io.datafibre.fibre.scheduler;
 
-import com.starrocks.common.profile.Tracers;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.StmtExecutor;
+import io.datafibre.fibre.common.profile.Tracers;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.StmtExecutor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

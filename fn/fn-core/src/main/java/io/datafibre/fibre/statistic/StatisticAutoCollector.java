@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.statistic;
+package io.datafibre.fibre.statistic;
 
 import com.google.common.collect.Maps;
-import com.starrocks.common.Config;
-import com.starrocks.common.FeConstants;
-import com.starrocks.common.util.DateUtils;
-import com.starrocks.common.util.FrontendDaemon;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.statistic.StatsConstants.AnalyzeType;
-import com.starrocks.statistic.StatsConstants.ScheduleStatus;
-import com.starrocks.statistic.StatsConstants.ScheduleType;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.FeConstants;
+import io.datafibre.fibre.common.util.DateUtils;
+import io.datafibre.fibre.common.util.FrontendDaemon;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.statistic.StatsConstants.AnalyzeType;
+import io.datafibre.fibre.statistic.StatsConstants.ScheduleStatus;
+import io.datafibre.fibre.statistic.StatsConstants.ScheduleType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

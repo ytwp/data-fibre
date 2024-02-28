@@ -11,12 +11,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.starrocks.scheduler;
+package io.datafibre.fibre.scheduler;
 
 import com.google.common.collect.Maps;
-import com.starrocks.catalog.BaseTableInfo;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.catalog.Table;
+import io.datafibre.fibre.catalog.BaseTableInfo;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.catalog.Table;
 
 import java.util.Map;
 

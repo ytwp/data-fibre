@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.api.client.util.Lists;
-import com.starrocks.analysis.StringLiteral;
-import com.starrocks.thrift.TAccessPathType;
-import com.starrocks.thrift.TColumnAccessPath;
+import io.datafibre.fibre.analysis.StringLiteral;
+import io.datafibre.fibre.thrift.TAccessPathType;
+import io.datafibre.fibre.thrift.TColumnAccessPath;
 
 import java.util.List;
 import java.util.stream.Collectors;

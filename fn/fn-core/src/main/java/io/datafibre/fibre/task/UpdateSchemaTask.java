@@ -32,11 +32,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.task;
+package io.datafibre.fibre.task;
 
-import com.starrocks.thrift.TOlapTableColumnParam;
-import com.starrocks.thrift.TTaskType;
-import com.starrocks.thrift.TUpdateSchemaReq;
+import io.datafibre.fibre.thrift.TOlapTableColumnParam;
+import io.datafibre.fibre.thrift.TTaskType;
+import io.datafibre.fibre.thrift.TUpdateSchemaReq;
 
 import java.util.List;
 

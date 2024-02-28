@@ -32,19 +32,19 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.transaction;
+package io.datafibre.fibre.transaction;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.load.loadv2.LoadJobFinalOperation;
-import com.starrocks.load.loadv2.ManualLoadTxnCommitAttachment;
-import com.starrocks.load.loadv2.MiniLoadTxnCommitAttachment;
-import com.starrocks.load.routineload.RLTaskTxnCommitAttachment;
-import com.starrocks.load.streamload.StreamLoadTxnCommitAttachment;
-import com.starrocks.replication.ReplicationTxnCommitAttachment;
-import com.starrocks.thrift.TTxnCommitAttachment;
-import com.starrocks.transaction.TransactionState.LoadJobSourceType;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.load.loadv2.LoadJobFinalOperation;
+import io.datafibre.fibre.load.loadv2.ManualLoadTxnCommitAttachment;
+import io.datafibre.fibre.load.loadv2.MiniLoadTxnCommitAttachment;
+import io.datafibre.fibre.load.routineload.RLTaskTxnCommitAttachment;
+import io.datafibre.fibre.load.streamload.StreamLoadTxnCommitAttachment;
+import io.datafibre.fibre.replication.ReplicationTxnCommitAttachment;
+import io.datafibre.fibre.thrift.TTxnCommitAttachment;
+import io.datafibre.fibre.transaction.TransactionState.LoadJobSourceType;
 
 import java.io.DataInput;
 import java.io.DataOutput;

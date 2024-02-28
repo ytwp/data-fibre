@@ -15,11 +15,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.task;
+package io.datafibre.fibre.task;
 
-import com.starrocks.thrift.TMoveDirReq;
-import com.starrocks.thrift.TResourceInfo;
-import com.starrocks.thrift.TTaskType;
+import io.datafibre.fibre.thrift.TMoveDirReq;
+import io.datafibre.fibre.thrift.TResourceInfo;
+import io.datafibre.fibre.thrift.TTaskType;
 
 public class DirMoveTask extends AgentTask {
 

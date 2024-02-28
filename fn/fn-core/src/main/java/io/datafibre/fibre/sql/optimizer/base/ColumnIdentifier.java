@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.base;
+package io.datafibre.fibre.sql.optimizer.base;
 
 import java.util.Objects;
 

@@ -32,32 +32,32 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.common.proc.BaseProcResult;
-import com.starrocks.common.proc.ProcNodeInterface;
-import com.starrocks.common.proc.ProcResult;
-import com.starrocks.persist.DropResourceOperationLog;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.persist.metablock.SRMetaBlockEOFException;
-import com.starrocks.persist.metablock.SRMetaBlockException;
-import com.starrocks.persist.metablock.SRMetaBlockID;
-import com.starrocks.persist.metablock.SRMetaBlockReader;
-import com.starrocks.persist.metablock.SRMetaBlockWriter;
-import com.starrocks.privilege.AccessDeniedException;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.analyzer.Authorizer;
-import com.starrocks.sql.ast.AlterResourceStmt;
-import com.starrocks.sql.ast.CreateResourceStmt;
-import com.starrocks.sql.ast.DropCatalogStmt;
-import com.starrocks.sql.ast.DropResourceStmt;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.common.proc.BaseProcResult;
+import io.datafibre.fibre.common.proc.ProcNodeInterface;
+import io.datafibre.fibre.common.proc.ProcResult;
+import io.datafibre.fibre.persist.DropResourceOperationLog;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockEOFException;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockException;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockID;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockReader;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockWriter;
+import io.datafibre.fibre.privilege.AccessDeniedException;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.analyzer.Authorizer;
+import io.datafibre.fibre.sql.ast.AlterResourceStmt;
+import io.datafibre.fibre.sql.ast.CreateResourceStmt;
+import io.datafibre.fibre.sql.ast.DropCatalogStmt;
+import io.datafibre.fibre.sql.ast.DropResourceStmt;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -73,8 +73,8 @@ import java.util.Set;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
-import static com.starrocks.connector.hive.HiveConnector.HIVE_METASTORE_URIS;
-import static com.starrocks.server.CatalogMgr.ResourceMappingCatalog.getResourceMappingCatalogName;
+import static io.datafibre.fibre.connector.hive.HiveConnector.HIVE_METASTORE_URIS;
+import static io.datafibre.fibre.server.CatalogMgr.ResourceMappingCatalog.getResourceMappingCatalogName;
 
 /**
  * Resource manager is responsible for managing external resources used by StarRocks.

@@ -13,12 +13,12 @@
 // limitations under the License.
 
 
-package com.starrocks.authentication;
+package io.datafibre.fibre.authentication;
 
-import com.starrocks.common.Config;
-import com.starrocks.mysql.MysqlPassword;
-import com.starrocks.mysql.privilege.Password;
-import com.starrocks.sql.ast.UserIdentity;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.mysql.MysqlPassword;
+import io.datafibre.fibre.mysql.privilege.Password;
+import io.datafibre.fibre.sql.ast.UserIdentity;
 
 import java.nio.charset.StandardCharsets;
 

@@ -32,9 +32,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.load.routineload;
+package io.datafibre.fibre.load.routineload;
 
-import com.starrocks.common.InternalErrorCode;
+import io.datafibre.fibre.common.InternalErrorCode;
 
 public class ErrorReason {
     private InternalErrorCode code;

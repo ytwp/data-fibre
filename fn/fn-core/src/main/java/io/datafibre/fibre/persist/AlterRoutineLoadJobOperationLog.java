@@ -32,14 +32,14 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.persist;
+package io.datafibre.fibre.persist;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.analysis.RoutineLoadDataSourceProperties;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.qe.OriginStatement;
+import io.datafibre.fibre.analysis.RoutineLoadDataSourceProperties;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.qe.OriginStatement;
 
 import java.io.DataInput;
 import java.io.DataOutput;

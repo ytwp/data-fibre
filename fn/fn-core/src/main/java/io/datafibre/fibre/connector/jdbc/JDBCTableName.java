@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.jdbc;
+package io.datafibre.fibre.connector.jdbc;
 
 import java.util.Objects;
 

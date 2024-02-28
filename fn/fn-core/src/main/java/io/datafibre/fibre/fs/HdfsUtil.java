@@ -15,30 +15,30 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.fs;
+package io.datafibre.fibre.fs;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.BrokerDesc;
-import com.starrocks.catalog.TableFunctionTable;
-import com.starrocks.common.ClientPool;
-import com.starrocks.common.UserException;
-import com.starrocks.fs.hdfs.HdfsService;
-import com.starrocks.thrift.TBrokerCheckPathExistRequest;
-import com.starrocks.thrift.TBrokerCloseReaderRequest;
-import com.starrocks.thrift.TBrokerCloseWriterRequest;
-import com.starrocks.thrift.TBrokerDeletePathRequest;
-import com.starrocks.thrift.TBrokerFD;
-import com.starrocks.thrift.TBrokerFileStatus;
-import com.starrocks.thrift.TBrokerListPathRequest;
-import com.starrocks.thrift.TBrokerOpenMode;
-import com.starrocks.thrift.TBrokerOpenReaderRequest;
-import com.starrocks.thrift.TBrokerOpenWriterRequest;
-import com.starrocks.thrift.TBrokerPReadRequest;
-import com.starrocks.thrift.TBrokerPWriteRequest;
-import com.starrocks.thrift.TBrokerRenamePathRequest;
-import com.starrocks.thrift.TBrokerVersion;
-import com.starrocks.thrift.THdfsProperties;
+import io.datafibre.fibre.analysis.BrokerDesc;
+import io.datafibre.fibre.catalog.TableFunctionTable;
+import io.datafibre.fibre.common.ClientPool;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.fs.hdfs.HdfsService;
+import io.datafibre.fibre.thrift.TBrokerCheckPathExistRequest;
+import io.datafibre.fibre.thrift.TBrokerCloseReaderRequest;
+import io.datafibre.fibre.thrift.TBrokerCloseWriterRequest;
+import io.datafibre.fibre.thrift.TBrokerDeletePathRequest;
+import io.datafibre.fibre.thrift.TBrokerFD;
+import io.datafibre.fibre.thrift.TBrokerFileStatus;
+import io.datafibre.fibre.thrift.TBrokerListPathRequest;
+import io.datafibre.fibre.thrift.TBrokerOpenMode;
+import io.datafibre.fibre.thrift.TBrokerOpenReaderRequest;
+import io.datafibre.fibre.thrift.TBrokerOpenWriterRequest;
+import io.datafibre.fibre.thrift.TBrokerPReadRequest;
+import io.datafibre.fibre.thrift.TBrokerPWriteRequest;
+import io.datafibre.fibre.thrift.TBrokerRenamePathRequest;
+import io.datafibre.fibre.thrift.TBrokerVersion;
+import io.datafibre.fibre.thrift.THdfsProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.Path;

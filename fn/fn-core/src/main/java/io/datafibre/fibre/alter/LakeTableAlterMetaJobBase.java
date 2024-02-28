@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.alter;
+package io.datafibre.fibre.alter;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
@@ -22,27 +22,27 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Table;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.MaterializedIndex;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Partition;
-import com.starrocks.catalog.PhysicalPartition;
-import com.starrocks.catalog.Tablet;
-import com.starrocks.common.Config;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.FeConstants;
-import com.starrocks.common.util.concurrent.MarkedCountDownLatch;
-import com.starrocks.common.util.concurrent.lock.LockType;
-import com.starrocks.common.util.concurrent.lock.Locker;
-import com.starrocks.lake.LakeTable;
-import com.starrocks.lake.LakeTablet;
-import com.starrocks.lake.Utils;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.task.AgentBatchTask;
-import com.starrocks.task.AgentTaskExecutor;
-import com.starrocks.task.AgentTaskQueue;
-import com.starrocks.task.TabletMetadataUpdateAgentTask;
-import com.starrocks.thrift.TTaskType;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.MaterializedIndex;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.catalog.PhysicalPartition;
+import io.datafibre.fibre.catalog.Tablet;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.FeConstants;
+import io.datafibre.fibre.common.util.concurrent.MarkedCountDownLatch;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.lake.LakeTable;
+import io.datafibre.fibre.lake.LakeTablet;
+import io.datafibre.fibre.lake.Utils;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.task.AgentBatchTask;
+import io.datafibre.fibre.task.AgentTaskExecutor;
+import io.datafibre.fibre.task.AgentTaskQueue;
+import io.datafibre.fibre.task.TabletMetadataUpdateAgentTask;
+import io.datafibre.fibre.thrift.TTaskType;
 import io.opentelemetry.api.trace.StatusCode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

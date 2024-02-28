@@ -15,10 +15,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.analysis;
+package io.datafibre.fibre.analysis;
 
-import com.starrocks.catalog.Table;
-import com.starrocks.common.AnalysisException;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.AnalysisException;
 
 /**
  * An actual table, such as OLAP table or a MySQL table.

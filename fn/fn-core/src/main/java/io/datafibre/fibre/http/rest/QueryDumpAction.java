@@ -12,28 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.http.rest;
+package io.datafibre.fibre.http.rest;
 
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.InternalCatalog;
-import com.starrocks.common.DdlException;
-import com.starrocks.http.ActionController;
-import com.starrocks.http.BaseRequest;
-import com.starrocks.http.BaseResponse;
-import com.starrocks.http.IllegalArgException;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.StmtExecutor;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.StatementBase;
-import com.starrocks.sql.optimizer.dump.DumpInfo;
-import com.starrocks.sql.optimizer.dump.QueryDumpDeserializer;
-import com.starrocks.sql.optimizer.dump.QueryDumpInfo;
-import com.starrocks.sql.optimizer.dump.QueryDumpSerializer;
-import com.starrocks.sql.parser.SqlParser;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.InternalCatalog;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.http.ActionController;
+import io.datafibre.fibre.http.BaseRequest;
+import io.datafibre.fibre.http.BaseResponse;
+import io.datafibre.fibre.http.IllegalArgException;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.StmtExecutor;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.StatementBase;
+import io.datafibre.fibre.sql.optimizer.dump.DumpInfo;
+import io.datafibre.fibre.sql.optimizer.dump.QueryDumpDeserializer;
+import io.datafibre.fibre.sql.optimizer.dump.QueryDumpInfo;
+import io.datafibre.fibre.sql.optimizer.dump.QueryDumpSerializer;
+import io.datafibre.fibre.sql.parser.SqlParser;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.commons.lang3.StringUtils;

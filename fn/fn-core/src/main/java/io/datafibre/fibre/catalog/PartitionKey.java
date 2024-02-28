@@ -32,22 +32,22 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.DateLiteral;
-import com.starrocks.analysis.IntLiteral;
-import com.starrocks.analysis.LargeIntLiteral;
-import com.starrocks.analysis.LiteralExpr;
-import com.starrocks.analysis.MaxLiteral;
-import com.starrocks.analysis.NullLiteral;
-import com.starrocks.analysis.StringLiteral;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.sql.ast.PartitionValue;
+import io.datafibre.fibre.analysis.DateLiteral;
+import io.datafibre.fibre.analysis.IntLiteral;
+import io.datafibre.fibre.analysis.LargeIntLiteral;
+import io.datafibre.fibre.analysis.LiteralExpr;
+import io.datafibre.fibre.analysis.MaxLiteral;
+import io.datafibre.fibre.analysis.NullLiteral;
+import io.datafibre.fibre.analysis.StringLiteral;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.sql.ast.PartitionValue;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

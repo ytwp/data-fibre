@@ -13,20 +13,20 @@
 // limitations under the License.
 
 
-package com.starrocks.common.proc;
+package io.datafibre.fibre.common.proc;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.starrocks.alter.DecommissionType;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.util.ListComparator;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.server.RunMode;
-import com.starrocks.system.BackendCoreStat;
-import com.starrocks.system.ComputeNode;
-import com.starrocks.system.SystemInfoService;
+import io.datafibre.fibre.alter.DecommissionType;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.util.ListComparator;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.server.RunMode;
+import io.datafibre.fibre.system.BackendCoreStat;
+import io.datafibre.fibre.system.ComputeNode;
+import io.datafibre.fibre.system.SystemInfoService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

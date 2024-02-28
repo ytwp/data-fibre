@@ -13,16 +13,16 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer;
+package io.datafibre.fibre.sql.optimizer;
 
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.Table;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.rewrite.ReplaceColumnRefRewriter;
-import com.starrocks.sql.optimizer.rule.Rule;
-import com.starrocks.sql.optimizer.rule.mv.JoinDeriveContext;
-import com.starrocks.sql.optimizer.rule.transformation.materialization.PredicateSplit;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.rewrite.ReplaceColumnRefRewriter;
+import io.datafibre.fibre.sql.optimizer.rule.Rule;
+import io.datafibre.fibre.sql.optimizer.rule.mv.JoinDeriveContext;
+import io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.PredicateSplit;
 
 import java.util.List;
 

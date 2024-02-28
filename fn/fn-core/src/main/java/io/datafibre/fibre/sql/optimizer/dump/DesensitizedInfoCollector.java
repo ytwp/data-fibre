@@ -12,28 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.dump;
+package io.datafibre.fibre.sql.optimizer.dump;
 
 import com.google.common.collect.Maps;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.analysis.SubfieldExpr;
-import com.starrocks.analysis.TableName;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.StructField;
-import com.starrocks.catalog.StructType;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.View;
-import com.starrocks.common.IdGenerator;
-import com.starrocks.common.Pair;
-import com.starrocks.sql.ast.AstTraverser;
-import com.starrocks.sql.ast.CTERelation;
-import com.starrocks.sql.ast.JoinRelation;
-import com.starrocks.sql.ast.Relation;
-import com.starrocks.sql.ast.SelectRelation;
-import com.starrocks.sql.ast.SetOperationRelation;
-import com.starrocks.sql.ast.StatementBase;
-import com.starrocks.sql.ast.SubqueryRelation;
-import com.starrocks.sql.ast.ViewRelation;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.analysis.SubfieldExpr;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.StructField;
+import io.datafibre.fibre.catalog.StructType;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.View;
+import io.datafibre.fibre.common.IdGenerator;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.sql.ast.AstTraverser;
+import io.datafibre.fibre.sql.ast.CTERelation;
+import io.datafibre.fibre.sql.ast.JoinRelation;
+import io.datafibre.fibre.sql.ast.Relation;
+import io.datafibre.fibre.sql.ast.SelectRelation;
+import io.datafibre.fibre.sql.ast.SetOperationRelation;
+import io.datafibre.fibre.sql.ast.StatementBase;
+import io.datafibre.fibre.sql.ast.SubqueryRelation;
+import io.datafibre.fibre.sql.ast.ViewRelation;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 

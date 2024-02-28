@@ -13,15 +13,15 @@
 // limitations under the License.
 
 
-package com.starrocks.common.proc;
+package io.datafibre.fibre.common.proc;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.MetaNotFoundException;
-import com.starrocks.load.streamload.StreamLoadMgr;
-import com.starrocks.load.streamload.StreamLoadTask;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.MetaNotFoundException;
+import io.datafibre.fibre.load.streamload.StreamLoadMgr;
+import io.datafibre.fibre.load.streamload.StreamLoadTask;
+import io.datafibre.fibre.server.GlobalStateMgr;
 
 import java.util.List;
 

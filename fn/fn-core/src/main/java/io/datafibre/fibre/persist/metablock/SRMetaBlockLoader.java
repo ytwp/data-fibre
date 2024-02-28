@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.persist.metablock;
+package io.datafibre.fibre.persist.metablock;
 
 import java.io.IOException;
 

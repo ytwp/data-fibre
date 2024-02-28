@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package com.starrocks.metric;
+package io.datafibre.fibre.metric;
 
 import com.google.common.collect.Maps;
-import com.starrocks.common.ThreadPoolManager;
+import io.datafibre.fibre.common.ThreadPoolManager;
 
 import java.util.Map;
 import java.util.TimerTask;

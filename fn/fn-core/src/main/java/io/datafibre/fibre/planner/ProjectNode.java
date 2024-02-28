@@ -13,25 +13,25 @@
 // limitations under the License.
 
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.Analyzer;
-import com.starrocks.analysis.DescriptorTable;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.SlotId;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.analysis.TupleDescriptor;
-import com.starrocks.common.Pair;
-import com.starrocks.common.UserException;
-import com.starrocks.thrift.TExplainLevel;
-import com.starrocks.thrift.TNormalPlanNode;
-import com.starrocks.thrift.TNormalProjectNode;
-import com.starrocks.thrift.TPlanNode;
-import com.starrocks.thrift.TPlanNodeType;
-import com.starrocks.thrift.TProjectNode;
+import io.datafibre.fibre.analysis.Analyzer;
+import io.datafibre.fibre.analysis.DescriptorTable;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.SlotId;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.analysis.TupleDescriptor;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.thrift.TExplainLevel;
+import io.datafibre.fibre.thrift.TNormalPlanNode;
+import io.datafibre.fibre.thrift.TNormalProjectNode;
+import io.datafibre.fibre.thrift.TPlanNode;
+import io.datafibre.fibre.thrift.TPlanNodeType;
+import io.datafibre.fibre.thrift.TProjectNode;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;

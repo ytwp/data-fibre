@@ -15,11 +15,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common;
+package io.datafibre.fibre.common;
 
 import com.google.common.base.Preconditions;
 import com.google.re2j.Pattern;
-import com.starrocks.transaction.TransactionStatus;
+import io.datafibre.fibre.transaction.TransactionStatus;
 import org.apache.commons.lang3.StringUtils;
 
 public class LabelAlreadyUsedException extends DdlException {

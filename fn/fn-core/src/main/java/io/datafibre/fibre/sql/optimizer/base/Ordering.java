@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.base;
+package io.datafibre.fibre.sql.optimizer.base;
 
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
 
 import java.util.Objects;
 

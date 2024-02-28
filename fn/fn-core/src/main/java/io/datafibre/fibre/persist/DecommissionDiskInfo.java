@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.persist;
+package io.datafibre.fibre.persist;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.common.io.JsonWriter;
+import io.datafibre.fibre.common.io.JsonWriter;
 
 import java.util.List;
 

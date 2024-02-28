@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.statistics;
+package io.datafibre.fibre.sql.optimizer.statistics;
 
 public class Bucket {
     private final double lower;

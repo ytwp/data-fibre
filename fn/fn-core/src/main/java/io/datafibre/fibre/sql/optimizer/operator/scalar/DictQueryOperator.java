@@ -13,12 +13,12 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.operator.scalar;
+package io.datafibre.fibre.sql.optimizer.operator.scalar;
 
-import com.starrocks.catalog.Function;
-import com.starrocks.catalog.FunctionSet;
-import com.starrocks.catalog.Type;
-import com.starrocks.thrift.TDictQueryExpr;
+import io.datafibre.fibre.catalog.Function;
+import io.datafibre.fibre.catalog.FunctionSet;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.thrift.TDictQueryExpr;
 
 import java.util.List;
 

@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.lake.compaction;
+package io.datafibre.fibre.lake.compaction;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.proto.AbortCompactionRequest;
-import com.starrocks.proto.AbortCompactionResponse;
-import com.starrocks.proto.CompactRequest;
-import com.starrocks.proto.CompactResponse;
-import com.starrocks.rpc.LakeService;
-import com.starrocks.transaction.TabletCommitInfo;
+import io.datafibre.fibre.proto.AbortCompactionRequest;
+import io.datafibre.fibre.proto.AbortCompactionResponse;
+import io.datafibre.fibre.proto.CompactRequest;
+import io.datafibre.fibre.proto.CompactResponse;
+import io.datafibre.fibre.rpc.LakeService;
+import io.datafibre.fibre.transaction.TabletCommitInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

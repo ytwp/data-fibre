@@ -13,20 +13,20 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.hive;
+package io.datafibre.fibre.connector.hive;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.starrocks.common.FeConstants;
-import com.starrocks.connector.ObjectStorageUtils;
-import com.starrocks.connector.PartitionUtil;
-import com.starrocks.connector.RemoteFileBlockDesc;
-import com.starrocks.connector.RemoteFileDesc;
-import com.starrocks.connector.RemoteFileIO;
-import com.starrocks.connector.RemotePathKey;
-import com.starrocks.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.common.FeConstants;
+import io.datafibre.fibre.connector.ObjectStorageUtils;
+import io.datafibre.fibre.connector.PartitionUtil;
+import io.datafibre.fibre.connector.RemoteFileBlockDesc;
+import io.datafibre.fibre.connector.RemoteFileDesc;
+import io.datafibre.fibre.connector.RemoteFileIO;
+import io.datafibre.fibre.connector.RemotePathKey;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.BlockLocation;
 import org.apache.hadoop.fs.FileStatus;

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.scheduler;
+package io.datafibre.fibre.scheduler;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
@@ -23,31 +23,31 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.common.Config;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.common.util.Util;
-import com.starrocks.common.util.concurrent.QueryableReentrantLock;
-import com.starrocks.memory.MemoryTrackable;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.persist.metablock.SRMetaBlockEOFException;
-import com.starrocks.persist.metablock.SRMetaBlockException;
-import com.starrocks.persist.metablock.SRMetaBlockID;
-import com.starrocks.persist.metablock.SRMetaBlockReader;
-import com.starrocks.persist.metablock.SRMetaBlockWriter;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.ShowResultSet;
-import com.starrocks.qe.ShowResultSetMetaData;
-import com.starrocks.scheduler.persist.TaskRunStatus;
-import com.starrocks.scheduler.persist.TaskRunStatusChange;
-import com.starrocks.scheduler.persist.TaskSchedule;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.SubmitTaskStmt;
-import com.starrocks.sql.common.DmlException;
-import com.starrocks.sql.optimizer.Utils;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.common.util.Util;
+import io.datafibre.fibre.common.util.concurrent.QueryableReentrantLock;
+import io.datafibre.fibre.memory.MemoryTrackable;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockEOFException;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockException;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockID;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockReader;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockWriter;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.ShowResultSet;
+import io.datafibre.fibre.qe.ShowResultSetMetaData;
+import io.datafibre.fibre.scheduler.persist.TaskRunStatus;
+import io.datafibre.fibre.scheduler.persist.TaskRunStatusChange;
+import io.datafibre.fibre.scheduler.persist.TaskSchedule;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.SubmitTaskStmt;
+import io.datafibre.fibre.sql.common.DmlException;
+import io.datafibre.fibre.sql.optimizer.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.spark.util.SizeEstimator;
@@ -73,7 +73,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
-import static com.starrocks.scheduler.SubmitResult.SubmitStatus.SUBMITTED;
+import static io.datafibre.fibre.scheduler.SubmitResult.SubmitStatus.SUBMITTED;
 
 public class TaskManager implements MemoryTrackable {
 

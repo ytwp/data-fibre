@@ -11,27 +11,27 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.starrocks.sql.optimizer;
+package io.datafibre.fibre.sql.optimizer;
 
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.JoinOperator;
-import com.starrocks.catalog.BaseTableInfo;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.ForeignKeyConstraint;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.UniqueConstraint;
-import com.starrocks.common.Pair;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.optimizer.base.ColumnRefSet;
-import com.starrocks.sql.optimizer.operator.Operator;
-import com.starrocks.sql.optimizer.operator.UKFKConstraints;
-import com.starrocks.sql.optimizer.operator.logical.LogicalJoinOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalOlapScanOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalJoinOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalOlapScanOperator;
-import com.starrocks.sql.optimizer.operator.scalar.BinaryPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.analysis.JoinOperator;
+import io.datafibre.fibre.catalog.BaseTableInfo;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.ForeignKeyConstraint;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.UniqueConstraint;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
+import io.datafibre.fibre.sql.optimizer.operator.Operator;
+import io.datafibre.fibre.sql.optimizer.operator.UKFKConstraints;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalJoinOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalOlapScanOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalJoinOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalOlapScanOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.BinaryPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
 
 import java.util.List;
 import java.util.Map;

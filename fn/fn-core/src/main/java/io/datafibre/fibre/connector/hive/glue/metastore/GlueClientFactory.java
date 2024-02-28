@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.hive.glue.metastore;
+package io.datafibre.fibre.connector.hive.glue.metastore;
 
 import com.amazonaws.services.glue.AWSGlue;
 import org.apache.hadoop.hive.metastore.api.MetaException;

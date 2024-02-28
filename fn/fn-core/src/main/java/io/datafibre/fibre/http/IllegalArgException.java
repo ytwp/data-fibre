@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.http;
+package io.datafibre.fibre.http;
 
 public class IllegalArgException extends Exception {
     private static final long serialVersionUID = 3344697787301861667L;

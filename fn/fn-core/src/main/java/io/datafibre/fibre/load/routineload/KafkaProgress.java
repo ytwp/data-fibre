@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.load.routineload;
+package io.datafibre.fibre.load.routineload;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableMap;
@@ -40,10 +40,10 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.Pair;
-import com.starrocks.common.UserException;
-import com.starrocks.common.util.KafkaUtil;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.util.KafkaUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

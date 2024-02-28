@@ -13,22 +13,22 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.RedirectStatus;
-import com.starrocks.analysis.TableName;
-import com.starrocks.catalog.BlackHoleTable;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.TableFunctionTable;
-import com.starrocks.catalog.Type;
-import com.starrocks.qe.SessionVariable;
-import com.starrocks.sql.analyzer.Field;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.RedirectStatus;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.catalog.BlackHoleTable;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.TableFunctionTable;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.qe.SessionVariable;
+import io.datafibre.fibre.sql.analyzer.Field;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,7 +39,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkState;
-import static com.starrocks.analysis.OutFileClause.PARQUET_COMPRESSION_TYPE_MAP;
+import static io.datafibre.fibre.analysis.OutFileClause.PARQUET_COMPRESSION_TYPE_MAP;
 
 /**
  * Insert into is performed to load data from the result of query stmt.

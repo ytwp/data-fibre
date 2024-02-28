@@ -13,22 +13,22 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.hive;
+package io.datafibre.fibre.connector.hive;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.HiveMetaStoreTable;
-import com.starrocks.catalog.HiveTable;
-import com.starrocks.catalog.HiveView;
-import com.starrocks.catalog.Table;
-import com.starrocks.connector.CachingRemoteFileIO;
-import com.starrocks.connector.RemoteFileIO;
-import com.starrocks.connector.RemotePathKey;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.connector.hive.events.MetastoreNotificationFetchException;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.HiveMetaStoreTable;
+import io.datafibre.fibre.catalog.HiveTable;
+import io.datafibre.fibre.catalog.HiveView;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.connector.CachingRemoteFileIO;
+import io.datafibre.fibre.connector.RemoteFileIO;
+import io.datafibre.fibre.connector.RemotePathKey;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.connector.hive.events.MetastoreNotificationFetchException;
 import org.apache.hadoop.hive.metastore.api.NotificationEventResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -42,8 +42,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
-import static com.starrocks.connector.ColumnTypeConverter.columnEquals;
-import static com.starrocks.server.CatalogMgr.ResourceMappingCatalog.isResourceMappingCatalog;
+import static io.datafibre.fibre.connector.ColumnTypeConverter.columnEquals;
+import static io.datafibre.fibre.server.CatalogMgr.ResourceMappingCatalog.isResourceMappingCatalog;
 
 public class CacheUpdateProcessor {
     private static final Logger LOG = LogManager.getLogger(CacheUpdateProcessor.class);

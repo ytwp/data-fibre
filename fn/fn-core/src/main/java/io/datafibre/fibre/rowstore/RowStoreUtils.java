@@ -13,17 +13,17 @@
 // limitations under the License.
 
 
-package com.starrocks.rowstore;
+package io.datafibre.fibre.rowstore;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.BinaryPredicate;
-import com.starrocks.analysis.BoolLiteral;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.InPredicate;
-import com.starrocks.analysis.LiteralExpr;
-import com.starrocks.analysis.SlotRef;
+import io.datafibre.fibre.analysis.BinaryPredicate;
+import io.datafibre.fibre.analysis.BoolLiteral;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.InPredicate;
+import io.datafibre.fibre.analysis.LiteralExpr;
+import io.datafibre.fibre.analysis.SlotRef;
 
 import java.util.ArrayList;
 import java.util.HashMap;

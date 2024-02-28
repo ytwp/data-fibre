@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.base;
+package io.datafibre.fibre.sql.optimizer.base;
 
-import com.starrocks.sql.optimizer.Group;
-import com.starrocks.sql.optimizer.GroupExpression;
+import io.datafibre.fibre.sql.optimizer.Group;
+import io.datafibre.fibre.sql.optimizer.GroupExpression;
 
 // The required physical property
 public interface PhysicalProperty extends Property {

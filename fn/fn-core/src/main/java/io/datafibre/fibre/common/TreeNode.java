@@ -32,11 +32,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common;
+package io.datafibre.fibre.common;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.NullLiteral;
+import io.datafibre.fibre.analysis.NullLiteral;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -32,37 +32,37 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.load.loadv2;
+package io.datafibre.fibre.load.loadv2;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.analysis.BrokerDesc;
-import com.starrocks.catalog.AuthorizationInfo;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.MetaNotFoundException;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.util.LogBuilder;
-import com.starrocks.common.util.LogKey;
-import com.starrocks.common.util.concurrent.lock.LockType;
-import com.starrocks.common.util.concurrent.lock.Locker;
-import com.starrocks.load.BrokerFileGroup;
-import com.starrocks.load.BrokerFileGroupAggInfo;
-import com.starrocks.load.FailMsg;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.OriginStatement;
-import com.starrocks.qe.SessionVariable;
-import com.starrocks.qe.SqlModeHelper;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.DataDescription;
-import com.starrocks.sql.ast.LoadStmt;
-import com.starrocks.transaction.TabletCommitInfo;
-import com.starrocks.transaction.TabletFailInfo;
-import com.starrocks.transaction.TransactionState;
+import io.datafibre.fibre.analysis.BrokerDesc;
+import io.datafibre.fibre.catalog.AuthorizationInfo;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.MetaNotFoundException;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.util.LogBuilder;
+import io.datafibre.fibre.common.util.LogKey;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.load.BrokerFileGroup;
+import io.datafibre.fibre.load.BrokerFileGroupAggInfo;
+import io.datafibre.fibre.load.FailMsg;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.OriginStatement;
+import io.datafibre.fibre.qe.SessionVariable;
+import io.datafibre.fibre.qe.SqlModeHelper;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.DataDescription;
+import io.datafibre.fibre.sql.ast.LoadStmt;
+import io.datafibre.fibre.transaction.TabletCommitInfo;
+import io.datafibre.fibre.transaction.TabletFailInfo;
+import io.datafibre.fibre.transaction.TransactionState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -282,7 +282,7 @@ public abstract class BulkLoadJob extends LoadJob {
         fileGroupAggInfo = new BrokerFileGroupAggInfo();
         LoadStmt stmt = null;
         try {
-            stmt = (LoadStmt) com.starrocks.sql.parser.SqlParser.parseFirstStatement(originStmt.originStmt,
+            stmt = (LoadStmt) io.datafibre.fibre.sql.parser.SqlParser.parseFirstStatement(originStmt.originStmt,
                     Long.parseLong(sessionVariables.get(SessionVariable.SQL_MODE)));
             for (DataDescription dataDescription : stmt.getDataDescriptions()) {
                 dataDescription.analyzeWithoutCheckPriv();

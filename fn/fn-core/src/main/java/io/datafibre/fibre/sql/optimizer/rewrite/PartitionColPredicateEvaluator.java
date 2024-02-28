@@ -13,37 +13,37 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.rewrite;
+package io.datafibre.fibre.sql.optimizer.rewrite;
 
 import com.google.common.collect.BoundType;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
-import com.starrocks.analysis.BinaryType;
-import com.starrocks.analysis.DateLiteral;
-import com.starrocks.analysis.IntLiteral;
-import com.starrocks.analysis.LargeIntLiteral;
-import com.starrocks.analysis.LiteralExpr;
-import com.starrocks.analysis.MaxLiteral;
-import com.starrocks.analysis.NullLiteral;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.PartitionKey;
-import com.starrocks.catalog.PartitionKeyDiscreteDomain;
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.catalog.RangePartitionInfo;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.sql.optimizer.operator.ColumnFilterConverter;
-import com.starrocks.sql.optimizer.operator.scalar.BinaryPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CompoundPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ConstantOperator;
-import com.starrocks.sql.optimizer.operator.scalar.InPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.IsNullPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperatorVisitor;
-import com.starrocks.sql.optimizer.rewrite.scalar.FoldConstantsRule;
+import io.datafibre.fibre.analysis.BinaryType;
+import io.datafibre.fibre.analysis.DateLiteral;
+import io.datafibre.fibre.analysis.IntLiteral;
+import io.datafibre.fibre.analysis.LargeIntLiteral;
+import io.datafibre.fibre.analysis.LiteralExpr;
+import io.datafibre.fibre.analysis.MaxLiteral;
+import io.datafibre.fibre.analysis.NullLiteral;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.PartitionKey;
+import io.datafibre.fibre.catalog.PartitionKeyDiscreteDomain;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.catalog.RangePartitionInfo;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.sql.optimizer.operator.ColumnFilterConverter;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.BinaryPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CallOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CompoundPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.InPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.IsNullPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperatorVisitor;
+import io.datafibre.fibre.sql.optimizer.rewrite.scalar.FoldConstantsRule;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

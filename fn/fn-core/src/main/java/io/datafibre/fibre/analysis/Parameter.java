@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.analysis;
+package io.datafibre.fibre.analysis;
 
-import com.starrocks.catalog.Type;
-import com.starrocks.sql.ast.AstVisitor;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.sql.ast.AstVisitor;
 
 /**
  * Parameter used in prepare-statement, placeholder ? is translated into a Parameter

@@ -12,34 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.LiteralExpr;
-import com.starrocks.analysis.NullLiteral;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.HiveTable;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Partition;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.ErrorCode;
-import com.starrocks.common.ErrorReport;
-import com.starrocks.connector.hive.HiveWriteUtils;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.CatalogMgr;
-import com.starrocks.sql.ast.DefaultValueExpr;
-import com.starrocks.sql.ast.InsertStmt;
-import com.starrocks.sql.ast.PartitionNames;
-import com.starrocks.sql.ast.QueryRelation;
-import com.starrocks.sql.ast.ValuesRelation;
-import com.starrocks.sql.common.MetaUtils;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.LiteralExpr;
+import io.datafibre.fibre.analysis.NullLiteral;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.HiveTable;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.ErrorCode;
+import io.datafibre.fibre.common.ErrorReport;
+import io.datafibre.fibre.connector.hive.HiveWriteUtils;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.CatalogMgr;
+import io.datafibre.fibre.sql.ast.DefaultValueExpr;
+import io.datafibre.fibre.sql.ast.InsertStmt;
+import io.datafibre.fibre.sql.ast.PartitionNames;
+import io.datafibre.fibre.sql.ast.QueryRelation;
+import io.datafibre.fibre.sql.ast.ValuesRelation;
+import io.datafibre.fibre.sql.common.MetaUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,8 +49,8 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.starrocks.catalog.OlapTable.OlapTableState.NORMAL;
-import static com.starrocks.sql.common.UnsupportedException.unsupportedException;
+import static io.datafibre.fibre.catalog.OlapTable.OlapTableState.NORMAL;
+import static io.datafibre.fibre.sql.common.UnsupportedException.unsupportedException;
 
 public class InsertAnalyzer {
     public static void analyze(InsertStmt insertStmt, ConnectContext session) {

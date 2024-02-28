@@ -32,33 +32,33 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.qe;
+package io.datafibre.fibre.qe;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.analysis.RedirectStatus;
-import com.starrocks.common.Config;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.ErrorCode;
-import com.starrocks.common.ErrorReportException;
-import com.starrocks.common.Pair;
-import com.starrocks.common.util.AuditStatisticsUtil;
-import com.starrocks.common.util.UUIDUtil;
-import com.starrocks.mysql.MysqlChannel;
-import com.starrocks.qe.QueryState.MysqlStateType;
-import com.starrocks.rpc.FrontendServiceProxy;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.analyzer.AstToSQLBuilder;
-import com.starrocks.sql.ast.SetListItem;
-import com.starrocks.sql.ast.SetStmt;
-import com.starrocks.sql.ast.StatementBase;
-import com.starrocks.sql.ast.SystemVariable;
-import com.starrocks.system.SystemInfoService;
-import com.starrocks.thrift.TAuditStatistics;
-import com.starrocks.thrift.TMasterOpRequest;
-import com.starrocks.thrift.TMasterOpResult;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.thrift.TQueryOptions;
-import com.starrocks.thrift.TUserRoles;
+import io.datafibre.fibre.analysis.RedirectStatus;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.ErrorCode;
+import io.datafibre.fibre.common.ErrorReportException;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.util.AuditStatisticsUtil;
+import io.datafibre.fibre.common.util.UUIDUtil;
+import io.datafibre.fibre.mysql.MysqlChannel;
+import io.datafibre.fibre.qe.QueryState.MysqlStateType;
+import io.datafibre.fibre.rpc.FrontendServiceProxy;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.analyzer.AstToSQLBuilder;
+import io.datafibre.fibre.sql.ast.SetListItem;
+import io.datafibre.fibre.sql.ast.SetStmt;
+import io.datafibre.fibre.sql.ast.StatementBase;
+import io.datafibre.fibre.sql.ast.SystemVariable;
+import io.datafibre.fibre.system.SystemInfoService;
+import io.datafibre.fibre.thrift.TAuditStatistics;
+import io.datafibre.fibre.thrift.TMasterOpRequest;
+import io.datafibre.fibre.thrift.TMasterOpResult;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TQueryOptions;
+import io.datafibre.fibre.thrift.TUserRoles;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

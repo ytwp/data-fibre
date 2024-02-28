@@ -12,21 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
-import com.starrocks.catalog.Resource;
-import com.starrocks.common.util.PropertyAnalyzer;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.ast.AlterResourceStmt;
-import com.starrocks.sql.ast.AstVisitor;
-import com.starrocks.sql.ast.CreateResourceStmt;
-import com.starrocks.sql.ast.DropResourceStmt;
-import com.starrocks.sql.ast.StatementBase;
+import io.datafibre.fibre.catalog.Resource;
+import io.datafibre.fibre.common.util.PropertyAnalyzer;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.ast.AlterResourceStmt;
+import io.datafibre.fibre.sql.ast.AstVisitor;
+import io.datafibre.fibre.sql.ast.CreateResourceStmt;
+import io.datafibre.fibre.sql.ast.DropResourceStmt;
+import io.datafibre.fibre.sql.ast.StatementBase;
 
 import java.util.Arrays;
 import java.util.Map;
 
-import static com.starrocks.common.util.PropertyAnalyzer.PROPERTIES_TYPE;
+import static io.datafibre.fibre.common.util.PropertyAnalyzer.PROPERTIES_TYPE;
 
 // [SHOW | CREATE | DROP] resource Analyzer
 public class ResourceAnalyzer {

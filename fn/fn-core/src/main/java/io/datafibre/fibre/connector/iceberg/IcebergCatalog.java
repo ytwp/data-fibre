@@ -13,12 +13,12 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.iceberg;
+package io.datafibre.fibre.connector.iceberg;
 
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.Database;
-import com.starrocks.common.MetaNotFoundException;
-import com.starrocks.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.common.MetaNotFoundException;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
 import org.apache.iceberg.FileScanTask;
 import org.apache.iceberg.PartitionSpec;
 import org.apache.iceberg.Schema;
@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
-import static com.starrocks.connector.PartitionUtil.convertIcebergPartitionToPartitionName;
+import static io.datafibre.fibre.connector.PartitionUtil.convertIcebergPartitionToPartitionName;
 
 public interface IcebergCatalog {
 

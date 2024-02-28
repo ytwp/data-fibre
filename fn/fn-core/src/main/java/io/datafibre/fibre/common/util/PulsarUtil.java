@@ -12,29 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.common.util;
+package io.datafibre.fibre.common.util;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.common.Config;
-import com.starrocks.common.LoadException;
-import com.starrocks.common.UserException;
-import com.starrocks.proto.PPulsarBacklogBatchProxyRequest;
-import com.starrocks.proto.PPulsarBacklogProxyRequest;
-import com.starrocks.proto.PPulsarBacklogProxyResult;
-import com.starrocks.proto.PPulsarLoadInfo;
-import com.starrocks.proto.PPulsarMetaProxyRequest;
-import com.starrocks.proto.PPulsarProxyRequest;
-import com.starrocks.proto.PPulsarProxyResult;
-import com.starrocks.proto.PStringPair;
-import com.starrocks.rpc.BackendServiceClient;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.server.RunMode;
-import com.starrocks.system.ComputeNode;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.thrift.TStatusCode;
-import com.starrocks.warehouse.Warehouse;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.LoadException;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.proto.PPulsarBacklogBatchProxyRequest;
+import io.datafibre.fibre.proto.PPulsarBacklogProxyRequest;
+import io.datafibre.fibre.proto.PPulsarBacklogProxyResult;
+import io.datafibre.fibre.proto.PPulsarLoadInfo;
+import io.datafibre.fibre.proto.PPulsarMetaProxyRequest;
+import io.datafibre.fibre.proto.PPulsarProxyRequest;
+import io.datafibre.fibre.proto.PPulsarProxyResult;
+import io.datafibre.fibre.proto.PStringPair;
+import io.datafibre.fibre.rpc.BackendServiceClient;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.server.RunMode;
+import io.datafibre.fibre.system.ComputeNode;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TStatusCode;
+import io.datafibre.fibre.warehouse.Warehouse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

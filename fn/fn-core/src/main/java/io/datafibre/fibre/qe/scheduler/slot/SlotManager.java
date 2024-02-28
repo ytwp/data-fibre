@@ -12,22 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.qe.scheduler.slot;
+package io.datafibre.fibre.qe.scheduler.slot;
 
 import com.google.common.collect.Queues;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.starrocks.catalog.ResourceGroup;
-import com.starrocks.common.Config;
-import com.starrocks.qe.GlobalVariable;
-import com.starrocks.rpc.FrontendServiceProxy;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.system.Frontend;
-import com.starrocks.thrift.TFinishSlotRequirementRequest;
-import com.starrocks.thrift.TFinishSlotRequirementResponse;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.thrift.TStatus;
-import com.starrocks.thrift.TStatusCode;
-import com.starrocks.thrift.TUniqueId;
+import io.datafibre.fibre.catalog.ResourceGroup;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.qe.GlobalVariable;
+import io.datafibre.fibre.rpc.FrontendServiceProxy;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.system.Frontend;
+import io.datafibre.fibre.thrift.TFinishSlotRequirementRequest;
+import io.datafibre.fibre.thrift.TFinishSlotRequirementResponse;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TStatus;
+import io.datafibre.fibre.thrift.TStatusCode;
+import io.datafibre.fibre.thrift.TUniqueId;
 import org.apache.commons.compress.utils.Lists;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.task;
+package io.datafibre.fibre.task;
 
-import com.starrocks.task.AgentTask;
-import com.starrocks.thrift.TRemoteSnapshotInfo;
-import com.starrocks.thrift.TReplicateSnapshotRequest;
-import com.starrocks.thrift.TTabletType;
-import com.starrocks.thrift.TTaskType;
+import io.datafibre.fibre.task.AgentTask;
+import io.datafibre.fibre.thrift.TRemoteSnapshotInfo;
+import io.datafibre.fibre.thrift.TReplicateSnapshotRequest;
+import io.datafibre.fibre.thrift.TTabletType;
+import io.datafibre.fibre.thrift.TTaskType;
 
 import java.util.List;
 

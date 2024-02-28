@@ -32,20 +32,20 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
-import com.starrocks.analysis.BrokerDesc;
-import com.starrocks.catalog.FsBroker;
-import com.starrocks.common.util.PrintableMap;
-import com.starrocks.common.Config;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.thrift.TDataSink;
-import com.starrocks.thrift.TDataSinkType;
-import com.starrocks.thrift.TExplainLevel;
-import com.starrocks.thrift.THdfsProperties;
-import com.starrocks.thrift.TExportSink;
-import com.starrocks.thrift.TFileType;
-import com.starrocks.thrift.TNetworkAddress;
+import io.datafibre.fibre.analysis.BrokerDesc;
+import io.datafibre.fibre.catalog.FsBroker;
+import io.datafibre.fibre.common.util.PrintableMap;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.thrift.TDataSink;
+import io.datafibre.fibre.thrift.TDataSinkType;
+import io.datafibre.fibre.thrift.TExplainLevel;
+import io.datafibre.fibre.thrift.THdfsProperties;
+import io.datafibre.fibre.thrift.TExportSink;
+import io.datafibre.fibre.thrift.TFileType;
+import io.datafibre.fibre.thrift.TNetworkAddress;
 import org.apache.commons.lang.StringEscapeUtils;
 
 public class ExportSink extends DataSink {

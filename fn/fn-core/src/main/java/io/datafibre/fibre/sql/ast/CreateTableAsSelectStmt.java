@@ -13,13 +13,13 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.analysis.RedirectStatus;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.DdlException;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.RedirectStatus;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.List;
 

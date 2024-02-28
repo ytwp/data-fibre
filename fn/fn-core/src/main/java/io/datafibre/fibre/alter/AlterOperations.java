@@ -32,12 +32,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.alter;
+package io.datafibre.fibre.alter;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Sets;
-import com.starrocks.common.DdlException;
-import com.starrocks.sql.ast.AlterClause;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.sql.ast.AlterClause;
 
 import java.util.List;
 import java.util.Set;

@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.privilege;
+package io.datafibre.fibre.privilege;
 
 import com.google.common.collect.Lists;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.InternalCatalog;
-import com.starrocks.common.Pair;
-import com.starrocks.load.pipe.Pipe;
-import com.starrocks.load.pipe.PipeManager;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.pipe.PipeName;
-import com.starrocks.sql.common.MetaNotFoundException;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.InternalCatalog;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.load.pipe.Pipe;
+import io.datafibre.fibre.load.pipe.PipeManager;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.pipe.PipeName;
+import io.datafibre.fibre.sql.common.MetaNotFoundException;
 import org.apache.commons.collections4.ListUtils;
 
 import java.util.ArrayList;

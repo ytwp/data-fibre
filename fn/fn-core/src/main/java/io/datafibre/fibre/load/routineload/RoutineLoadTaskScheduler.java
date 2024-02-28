@@ -32,29 +32,29 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.load.routineload;
+package io.datafibre.fibre.load.routineload;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
-import com.starrocks.common.ClientPool;
-import com.starrocks.common.Config;
-import com.starrocks.common.InternalErrorCode;
-import com.starrocks.common.LoadException;
-import com.starrocks.common.MetaNotFoundException;
-import com.starrocks.common.UserException;
-import com.starrocks.common.util.DebugUtil;
-import com.starrocks.common.util.FrontendDaemon;
-import com.starrocks.common.util.LogBuilder;
-import com.starrocks.common.util.LogKey;
-import com.starrocks.load.routineload.RoutineLoadJob.JobState;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.system.ComputeNode;
-import com.starrocks.thrift.BackendService;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.thrift.TRoutineLoadTask;
-import com.starrocks.thrift.TStatus;
-import com.starrocks.thrift.TStatusCode;
+import io.datafibre.fibre.common.ClientPool;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.InternalErrorCode;
+import io.datafibre.fibre.common.LoadException;
+import io.datafibre.fibre.common.MetaNotFoundException;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.util.DebugUtil;
+import io.datafibre.fibre.common.util.FrontendDaemon;
+import io.datafibre.fibre.common.util.LogBuilder;
+import io.datafibre.fibre.common.util.LogKey;
+import io.datafibre.fibre.load.routineload.RoutineLoadJob.JobState;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.system.ComputeNode;
+import io.datafibre.fibre.thrift.BackendService;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TRoutineLoadTask;
+import io.datafibre.fibre.thrift.TStatus;
+import io.datafibre.fibre.thrift.TStatusCode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

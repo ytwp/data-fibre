@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.backup.mv;
+package io.datafibre.fibre.backup.mv;
 
-import com.starrocks.backup.BackupJobInfo;
+import io.datafibre.fibre.backup.BackupJobInfo;
 
 public class MvBaseTableBackupInfo {
     private final BackupJobInfo.BackupTableInfo backupTableInfo;

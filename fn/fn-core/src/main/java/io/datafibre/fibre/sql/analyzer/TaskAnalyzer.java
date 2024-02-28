@@ -13,14 +13,14 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
 import com.google.common.base.Strings;
-import com.starrocks.common.ErrorCode;
-import com.starrocks.common.ErrorReport;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.SessionVariable;
-import com.starrocks.sql.ast.SubmitTaskStmt;
+import io.datafibre.fibre.common.ErrorCode;
+import io.datafibre.fibre.common.ErrorReport;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.SessionVariable;
+import io.datafibre.fibre.sql.ast.SubmitTaskStmt;
 import org.apache.commons.collections.MapUtils;
 
 import java.util.Map;

@@ -12,36 +12,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.rule.join;
+package io.datafibre.fibre.sql.optimizer.rule.join;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.analysis.JoinOperator;
-import com.starrocks.catalog.Type;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.SessionVariable;
-import com.starrocks.sql.optimizer.ExpressionContext;
-import com.starrocks.sql.optimizer.Group;
-import com.starrocks.sql.optimizer.JoinHelper;
-import com.starrocks.sql.optimizer.OptExpression;
-import com.starrocks.sql.optimizer.OptimizerContext;
-import com.starrocks.sql.optimizer.RowOutputInfo;
-import com.starrocks.sql.optimizer.UKFKConstraintsCollector;
-import com.starrocks.sql.optimizer.Utils;
-import com.starrocks.sql.optimizer.base.ColumnRefSet;
-import com.starrocks.sql.optimizer.operator.ColumnOutputInfo;
-import com.starrocks.sql.optimizer.operator.Operator;
-import com.starrocks.sql.optimizer.operator.OperatorBuilderFactory;
-import com.starrocks.sql.optimizer.operator.Projection;
-import com.starrocks.sql.optimizer.operator.UKFKConstraints;
-import com.starrocks.sql.optimizer.operator.logical.LogicalJoinOperator;
-import com.starrocks.sql.optimizer.operator.scalar.BinaryPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.rewrite.ReplaceColumnRefRewriter;
-import com.starrocks.sql.optimizer.statistics.StatisticsCalculator;
-import com.starrocks.sql.optimizer.statistics.StatisticsEstimateCoefficient;
-import com.starrocks.sql.optimizer.validate.InputDependenciesChecker;
+import io.datafibre.fibre.analysis.JoinOperator;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.SessionVariable;
+import io.datafibre.fibre.sql.optimizer.ExpressionContext;
+import io.datafibre.fibre.sql.optimizer.Group;
+import io.datafibre.fibre.sql.optimizer.JoinHelper;
+import io.datafibre.fibre.sql.optimizer.OptExpression;
+import io.datafibre.fibre.sql.optimizer.OptimizerContext;
+import io.datafibre.fibre.sql.optimizer.RowOutputInfo;
+import io.datafibre.fibre.sql.optimizer.UKFKConstraintsCollector;
+import io.datafibre.fibre.sql.optimizer.Utils;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
+import io.datafibre.fibre.sql.optimizer.operator.ColumnOutputInfo;
+import io.datafibre.fibre.sql.optimizer.operator.Operator;
+import io.datafibre.fibre.sql.optimizer.operator.OperatorBuilderFactory;
+import io.datafibre.fibre.sql.optimizer.operator.Projection;
+import io.datafibre.fibre.sql.optimizer.operator.UKFKConstraints;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalJoinOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.BinaryPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.rewrite.ReplaceColumnRefRewriter;
+import io.datafibre.fibre.sql.optimizer.statistics.StatisticsCalculator;
+import io.datafibre.fibre.sql.optimizer.statistics.StatisticsEstimateCoefficient;
+import io.datafibre.fibre.sql.optimizer.validate.InputDependenciesChecker;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -56,7 +56,7 @@ public abstract class JoinOrder {
 
     private static final Logger LOGGER = LogManager.getLogger(JoinOrder.class);
     /**
-     * Like {@link OptExpression} or {@link com.starrocks.sql.optimizer.GroupExpression} ,
+     * Like {@link OptExpression} or {@link io.datafibre.fibre.sql.optimizer.GroupExpression} ,
      * Description of an expression in the join order environment
      * left and right child of join expressions point to child groups
      */

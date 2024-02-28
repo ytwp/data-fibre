@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.hive.glue.util;
+package io.datafibre.fibre.connector.hive.glue.util;
 
 import com.amazonaws.ClientConfiguration;
 

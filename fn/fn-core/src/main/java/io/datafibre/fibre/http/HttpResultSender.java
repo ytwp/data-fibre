@@ -29,14 +29,14 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.http;
+package io.datafibre.fibre.http;
 
 import com.google.gson.JsonObject;
-import com.starrocks.qe.RowBatch;
-import com.starrocks.qe.ShowResultSet;
-import com.starrocks.qe.scheduler.Coordinator;
-import com.starrocks.sql.plan.ExecPlan;
-import com.starrocks.thrift.TResultBatch;
+import io.datafibre.fibre.qe.RowBatch;
+import io.datafibre.fibre.qe.ShowResultSet;
+import io.datafibre.fibre.qe.scheduler.Coordinator;
+import io.datafibre.fibre.sql.plan.ExecPlan;
+import io.datafibre.fibre.thrift.TResultBatch;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
@@ -55,7 +55,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
-import static com.starrocks.http.BaseResponse.HEADER_QUERY_ID;
+import static io.datafibre.fibre.http.BaseResponse.HEADER_QUERY_ID;
 
 public class HttpResultSender {
     private static final Logger LOG = LogManager.getLogger(HttpResultSender.class);

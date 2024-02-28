@@ -11,25 +11,25 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.ParseNode;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.analysis.TableName;
-import com.starrocks.sql.ast.AstVisitor;
-import com.starrocks.sql.ast.CTERelation;
-import com.starrocks.sql.ast.FieldReference;
-import com.starrocks.sql.ast.JoinRelation;
-import com.starrocks.sql.ast.QueryStatement;
-import com.starrocks.sql.ast.Relation;
-import com.starrocks.sql.ast.SelectListItem;
-import com.starrocks.sql.ast.SelectRelation;
-import com.starrocks.sql.ast.SetOperationRelation;
-import com.starrocks.sql.ast.SubqueryRelation;
-import com.starrocks.sql.ast.TableRelation;
-import com.starrocks.sql.ast.ValuesRelation;
-import com.starrocks.sql.ast.ViewRelation;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.ParseNode;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.sql.ast.AstVisitor;
+import io.datafibre.fibre.sql.ast.CTERelation;
+import io.datafibre.fibre.sql.ast.FieldReference;
+import io.datafibre.fibre.sql.ast.JoinRelation;
+import io.datafibre.fibre.sql.ast.QueryStatement;
+import io.datafibre.fibre.sql.ast.Relation;
+import io.datafibre.fibre.sql.ast.SelectListItem;
+import io.datafibre.fibre.sql.ast.SelectRelation;
+import io.datafibre.fibre.sql.ast.SetOperationRelation;
+import io.datafibre.fibre.sql.ast.SubqueryRelation;
+import io.datafibre.fibre.sql.ast.TableRelation;
+import io.datafibre.fibre.sql.ast.ValuesRelation;
+import io.datafibre.fibre.sql.ast.ViewRelation;
 
 /**
  * Resolve the expression(eg: partition column expression) through join/sub-query/view/set operator fo find the slot ref

@@ -32,13 +32,13 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.starrocks.analysis.TimestampArithmeticExpr.TimeUnit;
-import com.starrocks.common.FeConstants;
-import com.starrocks.common.util.DynamicPartitionUtil.StartOfDate;
-import com.starrocks.common.util.TimeUtils;
+import io.datafibre.fibre.analysis.TimestampArithmeticExpr.TimeUnit;
+import io.datafibre.fibre.common.FeConstants;
+import io.datafibre.fibre.common.util.DynamicPartitionUtil.StartOfDate;
+import io.datafibre.fibre.common.util.TimeUtils;
 
 import java.util.Map;
 import java.util.TimeZone;

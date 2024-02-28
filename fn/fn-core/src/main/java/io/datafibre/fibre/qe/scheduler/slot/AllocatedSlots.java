@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.qe.scheduler.slot;
+package io.datafibre.fibre.qe.scheduler.slot;
 
-import com.starrocks.thrift.TUniqueId;
+import io.datafibre.fibre.thrift.TUniqueId;
 
 import java.util.ArrayList;
 import java.util.Comparator;

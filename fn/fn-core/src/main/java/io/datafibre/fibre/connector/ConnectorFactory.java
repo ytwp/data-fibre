@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector;
+package io.datafibre.fibre.connector;
 
-import com.starrocks.connector.config.ConnectorConfig;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.connector.informationschema.InformationSchemaConnector;
+import io.datafibre.fibre.connector.config.ConnectorConfig;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.connector.informationschema.InformationSchemaConnector;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

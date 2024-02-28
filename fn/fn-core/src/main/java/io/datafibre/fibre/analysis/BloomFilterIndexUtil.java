@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.analysis;
+package io.datafibre.fibre.analysis;
 
-import com.starrocks.catalog.AggregateType;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Index;
-import com.starrocks.catalog.KeysType;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.NgramBfIndexParamsKey;
-import com.starrocks.sql.analyzer.SemanticException;
+import io.datafibre.fibre.catalog.AggregateType;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Index;
+import io.datafibre.fibre.catalog.KeysType;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.NgramBfIndexParamsKey;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
 
 import java.util.HashSet;
 import java.util.Locale;

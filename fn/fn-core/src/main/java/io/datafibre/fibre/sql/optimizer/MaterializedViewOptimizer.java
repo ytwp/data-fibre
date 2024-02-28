@@ -13,17 +13,17 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer;
+package io.datafibre.fibre.sql.optimizer;
 
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.catalog.MvPlanContext;
-import com.starrocks.common.Pair;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.optimizer.base.ColumnRefFactory;
-import com.starrocks.sql.optimizer.rule.RuleSetType;
-import com.starrocks.sql.optimizer.rule.RuleType;
-import com.starrocks.sql.optimizer.rule.transformation.materialization.MvUtils;
-import com.starrocks.sql.optimizer.transformer.LogicalPlan;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.catalog.MvPlanContext;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefFactory;
+import io.datafibre.fibre.sql.optimizer.rule.RuleSetType;
+import io.datafibre.fibre.sql.optimizer.rule.RuleType;
+import io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.MvUtils;
+import io.datafibre.fibre.sql.optimizer.transformer.LogicalPlan;
 
 public class MaterializedViewOptimizer {
     public MvPlanContext optimize(MaterializedView mv,

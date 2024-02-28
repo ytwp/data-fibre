@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.rule.tree;
+package io.datafibre.fibre.sql.optimizer.rule.tree;
 
 import com.google.common.collect.Lists;
-import com.starrocks.sql.optimizer.OptExpression;
-import com.starrocks.sql.optimizer.OptExpressionVisitor;
-import com.starrocks.sql.optimizer.operator.Operator;
-import com.starrocks.sql.optimizer.operator.SortPhase;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalTopNOperator;
-import com.starrocks.sql.optimizer.task.TaskContext;
+import io.datafibre.fibre.sql.optimizer.OptExpression;
+import io.datafibre.fibre.sql.optimizer.OptExpressionVisitor;
+import io.datafibre.fibre.sql.optimizer.operator.Operator;
+import io.datafibre.fibre.sql.optimizer.operator.SortPhase;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalTopNOperator;
+import io.datafibre.fibre.sql.optimizer.task.TaskContext;
 
 /**
  * Rewrite PhysicalDistribute with child topN(FINAL) to

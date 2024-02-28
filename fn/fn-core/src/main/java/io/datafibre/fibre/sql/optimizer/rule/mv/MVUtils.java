@@ -13,22 +13,22 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.rule.mv;
+package io.datafibre.fibre.sql.optimizer.rule.mv;
 
-import com.starrocks.analysis.CaseExpr;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.FunctionCallExpr;
-import com.starrocks.analysis.IntLiteral;
-import com.starrocks.analysis.IsNullPredicate;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.catalog.AggregateType;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.FunctionSet;
-import com.starrocks.catalog.MaterializedIndexMeta;
-import com.starrocks.sql.optimizer.operator.scalar.BinaryPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CastOperator;
-import com.starrocks.sql.optimizer.operator.scalar.InPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.analysis.CaseExpr;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.FunctionCallExpr;
+import io.datafibre.fibre.analysis.IntLiteral;
+import io.datafibre.fibre.analysis.IsNullPredicate;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.catalog.AggregateType;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.FunctionSet;
+import io.datafibre.fibre.catalog.MaterializedIndexMeta;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.BinaryPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CastOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.InPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
 
 public class MVUtils {
     public static final String MATERIALIZED_VIEW_NAME_PREFIX = "mv_";

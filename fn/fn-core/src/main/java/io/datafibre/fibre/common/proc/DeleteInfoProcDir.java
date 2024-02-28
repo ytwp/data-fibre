@@ -32,12 +32,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.proc;
+package io.datafibre.fibre.common.proc;
 
 import com.google.common.collect.ImmutableList;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.load.DeleteMgr;
-import com.starrocks.load.Load;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.load.DeleteMgr;
+import io.datafibre.fibre.load.Load;
 
 import java.util.ArrayList;
 import java.util.List;

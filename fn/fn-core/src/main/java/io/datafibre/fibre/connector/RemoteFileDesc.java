@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector;
+package io.datafibre.fibre.connector;
 
 import com.google.common.collect.ImmutableList;
-import com.starrocks.connector.hive.TextFileFormatDesc;
-import com.starrocks.connector.odps.OdpsSplitsInfo;
-import com.starrocks.connector.paimon.PaimonSplitsInfo;
+import io.datafibre.fibre.connector.hive.TextFileFormatDesc;
+import io.datafibre.fibre.connector.odps.OdpsSplitsInfo;
+import io.datafibre.fibre.connector.paimon.PaimonSplitsInfo;
 import org.apache.iceberg.FileScanTask;
 
 import java.util.ArrayList;

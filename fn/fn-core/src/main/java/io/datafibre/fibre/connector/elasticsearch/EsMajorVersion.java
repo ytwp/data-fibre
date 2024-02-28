@@ -32,9 +32,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.connector.elasticsearch;
+package io.datafibre.fibre.connector.elasticsearch;
 
-import com.starrocks.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
 
 /**
  * Elasticsearch major version information, useful to check client's query compatibility with the Rest API.

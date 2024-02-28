@@ -32,13 +32,13 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.sql.analyzer.mvpattern;
+package io.datafibre.fibre.sql.analyzer.mvpattern;
 
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.FunctionCallExpr;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.catalog.FunctionSet;
-import com.starrocks.catalog.PrimitiveType;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.FunctionCallExpr;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.catalog.FunctionSet;
+import io.datafibre.fibre.catalog.PrimitiveType;
 
 public class MVColumnBitmapUnionPattern implements MVColumnPattern {
 

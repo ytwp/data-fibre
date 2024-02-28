@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.transaction;
+package io.datafibre.fibre.transaction;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.PhysicalPartition;
-import com.starrocks.lake.compaction.CompactionMgr;
-import com.starrocks.lake.compaction.PartitionIdentifier;
-import com.starrocks.lake.compaction.Quantiles;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.optimizer.statistics.IDictManager;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.PhysicalPartition;
+import io.datafibre.fibre.lake.compaction.CompactionMgr;
+import io.datafibre.fibre.lake.compaction.PartitionIdentifier;
+import io.datafibre.fibre.lake.compaction.Quantiles;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.optimizer.statistics.IDictManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

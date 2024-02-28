@@ -32,28 +32,28 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.Analyzer;
-import com.starrocks.analysis.BinaryPredicate;
-import com.starrocks.analysis.DescriptorTable;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.JoinOperator;
-import com.starrocks.analysis.SlotId;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.analysis.TableRef;
-import com.starrocks.analysis.TupleId;
-import com.starrocks.common.FeConstants;
-import com.starrocks.common.IdGenerator;
-import com.starrocks.common.UserException;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.SessionVariable;
-import com.starrocks.sql.optimizer.operator.UKFKConstraints;
-import com.starrocks.thrift.TExplainLevel;
-import com.starrocks.thrift.TJoinDistributionMode;
+import io.datafibre.fibre.analysis.Analyzer;
+import io.datafibre.fibre.analysis.BinaryPredicate;
+import io.datafibre.fibre.analysis.DescriptorTable;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.JoinOperator;
+import io.datafibre.fibre.analysis.SlotId;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.analysis.TableRef;
+import io.datafibre.fibre.analysis.TupleId;
+import io.datafibre.fibre.common.FeConstants;
+import io.datafibre.fibre.common.IdGenerator;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.SessionVariable;
+import io.datafibre.fibre.sql.optimizer.operator.UKFKConstraints;
+import io.datafibre.fibre.thrift.TExplainLevel;
+import io.datafibre.fibre.thrift.TJoinDistributionMode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

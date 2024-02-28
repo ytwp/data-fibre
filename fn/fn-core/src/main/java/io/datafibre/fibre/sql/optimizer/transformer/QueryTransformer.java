@@ -12,45 +12,45 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.transformer;
+package io.datafibre.fibre.sql.optimizer.transformer;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.analysis.AnalyticExpr;
-import com.starrocks.analysis.CloneExpr;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.FunctionCallExpr;
-import com.starrocks.analysis.LimitElement;
-import com.starrocks.analysis.OrderByElement;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.Pair;
-import com.starrocks.common.TreeNode;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.analyzer.RelationFields;
-import com.starrocks.sql.analyzer.RelationId;
-import com.starrocks.sql.analyzer.Scope;
-import com.starrocks.sql.ast.Relation;
-import com.starrocks.sql.ast.SelectRelation;
-import com.starrocks.sql.optimizer.SubqueryUtils;
-import com.starrocks.sql.optimizer.Utils;
-import com.starrocks.sql.optimizer.base.ColumnRefFactory;
-import com.starrocks.sql.optimizer.base.Ordering;
-import com.starrocks.sql.optimizer.operator.AggType;
-import com.starrocks.sql.optimizer.operator.logical.LogicalAggregationOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalFilterOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalLimitOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalProjectOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalRepeatOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalTopNOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalWindowOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.operator.scalar.SubqueryOperator;
+import io.datafibre.fibre.analysis.AnalyticExpr;
+import io.datafibre.fibre.analysis.CloneExpr;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.FunctionCallExpr;
+import io.datafibre.fibre.analysis.LimitElement;
+import io.datafibre.fibre.analysis.OrderByElement;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.TreeNode;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.analyzer.RelationFields;
+import io.datafibre.fibre.sql.analyzer.RelationId;
+import io.datafibre.fibre.sql.analyzer.Scope;
+import io.datafibre.fibre.sql.ast.Relation;
+import io.datafibre.fibre.sql.ast.SelectRelation;
+import io.datafibre.fibre.sql.optimizer.SubqueryUtils;
+import io.datafibre.fibre.sql.optimizer.Utils;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefFactory;
+import io.datafibre.fibre.sql.optimizer.base.Ordering;
+import io.datafibre.fibre.sql.optimizer.operator.AggType;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalAggregationOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalFilterOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalLimitOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalProjectOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalRepeatOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalTopNOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalWindowOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CallOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.SubqueryOperator;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -59,7 +59,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.starrocks.sql.optimizer.transformer.SqlToScalarOperatorTranslator.findOrCreateColumnRefForExpr;
+import static io.datafibre.fibre.sql.optimizer.transformer.SqlToScalarOperatorTranslator.findOrCreateColumnRefForExpr;
 
 class QueryTransformer {
     private final ColumnRefFactory columnRefFactory;

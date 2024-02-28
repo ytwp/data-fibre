@@ -12,20 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer;
+package io.datafibre.fibre.sql.optimizer;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.sql.common.DebugOperatorTracer;
-import com.starrocks.sql.optimizer.base.ColumnRefSet;
-import com.starrocks.sql.optimizer.base.LogicalProperty;
-import com.starrocks.sql.optimizer.base.PhysicalPropertySet;
-import com.starrocks.sql.optimizer.operator.Operator;
-import com.starrocks.sql.optimizer.operator.UKFKConstraints;
-import com.starrocks.sql.optimizer.rule.mv.KeyInference;
-import com.starrocks.sql.optimizer.rule.mv.MVOperatorProperty;
-import com.starrocks.sql.optimizer.rule.mv.ModifyInference;
-import com.starrocks.sql.optimizer.statistics.Statistics;
+import io.datafibre.fibre.sql.common.DebugOperatorTracer;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
+import io.datafibre.fibre.sql.optimizer.base.LogicalProperty;
+import io.datafibre.fibre.sql.optimizer.base.PhysicalPropertySet;
+import io.datafibre.fibre.sql.optimizer.operator.Operator;
+import io.datafibre.fibre.sql.optimizer.operator.UKFKConstraints;
+import io.datafibre.fibre.sql.optimizer.rule.mv.KeyInference;
+import io.datafibre.fibre.sql.optimizer.rule.mv.MVOperatorProperty;
+import io.datafibre.fibre.sql.optimizer.rule.mv.ModifyInference;
+import io.datafibre.fibre.sql.optimizer.statistics.Statistics;
 
 import java.util.List;
 

@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.server;
+package io.datafibre.fibre.server;
 
 import com.google.gson.annotations.SerializedName;
 import com.staros.util.LockCloseable;
-import com.starrocks.common.InvalidConfException;
-import com.starrocks.persist.DropStorageVolumeLog;
-import com.starrocks.persist.metablock.SRMetaBlockEOFException;
-import com.starrocks.persist.metablock.SRMetaBlockException;
-import com.starrocks.persist.metablock.SRMetaBlockReader;
-import com.starrocks.storagevolume.StorageVolume;
+import io.datafibre.fibre.common.InvalidConfException;
+import io.datafibre.fibre.persist.DropStorageVolumeLog;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockEOFException;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockException;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockReader;
+import io.datafibre.fibre.storagevolume.StorageVolume;
 
 import java.io.IOException;
 import java.util.ArrayList;

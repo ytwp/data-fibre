@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
 import com.google.common.base.Strings;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.util.ParseUtil;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.ast.AlterDatabaseQuotaStmt;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.util.ParseUtil;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.ast.AlterDatabaseQuotaStmt;
 
-import static com.starrocks.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
+import static io.datafibre.fibre.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
 
 public class AlterDbQuotaAnalyzer {
     public static void analyze(AlterDatabaseQuotaStmt statement, ConnectContext context) {

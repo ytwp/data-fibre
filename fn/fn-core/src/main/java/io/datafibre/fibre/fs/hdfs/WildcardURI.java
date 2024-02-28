@@ -15,9 +15,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.fs.hdfs;
+package io.datafibre.fibre.fs.hdfs;
 
-import com.starrocks.common.UserException;
+import io.datafibre.fibre.common.UserException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

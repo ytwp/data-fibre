@@ -15,9 +15,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.http.meta;
+package io.datafibre.fibre.http.meta;
 
-import com.starrocks.common.DdlException;
+import io.datafibre.fibre.common.DdlException;
 
 public class InvalidClientException extends DdlException {
     public InvalidClientException(String msg) {

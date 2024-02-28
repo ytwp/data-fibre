@@ -12,32 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.server;
+package io.datafibre.fibre.server;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.annotations.SerializedName;
 import com.staros.util.LockCloseable;
-import com.starrocks.common.AlreadyExistsException;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.InvalidConfException;
-import com.starrocks.common.MetaNotFoundException;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.credential.CloudConfigurationConstants;
-import com.starrocks.persist.DropStorageVolumeLog;
-import com.starrocks.persist.SetDefaultStorageVolumeLog;
-import com.starrocks.persist.gson.GsonPostProcessable;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.persist.metablock.SRMetaBlockEOFException;
-import com.starrocks.persist.metablock.SRMetaBlockException;
-import com.starrocks.persist.metablock.SRMetaBlockID;
-import com.starrocks.persist.metablock.SRMetaBlockReader;
-import com.starrocks.persist.metablock.SRMetaBlockWriter;
-import com.starrocks.sql.ast.AlterStorageVolumeStmt;
-import com.starrocks.sql.ast.CreateStorageVolumeStmt;
-import com.starrocks.sql.ast.DropStorageVolumeStmt;
-import com.starrocks.sql.ast.SetDefaultStorageVolumeStmt;
-import com.starrocks.storagevolume.StorageVolume;
+import io.datafibre.fibre.common.AlreadyExistsException;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.InvalidConfException;
+import io.datafibre.fibre.common.MetaNotFoundException;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.credential.CloudConfigurationConstants;
+import io.datafibre.fibre.persist.DropStorageVolumeLog;
+import io.datafibre.fibre.persist.SetDefaultStorageVolumeLog;
+import io.datafibre.fibre.persist.gson.GsonPostProcessable;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockEOFException;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockException;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockID;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockReader;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockWriter;
+import io.datafibre.fibre.sql.ast.AlterStorageVolumeStmt;
+import io.datafibre.fibre.sql.ast.CreateStorageVolumeStmt;
+import io.datafibre.fibre.sql.ast.DropStorageVolumeStmt;
+import io.datafibre.fibre.sql.ast.SetDefaultStorageVolumeStmt;
+import io.datafibre.fibre.storagevolume.StorageVolume;
 
 import java.io.DataInput;
 import java.io.DataOutput;

@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.load.streamload;
+package io.datafibre.fibre.load.streamload;
 
 import com.google.common.collect.ImmutableList;
-import com.starrocks.analysis.FunctionalExprProvider;
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.privilege.AccessDeniedException;
-import com.starrocks.privilege.PrivilegeType;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.analyzer.Authorizer;
+import io.datafibre.fibre.analysis.FunctionalExprProvider;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.privilege.AccessDeniedException;
+import io.datafibre.fibre.privilege.PrivilegeType;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.analyzer.Authorizer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

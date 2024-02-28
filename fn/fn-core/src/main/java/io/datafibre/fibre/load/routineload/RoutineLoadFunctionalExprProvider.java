@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.load.routineload;
+package io.datafibre.fibre.load.routineload;
 
 import com.google.common.collect.ImmutableList;
-import com.starrocks.analysis.FunctionalExprProvider;
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.common.MetaNotFoundException;
-import com.starrocks.common.util.LogBuilder;
-import com.starrocks.common.util.LogKey;
-import com.starrocks.privilege.AccessDeniedException;
-import com.starrocks.privilege.PrivilegeType;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.analyzer.Authorizer;
+import io.datafibre.fibre.analysis.FunctionalExprProvider;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.common.MetaNotFoundException;
+import io.datafibre.fibre.common.util.LogBuilder;
+import io.datafibre.fibre.common.util.LogKey;
+import io.datafibre.fibre.privilege.AccessDeniedException;
+import io.datafibre.fibre.privilege.PrivilegeType;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.analyzer.Authorizer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

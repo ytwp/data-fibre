@@ -12,25 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.jdbc;
+package io.datafibre.fibre.connector.jdbc;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.DateLiteral;
-import com.starrocks.analysis.IntLiteral;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.JDBCResource;
-import com.starrocks.catalog.JDBCTable;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.Config;
-import com.starrocks.common.DdlException;
-import com.starrocks.connector.ConnectorMetadata;
-import com.starrocks.connector.ConnectorTableId;
-import com.starrocks.connector.PartitionInfo;
-import com.starrocks.connector.PartitionUtil;
-import com.starrocks.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.analysis.DateLiteral;
+import io.datafibre.fibre.analysis.IntLiteral;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.JDBCResource;
+import io.datafibre.fibre.catalog.JDBCTable;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.connector.ConnectorMetadata;
+import io.datafibre.fibre.connector.ConnectorTableId;
+import io.datafibre.fibre.connector.PartitionInfo;
+import io.datafibre.fibre.connector.PartitionUtil;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.logging.log4j.LogManager;

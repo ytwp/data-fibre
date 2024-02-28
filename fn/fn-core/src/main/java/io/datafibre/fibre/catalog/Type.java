@@ -32,28 +32,28 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.collect.Lists;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.Pair;
-import com.starrocks.mysql.MysqlColType;
-import com.starrocks.proto.PScalarType;
-import com.starrocks.proto.PTypeDesc;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.SessionVariableConstants;
-import com.starrocks.sql.common.TypeManager;
-import com.starrocks.thrift.TColumnType;
-import com.starrocks.thrift.TPrimitiveType;
-import com.starrocks.thrift.TScalarType;
-import com.starrocks.thrift.TStructField;
-import com.starrocks.thrift.TTypeDesc;
-import com.starrocks.thrift.TTypeNode;
-import com.starrocks.thrift.TTypeNodeType;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.mysql.MysqlColType;
+import io.datafibre.fibre.proto.PScalarType;
+import io.datafibre.fibre.proto.PTypeDesc;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.SessionVariableConstants;
+import io.datafibre.fibre.sql.common.TypeManager;
+import io.datafibre.fibre.thrift.TColumnType;
+import io.datafibre.fibre.thrift.TPrimitiveType;
+import io.datafibre.fibre.thrift.TScalarType;
+import io.datafibre.fibre.thrift.TStructField;
+import io.datafibre.fibre.thrift.TTypeDesc;
+import io.datafibre.fibre.thrift.TTypeNode;
+import io.datafibre.fibre.thrift.TTypeNodeType;
 
 import java.util.ArrayList;
 import java.util.Arrays;

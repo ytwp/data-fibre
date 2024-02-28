@@ -32,24 +32,24 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.analysis;
+package io.datafibre.fibre.analysis;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.FunctionSet;
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.catalog.ScalarFunction;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.ast.AstVisitor;
-import com.starrocks.sql.parser.NodePosition;
-import com.starrocks.thrift.TExprNode;
-import com.starrocks.thrift.TExprNodeType;
-import com.starrocks.thrift.TExprOpcode;
+import io.datafibre.fibre.catalog.FunctionSet;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.catalog.ScalarFunction;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.ast.AstVisitor;
+import io.datafibre.fibre.sql.parser.NodePosition;
+import io.datafibre.fibre.thrift.TExprNode;
+import io.datafibre.fibre.thrift.TExprNodeType;
+import io.datafibre.fibre.thrift.TExprOpcode;
 
 import java.util.Arrays;
 import java.util.Map;

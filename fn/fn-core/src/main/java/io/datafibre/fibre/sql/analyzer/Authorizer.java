@@ -12,34 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.TableName;
-import com.starrocks.catalog.BasicTable;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.Function;
-import com.starrocks.catalog.InternalCatalog;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.Config;
-import com.starrocks.common.Pair;
-import com.starrocks.privilege.AccessControlProvider;
-import com.starrocks.privilege.AccessController;
-import com.starrocks.privilege.AccessDeniedException;
-import com.starrocks.privilege.NativeAccessController;
-import com.starrocks.privilege.ObjectType;
-import com.starrocks.privilege.PEntryObject;
-import com.starrocks.privilege.PrivilegeType;
-import com.starrocks.privilege.ranger.starrocks.RangerStarRocksAccessController;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.CatalogMgr;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.StatementBase;
-import com.starrocks.sql.ast.UserIdentity;
-import com.starrocks.sql.ast.pipe.PipeName;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.catalog.BasicTable;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.Function;
+import io.datafibre.fibre.catalog.InternalCatalog;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.privilege.AccessControlProvider;
+import io.datafibre.fibre.privilege.AccessController;
+import io.datafibre.fibre.privilege.AccessDeniedException;
+import io.datafibre.fibre.privilege.NativeAccessController;
+import io.datafibre.fibre.privilege.ObjectType;
+import io.datafibre.fibre.privilege.PEntryObject;
+import io.datafibre.fibre.privilege.PrivilegeType;
+import io.datafibre.fibre.privilege.ranger.starrocks.RangerStarRocksAccessController;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.CatalogMgr;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.StatementBase;
+import io.datafibre.fibre.sql.ast.UserIdentity;
+import io.datafibre.fibre.sql.ast.pipe.PipeName;
 import org.apache.commons.collections4.ListUtils;
 
 import java.util.List;

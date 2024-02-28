@@ -15,10 +15,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.plugin;
+package io.datafibre.fibre.plugin;
 
 import com.google.common.base.Strings;
-import com.starrocks.common.UserException;
+import io.datafibre.fibre.common.UserException;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;

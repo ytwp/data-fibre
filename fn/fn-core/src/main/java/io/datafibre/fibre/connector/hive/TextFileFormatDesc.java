@@ -13,9 +13,9 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.hive;
+package io.datafibre.fibre.connector.hive;
 
-import com.starrocks.thrift.TTextFileDesc;
+import io.datafibre.fibre.thrift.TTextFileDesc;
 
 public class TextFileFormatDesc {
 

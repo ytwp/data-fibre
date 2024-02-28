@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.privilege;
+package io.datafibre.fibre.privilege;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.common.MetaNotFoundException;
-import com.starrocks.storagevolume.StorageVolume;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.common.MetaNotFoundException;
+import io.datafibre.fibre.storagevolume.StorageVolume;
 
 import java.util.List;
 import java.util.Objects;

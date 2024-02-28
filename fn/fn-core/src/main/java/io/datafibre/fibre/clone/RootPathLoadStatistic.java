@@ -32,16 +32,16 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.clone;
+package io.datafibre.fibre.clone;
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.catalog.DiskInfo;
-import com.starrocks.catalog.DiskInfo.DiskState;
-import com.starrocks.clone.BackendLoadStatistic.Classification;
-import com.starrocks.clone.BackendsFitStatus.ErrCode;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.thrift.TStorageMedium;
+import io.datafibre.fibre.catalog.DiskInfo;
+import io.datafibre.fibre.catalog.DiskInfo.DiskState;
+import io.datafibre.fibre.clone.BackendLoadStatistic.Classification;
+import io.datafibre.fibre.clone.BackendsFitStatus.ErrCode;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.thrift.TStorageMedium;
 
 public class RootPathLoadStatistic implements Comparable<RootPathLoadStatistic> {
 

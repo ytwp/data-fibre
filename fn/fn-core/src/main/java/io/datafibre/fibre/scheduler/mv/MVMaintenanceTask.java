@@ -12,21 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.scheduler.mv;
+package io.datafibre.fibre.scheduler.mv;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.thrift.MVTaskType;
-import com.starrocks.thrift.TBinlogOffset;
-import com.starrocks.thrift.TBinlogScanRange;
-import com.starrocks.thrift.TExecPlanFragmentParams;
-import com.starrocks.thrift.TMVMaintenanceStartTask;
-import com.starrocks.thrift.TMVMaintenanceTasks;
-import com.starrocks.thrift.TMVReportEpochTask;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.thrift.TScanRange;
-import com.starrocks.thrift.TScanRangeParams;
-import com.starrocks.thrift.TUniqueId;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.thrift.MVTaskType;
+import io.datafibre.fibre.thrift.TBinlogOffset;
+import io.datafibre.fibre.thrift.TBinlogScanRange;
+import io.datafibre.fibre.thrift.TExecPlanFragmentParams;
+import io.datafibre.fibre.thrift.TMVMaintenanceStartTask;
+import io.datafibre.fibre.thrift.TMVMaintenanceTasks;
+import io.datafibre.fibre.thrift.TMVReportEpochTask;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TScanRange;
+import io.datafibre.fibre.thrift.TScanRangeParams;
+import io.datafibre.fibre.thrift.TUniqueId;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

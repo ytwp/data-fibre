@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package com.starrocks.privilege;
+package io.datafibre.fibre.privilege;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.server.GlobalStateMgr;
 
 import java.util.List;
 import java.util.Objects;

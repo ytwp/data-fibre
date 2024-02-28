@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.connector.elasticsearch;
+package io.datafibre.fibre.connector.elasticsearch;
 
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
@@ -23,8 +23,8 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.starrocks.common.io.FastByteArrayOutputStream;
-import com.starrocks.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.common.io.FastByteArrayOutputStream;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
 
 import java.io.IOException;
 import java.util.ArrayList;

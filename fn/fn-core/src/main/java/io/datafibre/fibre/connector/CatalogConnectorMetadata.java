@@ -12,52 +12,52 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector;
+package io.datafibre.fibre.connector;
 
 import com.google.common.collect.ImmutableList;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.MaterializedIndexMeta;
-import com.starrocks.catalog.PartitionKey;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.AlreadyExistsException;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.MetaNotFoundException;
-import com.starrocks.common.Pair;
-import com.starrocks.common.UserException;
-import com.starrocks.common.profile.Tracers;
-import com.starrocks.connector.informationschema.InformationSchemaMetadata;
-import com.starrocks.credential.CloudConfiguration;
-import com.starrocks.sql.ast.AddPartitionClause;
-import com.starrocks.sql.ast.AlterMaterializedViewStmt;
-import com.starrocks.sql.ast.AlterTableCommentClause;
-import com.starrocks.sql.ast.AlterTableStmt;
-import com.starrocks.sql.ast.AlterViewStmt;
-import com.starrocks.sql.ast.CreateMaterializedViewStatement;
-import com.starrocks.sql.ast.CreateMaterializedViewStmt;
-import com.starrocks.sql.ast.CreateTableLikeStmt;
-import com.starrocks.sql.ast.CreateTableStmt;
-import com.starrocks.sql.ast.CreateViewStmt;
-import com.starrocks.sql.ast.DropMaterializedViewStmt;
-import com.starrocks.sql.ast.DropPartitionClause;
-import com.starrocks.sql.ast.DropTableStmt;
-import com.starrocks.sql.ast.PartitionRenameClause;
-import com.starrocks.sql.ast.RefreshMaterializedViewStatement;
-import com.starrocks.sql.ast.TableRenameClause;
-import com.starrocks.sql.ast.TruncateTableStmt;
-import com.starrocks.sql.optimizer.OptimizerContext;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.statistics.Statistics;
-import com.starrocks.thrift.TSinkCommitInfo;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.MaterializedIndexMeta;
+import io.datafibre.fibre.catalog.PartitionKey;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.AlreadyExistsException;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.MetaNotFoundException;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.profile.Tracers;
+import io.datafibre.fibre.connector.informationschema.InformationSchemaMetadata;
+import io.datafibre.fibre.credential.CloudConfiguration;
+import io.datafibre.fibre.sql.ast.AddPartitionClause;
+import io.datafibre.fibre.sql.ast.AlterMaterializedViewStmt;
+import io.datafibre.fibre.sql.ast.AlterTableCommentClause;
+import io.datafibre.fibre.sql.ast.AlterTableStmt;
+import io.datafibre.fibre.sql.ast.AlterViewStmt;
+import io.datafibre.fibre.sql.ast.CreateMaterializedViewStatement;
+import io.datafibre.fibre.sql.ast.CreateMaterializedViewStmt;
+import io.datafibre.fibre.sql.ast.CreateTableLikeStmt;
+import io.datafibre.fibre.sql.ast.CreateTableStmt;
+import io.datafibre.fibre.sql.ast.CreateViewStmt;
+import io.datafibre.fibre.sql.ast.DropMaterializedViewStmt;
+import io.datafibre.fibre.sql.ast.DropPartitionClause;
+import io.datafibre.fibre.sql.ast.DropTableStmt;
+import io.datafibre.fibre.sql.ast.PartitionRenameClause;
+import io.datafibre.fibre.sql.ast.RefreshMaterializedViewStatement;
+import io.datafibre.fibre.sql.ast.TableRenameClause;
+import io.datafibre.fibre.sql.ast.TruncateTableStmt;
+import io.datafibre.fibre.sql.optimizer.OptimizerContext;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.statistics.Statistics;
+import io.datafibre.fibre.thrift.TSinkCommitInfo;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.starrocks.catalog.system.information.InfoSchemaDb.isInfoSchemaDb;
+import static io.datafibre.fibre.catalog.system.information.InfoSchemaDb.isInfoSchemaDb;
 import static java.util.Objects.requireNonNull;
 
 // CatalogConnectorMetadata provides a uniform interface to provide normal tables and information schema tables.

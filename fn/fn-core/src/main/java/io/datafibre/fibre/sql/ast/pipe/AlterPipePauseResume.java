@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.ast.pipe;
+package io.datafibre.fibre.sql.ast.pipe;
 
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 public class AlterPipePauseResume extends AlterPipeClause {
 

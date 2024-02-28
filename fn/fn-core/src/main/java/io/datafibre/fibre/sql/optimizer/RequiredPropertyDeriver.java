@@ -12,38 +12,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer;
+package io.datafibre.fibre.sql.optimizer;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.optimizer.base.CTEProperty;
-import com.starrocks.sql.optimizer.base.ColumnRefFactory;
-import com.starrocks.sql.optimizer.base.ColumnRefSet;
-import com.starrocks.sql.optimizer.base.DistributionCol;
-import com.starrocks.sql.optimizer.base.DistributionProperty;
-import com.starrocks.sql.optimizer.base.DistributionSpec;
-import com.starrocks.sql.optimizer.base.EmptyDistributionProperty;
-import com.starrocks.sql.optimizer.base.HashDistributionDesc;
-import com.starrocks.sql.optimizer.base.Ordering;
-import com.starrocks.sql.optimizer.base.PhysicalPropertySet;
-import com.starrocks.sql.optimizer.base.SortProperty;
-import com.starrocks.sql.optimizer.operator.Operator;
-import com.starrocks.sql.optimizer.operator.OperatorType;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalAssertOneRowOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalCTEAnchorOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalExceptOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalHashAggregateOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalHashJoinOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalIntersectOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalLimitOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalMergeJoinOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalNestLoopJoinOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalNoCTEOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalTopNOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalUnionOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalWindowOperator;
-import com.starrocks.sql.optimizer.task.TaskContext;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.optimizer.base.CTEProperty;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefFactory;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
+import io.datafibre.fibre.sql.optimizer.base.DistributionCol;
+import io.datafibre.fibre.sql.optimizer.base.DistributionProperty;
+import io.datafibre.fibre.sql.optimizer.base.DistributionSpec;
+import io.datafibre.fibre.sql.optimizer.base.EmptyDistributionProperty;
+import io.datafibre.fibre.sql.optimizer.base.HashDistributionDesc;
+import io.datafibre.fibre.sql.optimizer.base.Ordering;
+import io.datafibre.fibre.sql.optimizer.base.PhysicalPropertySet;
+import io.datafibre.fibre.sql.optimizer.base.SortProperty;
+import io.datafibre.fibre.sql.optimizer.operator.Operator;
+import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalAssertOneRowOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalCTEAnchorOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalExceptOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalHashAggregateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalHashJoinOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalIntersectOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalLimitOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalMergeJoinOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalNestLoopJoinOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalNoCTEOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalTopNOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalUnionOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalWindowOperator;
+import io.datafibre.fibre.sql.optimizer.task.TaskContext;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;

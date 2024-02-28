@@ -12,33 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.statistic;
+package io.datafibre.fibre.statistic;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.IntLiteral;
-import com.starrocks.analysis.StringLiteral;
-import com.starrocks.analysis.TableName;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.Partition;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.Config;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.util.DebugUtil;
-import com.starrocks.common.util.UUIDUtil;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.OriginStatement;
-import com.starrocks.qe.QueryState;
-import com.starrocks.qe.StmtExecutor;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.InsertStmt;
-import com.starrocks.sql.ast.QueryStatement;
-import com.starrocks.sql.ast.StatementBase;
-import com.starrocks.sql.ast.ValuesRelation;
-import com.starrocks.thrift.TStatisticData;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.IntLiteral;
+import io.datafibre.fibre.analysis.StringLiteral;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.util.DebugUtil;
+import io.datafibre.fibre.common.util.UUIDUtil;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.OriginStatement;
+import io.datafibre.fibre.qe.QueryState;
+import io.datafibre.fibre.qe.StmtExecutor;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.InsertStmt;
+import io.datafibre.fibre.sql.ast.QueryStatement;
+import io.datafibre.fibre.sql.ast.StatementBase;
+import io.datafibre.fibre.sql.ast.ValuesRelation;
+import io.datafibre.fibre.thrift.TStatisticData;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;

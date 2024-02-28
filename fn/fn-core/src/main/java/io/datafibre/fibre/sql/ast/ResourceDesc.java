@@ -13,16 +13,16 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
 import com.google.common.collect.Maps;
-import com.starrocks.analysis.ParseNode;
-import com.starrocks.catalog.Resource;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.util.PrintableMap;
-import com.starrocks.load.EtlJobType;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.ParseNode;
+import io.datafibre.fibre.catalog.Resource;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.util.PrintableMap;
+import io.datafibre.fibre.load.EtlJobType;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.Map;
 

@@ -13,14 +13,14 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.Expr;
-import com.starrocks.sql.parser.NodePosition;
-import com.starrocks.thrift.TDictionaryGetExpr;
-import com.starrocks.thrift.TExprNode;
-import com.starrocks.thrift.TExprNodeType;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.sql.parser.NodePosition;
+import io.datafibre.fibre.thrift.TDictionaryGetExpr;
+import io.datafibre.fibre.thrift.TExprNode;
+import io.datafibre.fibre.thrift.TExprNodeType;
 
 import java.util.List;
 

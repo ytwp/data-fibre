@@ -13,9 +13,9 @@
 // limitations under the License.
 
 
-package com.starrocks.analysis;
+package io.datafibre.fibre.analysis;
 
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 public class TaskName {
 

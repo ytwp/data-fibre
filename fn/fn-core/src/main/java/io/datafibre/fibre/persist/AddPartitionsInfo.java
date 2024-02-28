@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.persist;
+package io.datafibre.fibre.persist;
 
 import com.google.common.collect.Lists;
-import com.starrocks.common.io.Writable;
+import io.datafibre.fibre.common.io.Writable;
 
 import java.io.DataInput;
 import java.io.DataOutput;

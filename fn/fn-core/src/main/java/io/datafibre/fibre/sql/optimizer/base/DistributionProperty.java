@@ -13,15 +13,15 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.base;
+package io.datafibre.fibre.sql.optimizer.base;
 
 import com.google.common.collect.Lists;
-import com.starrocks.sql.optimizer.Group;
-import com.starrocks.sql.optimizer.GroupExpression;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalDistributionOperator;
+import io.datafibre.fibre.sql.optimizer.Group;
+import io.datafibre.fibre.sql.optimizer.GroupExpression;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalDistributionOperator;
 
-import static com.starrocks.sql.optimizer.base.DistributionSpec.DistributionType.ANY;
-import static com.starrocks.sql.optimizer.base.DistributionSpec.DistributionType.SHUFFLE;
+import static io.datafibre.fibre.sql.optimizer.base.DistributionSpec.DistributionType.ANY;
+import static io.datafibre.fibre.sql.optimizer.base.DistributionSpec.DistributionType.SHUFFLE;
 
 public class DistributionProperty implements PhysicalProperty {
     private final DistributionSpec spec;

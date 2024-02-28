@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.thrift.TStructField;
-import com.starrocks.thrift.TTypeDesc;
-import com.starrocks.thrift.TTypeNode;
+import io.datafibre.fibre.thrift.TStructField;
+import io.datafibre.fibre.thrift.TTypeDesc;
+import io.datafibre.fibre.thrift.TTypeNode;
 import org.apache.commons.lang3.StringUtils;
 
 /**

@@ -12,40 +12,40 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.starrocks.analysis.BrokerDesc;
-import com.starrocks.analysis.DescriptorTable;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.UserException;
-import com.starrocks.fs.HdfsUtil;
-import com.starrocks.load.Load;
-import com.starrocks.proto.PGetFileSchemaResult;
-import com.starrocks.proto.PSlotDescriptor;
-import com.starrocks.rpc.BackendServiceClient;
-import com.starrocks.rpc.PGetFileSchemaRequest;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.server.RunMode;
-import com.starrocks.sql.ast.ImportColumnDesc;
-import com.starrocks.system.ComputeNode;
-import com.starrocks.thrift.TBrokerFileStatus;
-import com.starrocks.thrift.TBrokerRangeDesc;
-import com.starrocks.thrift.TBrokerScanRange;
-import com.starrocks.thrift.TBrokerScanRangeParams;
-import com.starrocks.thrift.TColumn;
-import com.starrocks.thrift.TFileType;
-import com.starrocks.thrift.TGetFileSchemaRequest;
-import com.starrocks.thrift.THdfsProperties;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.thrift.TScanRange;
-import com.starrocks.thrift.TStatusCode;
-import com.starrocks.thrift.TTableDescriptor;
-import com.starrocks.thrift.TTableFunctionTable;
-import com.starrocks.thrift.TTableType;
+import io.datafibre.fibre.analysis.BrokerDesc;
+import io.datafibre.fibre.analysis.DescriptorTable;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.fs.HdfsUtil;
+import io.datafibre.fibre.load.Load;
+import io.datafibre.fibre.proto.PGetFileSchemaResult;
+import io.datafibre.fibre.proto.PSlotDescriptor;
+import io.datafibre.fibre.rpc.BackendServiceClient;
+import io.datafibre.fibre.rpc.PGetFileSchemaRequest;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.server.RunMode;
+import io.datafibre.fibre.sql.ast.ImportColumnDesc;
+import io.datafibre.fibre.system.ComputeNode;
+import io.datafibre.fibre.thrift.TBrokerFileStatus;
+import io.datafibre.fibre.thrift.TBrokerRangeDesc;
+import io.datafibre.fibre.thrift.TBrokerScanRange;
+import io.datafibre.fibre.thrift.TBrokerScanRangeParams;
+import io.datafibre.fibre.thrift.TColumn;
+import io.datafibre.fibre.thrift.TFileType;
+import io.datafibre.fibre.thrift.TGetFileSchemaRequest;
+import io.datafibre.fibre.thrift.THdfsProperties;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TScanRange;
+import io.datafibre.fibre.thrift.TStatusCode;
+import io.datafibre.fibre.thrift.TTableDescriptor;
+import io.datafibre.fibre.thrift.TTableFunctionTable;
+import io.datafibre.fibre.thrift.TTableType;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -62,7 +62,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import static com.google.common.base.Verify.verify;
-import static com.starrocks.analysis.OutFileClause.PARQUET_COMPRESSION_TYPE_MAP;
+import static io.datafibre.fibre.analysis.OutFileClause.PARQUET_COMPRESSION_TYPE_MAP;
 
 public class TableFunctionTable extends Table {
     private static final Set<String> SUPPORTED_FORMATS;

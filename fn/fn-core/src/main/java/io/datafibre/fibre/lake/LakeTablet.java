@@ -12,20 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.lake;
+package io.datafibre.fibre.lake;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.gson.annotations.SerializedName;
 import com.staros.client.StarClientException;
 import com.staros.proto.ShardInfo;
-import com.starrocks.catalog.Replica;
-import com.starrocks.catalog.Tablet;
-import com.starrocks.common.UserException;
-import com.starrocks.common.io.Text;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.warehouse.Warehouse;
+import io.datafibre.fibre.catalog.Replica;
+import io.datafibre.fibre.catalog.Tablet;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.warehouse.Warehouse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Set;
 import javax.validation.constraints.NotNull;
 
-import static com.starrocks.catalog.Replica.ReplicaState.NORMAL;
+import static io.datafibre.fibre.catalog.Replica.ReplicaState.NORMAL;
 
 /**
  * This class represents the StarRocks lake tablet related metadata.

@@ -13,11 +13,11 @@
 // limitations under the License.
 
 
-package com.starrocks.privilege;
+package io.datafibre.fibre.privilege;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.UserIdentity;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.UserIdentity;
 
 import java.util.Objects;
 
@@ -73,7 +73,7 @@ public class UserPEntryObject implements PEntryObject {
      * but here we checked by AuthorizationManager to avoid deadlock.
      * lock order should always be:
      * AuthenticationManager.lock -> AuthorizationManager.userLock -> AuthorizationManager.roleLock
-     * All validation are made in com.starrocks.privilege.AuthorizationManager#removeInvalidObject()
+     * All validation are made in io.datafibre.fibre.privilege.AuthorizationManager#removeInvalidObject()
      */
     @Override
     public boolean validate(GlobalStateMgr globalStateMgr) {

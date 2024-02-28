@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.metric;
+package io.datafibre.fibre.metric;
 
 import com.google.common.collect.ImmutableMap;
 import io.prometheus.metrics.model.snapshots.CounterSnapshot;
@@ -25,8 +25,8 @@ import io.prometheus.metrics.model.snapshots.Unit;
 import java.util.Map;
 
 /**
- * A PrometheusMetric is a wrapper that wraps a prometheus metric into a com.starrocks.metric.Metric.
- * Then these metrics can be processed by those com.starrocks.metric.MetricVisitor
+ * A PrometheusMetric is a wrapper that wraps a prometheus metric into a io.datafibre.fibre.metric.Metric.
+ * Then these metrics can be processed by those io.datafibre.fibre.metric.MetricVisitor
  */
 
 public class PrometheusMetric extends Metric<Double> {

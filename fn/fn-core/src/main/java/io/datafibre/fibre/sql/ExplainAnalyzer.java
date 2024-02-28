@@ -12,31 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql;
+package io.datafibre.fibre.sql;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.starrocks.common.Pair;
-import com.starrocks.common.util.Counter;
-import com.starrocks.common.util.ProfileManager;
-import com.starrocks.common.util.ProfilingExecPlan;
-import com.starrocks.common.util.RuntimeProfile;
-import com.starrocks.planner.AggregationNode;
-import com.starrocks.planner.ExchangeNode;
-import com.starrocks.planner.JoinNode;
-import com.starrocks.planner.MultiCastDataSink;
-import com.starrocks.planner.OlapTableSink;
-import com.starrocks.planner.PlanNode;
-import com.starrocks.planner.ScanNode;
-import com.starrocks.planner.UnionNode;
-import com.starrocks.qe.SessionVariable;
-import com.starrocks.sql.optimizer.cost.CostEstimate;
-import com.starrocks.sql.optimizer.statistics.ColumnStatistic;
-import com.starrocks.sql.optimizer.statistics.Statistics;
-import com.starrocks.thrift.TPartitionType;
-import com.starrocks.thrift.TUnit;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.util.Counter;
+import io.datafibre.fibre.common.util.ProfileManager;
+import io.datafibre.fibre.common.util.ProfilingExecPlan;
+import io.datafibre.fibre.common.util.RuntimeProfile;
+import io.datafibre.fibre.planner.AggregationNode;
+import io.datafibre.fibre.planner.ExchangeNode;
+import io.datafibre.fibre.planner.JoinNode;
+import io.datafibre.fibre.planner.MultiCastDataSink;
+import io.datafibre.fibre.planner.OlapTableSink;
+import io.datafibre.fibre.planner.PlanNode;
+import io.datafibre.fibre.planner.ScanNode;
+import io.datafibre.fibre.planner.UnionNode;
+import io.datafibre.fibre.qe.SessionVariable;
+import io.datafibre.fibre.sql.optimizer.cost.CostEstimate;
+import io.datafibre.fibre.sql.optimizer.statistics.ColumnStatistic;
+import io.datafibre.fibre.sql.optimizer.statistics.Statistics;
+import io.datafibre.fibre.thrift.TPartitionType;
+import io.datafibre.fibre.thrift.TUnit;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;

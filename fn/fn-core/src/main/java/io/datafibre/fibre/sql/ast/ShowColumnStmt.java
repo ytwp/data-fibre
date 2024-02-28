@@ -13,23 +13,23 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
 import com.google.common.base.Strings;
-import com.starrocks.analysis.BinaryPredicate;
-import com.starrocks.analysis.BinaryType;
-import com.starrocks.analysis.CompoundPredicate;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.ExprSubstitutionMap;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.analysis.StringLiteral;
-import com.starrocks.analysis.TableName;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.catalog.system.information.InfoSchemaDb;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.qe.ShowResultSetMetaData;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.BinaryPredicate;
+import io.datafibre.fibre.analysis.BinaryType;
+import io.datafibre.fibre.analysis.CompoundPredicate;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.ExprSubstitutionMap;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.analysis.StringLiteral;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.catalog.system.information.InfoSchemaDb;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.qe.ShowResultSetMetaData;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 // SHOW COLUMNS
 public class ShowColumnStmt extends ShowStmt {

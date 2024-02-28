@@ -13,23 +13,23 @@
 // limitations under the License.
 
 
-package com.starrocks.staros;
+package io.datafibre.fibre.staros;
 
 import com.staros.manager.StarManager;
 import com.staros.manager.StarManagerServer;
 import com.staros.metrics.MetricsSystem;
-import com.starrocks.common.Config;
-import com.starrocks.ha.FrontendNodeType;
-import com.starrocks.ha.StateChangeExecution;
-import com.starrocks.journal.bdbje.BDBEnvironment;
-import com.starrocks.journal.bdbje.BDBJEJournal;
-import com.starrocks.lake.StarOSAgent;
-import com.starrocks.leader.Checkpoint;
-import com.starrocks.metric.MetricVisitor;
-import com.starrocks.metric.PrometheusRegistryHelper;
-import com.starrocks.persist.Storage;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.service.FrontendOptions;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.ha.FrontendNodeType;
+import io.datafibre.fibre.ha.StateChangeExecution;
+import io.datafibre.fibre.journal.bdbje.BDBEnvironment;
+import io.datafibre.fibre.journal.bdbje.BDBJEJournal;
+import io.datafibre.fibre.lake.StarOSAgent;
+import io.datafibre.fibre.leader.Checkpoint;
+import io.datafibre.fibre.metric.MetricVisitor;
+import io.datafibre.fibre.metric.PrometheusRegistryHelper;
+import io.datafibre.fibre.persist.Storage;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.service.FrontendOptions;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

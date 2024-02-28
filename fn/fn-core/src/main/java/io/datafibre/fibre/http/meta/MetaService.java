@@ -32,23 +32,23 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.http.meta;
+package io.datafibre.fibre.http.meta;
 
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
-import com.starrocks.ha.FrontendNodeType;
-import com.starrocks.http.ActionController;
-import com.starrocks.http.BaseRequest;
-import com.starrocks.http.BaseResponse;
-import com.starrocks.http.IllegalArgException;
-import com.starrocks.leader.MetaHelper;
-import com.starrocks.persist.MetaCleaner;
-import com.starrocks.persist.Storage;
-import com.starrocks.persist.StorageInfo;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.server.RunMode;
-import com.starrocks.staros.StarMgrServer;
-import com.starrocks.system.Frontend;
+import io.datafibre.fibre.ha.FrontendNodeType;
+import io.datafibre.fibre.http.ActionController;
+import io.datafibre.fibre.http.BaseRequest;
+import io.datafibre.fibre.http.BaseResponse;
+import io.datafibre.fibre.http.IllegalArgException;
+import io.datafibre.fibre.leader.MetaHelper;
+import io.datafibre.fibre.persist.MetaCleaner;
+import io.datafibre.fibre.persist.Storage;
+import io.datafibre.fibre.persist.StorageInfo;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.server.RunMode;
+import io.datafibre.fibre.staros.StarMgrServer;
+import io.datafibre.fibre.system.Frontend;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.logging.log4j.LogManager;

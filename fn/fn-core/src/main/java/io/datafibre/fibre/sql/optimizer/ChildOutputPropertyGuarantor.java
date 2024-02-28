@@ -13,29 +13,29 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer;
+package io.datafibre.fibre.sql.optimizer;
 
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.JoinOperator;
-import com.starrocks.catalog.ColocateTableIndex;
-import com.starrocks.common.Pair;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.optimizer.base.DistributionCol;
-import com.starrocks.sql.optimizer.base.DistributionProperty;
-import com.starrocks.sql.optimizer.base.DistributionSpec;
-import com.starrocks.sql.optimizer.base.EquivalentDescriptor;
-import com.starrocks.sql.optimizer.base.HashDistributionDesc;
-import com.starrocks.sql.optimizer.base.HashDistributionSpec;
-import com.starrocks.sql.optimizer.base.PhysicalPropertySet;
-import com.starrocks.sql.optimizer.cost.CostModel;
-import com.starrocks.sql.optimizer.operator.Operator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalDistributionOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalHashJoinOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalJoinOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalMergeJoinOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalNestLoopJoinOperator;
-import com.starrocks.sql.optimizer.task.TaskContext;
+import io.datafibre.fibre.analysis.JoinOperator;
+import io.datafibre.fibre.catalog.ColocateTableIndex;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.optimizer.base.DistributionCol;
+import io.datafibre.fibre.sql.optimizer.base.DistributionProperty;
+import io.datafibre.fibre.sql.optimizer.base.DistributionSpec;
+import io.datafibre.fibre.sql.optimizer.base.EquivalentDescriptor;
+import io.datafibre.fibre.sql.optimizer.base.HashDistributionDesc;
+import io.datafibre.fibre.sql.optimizer.base.HashDistributionSpec;
+import io.datafibre.fibre.sql.optimizer.base.PhysicalPropertySet;
+import io.datafibre.fibre.sql.optimizer.cost.CostModel;
+import io.datafibre.fibre.sql.optimizer.operator.Operator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalDistributionOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalHashJoinOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalJoinOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalMergeJoinOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalNestLoopJoinOperator;
+import io.datafibre.fibre.sql.optimizer.task.TaskContext;
 
 import java.util.List;
 

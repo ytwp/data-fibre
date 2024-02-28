@@ -12,30 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.validate;
+package io.datafibre.fibre.sql.optimizer.validate;
 
-import com.starrocks.sql.common.ErrorType;
-import com.starrocks.sql.common.StarRocksPlannerException;
-import com.starrocks.sql.optimizer.OptExpression;
-import com.starrocks.sql.optimizer.OptExpressionVisitor;
-import com.starrocks.sql.optimizer.RowOutputInfo;
-import com.starrocks.sql.optimizer.base.ColumnRefSet;
-import com.starrocks.sql.optimizer.operator.ColumnOutputInfo;
-import com.starrocks.sql.optimizer.operator.Operator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalCTEConsumeOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalJoinOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalOlapScanOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalScanOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalSetOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalValuesOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalJoinOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalOlapScanOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalScanOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalSetOperation;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalValuesOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.task.TaskContext;
+import io.datafibre.fibre.sql.common.ErrorType;
+import io.datafibre.fibre.sql.common.StarRocksPlannerException;
+import io.datafibre.fibre.sql.optimizer.OptExpression;
+import io.datafibre.fibre.sql.optimizer.OptExpressionVisitor;
+import io.datafibre.fibre.sql.optimizer.RowOutputInfo;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
+import io.datafibre.fibre.sql.optimizer.operator.ColumnOutputInfo;
+import io.datafibre.fibre.sql.optimizer.operator.Operator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalCTEConsumeOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalJoinOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalOlapScanOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalScanOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalSetOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalValuesOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalJoinOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalOlapScanOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalScanOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalSetOperation;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalValuesOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.task.TaskContext;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;

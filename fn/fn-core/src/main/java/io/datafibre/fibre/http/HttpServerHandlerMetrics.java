@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.http;
+package io.datafibre.fibre.http;
 
 import com.codahale.metrics.Histogram;
-import com.starrocks.metric.LongCounterMetric;
-import com.starrocks.metric.Metric;
+import io.datafibre.fibre.metric.LongCounterMetric;
+import io.datafibre.fibre.metric.Metric;
 
-import static com.starrocks.http.HttpMetricRegistry.HTTP_CONNECTIONS_NUM;
-import static com.starrocks.http.HttpMetricRegistry.HTTP_HANDLING_REQUESTS_NUM;
-import static com.starrocks.http.HttpMetricRegistry.HTTP_REQUEST_HANDLE_LATENCY_MS;
+import static io.datafibre.fibre.http.HttpMetricRegistry.HTTP_CONNECTIONS_NUM;
+import static io.datafibre.fibre.http.HttpMetricRegistry.HTTP_HANDLING_REQUESTS_NUM;
+import static io.datafibre.fibre.http.HttpMetricRegistry.HTTP_REQUEST_HANDLE_LATENCY_MS;
 
 /** Metrics for {@link HttpServerHandler}. */
 public class HttpServerHandlerMetrics {

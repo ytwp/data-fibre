@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.statistic;
+package io.datafibre.fibre.statistic;
 
 import com.google.common.collect.Maps;
 

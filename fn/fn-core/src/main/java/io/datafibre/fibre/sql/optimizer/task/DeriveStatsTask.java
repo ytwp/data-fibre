@@ -13,15 +13,15 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.task;
+package io.datafibre.fibre.sql.optimizer.task;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.sql.optimizer.ExpressionContext;
-import com.starrocks.sql.optimizer.GroupExpression;
-import com.starrocks.sql.optimizer.operator.logical.LogicalOlapScanOperator;
-import com.starrocks.sql.optimizer.statistics.Statistics;
-import com.starrocks.sql.optimizer.statistics.StatisticsCalculator;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.sql.optimizer.ExpressionContext;
+import io.datafibre.fibre.sql.optimizer.GroupExpression;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalOlapScanOperator;
+import io.datafibre.fibre.sql.optimizer.statistics.Statistics;
+import io.datafibre.fibre.sql.optimizer.statistics.StatisticsCalculator;
 
 /**
  * DeriveStatsTask derives any stats needed for costing a GroupExpression.

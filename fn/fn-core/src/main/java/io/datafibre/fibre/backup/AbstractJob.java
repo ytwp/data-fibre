@@ -32,17 +32,17 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.backup;
+package io.datafibre.fibre.backup;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.common.Pair;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.lake.backup.LakeBackupJob;
-import com.starrocks.lake.backup.LakeRestoreJob;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.lake.backup.LakeBackupJob;
+import io.datafibre.fibre.lake.backup.LakeRestoreJob;
+import io.datafibre.fibre.server.GlobalStateMgr;
 
 import java.io.DataInput;
 import java.io.DataOutput;

@@ -12,29 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.qe.scheduler.dag;
+package io.datafibre.fibre.qe.scheduler.dag;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.common.Status;
-import com.starrocks.common.util.DebugUtil;
-import com.starrocks.common.util.RuntimeProfile;
-import com.starrocks.planner.PlanFragmentId;
-import com.starrocks.proto.PExecPlanFragmentResult;
-import com.starrocks.proto.PPlanFragmentCancelReason;
-import com.starrocks.proto.StatusPB;
-import com.starrocks.qe.QueryStatisticsItem;
-import com.starrocks.qe.SimpleScheduler;
-import com.starrocks.rpc.AttachmentRequest;
-import com.starrocks.rpc.BackendServiceClient;
-import com.starrocks.rpc.RpcException;
-import com.starrocks.system.ComputeNode;
-import com.starrocks.thrift.TExecPlanFragmentParams;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.thrift.TPlanFragmentDestination;
-import com.starrocks.thrift.TReportExecStatusParams;
-import com.starrocks.thrift.TStatusCode;
-import com.starrocks.thrift.TUniqueId;
+import io.datafibre.fibre.common.Status;
+import io.datafibre.fibre.common.util.DebugUtil;
+import io.datafibre.fibre.common.util.RuntimeProfile;
+import io.datafibre.fibre.planner.PlanFragmentId;
+import io.datafibre.fibre.proto.PExecPlanFragmentResult;
+import io.datafibre.fibre.proto.PPlanFragmentCancelReason;
+import io.datafibre.fibre.proto.StatusPB;
+import io.datafibre.fibre.qe.QueryStatisticsItem;
+import io.datafibre.fibre.qe.SimpleScheduler;
+import io.datafibre.fibre.rpc.AttachmentRequest;
+import io.datafibre.fibre.rpc.BackendServiceClient;
+import io.datafibre.fibre.rpc.RpcException;
+import io.datafibre.fibre.system.ComputeNode;
+import io.datafibre.fibre.thrift.TExecPlanFragmentParams;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TPlanFragmentDestination;
+import io.datafibre.fibre.thrift.TReportExecStatusParams;
+import io.datafibre.fibre.thrift.TStatusCode;
+import io.datafibre.fibre.thrift.TUniqueId;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

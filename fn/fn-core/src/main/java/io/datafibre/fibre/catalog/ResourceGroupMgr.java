@@ -12,37 +12,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.ErrorCode;
-import com.starrocks.common.ErrorReport;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.persist.ResourceGroupOpEntry;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.persist.metablock.SRMetaBlockEOFException;
-import com.starrocks.persist.metablock.SRMetaBlockException;
-import com.starrocks.persist.metablock.SRMetaBlockID;
-import com.starrocks.persist.metablock.SRMetaBlockReader;
-import com.starrocks.persist.metablock.SRMetaBlockWriter;
-import com.starrocks.privilege.AuthorizationMgr;
-import com.starrocks.privilege.PrivilegeBuiltinConstants;
-import com.starrocks.privilege.PrivilegeException;
-import com.starrocks.privilege.RolePrivilegeCollectionV2;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.AlterResourceGroupStmt;
-import com.starrocks.sql.ast.CreateResourceGroupStmt;
-import com.starrocks.sql.ast.DropResourceGroupStmt;
-import com.starrocks.sql.ast.ShowResourceGroupStmt;
-import com.starrocks.thrift.TWorkGroup;
-import com.starrocks.thrift.TWorkGroupOp;
-import com.starrocks.thrift.TWorkGroupOpType;
-import com.starrocks.thrift.TWorkGroupType;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.ErrorCode;
+import io.datafibre.fibre.common.ErrorReport;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.persist.ResourceGroupOpEntry;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockEOFException;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockException;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockID;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockReader;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockWriter;
+import io.datafibre.fibre.privilege.AuthorizationMgr;
+import io.datafibre.fibre.privilege.PrivilegeBuiltinConstants;
+import io.datafibre.fibre.privilege.PrivilegeException;
+import io.datafibre.fibre.privilege.RolePrivilegeCollectionV2;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.AlterResourceGroupStmt;
+import io.datafibre.fibre.sql.ast.CreateResourceGroupStmt;
+import io.datafibre.fibre.sql.ast.DropResourceGroupStmt;
+import io.datafibre.fibre.sql.ast.ShowResourceGroupStmt;
+import io.datafibre.fibre.thrift.TWorkGroup;
+import io.datafibre.fibre.thrift.TWorkGroupOp;
+import io.datafibre.fibre.thrift.TWorkGroupOpType;
+import io.datafibre.fibre.thrift.TWorkGroupType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

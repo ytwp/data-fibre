@@ -32,12 +32,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.mysql;
+package io.datafibre.fibre.mysql;
 
-import com.starrocks.common.ThreadPoolManager;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.ConnectScheduler;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.common.ThreadPoolManager;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.ConnectScheduler;
+import io.datafibre.fibre.server.GlobalStateMgr;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -32,22 +32,22 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Strings;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.analysis.DescriptorTable.ReferencedPartitionInfo;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.io.Text;
-import com.starrocks.connector.elasticsearch.EsMajorVersion;
-import com.starrocks.connector.elasticsearch.EsMetaStateTracker;
-import com.starrocks.connector.elasticsearch.EsRestClient;
-import com.starrocks.connector.elasticsearch.EsTablePartitions;
-import com.starrocks.persist.gson.GsonPostProcessable;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.thrift.TEsTable;
-import com.starrocks.thrift.TTableDescriptor;
-import com.starrocks.thrift.TTableType;
+import io.datafibre.fibre.analysis.DescriptorTable.ReferencedPartitionInfo;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.connector.elasticsearch.EsMajorVersion;
+import io.datafibre.fibre.connector.elasticsearch.EsMetaStateTracker;
+import io.datafibre.fibre.connector.elasticsearch.EsRestClient;
+import io.datafibre.fibre.connector.elasticsearch.EsTablePartitions;
+import io.datafibre.fibre.persist.gson.GsonPostProcessable;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.thrift.TEsTable;
+import io.datafibre.fibre.thrift.TTableDescriptor;
+import io.datafibre.fibre.thrift.TTableType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

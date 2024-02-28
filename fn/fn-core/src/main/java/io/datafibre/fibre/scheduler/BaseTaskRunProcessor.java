@@ -13,13 +13,13 @@
 // limitations under the License.
 
 
-package com.starrocks.scheduler;
+package io.datafibre.fibre.scheduler;
 
-import com.starrocks.common.NotImplementedException;
-import com.starrocks.proto.PQueryStatistics;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.ConnectProcessor;
-import com.starrocks.sql.ast.StatementBase;
+import io.datafibre.fibre.common.NotImplementedException;
+import io.datafibre.fibre.proto.PQueryStatistics;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.ConnectProcessor;
+import io.datafibre.fibre.sql.ast.StatementBase;
 import org.apache.commons.lang3.StringUtils;
 
 public abstract class BaseTaskRunProcessor implements TaskRunProcessor {

@@ -32,13 +32,13 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.qe;
+package io.datafibre.fibre.qe;
 
 import com.google.common.collect.Lists;
-import com.starrocks.common.Config;
-import com.starrocks.common.Version;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.system.BackendCoreStat;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.Version;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.system.BackendCoreStat;
 
 import java.lang.reflect.Field;
 import java.util.List;

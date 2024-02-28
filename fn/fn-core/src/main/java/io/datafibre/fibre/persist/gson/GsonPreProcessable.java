@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.persist.gson;
+package io.datafibre.fibre.persist.gson;
 
 import java.io.IOException;
 

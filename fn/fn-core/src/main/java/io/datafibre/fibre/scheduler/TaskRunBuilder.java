@@ -13,9 +13,9 @@
 // limitations under the License.
 
 
-package com.starrocks.scheduler;
+package io.datafibre.fibre.scheduler;
 
-import com.starrocks.qe.ConnectContext;
+import io.datafibre.fibre.qe.ConnectContext;
 
 import java.util.HashMap;
 import java.util.Map;

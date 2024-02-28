@@ -12,41 +12,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.NullLiteral;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.analysis.StringLiteral;
-import com.starrocks.analysis.TableName;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.Type;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.analyzer.SelectAnalyzer.RewriteAliasVisitor;
-import com.starrocks.sql.ast.ColumnAssignment;
-import com.starrocks.sql.ast.DefaultValueExpr;
-import com.starrocks.sql.ast.JoinRelation;
-import com.starrocks.sql.ast.QueryStatement;
-import com.starrocks.sql.ast.Relation;
-import com.starrocks.sql.ast.SelectList;
-import com.starrocks.sql.ast.SelectListItem;
-import com.starrocks.sql.ast.SelectRelation;
-import com.starrocks.sql.ast.TableRelation;
-import com.starrocks.sql.ast.UpdateStmt;
-import com.starrocks.sql.common.MetaUtils;
-import com.starrocks.sql.common.TypeManager;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.NullLiteral;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.analysis.StringLiteral;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.analyzer.SelectAnalyzer.RewriteAliasVisitor;
+import io.datafibre.fibre.sql.ast.ColumnAssignment;
+import io.datafibre.fibre.sql.ast.DefaultValueExpr;
+import io.datafibre.fibre.sql.ast.JoinRelation;
+import io.datafibre.fibre.sql.ast.QueryStatement;
+import io.datafibre.fibre.sql.ast.Relation;
+import io.datafibre.fibre.sql.ast.SelectList;
+import io.datafibre.fibre.sql.ast.SelectListItem;
+import io.datafibre.fibre.sql.ast.SelectRelation;
+import io.datafibre.fibre.sql.ast.TableRelation;
+import io.datafibre.fibre.sql.ast.UpdateStmt;
+import io.datafibre.fibre.sql.common.MetaUtils;
+import io.datafibre.fibre.sql.common.TypeManager;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.starrocks.sql.common.UnsupportedException.unsupportedException;
+import static io.datafibre.fibre.sql.common.UnsupportedException.unsupportedException;
 
 public class UpdateAnalyzer {
     private static boolean checkIfUsePartialUpdate(int updateColumnCnt, int tableColumnCnt) {

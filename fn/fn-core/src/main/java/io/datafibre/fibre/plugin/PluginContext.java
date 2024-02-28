@@ -15,10 +15,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.plugin;
+package io.datafibre.fibre.plugin;
 
-import com.starrocks.common.Config;
-import com.starrocks.service.FrontendOptions;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.service.FrontendOptions;
 
 public class PluginContext {
 

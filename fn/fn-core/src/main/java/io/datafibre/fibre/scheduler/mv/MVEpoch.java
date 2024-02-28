@@ -13,17 +13,17 @@
 // limitations under the License.
 
 
-package com.starrocks.scheduler.mv;
+package io.datafibre.fibre.scheduler.mv;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.catalog.MvId;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.thrift.TMVEpoch;
-import com.starrocks.transaction.TabletCommitInfo;
-import com.starrocks.transaction.TabletFailInfo;
+import io.datafibre.fibre.catalog.MvId;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.thrift.TMVEpoch;
+import io.datafibre.fibre.transaction.TabletCommitInfo;
+import io.datafibre.fibre.transaction.TabletFailInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

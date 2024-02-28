@@ -32,10 +32,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.analysis;
+package io.datafibre.fibre.analysis;
 
-import com.starrocks.sql.ast.UserIdentity;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.sql.ast.UserIdentity;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 // Description of user in SQL statement
 public class UserDesc implements ParseNode {

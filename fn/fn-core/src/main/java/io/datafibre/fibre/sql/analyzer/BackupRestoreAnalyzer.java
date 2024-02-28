@@ -12,36 +12,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.starrocks.analysis.TableName;
-import com.starrocks.analysis.TableRef;
-import com.starrocks.backup.Repository;
-import com.starrocks.catalog.BaseTableInfo;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.ListPartitionInfo;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Partition;
-import com.starrocks.catalog.PartitionInfo;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.Config;
-import com.starrocks.common.ErrorCode;
-import com.starrocks.common.ErrorReport;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.server.RunMode;
-import com.starrocks.sql.ast.AstVisitor;
-import com.starrocks.sql.ast.BackupStmt;
-import com.starrocks.sql.ast.CancelBackupStmt;
-import com.starrocks.sql.ast.PartitionNames;
-import com.starrocks.sql.ast.RestoreStmt;
-import com.starrocks.sql.ast.ShowBackupStmt;
-import com.starrocks.sql.ast.ShowRestoreStmt;
-import com.starrocks.sql.ast.StatementBase;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.analysis.TableRef;
+import io.datafibre.fibre.backup.Repository;
+import io.datafibre.fibre.catalog.BaseTableInfo;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.ListPartitionInfo;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.catalog.PartitionInfo;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.ErrorCode;
+import io.datafibre.fibre.common.ErrorReport;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.server.RunMode;
+import io.datafibre.fibre.sql.ast.AstVisitor;
+import io.datafibre.fibre.sql.ast.BackupStmt;
+import io.datafibre.fibre.sql.ast.CancelBackupStmt;
+import io.datafibre.fibre.sql.ast.PartitionNames;
+import io.datafibre.fibre.sql.ast.RestoreStmt;
+import io.datafibre.fibre.sql.ast.ShowBackupStmt;
+import io.datafibre.fibre.sql.ast.ShowRestoreStmt;
+import io.datafibre.fibre.sql.ast.StatementBase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

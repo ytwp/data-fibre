@@ -15,23 +15,23 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.fs.hdfs;
+package io.datafibre.fibre.fs.hdfs;
 
-import com.starrocks.common.UserException;
-import com.starrocks.thrift.TBrokerCheckPathExistRequest;
-import com.starrocks.thrift.TBrokerCloseReaderRequest;
-import com.starrocks.thrift.TBrokerCloseWriterRequest;
-import com.starrocks.thrift.TBrokerDeletePathRequest;
-import com.starrocks.thrift.TBrokerFD;
-import com.starrocks.thrift.TBrokerFileStatus;
-import com.starrocks.thrift.TBrokerListPathRequest;
-import com.starrocks.thrift.TBrokerOpenReaderRequest;
-import com.starrocks.thrift.TBrokerOpenWriterRequest;
-import com.starrocks.thrift.TBrokerPReadRequest;
-import com.starrocks.thrift.TBrokerPWriteRequest;
-import com.starrocks.thrift.TBrokerRenamePathRequest;
-import com.starrocks.thrift.TBrokerSeekRequest;
-import com.starrocks.thrift.THdfsProperties;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.thrift.TBrokerCheckPathExistRequest;
+import io.datafibre.fibre.thrift.TBrokerCloseReaderRequest;
+import io.datafibre.fibre.thrift.TBrokerCloseWriterRequest;
+import io.datafibre.fibre.thrift.TBrokerDeletePathRequest;
+import io.datafibre.fibre.thrift.TBrokerFD;
+import io.datafibre.fibre.thrift.TBrokerFileStatus;
+import io.datafibre.fibre.thrift.TBrokerListPathRequest;
+import io.datafibre.fibre.thrift.TBrokerOpenReaderRequest;
+import io.datafibre.fibre.thrift.TBrokerOpenWriterRequest;
+import io.datafibre.fibre.thrift.TBrokerPReadRequest;
+import io.datafibre.fibre.thrift.TBrokerPWriteRequest;
+import io.datafibre.fibre.thrift.TBrokerRenamePathRequest;
+import io.datafibre.fibre.thrift.TBrokerSeekRequest;
+import io.datafibre.fibre.thrift.THdfsProperties;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

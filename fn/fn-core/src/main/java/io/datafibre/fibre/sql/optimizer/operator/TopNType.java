@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.operator;
+package io.datafibre.fibre.sql.optimizer.operator;
 
-import com.starrocks.thrift.TTopNType;
+import io.datafibre.fibre.thrift.TTopNType;
 
 public enum TopNType {
     ROW_NUMBER,

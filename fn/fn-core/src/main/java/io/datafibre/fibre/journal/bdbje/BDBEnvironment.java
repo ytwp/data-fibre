@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.journal.bdbje;
+package io.datafibre.fibre.journal.bdbje;
 
 import com.google.common.base.Strings;
 import com.google.common.net.HostAndPort;
@@ -56,16 +56,16 @@ import com.sleepycat.je.rep.ReplicationNode;
 import com.sleepycat.je.rep.UnknownMasterException;
 import com.sleepycat.je.rep.util.DbResetRepGroup;
 import com.sleepycat.je.rep.util.ReplicationGroupAdmin;
-import com.starrocks.common.Config;
-import com.starrocks.common.Pair;
-import com.starrocks.common.util.NetUtils;
-import com.starrocks.ha.BDBHA;
-import com.starrocks.ha.BDBStateChangeListener;
-import com.starrocks.ha.FrontendNodeType;
-import com.starrocks.ha.HAProtocol;
-import com.starrocks.journal.JournalException;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.system.Frontend;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.util.NetUtils;
+import io.datafibre.fibre.ha.BDBHA;
+import io.datafibre.fibre.ha.BDBStateChangeListener;
+import io.datafibre.fibre.ha.FrontendNodeType;
+import io.datafibre.fibre.ha.HAProtocol;
+import io.datafibre.fibre.journal.JournalException;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.system.Frontend;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -568,7 +568,7 @@ public class BDBEnvironment {
     }
 
     /**
-     * package private, used within com.starrocks.journal.bdbje
+     * package private, used within io.datafibre.fibre.journal.bdbje
      */
     TransactionConfig getTxnConfig() {
         return txnConfig;

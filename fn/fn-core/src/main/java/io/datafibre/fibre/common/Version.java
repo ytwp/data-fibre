@@ -1,4 +1,4 @@
-package com.starrocks.common;
+package io.datafibre.fibre.common;
 
 public class Version {
     public static final String STARROCKS_VERSION = "3.2.3";

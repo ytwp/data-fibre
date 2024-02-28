@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.informationschema;
+package io.datafibre.fibre.connector.informationschema;
 
-import com.starrocks.connector.Connector;
-import com.starrocks.connector.ConnectorMetadata;
+import io.datafibre.fibre.connector.Connector;
+import io.datafibre.fibre.connector.ConnectorMetadata;
 
 import static java.util.Objects.requireNonNull;
 

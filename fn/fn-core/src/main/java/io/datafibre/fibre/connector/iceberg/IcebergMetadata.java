@@ -12,52 +12,52 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.iceberg;
+package io.datafibre.fibre.connector.iceberg;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.analysis.TableName;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.IcebergTable;
-import com.starrocks.catalog.PartitionKey;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.AlreadyExistsException;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.MetaNotFoundException;
-import com.starrocks.common.Pair;
-import com.starrocks.common.UserException;
-import com.starrocks.common.profile.Timer;
-import com.starrocks.common.profile.Tracers;
-import com.starrocks.connector.ConnectorMetadata;
-import com.starrocks.connector.HdfsEnvironment;
-import com.starrocks.connector.MetaPreparationItem;
-import com.starrocks.connector.PartitionInfo;
-import com.starrocks.connector.PartitionUtil;
-import com.starrocks.connector.RemoteFileDesc;
-import com.starrocks.connector.RemoteFileInfo;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.connector.iceberg.cost.IcebergMetricsReporter;
-import com.starrocks.connector.iceberg.cost.IcebergStatisticProvider;
-import com.starrocks.credential.CloudConfiguration;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.AlterTableStmt;
-import com.starrocks.sql.ast.CreateTableStmt;
-import com.starrocks.sql.ast.DropTableStmt;
-import com.starrocks.sql.ast.ListPartitionDesc;
-import com.starrocks.sql.ast.PartitionDesc;
-import com.starrocks.sql.optimizer.OptimizerContext;
-import com.starrocks.sql.optimizer.Utils;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.statistics.Statistics;
-import com.starrocks.statistic.StatisticUtils;
-import com.starrocks.thrift.TIcebergDataFile;
-import com.starrocks.thrift.TSinkCommitInfo;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.IcebergTable;
+import io.datafibre.fibre.catalog.PartitionKey;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.AlreadyExistsException;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.MetaNotFoundException;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.profile.Timer;
+import io.datafibre.fibre.common.profile.Tracers;
+import io.datafibre.fibre.connector.ConnectorMetadata;
+import io.datafibre.fibre.connector.HdfsEnvironment;
+import io.datafibre.fibre.connector.MetaPreparationItem;
+import io.datafibre.fibre.connector.PartitionInfo;
+import io.datafibre.fibre.connector.PartitionUtil;
+import io.datafibre.fibre.connector.RemoteFileDesc;
+import io.datafibre.fibre.connector.RemoteFileInfo;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.connector.iceberg.cost.IcebergMetricsReporter;
+import io.datafibre.fibre.connector.iceberg.cost.IcebergStatisticProvider;
+import io.datafibre.fibre.credential.CloudConfiguration;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.AlterTableStmt;
+import io.datafibre.fibre.sql.ast.CreateTableStmt;
+import io.datafibre.fibre.sql.ast.DropTableStmt;
+import io.datafibre.fibre.sql.ast.ListPartitionDesc;
+import io.datafibre.fibre.sql.ast.PartitionDesc;
+import io.datafibre.fibre.sql.optimizer.OptimizerContext;
+import io.datafibre.fibre.sql.optimizer.Utils;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.statistics.Statistics;
+import io.datafibre.fibre.statistic.StatisticUtils;
+import io.datafibre.fibre.thrift.TIcebergDataFile;
+import io.datafibre.fibre.thrift.TSinkCommitInfo;
 import org.apache.iceberg.AppendFiles;
 import org.apache.iceberg.BaseFileScanTask;
 import org.apache.iceberg.BaseTable;
@@ -114,16 +114,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
-import static com.starrocks.catalog.Table.TableType.ICEBERG;
-import static com.starrocks.common.profile.Tracers.Module.EXTERNAL;
-import static com.starrocks.connector.ColumnTypeConverter.fromIcebergType;
-import static com.starrocks.connector.PartitionUtil.createPartitionKeyWithType;
-import static com.starrocks.connector.iceberg.IcebergApiConverter.parsePartitionFields;
-import static com.starrocks.connector.iceberg.IcebergApiConverter.toIcebergApiSchema;
-import static com.starrocks.connector.iceberg.IcebergCatalogType.GLUE_CATALOG;
-import static com.starrocks.connector.iceberg.IcebergCatalogType.HIVE_CATALOG;
-import static com.starrocks.connector.iceberg.IcebergCatalogType.REST_CATALOG;
-import static com.starrocks.server.CatalogMgr.ResourceMappingCatalog.isResourceMappingCatalog;
+import static io.datafibre.fibre.catalog.Table.TableType.ICEBERG;
+import static io.datafibre.fibre.common.profile.Tracers.Module.EXTERNAL;
+import static io.datafibre.fibre.connector.ColumnTypeConverter.fromIcebergType;
+import static io.datafibre.fibre.connector.PartitionUtil.createPartitionKeyWithType;
+import static io.datafibre.fibre.connector.iceberg.IcebergApiConverter.parsePartitionFields;
+import static io.datafibre.fibre.connector.iceberg.IcebergApiConverter.toIcebergApiSchema;
+import static io.datafibre.fibre.connector.iceberg.IcebergCatalogType.GLUE_CATALOG;
+import static io.datafibre.fibre.connector.iceberg.IcebergCatalogType.HIVE_CATALOG;
+import static io.datafibre.fibre.connector.iceberg.IcebergCatalogType.REST_CATALOG;
+import static io.datafibre.fibre.server.CatalogMgr.ResourceMappingCatalog.isResourceMappingCatalog;
 import static org.apache.iceberg.TableProperties.DEFAULT_WRITE_METRICS_MODE_DEFAULT;
 
 public class IcebergMetadata implements ConnectorMetadata {
@@ -485,7 +485,7 @@ public class IcebergMetadata implements ConnectorMetadata {
             }
 
             try {
-                List<com.starrocks.catalog.Type> srTypes = new ArrayList<>();
+                List<io.datafibre.fibre.catalog.Type> srTypes = new ArrayList<>();
                 for (PartitionField partitionField : spec.fields()) {
                     if (partitionField.transform().isVoid()) {
                         continue;

@@ -32,27 +32,27 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.plugin;
+package io.datafibre.fibre.plugin;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.starrocks.common.Config;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.UserException;
-import com.starrocks.common.io.Writable;
-import com.starrocks.common.util.PrintableMap;
-import com.starrocks.persist.metablock.SRMetaBlockEOFException;
-import com.starrocks.persist.metablock.SRMetaBlockException;
-import com.starrocks.persist.metablock.SRMetaBlockID;
-import com.starrocks.persist.metablock.SRMetaBlockReader;
-import com.starrocks.persist.metablock.SRMetaBlockWriter;
-import com.starrocks.plugin.PluginInfo.PluginType;
-import com.starrocks.plugin.PluginLoader.PluginStatus;
-import com.starrocks.qe.AuditLogBuilder;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.InstallPluginStmt;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.common.util.PrintableMap;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockEOFException;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockException;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockID;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockReader;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockWriter;
+import io.datafibre.fibre.plugin.PluginInfo.PluginType;
+import io.datafibre.fibre.plugin.PluginLoader.PluginStatus;
+import io.datafibre.fibre.qe.AuditLogBuilder;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.InstallPluginStmt;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -32,27 +32,27 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.task;
+package io.datafibre.fibre.task;
 
-import com.starrocks.catalog.Database;
-import com.starrocks.common.Pair;
-import com.starrocks.common.Status;
-import com.starrocks.load.ExportFailMsg;
-import com.starrocks.load.ExportJob;
-import com.starrocks.proto.LockTabletMetadataRequest;
-import com.starrocks.rpc.BrpcProxy;
-import com.starrocks.rpc.LakeService;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.system.ComputeNode;
-import com.starrocks.thrift.TAgentResult;
-import com.starrocks.thrift.TInternalScanRange;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.thrift.TScanRange;
-import com.starrocks.thrift.TScanRangeLocation;
-import com.starrocks.thrift.TScanRangeLocations;
-import com.starrocks.thrift.TSnapshotRequest;
-import com.starrocks.thrift.TStatusCode;
-import com.starrocks.thrift.TypesConstants;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.Status;
+import io.datafibre.fibre.load.ExportFailMsg;
+import io.datafibre.fibre.load.ExportJob;
+import io.datafibre.fibre.proto.LockTabletMetadataRequest;
+import io.datafibre.fibre.rpc.BrpcProxy;
+import io.datafibre.fibre.rpc.LakeService;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.system.ComputeNode;
+import io.datafibre.fibre.thrift.TAgentResult;
+import io.datafibre.fibre.thrift.TInternalScanRange;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TScanRange;
+import io.datafibre.fibre.thrift.TScanRangeLocation;
+import io.datafibre.fibre.thrift.TScanRangeLocations;
+import io.datafibre.fibre.thrift.TSnapshotRequest;
+import io.datafibre.fibre.thrift.TStatusCode;
+import io.datafibre.fibre.thrift.TypesConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

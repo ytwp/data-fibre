@@ -32,23 +32,23 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.catalog.Replica.ReplicaState;
-import com.starrocks.clone.TabletSchedCtx;
-import com.starrocks.clone.TabletSchedCtx.Priority;
-import com.starrocks.common.CloseableLock;
-import com.starrocks.common.Config;
-import com.starrocks.persist.gson.GsonPostProcessable;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.system.Backend;
-import com.starrocks.system.SystemInfoService;
-import com.starrocks.transaction.TxnFinishState;
+import io.datafibre.fibre.catalog.Replica.ReplicaState;
+import io.datafibre.fibre.clone.TabletSchedCtx;
+import io.datafibre.fibre.clone.TabletSchedCtx.Priority;
+import io.datafibre.fibre.common.CloseableLock;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.persist.gson.GsonPostProcessable;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.system.Backend;
+import io.datafibre.fibre.system.SystemInfoService;
+import io.datafibre.fibre.transaction.TxnFinishState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

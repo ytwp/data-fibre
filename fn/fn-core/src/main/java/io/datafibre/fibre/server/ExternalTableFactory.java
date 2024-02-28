@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.server;
+package io.datafibre.fibre.server;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
-import com.starrocks.catalog.Resource;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.DdlException;
+import io.datafibre.fibre.catalog.Resource;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.DdlException;
 
 import java.util.Map;
 
-import static com.starrocks.server.CatalogMgr.ResourceMappingCatalog.getResourceMappingCatalogName;
+import static io.datafibre.fibre.server.CatalogMgr.ResourceMappingCatalog.getResourceMappingCatalogName;
 
 public abstract class ExternalTableFactory implements AbstractTableFactory {
     public static final String DB = "database";

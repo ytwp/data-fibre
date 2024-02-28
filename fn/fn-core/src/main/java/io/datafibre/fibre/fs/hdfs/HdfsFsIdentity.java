@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.fs.hdfs;
+package io.datafibre.fibre.fs.hdfs;
 
 public class HdfsFsIdentity {
 

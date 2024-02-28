@@ -12,29 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.analysis.TupleDescriptor;
-import com.starrocks.catalog.HiveTable;
-import com.starrocks.connector.Connector;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.connector.hive.HiveStorageFormat;
-import com.starrocks.connector.hive.HiveWriteUtils;
-import com.starrocks.credential.CloudConfiguration;
-import com.starrocks.qe.SessionVariable;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.thrift.TCloudConfiguration;
-import com.starrocks.thrift.TCompressionType;
-import com.starrocks.thrift.TDataSink;
-import com.starrocks.thrift.TDataSinkType;
-import com.starrocks.thrift.TExplainLevel;
-import com.starrocks.thrift.THiveTableSink;
+import io.datafibre.fibre.analysis.TupleDescriptor;
+import io.datafibre.fibre.catalog.HiveTable;
+import io.datafibre.fibre.connector.Connector;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.connector.hive.HiveStorageFormat;
+import io.datafibre.fibre.connector.hive.HiveWriteUtils;
+import io.datafibre.fibre.credential.CloudConfiguration;
+import io.datafibre.fibre.qe.SessionVariable;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.thrift.TCloudConfiguration;
+import io.datafibre.fibre.thrift.TCompressionType;
+import io.datafibre.fibre.thrift.TDataSink;
+import io.datafibre.fibre.thrift.TDataSinkType;
+import io.datafibre.fibre.thrift.TExplainLevel;
+import io.datafibre.fibre.thrift.THiveTableSink;
 
 import java.util.List;
 
-import static com.starrocks.analysis.OutFileClause.PARQUET_COMPRESSION_TYPE_MAP;
+import static io.datafibre.fibre.analysis.OutFileClause.PARQUET_COMPRESSION_TYPE_MAP;
 
 public class HiveTableSink extends DataSink {
 

@@ -13,15 +13,15 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.delta;
+package io.datafibre.fibre.connector.delta;
 
-import com.starrocks.connector.Connector;
-import com.starrocks.connector.ConnectorContext;
-import com.starrocks.connector.ConnectorMetadata;
-import com.starrocks.connector.HdfsEnvironment;
-import com.starrocks.connector.hive.IHiveMetastore;
-import com.starrocks.credential.CloudConfiguration;
-import com.starrocks.credential.CloudConfigurationFactory;
+import io.datafibre.fibre.connector.Connector;
+import io.datafibre.fibre.connector.ConnectorContext;
+import io.datafibre.fibre.connector.ConnectorMetadata;
+import io.datafibre.fibre.connector.HdfsEnvironment;
+import io.datafibre.fibre.connector.hive.IHiveMetastore;
+import io.datafibre.fibre.credential.CloudConfiguration;
+import io.datafibre.fibre.credential.CloudConfigurationFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

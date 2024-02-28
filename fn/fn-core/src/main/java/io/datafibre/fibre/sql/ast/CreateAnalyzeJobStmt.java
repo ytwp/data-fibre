@@ -13,13 +13,13 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.TableName;
-import com.starrocks.catalog.InternalCatalog;
-import com.starrocks.sql.parser.NodePosition;
-import com.starrocks.statistic.StatsConstants;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.catalog.InternalCatalog;
+import io.datafibre.fibre.sql.parser.NodePosition;
+import io.datafibre.fibre.statistic.StatsConstants;
 
 import java.util.List;
 import java.util.Map;

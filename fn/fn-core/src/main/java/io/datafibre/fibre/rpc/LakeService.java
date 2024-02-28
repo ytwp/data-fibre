@@ -13,40 +13,40 @@
 // limitations under the License.
 
 
-package com.starrocks.rpc;
+package io.datafibre.fibre.rpc;
 
 import com.baidu.jprotobuf.pbrpc.ProtobufRPC;
-import com.starrocks.proto.AbortCompactionRequest;
-import com.starrocks.proto.AbortCompactionResponse;
-import com.starrocks.proto.AbortTxnRequest;
-import com.starrocks.proto.AbortTxnResponse;
-import com.starrocks.proto.CompactRequest;
-import com.starrocks.proto.CompactResponse;
-import com.starrocks.proto.DeleteDataRequest;
-import com.starrocks.proto.DeleteDataResponse;
-import com.starrocks.proto.DeleteTabletRequest;
-import com.starrocks.proto.DeleteTabletResponse;
-import com.starrocks.proto.DeleteTxnLogRequest;
-import com.starrocks.proto.DeleteTxnLogResponse;
-import com.starrocks.proto.DropTableRequest;
-import com.starrocks.proto.DropTableResponse;
-import com.starrocks.proto.LockTabletMetadataRequest;
-import com.starrocks.proto.LockTabletMetadataResponse;
-import com.starrocks.proto.PublishLogVersionBatchRequest;
-import com.starrocks.proto.PublishLogVersionRequest;
-import com.starrocks.proto.PublishLogVersionResponse;
-import com.starrocks.proto.PublishVersionRequest;
-import com.starrocks.proto.PublishVersionResponse;
-import com.starrocks.proto.RestoreSnapshotsRequest;
-import com.starrocks.proto.RestoreSnapshotsResponse;
-import com.starrocks.proto.TabletStatRequest;
-import com.starrocks.proto.TabletStatResponse;
-import com.starrocks.proto.UnlockTabletMetadataRequest;
-import com.starrocks.proto.UnlockTabletMetadataResponse;
-import com.starrocks.proto.UploadSnapshotsRequest;
-import com.starrocks.proto.UploadSnapshotsResponse;
-import com.starrocks.proto.VacuumRequest;
-import com.starrocks.proto.VacuumResponse;
+import io.datafibre.fibre.proto.AbortCompactionRequest;
+import io.datafibre.fibre.proto.AbortCompactionResponse;
+import io.datafibre.fibre.proto.AbortTxnRequest;
+import io.datafibre.fibre.proto.AbortTxnResponse;
+import io.datafibre.fibre.proto.CompactRequest;
+import io.datafibre.fibre.proto.CompactResponse;
+import io.datafibre.fibre.proto.DeleteDataRequest;
+import io.datafibre.fibre.proto.DeleteDataResponse;
+import io.datafibre.fibre.proto.DeleteTabletRequest;
+import io.datafibre.fibre.proto.DeleteTabletResponse;
+import io.datafibre.fibre.proto.DeleteTxnLogRequest;
+import io.datafibre.fibre.proto.DeleteTxnLogResponse;
+import io.datafibre.fibre.proto.DropTableRequest;
+import io.datafibre.fibre.proto.DropTableResponse;
+import io.datafibre.fibre.proto.LockTabletMetadataRequest;
+import io.datafibre.fibre.proto.LockTabletMetadataResponse;
+import io.datafibre.fibre.proto.PublishLogVersionBatchRequest;
+import io.datafibre.fibre.proto.PublishLogVersionRequest;
+import io.datafibre.fibre.proto.PublishLogVersionResponse;
+import io.datafibre.fibre.proto.PublishVersionRequest;
+import io.datafibre.fibre.proto.PublishVersionResponse;
+import io.datafibre.fibre.proto.RestoreSnapshotsRequest;
+import io.datafibre.fibre.proto.RestoreSnapshotsResponse;
+import io.datafibre.fibre.proto.TabletStatRequest;
+import io.datafibre.fibre.proto.TabletStatResponse;
+import io.datafibre.fibre.proto.UnlockTabletMetadataRequest;
+import io.datafibre.fibre.proto.UnlockTabletMetadataResponse;
+import io.datafibre.fibre.proto.UploadSnapshotsRequest;
+import io.datafibre.fibre.proto.UploadSnapshotsResponse;
+import io.datafibre.fibre.proto.VacuumRequest;
+import io.datafibre.fibre.proto.VacuumResponse;
 
 import java.util.concurrent.Future;
 

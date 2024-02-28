@@ -32,12 +32,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.task;
+package io.datafibre.fibre.task;
 
-import com.starrocks.thrift.TBackend;
-import com.starrocks.thrift.TCloneReq;
-import com.starrocks.thrift.TStorageMedium;
-import com.starrocks.thrift.TTaskType;
+import io.datafibre.fibre.thrift.TBackend;
+import io.datafibre.fibre.thrift.TCloneReq;
+import io.datafibre.fibre.thrift.TStorageMedium;
+import io.datafibre.fibre.thrift.TTaskType;
 
 import java.util.List;
 

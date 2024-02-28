@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common;
+package io.datafibre.fibre.common;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
@@ -58,7 +58,7 @@ public class Log4jConfig extends XmlConfiguration {
 
     private static final String APPENDER_TEMPLATE = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
             "\n" +
-            "<Configuration status=\"info\" packages=\"com.starrocks.common\">\n" +
+            "<Configuration status=\"info\" packages=\"io.datafibre.fibre.common\">\n" +
             "  <Appenders>\n" +
             "    <Console name=\"ConsoleErr\" target=\"SYSTEM_ERR\" follow=\"true\">\n" +
             "      <PatternLayout pattern=\"%d{yyyy-MM-dd HH:mm:ss,SSS} %p (%t|%tid) [%C{1}.%M():%L] %m%n\"/>\n" +

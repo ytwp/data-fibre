@@ -32,31 +32,31 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks;
+package io.datafibre.fibre;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Strings;
-import com.starrocks.common.CommandLineOptions;
-import com.starrocks.common.Config;
-import com.starrocks.common.Log4jConfig;
-import com.starrocks.common.ThreadPoolManager;
-import com.starrocks.common.Version;
-import com.starrocks.ha.StateChangeExecutor;
-import com.starrocks.http.HttpServer;
-import com.starrocks.journal.Journal;
-import com.starrocks.journal.bdbje.BDBEnvironment;
-import com.starrocks.journal.bdbje.BDBJEJournal;
-import com.starrocks.journal.bdbje.BDBTool;
-import com.starrocks.journal.bdbje.BDBToolOptions;
-import com.starrocks.leader.MetaHelper;
-import com.starrocks.qe.CoordinatorMonitor;
-import com.starrocks.qe.QeService;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.server.RunMode;
-import com.starrocks.service.ExecuteEnv;
-import com.starrocks.service.FeServer;
-import com.starrocks.service.FrontendOptions;
-import com.starrocks.staros.StarMgrServer;
+import io.datafibre.fibre.common.CommandLineOptions;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.Log4jConfig;
+import io.datafibre.fibre.common.ThreadPoolManager;
+import io.datafibre.fibre.common.Version;
+import io.datafibre.fibre.ha.StateChangeExecutor;
+import io.datafibre.fibre.http.HttpServer;
+import io.datafibre.fibre.journal.Journal;
+import io.datafibre.fibre.journal.bdbje.BDBEnvironment;
+import io.datafibre.fibre.journal.bdbje.BDBJEJournal;
+import io.datafibre.fibre.journal.bdbje.BDBTool;
+import io.datafibre.fibre.journal.bdbje.BDBToolOptions;
+import io.datafibre.fibre.leader.MetaHelper;
+import io.datafibre.fibre.qe.CoordinatorMonitor;
+import io.datafibre.fibre.qe.QeService;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.server.RunMode;
+import io.datafibre.fibre.service.ExecuteEnv;
+import io.datafibre.fibre.service.FeServer;
+import io.datafibre.fibre.service.FrontendOptions;
+import io.datafibre.fibre.staros.StarMgrServer;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;

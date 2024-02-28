@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.common;
+package io.datafibre.fibre.common;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.catalog.OlapTable;
+import io.datafibre.fibre.catalog.OlapTable;
 
 import java.util.Objects;
 

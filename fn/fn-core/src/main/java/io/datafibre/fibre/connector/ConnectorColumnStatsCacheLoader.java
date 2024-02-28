@@ -13,25 +13,25 @@
 // limitations under the License.
 
 
-package com.starrocks.connector;
+package io.datafibre.fibre.connector;
 
 import com.github.benmanes.caffeine.cache.AsyncCacheLoader;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.ErrorCode;
-import com.starrocks.common.ErrorReport;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.optimizer.statistics.ColumnBasicStatsCacheLoader;
-import com.starrocks.sql.optimizer.statistics.ColumnStatistic;
-import com.starrocks.statistic.StatisticExecutor;
-import com.starrocks.statistic.StatisticUtils;
-import com.starrocks.thrift.TStatisticData;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.ErrorCode;
+import io.datafibre.fibre.common.ErrorReport;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.optimizer.statistics.ColumnBasicStatsCacheLoader;
+import io.datafibre.fibre.sql.optimizer.statistics.ColumnStatistic;
+import io.datafibre.fibre.statistic.StatisticExecutor;
+import io.datafibre.fibre.statistic.StatisticUtils;
+import io.datafibre.fibre.thrift.TStatisticData;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.NonNull;

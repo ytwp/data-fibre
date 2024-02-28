@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer;
+package io.datafibre.fibre.sql.optimizer;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.google.common.annotations.VisibleForTesting;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.catalog.MvPlanContext;
-import com.starrocks.common.Config;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.catalog.MvPlanContext;
+import io.datafibre.fibre.common.Config;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

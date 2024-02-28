@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.iceberg;
+package io.datafibre.fibre.connector.iceberg;
 
-import com.starrocks.credential.aws.AWSCloudConfigurationProvider;
+import io.datafibre.fibre.credential.aws.AWSCloudConfigurationProvider;
 import org.apache.iceberg.aws.AwsClientFactory;
 import org.apache.iceberg.aws.AwsProperties;
 import org.apache.logging.log4j.LogManager;
@@ -45,29 +45,29 @@ import java.net.URI;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.starrocks.credential.CloudConfigurationConstants.AWS_GLUE_ACCESS_KEY;
-import static com.starrocks.credential.CloudConfigurationConstants.AWS_GLUE_ENDPOINT;
-import static com.starrocks.credential.CloudConfigurationConstants.AWS_GLUE_EXTERNAL_ID;
-import static com.starrocks.credential.CloudConfigurationConstants.AWS_GLUE_IAM_ROLE_ARN;
-import static com.starrocks.credential.CloudConfigurationConstants.AWS_GLUE_REGION;
-import static com.starrocks.credential.CloudConfigurationConstants.AWS_GLUE_SECRET_KEY;
-import static com.starrocks.credential.CloudConfigurationConstants.AWS_GLUE_SESSION_TOKEN;
-import static com.starrocks.credential.CloudConfigurationConstants.AWS_GLUE_STS_ENDPOINT;
-import static com.starrocks.credential.CloudConfigurationConstants.AWS_GLUE_STS_REGION;
-import static com.starrocks.credential.CloudConfigurationConstants.AWS_GLUE_USE_AWS_SDK_DEFAULT_BEHAVIOR;
-import static com.starrocks.credential.CloudConfigurationConstants.AWS_GLUE_USE_INSTANCE_PROFILE;
-import static com.starrocks.credential.CloudConfigurationConstants.AWS_S3_ACCESS_KEY;
-import static com.starrocks.credential.CloudConfigurationConstants.AWS_S3_ENABLE_PATH_STYLE_ACCESS;
-import static com.starrocks.credential.CloudConfigurationConstants.AWS_S3_ENDPOINT;
-import static com.starrocks.credential.CloudConfigurationConstants.AWS_S3_EXTERNAL_ID;
-import static com.starrocks.credential.CloudConfigurationConstants.AWS_S3_IAM_ROLE_ARN;
-import static com.starrocks.credential.CloudConfigurationConstants.AWS_S3_REGION;
-import static com.starrocks.credential.CloudConfigurationConstants.AWS_S3_SECRET_KEY;
-import static com.starrocks.credential.CloudConfigurationConstants.AWS_S3_SESSION_TOKEN;
-import static com.starrocks.credential.CloudConfigurationConstants.AWS_S3_STS_ENDPOINT;
-import static com.starrocks.credential.CloudConfigurationConstants.AWS_S3_STS_REGION;
-import static com.starrocks.credential.CloudConfigurationConstants.AWS_S3_USE_AWS_SDK_DEFAULT_BEHAVIOR;
-import static com.starrocks.credential.CloudConfigurationConstants.AWS_S3_USE_INSTANCE_PROFILE;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AWS_GLUE_ACCESS_KEY;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AWS_GLUE_ENDPOINT;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AWS_GLUE_EXTERNAL_ID;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AWS_GLUE_IAM_ROLE_ARN;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AWS_GLUE_REGION;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AWS_GLUE_SECRET_KEY;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AWS_GLUE_SESSION_TOKEN;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AWS_GLUE_STS_ENDPOINT;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AWS_GLUE_STS_REGION;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AWS_GLUE_USE_AWS_SDK_DEFAULT_BEHAVIOR;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AWS_GLUE_USE_INSTANCE_PROFILE;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AWS_S3_ACCESS_KEY;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AWS_S3_ENABLE_PATH_STYLE_ACCESS;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AWS_S3_ENDPOINT;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AWS_S3_EXTERNAL_ID;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AWS_S3_IAM_ROLE_ARN;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AWS_S3_REGION;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AWS_S3_SECRET_KEY;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AWS_S3_SESSION_TOKEN;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AWS_S3_STS_ENDPOINT;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AWS_S3_STS_REGION;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AWS_S3_USE_AWS_SDK_DEFAULT_BEHAVIOR;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AWS_S3_USE_INSTANCE_PROFILE;
 
 public class IcebergAwsClientFactory implements AwsClientFactory {
     private static final Logger LOG = LogManager.getLogger(IcebergAwsClientFactory.class);

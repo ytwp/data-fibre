@@ -32,16 +32,16 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.metric;
+package io.datafibre.fibre.metric;
 
 import com.codahale.metrics.Histogram;
 import com.codahale.metrics.Snapshot;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Maps;
-import com.starrocks.monitor.jvm.JvmStats;
-import com.starrocks.monitor.jvm.JvmStats.MemoryPool;
-import com.starrocks.monitor.jvm.JvmStats.Threads;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.monitor.jvm.JvmStats;
+import io.datafibre.fibre.monitor.jvm.JvmStats.MemoryPool;
+import io.datafibre.fibre.monitor.jvm.JvmStats.Threads;
+import io.datafibre.fibre.server.GlobalStateMgr;
 
 import java.util.Iterator;
 import java.util.Map;

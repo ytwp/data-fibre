@@ -12,29 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.statistic;
+package io.datafibre.fibre.statistic;
 
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.FunctionCallExpr;
-import com.starrocks.analysis.StringLiteral;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.Function;
-import com.starrocks.catalog.FunctionSet;
-import com.starrocks.catalog.InternalCatalog;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.Config;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.util.DebugUtil;
-import com.starrocks.common.util.UUIDUtil;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.QueryState;
-import com.starrocks.qe.SessionVariable;
-import com.starrocks.qe.StmtExecutor;
-import com.starrocks.sql.ast.StatementBase;
-import com.starrocks.sql.parser.SqlParser;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.FunctionCallExpr;
+import io.datafibre.fibre.analysis.StringLiteral;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.Function;
+import io.datafibre.fibre.catalog.FunctionSet;
+import io.datafibre.fibre.catalog.InternalCatalog;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.util.DebugUtil;
+import io.datafibre.fibre.common.util.UUIDUtil;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.QueryState;
+import io.datafibre.fibre.qe.SessionVariable;
+import io.datafibre.fibre.qe.StmtExecutor;
+import io.datafibre.fibre.sql.ast.StatementBase;
+import io.datafibre.fibre.sql.parser.SqlParser;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -32,33 +32,33 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.util;
+package io.datafibre.fibre.common.util;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.TimestampArithmeticExpr;
-import com.starrocks.analysis.TimestampArithmeticExpr.TimeUnit;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.DynamicPartitionProperty;
-import com.starrocks.catalog.ExpressionRangePartitionInfoV2;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.PartitionInfo;
-import com.starrocks.catalog.PartitionType;
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.catalog.RangePartitionInfo;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.TableProperty;
-import com.starrocks.clone.DynamicPartitionScheduler;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.Config;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.ErrorCode;
-import com.starrocks.common.ErrorReport;
-import com.starrocks.common.FeConstants;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.analyzer.FeNameFormat;
-import com.starrocks.sql.analyzer.SemanticException;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.TimestampArithmeticExpr;
+import io.datafibre.fibre.analysis.TimestampArithmeticExpr.TimeUnit;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.DynamicPartitionProperty;
+import io.datafibre.fibre.catalog.ExpressionRangePartitionInfoV2;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.PartitionInfo;
+import io.datafibre.fibre.catalog.PartitionType;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.catalog.RangePartitionInfo;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.TableProperty;
+import io.datafibre.fibre.clone.DynamicPartitionScheduler;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.ErrorCode;
+import io.datafibre.fibre.common.ErrorReport;
+import io.datafibre.fibre.common.FeConstants;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.analyzer.FeNameFormat;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
 import org.apache.commons.collections4.map.CaseInsensitiveMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -76,8 +76,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-import static com.starrocks.common.util.PropertyAnalyzer.PROPERTIES_PARTITION_LIVE_NUMBER;
-import static com.starrocks.common.util.PropertyAnalyzer.PROPERTIES_PARTITION_TTL_NUMBER;
+import static io.datafibre.fibre.common.util.PropertyAnalyzer.PROPERTIES_PARTITION_LIVE_NUMBER;
+import static io.datafibre.fibre.common.util.PropertyAnalyzer.PROPERTIES_PARTITION_TTL_NUMBER;
 
 public class DynamicPartitionUtil {
     private static final Logger LOG = LogManager.getLogger(DynamicPartitionUtil.class);

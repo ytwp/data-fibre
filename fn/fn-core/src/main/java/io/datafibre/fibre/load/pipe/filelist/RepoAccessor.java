@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.load.pipe.filelist;
+package io.datafibre.fibre.load.pipe.filelist;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.load.pipe.PipeFileRecord;
-import com.starrocks.thrift.TResultBatch;
+import io.datafibre.fibre.load.pipe.PipeFileRecord;
+import io.datafibre.fibre.thrift.TResultBatch;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;

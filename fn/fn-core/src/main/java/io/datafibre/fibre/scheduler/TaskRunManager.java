@@ -13,22 +13,22 @@
 // limitations under the License.
 
 
-package com.starrocks.scheduler;
+package io.datafibre.fibre.scheduler;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
 import com.google.gson.JsonObject;
-import com.starrocks.common.Config;
-import com.starrocks.common.util.UUIDUtil;
-import com.starrocks.common.util.Util;
-import com.starrocks.common.util.concurrent.QueryableReentrantLock;
-import com.starrocks.memory.MemoryTrackable;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.scheduler.persist.TaskRunStatus;
-import com.starrocks.scheduler.persist.TaskRunStatusChange;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.util.UUIDUtil;
+import io.datafibre.fibre.common.util.Util;
+import io.datafibre.fibre.common.util.concurrent.QueryableReentrantLock;
+import io.datafibre.fibre.memory.MemoryTrackable;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.scheduler.persist.TaskRunStatus;
+import io.datafibre.fibre.scheduler.persist.TaskRunStatusChange;
+import io.datafibre.fibre.server.GlobalStateMgr;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;

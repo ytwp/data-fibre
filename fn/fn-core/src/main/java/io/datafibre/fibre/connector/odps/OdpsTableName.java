@@ -13,9 +13,9 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.odps;
+package io.datafibre.fibre.connector.odps;
 
-import com.starrocks.connector.hive.HiveTableName;
+import io.datafibre.fibre.connector.hive.HiveTableName;
 
 public class OdpsTableName extends HiveTableName {
     public OdpsTableName(String databaseName, String tableName) {

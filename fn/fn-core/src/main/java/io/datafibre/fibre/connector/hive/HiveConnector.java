@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.hive;
+package io.datafibre.fibre.connector.hive;
 
-import com.starrocks.connector.Connector;
-import com.starrocks.connector.ConnectorContext;
-import com.starrocks.connector.ConnectorMetadata;
-import com.starrocks.connector.HdfsEnvironment;
-import com.starrocks.connector.RemoteFileIO;
-import com.starrocks.credential.CloudConfiguration;
-import com.starrocks.credential.CloudConfigurationFactory;
-import com.starrocks.server.CatalogMgr;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.connector.Connector;
+import io.datafibre.fibre.connector.ConnectorContext;
+import io.datafibre.fibre.connector.ConnectorMetadata;
+import io.datafibre.fibre.connector.HdfsEnvironment;
+import io.datafibre.fibre.connector.RemoteFileIO;
+import io.datafibre.fibre.credential.CloudConfiguration;
+import io.datafibre.fibre.credential.CloudConfigurationFactory;
+import io.datafibre.fibre.server.CatalogMgr;
+import io.datafibre.fibre.server.GlobalStateMgr;
 
 import java.util.Map;
 import java.util.Optional;

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.statistics;
+package io.datafibre.fibre.sql.optimizer.statistics;
 
 public class StatisticsEstimateUtils {
     public static ColumnStatistic unionColumnStatistic(ColumnStatistic left, double leftRowCount, ColumnStatistic right,

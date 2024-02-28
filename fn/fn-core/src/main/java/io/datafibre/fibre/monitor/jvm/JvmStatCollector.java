@@ -15,15 +15,15 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.monitor.jvm;
+package io.datafibre.fibre.monitor.jvm;
 
 import com.google.common.base.Joiner;
-import com.starrocks.monitor.jvm.JvmStats.BufferPool;
-import com.starrocks.monitor.jvm.JvmStats.Classes;
-import com.starrocks.monitor.jvm.JvmStats.GarbageCollector;
-import com.starrocks.monitor.jvm.JvmStats.GarbageCollectors;
-import com.starrocks.monitor.jvm.JvmStats.Mem;
-import com.starrocks.monitor.jvm.JvmStats.Threads;
+import io.datafibre.fibre.monitor.jvm.JvmStats.BufferPool;
+import io.datafibre.fibre.monitor.jvm.JvmStats.Classes;
+import io.datafibre.fibre.monitor.jvm.JvmStats.GarbageCollector;
+import io.datafibre.fibre.monitor.jvm.JvmStats.GarbageCollectors;
+import io.datafibre.fibre.monitor.jvm.JvmStats.Mem;
+import io.datafibre.fibre.monitor.jvm.JvmStats.Threads;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

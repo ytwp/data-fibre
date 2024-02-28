@@ -13,13 +13,13 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog.system.information;
+package io.datafibre.fibre.catalog.system.information;
 
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.system.SystemId;
-import com.starrocks.catalog.system.SystemTable;
-import com.starrocks.thrift.TSchemaTableType;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.system.SystemId;
+import io.datafibre.fibre.catalog.system.SystemTable;
+import io.datafibre.fibre.thrift.TSchemaTableType;
 
 public class PipeFileSystemTable {
 

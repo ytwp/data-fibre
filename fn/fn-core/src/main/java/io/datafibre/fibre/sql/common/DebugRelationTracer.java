@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.common;
+package io.datafibre.fibre.sql.common;
 
-import com.starrocks.analysis.ParseNode;
-import com.starrocks.sql.ast.AstVisitor;
-import com.starrocks.sql.ast.JoinRelation;
-import com.starrocks.sql.ast.QueryRelation;
-import com.starrocks.sql.ast.QueryStatement;
-import com.starrocks.sql.ast.SelectRelation;
-import com.starrocks.sql.ast.SubqueryRelation;
-import com.starrocks.sql.ast.TableRelation;
-import com.starrocks.sql.ast.UnionRelation;
+import io.datafibre.fibre.analysis.ParseNode;
+import io.datafibre.fibre.sql.ast.AstVisitor;
+import io.datafibre.fibre.sql.ast.JoinRelation;
+import io.datafibre.fibre.sql.ast.QueryRelation;
+import io.datafibre.fibre.sql.ast.QueryStatement;
+import io.datafibre.fibre.sql.ast.SelectRelation;
+import io.datafibre.fibre.sql.ast.SubqueryRelation;
+import io.datafibre.fibre.sql.ast.TableRelation;
+import io.datafibre.fibre.sql.ast.UnionRelation;
 
 public class DebugRelationTracer extends AstVisitor<String, String> {
     @Override

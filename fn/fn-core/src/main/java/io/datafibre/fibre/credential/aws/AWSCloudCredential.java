@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.credential.aws;
+package io.datafibre.fibre.credential.aws;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;
@@ -34,9 +34,9 @@ import com.staros.proto.AwsSimpleCredentialInfo;
 import com.staros.proto.FileStoreInfo;
 import com.staros.proto.FileStoreType;
 import com.staros.proto.S3FileStoreInfo;
-import com.starrocks.credential.CloudConfigurationConstants;
-import com.starrocks.credential.CloudCredential;
-import com.starrocks.credential.provider.AssumedRoleCredentialProvider;
+import io.datafibre.fibre.credential.CloudConfigurationConstants;
+import io.datafibre.fibre.credential.CloudCredential;
+import io.datafibre.fibre.credential.provider.AssumedRoleCredentialProvider;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.s3a.AnonymousAWSCredentialsProvider;
 
@@ -184,7 +184,7 @@ public class AWSCloudCredential implements CloudCredential {
         // Original "org.apache.hadoop.fs.s3a.auth.AssumedRoleCredentialProvider" don't support external id,
         // so we use our own AssumedRoleCredentialProvider.
         configuration.set("fs.s3a.aws.credentials.provider",
-                "com.starrocks.credential.provider.AssumedRoleCredentialProvider");
+                "io.datafibre.fibre.credential.provider.AssumedRoleCredentialProvider");
         configuration.set("fs.s3a.assumed.role.arn", iamRoleArn);
         if (!stsRegion.isEmpty()) {
             configuration.set("fs.s3a.assumed.role.sts.endpoint.region", stsRegion);

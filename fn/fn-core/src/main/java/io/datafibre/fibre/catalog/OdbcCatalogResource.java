@@ -32,14 +32,14 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.proc.BaseProcResult;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.proc.BaseProcResult;
 
 import java.util.Map;
 

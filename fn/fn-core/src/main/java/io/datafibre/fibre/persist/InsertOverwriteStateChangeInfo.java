@@ -13,13 +13,13 @@
 // limitations under the License.
 
 
-package com.starrocks.persist;
+package io.datafibre.fibre.persist;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.load.InsertOverwriteJobState;
-import com.starrocks.persist.gson.GsonUtils;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.load.InsertOverwriteJobState;
+import io.datafibre.fibre.persist.gson.GsonUtils;
 
 import java.io.DataInput;
 import java.io.DataOutput;

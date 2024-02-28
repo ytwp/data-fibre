@@ -12,84 +12,84 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.parser.trino;
+package io.datafibre.fibre.connector.parser.trino;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.AnalyticExpr;
-import com.starrocks.analysis.AnalyticWindow;
-import com.starrocks.analysis.ArithmeticExpr;
-import com.starrocks.analysis.BinaryPredicate;
-import com.starrocks.analysis.BinaryType;
-import com.starrocks.analysis.BoolLiteral;
-import com.starrocks.analysis.CaseExpr;
-import com.starrocks.analysis.CaseWhenClause;
-import com.starrocks.analysis.CastExpr;
-import com.starrocks.analysis.CollectionElementExpr;
-import com.starrocks.analysis.CompoundPredicate;
-import com.starrocks.analysis.DateLiteral;
-import com.starrocks.analysis.DecimalLiteral;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.FloatLiteral;
-import com.starrocks.analysis.FunctionCallExpr;
-import com.starrocks.analysis.FunctionName;
-import com.starrocks.analysis.FunctionParams;
-import com.starrocks.analysis.GroupByClause;
-import com.starrocks.analysis.GroupingFunctionCallExpr;
-import com.starrocks.analysis.InformationFunction;
-import com.starrocks.analysis.IntLiteral;
-import com.starrocks.analysis.JoinOperator;
-import com.starrocks.analysis.LargeIntLiteral;
-import com.starrocks.analysis.LimitElement;
-import com.starrocks.analysis.LiteralExpr;
-import com.starrocks.analysis.NullLiteral;
-import com.starrocks.analysis.OrderByElement;
-import com.starrocks.analysis.ParseNode;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.analysis.SubfieldExpr;
-import com.starrocks.analysis.Subquery;
-import com.starrocks.analysis.TableName;
-import com.starrocks.analysis.TimestampArithmeticExpr;
-import com.starrocks.analysis.TypeDef;
-import com.starrocks.analysis.VarBinaryLiteral;
-import com.starrocks.catalog.FunctionSet;
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.qe.SqlModeHelper;
-import com.starrocks.sql.analyzer.RelationId;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.ast.ArrayExpr;
-import com.starrocks.sql.ast.CTERelation;
-import com.starrocks.sql.ast.CreateTableAsSelectStmt;
-import com.starrocks.sql.ast.CreateTableStmt;
-import com.starrocks.sql.ast.ExceptRelation;
-import com.starrocks.sql.ast.IntersectRelation;
-import com.starrocks.sql.ast.JoinRelation;
-import com.starrocks.sql.ast.LambdaArgument;
-import com.starrocks.sql.ast.LambdaFunctionExpr;
-import com.starrocks.sql.ast.Property;
-import com.starrocks.sql.ast.QualifiedName;
-import com.starrocks.sql.ast.QueryRelation;
-import com.starrocks.sql.ast.QueryStatement;
-import com.starrocks.sql.ast.Relation;
-import com.starrocks.sql.ast.SelectList;
-import com.starrocks.sql.ast.SelectListItem;
-import com.starrocks.sql.ast.SelectRelation;
-import com.starrocks.sql.ast.SetQualifier;
-import com.starrocks.sql.ast.StatementBase;
-import com.starrocks.sql.ast.SubqueryRelation;
-import com.starrocks.sql.ast.TableFunctionRelation;
-import com.starrocks.sql.ast.TableRelation;
-import com.starrocks.sql.ast.UnionRelation;
-import com.starrocks.sql.ast.UnitIdentifier;
-import com.starrocks.sql.ast.ValueList;
-import com.starrocks.sql.ast.ValuesRelation;
-import com.starrocks.sql.parser.ParsingException;
+import io.datafibre.fibre.analysis.AnalyticExpr;
+import io.datafibre.fibre.analysis.AnalyticWindow;
+import io.datafibre.fibre.analysis.ArithmeticExpr;
+import io.datafibre.fibre.analysis.BinaryPredicate;
+import io.datafibre.fibre.analysis.BinaryType;
+import io.datafibre.fibre.analysis.BoolLiteral;
+import io.datafibre.fibre.analysis.CaseExpr;
+import io.datafibre.fibre.analysis.CaseWhenClause;
+import io.datafibre.fibre.analysis.CastExpr;
+import io.datafibre.fibre.analysis.CollectionElementExpr;
+import io.datafibre.fibre.analysis.CompoundPredicate;
+import io.datafibre.fibre.analysis.DateLiteral;
+import io.datafibre.fibre.analysis.DecimalLiteral;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.FloatLiteral;
+import io.datafibre.fibre.analysis.FunctionCallExpr;
+import io.datafibre.fibre.analysis.FunctionName;
+import io.datafibre.fibre.analysis.FunctionParams;
+import io.datafibre.fibre.analysis.GroupByClause;
+import io.datafibre.fibre.analysis.GroupingFunctionCallExpr;
+import io.datafibre.fibre.analysis.InformationFunction;
+import io.datafibre.fibre.analysis.IntLiteral;
+import io.datafibre.fibre.analysis.JoinOperator;
+import io.datafibre.fibre.analysis.LargeIntLiteral;
+import io.datafibre.fibre.analysis.LimitElement;
+import io.datafibre.fibre.analysis.LiteralExpr;
+import io.datafibre.fibre.analysis.NullLiteral;
+import io.datafibre.fibre.analysis.OrderByElement;
+import io.datafibre.fibre.analysis.ParseNode;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.analysis.SubfieldExpr;
+import io.datafibre.fibre.analysis.Subquery;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.analysis.TimestampArithmeticExpr;
+import io.datafibre.fibre.analysis.TypeDef;
+import io.datafibre.fibre.analysis.VarBinaryLiteral;
+import io.datafibre.fibre.catalog.FunctionSet;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.qe.SqlModeHelper;
+import io.datafibre.fibre.sql.analyzer.RelationId;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.ast.ArrayExpr;
+import io.datafibre.fibre.sql.ast.CTERelation;
+import io.datafibre.fibre.sql.ast.CreateTableAsSelectStmt;
+import io.datafibre.fibre.sql.ast.CreateTableStmt;
+import io.datafibre.fibre.sql.ast.ExceptRelation;
+import io.datafibre.fibre.sql.ast.IntersectRelation;
+import io.datafibre.fibre.sql.ast.JoinRelation;
+import io.datafibre.fibre.sql.ast.LambdaArgument;
+import io.datafibre.fibre.sql.ast.LambdaFunctionExpr;
+import io.datafibre.fibre.sql.ast.Property;
+import io.datafibre.fibre.sql.ast.QualifiedName;
+import io.datafibre.fibre.sql.ast.QueryRelation;
+import io.datafibre.fibre.sql.ast.QueryStatement;
+import io.datafibre.fibre.sql.ast.Relation;
+import io.datafibre.fibre.sql.ast.SelectList;
+import io.datafibre.fibre.sql.ast.SelectListItem;
+import io.datafibre.fibre.sql.ast.SelectRelation;
+import io.datafibre.fibre.sql.ast.SetQualifier;
+import io.datafibre.fibre.sql.ast.StatementBase;
+import io.datafibre.fibre.sql.ast.SubqueryRelation;
+import io.datafibre.fibre.sql.ast.TableFunctionRelation;
+import io.datafibre.fibre.sql.ast.TableRelation;
+import io.datafibre.fibre.sql.ast.UnionRelation;
+import io.datafibre.fibre.sql.ast.UnitIdentifier;
+import io.datafibre.fibre.sql.ast.ValueList;
+import io.datafibre.fibre.sql.ast.ValuesRelation;
+import io.datafibre.fibre.sql.parser.ParsingException;
 import io.trino.sql.tree.AliasedRelation;
 import io.trino.sql.tree.AllColumns;
 import io.trino.sql.tree.ArithmeticBinaryExpression;
@@ -191,13 +191,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.starrocks.analysis.AnalyticWindow.BoundaryType.CURRENT_ROW;
-import static com.starrocks.analysis.AnalyticWindow.BoundaryType.FOLLOWING;
-import static com.starrocks.analysis.AnalyticWindow.BoundaryType.PRECEDING;
-import static com.starrocks.analysis.AnalyticWindow.BoundaryType.UNBOUNDED_FOLLOWING;
-import static com.starrocks.analysis.AnalyticWindow.BoundaryType.UNBOUNDED_PRECEDING;
-import static com.starrocks.connector.parser.trino.TrinoParserUtils.alignWithInputDatetimeType;
-import static com.starrocks.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
+import static io.datafibre.fibre.analysis.AnalyticWindow.BoundaryType.CURRENT_ROW;
+import static io.datafibre.fibre.analysis.AnalyticWindow.BoundaryType.FOLLOWING;
+import static io.datafibre.fibre.analysis.AnalyticWindow.BoundaryType.PRECEDING;
+import static io.datafibre.fibre.analysis.AnalyticWindow.BoundaryType.UNBOUNDED_FOLLOWING;
+import static io.datafibre.fibre.analysis.AnalyticWindow.BoundaryType.UNBOUNDED_PRECEDING;
+import static io.datafibre.fibre.connector.parser.trino.TrinoParserUtils.alignWithInputDatetimeType;
+import static io.datafibre.fibre.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
 import static java.util.stream.Collectors.toList;
 
 public class AstBuilder extends AstVisitor<ParseNode, ParseTreeContext> {
@@ -830,8 +830,8 @@ public class AstBuilder extends AstVisitor<ParseNode, ParseTreeContext> {
     protected ParseNode visitJsonQuery(JsonQuery jsonQuery, ParseTreeContext context) {
         Expr inputExpr = (Expr) visit(jsonQuery.getJsonPathInvocation().getInputExpression(), context);
         String jsonPath = jsonQuery.getJsonPathInvocation().getJsonPath().getValue();
-        com.starrocks.analysis.StringLiteral jsonPathLiteral =
-                new com.starrocks.analysis.StringLiteral(jsonPath.substring(jsonPath.indexOf('$')));
+        io.datafibre.fibre.analysis.StringLiteral jsonPathLiteral =
+                new io.datafibre.fibre.analysis.StringLiteral(jsonPath.substring(jsonPath.indexOf('$')));
         return new FunctionCallExpr("json_query", ImmutableList.of(inputExpr, jsonPathLiteral));
     }
 
@@ -909,7 +909,7 @@ public class AstBuilder extends AstVisitor<ParseNode, ParseTreeContext> {
                 throw new ParsingException(e.getMessage());
             }
         } else if (node.getType().equalsIgnoreCase("json")) {
-            return new com.starrocks.analysis.StringLiteral(node.getValue());
+            return new io.datafibre.fibre.analysis.StringLiteral(node.getValue());
         } else if (node.getType().equalsIgnoreCase("real")) {
             try {
                 return new FloatLiteral(node.getValue());
@@ -927,7 +927,7 @@ public class AstBuilder extends AstVisitor<ParseNode, ParseTreeContext> {
 
     @Override
     protected ParseNode visitStringLiteral(StringLiteral node, ParseTreeContext context) {
-        return new com.starrocks.analysis.StringLiteral(node.getValue());
+        return new io.datafibre.fibre.analysis.StringLiteral(node.getValue());
     }
 
     @Override
@@ -942,7 +942,7 @@ public class AstBuilder extends AstVisitor<ParseNode, ParseTreeContext> {
 
     @Override
     protected ParseNode visitIntervalLiteral(IntervalLiteral node, ParseTreeContext context) {
-        return new com.starrocks.sql.ast.IntervalLiteral(new com.starrocks.analysis.StringLiteral(node.getValue()),
+        return new io.datafibre.fibre.sql.ast.IntervalLiteral(new io.datafibre.fibre.analysis.StringLiteral(node.getValue()),
                 new UnitIdentifier(node.getStartField().toString()));
     }
 
@@ -989,17 +989,17 @@ public class AstBuilder extends AstVisitor<ParseNode, ParseTreeContext> {
         Expr left = (Expr) visit(node.getLeft(), context);
         Expr right = (Expr) visit(node.getRight(), context);
 
-        if (left instanceof com.starrocks.sql.ast.IntervalLiteral) {
+        if (left instanceof io.datafibre.fibre.sql.ast.IntervalLiteral) {
             return alignWithInputDatetimeType(new TimestampArithmeticExpr(BINARY_OPERATOR_MAP.get(node.getOperator()), right,
-                    ((com.starrocks.sql.ast.IntervalLiteral) left).getValue(),
-                    ((com.starrocks.sql.ast.IntervalLiteral) left).getUnitIdentifier().getDescription(),
+                    ((io.datafibre.fibre.sql.ast.IntervalLiteral) left).getValue(),
+                    ((io.datafibre.fibre.sql.ast.IntervalLiteral) left).getUnitIdentifier().getDescription(),
                     true));
         }
 
-        if (right instanceof com.starrocks.sql.ast.IntervalLiteral) {
+        if (right instanceof io.datafibre.fibre.sql.ast.IntervalLiteral) {
             return alignWithInputDatetimeType(new TimestampArithmeticExpr(BINARY_OPERATOR_MAP.get(node.getOperator()), left,
-                    ((com.starrocks.sql.ast.IntervalLiteral) right).getValue(),
-                    ((com.starrocks.sql.ast.IntervalLiteral) right).getUnitIdentifier().getDescription(),
+                    ((io.datafibre.fibre.sql.ast.IntervalLiteral) right).getValue(),
+                    ((io.datafibre.fibre.sql.ast.IntervalLiteral) right).getUnitIdentifier().getDescription(),
                     false));
         }
 
@@ -1025,7 +1025,7 @@ public class AstBuilder extends AstVisitor<ParseNode, ParseTreeContext> {
 
     @Override
     protected ParseNode visitBetweenPredicate(BetweenPredicate node, ParseTreeContext context) {
-        return new com.starrocks.analysis.BetweenPredicate(
+        return new io.datafibre.fibre.analysis.BetweenPredicate(
                 (Expr) visit(node.getValue(), context),
                 (Expr) visit(node.getMin(), context),
                 (Expr) visit(node.getMax(), context),
@@ -1034,8 +1034,8 @@ public class AstBuilder extends AstVisitor<ParseNode, ParseTreeContext> {
 
     @Override
     protected ParseNode visitLikePredicate(LikePredicate node, ParseTreeContext context) {
-        return new com.starrocks.analysis.LikePredicate(
-                com.starrocks.analysis.LikePredicate.Operator.LIKE,
+        return new io.datafibre.fibre.analysis.LikePredicate(
+                io.datafibre.fibre.analysis.LikePredicate.Operator.LIKE,
                 (Expr) visit(node.getValue(), context),
                 (Expr) visit(node.getPattern(), context));
     }
@@ -1043,12 +1043,12 @@ public class AstBuilder extends AstVisitor<ParseNode, ParseTreeContext> {
     @Override
     protected ParseNode visitInPredicate(InPredicate node, ParseTreeContext context) {
         if (node.getValueList() instanceof InListExpression) {
-            return new com.starrocks.analysis.InPredicate(
+            return new io.datafibre.fibre.analysis.InPredicate(
                     (Expr) visit(node.getValue(), context),
                     visit(node.getValueList(), context, Expr.class), false);
         } else {
             // SubqueryExpression
-            return new com.starrocks.analysis.InPredicate(
+            return new io.datafibre.fibre.analysis.InPredicate(
                     (Expr) visit(node.getValue(), context),
                     (Expr) visit(node.getValueList(), context), false);
         }
@@ -1057,18 +1057,18 @@ public class AstBuilder extends AstVisitor<ParseNode, ParseTreeContext> {
     @Override
     protected ParseNode visitIsNullPredicate(IsNullPredicate node, ParseTreeContext context) {
         Expr value = (Expr) visit(node.getValue(), context);
-        return new com.starrocks.analysis.IsNullPredicate(value, false);
+        return new io.datafibre.fibre.analysis.IsNullPredicate(value, false);
     }
 
     @Override
     protected ParseNode visitIsNotNullPredicate(IsNotNullPredicate node, ParseTreeContext context) {
         Expr value = (Expr) visit(node.getValue(), context);
-        return new com.starrocks.analysis.IsNullPredicate(value, true);
+        return new io.datafibre.fibre.analysis.IsNullPredicate(value, true);
     }
 
     @Override
     protected ParseNode visitExists(ExistsPredicate node, ParseTreeContext context) {
-        return new com.starrocks.analysis.ExistsPredicate((Subquery) visit(node.getSubquery(), context), false);
+        return new io.datafibre.fibre.analysis.ExistsPredicate((Subquery) visit(node.getSubquery(), context), false);
     }
 
     @Override

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.odps;
+package io.datafibre.fibre.connector.odps;
 
 import com.aliyun.odps.TableSchema;
 import com.aliyun.odps.type.ArrayTypeInfo;
@@ -22,12 +22,12 @@ import com.aliyun.odps.type.MapTypeInfo;
 import com.aliyun.odps.type.StructTypeInfo;
 import com.aliyun.odps.type.TypeInfo;
 import com.aliyun.odps.type.VarcharTypeInfo;
-import com.starrocks.catalog.ArrayType;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.MapType;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.catalog.StructType;
-import com.starrocks.catalog.Type;
+import io.datafibre.fibre.catalog.ArrayType;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.MapType;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.catalog.StructType;
+import io.datafibre.fibre.catalog.Type;
 
 import java.util.ArrayList;
 import java.util.List;

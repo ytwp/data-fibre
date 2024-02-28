@@ -12,25 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.lake;
+package io.datafibre.fibre.lake;
 
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.MaterializedIndex;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Partition;
-import com.starrocks.catalog.Tablet;
-import com.starrocks.common.NoAliveBackendException;
-import com.starrocks.common.UserException;
-import com.starrocks.proto.PublishLogVersionBatchRequest;
-import com.starrocks.proto.PublishLogVersionResponse;
-import com.starrocks.proto.PublishVersionRequest;
-import com.starrocks.proto.PublishVersionResponse;
-import com.starrocks.rpc.BrpcProxy;
-import com.starrocks.rpc.LakeService;
-import com.starrocks.rpc.RpcException;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.system.ComputeNode;
-import com.starrocks.warehouse.Warehouse;
+import io.datafibre.fibre.catalog.MaterializedIndex;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.catalog.Tablet;
+import io.datafibre.fibre.common.NoAliveBackendException;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.proto.PublishLogVersionBatchRequest;
+import io.datafibre.fibre.proto.PublishLogVersionResponse;
+import io.datafibre.fibre.proto.PublishVersionRequest;
+import io.datafibre.fibre.proto.PublishVersionResponse;
+import io.datafibre.fibre.rpc.BrpcProxy;
+import io.datafibre.fibre.rpc.LakeService;
+import io.datafibre.fibre.rpc.RpcException;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.system.ComputeNode;
+import io.datafibre.fibre.warehouse.Warehouse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

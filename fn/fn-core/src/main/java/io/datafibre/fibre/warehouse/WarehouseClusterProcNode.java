@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.warehouse;
+package io.datafibre.fibre.warehouse;
 
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.proc.ProcNodeInterface;
-import com.starrocks.common.proc.ProcResult;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.proc.ProcNodeInterface;
+import io.datafibre.fibre.common.proc.ProcResult;
 
 public class WarehouseClusterProcNode implements ProcNodeInterface {
     private final Warehouse warehouse;

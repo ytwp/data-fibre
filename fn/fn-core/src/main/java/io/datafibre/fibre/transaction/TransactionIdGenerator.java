@@ -15,11 +15,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.transaction;
+package io.datafibre.fibre.transaction;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.persist.gson.GsonPostProcessable;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.persist.gson.GsonPostProcessable;
+import io.datafibre.fibre.server.GlobalStateMgr;
 
 import java.io.DataInput;
 import java.io.DataOutput;

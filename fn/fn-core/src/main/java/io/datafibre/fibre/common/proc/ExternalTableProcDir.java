@@ -13,14 +13,14 @@
 // limitations under the License.
 
 
-package com.starrocks.common.proc;
+package io.datafibre.fibre.common.proc;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.AnalysisException;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.AnalysisException;
 
 
 public class ExternalTableProcDir implements ProcDirInterface {

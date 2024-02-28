@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package com.starrocks.staros;
+package io.datafibre.fibre.staros;
 
 import com.staros.journal.Journal;
-import com.starrocks.common.io.Writable;
+import io.datafibre.fibre.common.io.Writable;
 
 import java.io.DataInput;
 import java.io.DataOutput;

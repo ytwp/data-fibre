@@ -12,21 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.operator.scalar;
+package io.datafibre.fibre.sql.optimizer.operator.scalar;
 
-import com.starrocks.analysis.DecimalLiteral;
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.util.DateUtils;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.common.ErrorType;
-import com.starrocks.sql.common.StarRocksPlannerException;
-import com.starrocks.sql.common.UnsupportedException;
-import com.starrocks.sql.optimizer.base.ColumnRefSet;
-import com.starrocks.sql.optimizer.operator.OperatorType;
+import io.datafibre.fibre.analysis.DecimalLiteral;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.util.DateUtils;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.common.ErrorType;
+import io.datafibre.fibre.sql.common.StarRocksPlannerException;
+import io.datafibre.fibre.sql.common.UnsupportedException;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
+import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
@@ -42,9 +42,9 @@ import java.util.Optional;
 import java.util.function.Function;
 import javax.validation.constraints.NotNull;
 
-import static com.starrocks.catalog.Type.DATE;
-import static com.starrocks.catalog.Type.DATETIME;
-import static com.starrocks.catalog.Type.TINYINT;
+import static io.datafibre.fibre.catalog.Type.DATE;
+import static io.datafibre.fibre.catalog.Type.DATETIME;
+import static io.datafibre.fibre.catalog.Type.TINYINT;
 import static java.util.Collections.emptyList;
 
 /**

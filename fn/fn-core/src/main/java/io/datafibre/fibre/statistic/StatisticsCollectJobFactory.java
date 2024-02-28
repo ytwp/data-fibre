@@ -12,25 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.statistic;
+package io.datafibre.fibre.statistic;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.HiveTable;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Partition;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.Config;
-import com.starrocks.connector.ConnectorPartitionTraits;
-import com.starrocks.connector.ConnectorTableColumnStats;
-import com.starrocks.connector.PartitionInfo;
-import com.starrocks.monitor.unit.ByteSizeUnit;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.common.ErrorType;
-import com.starrocks.sql.common.StarRocksPlannerException;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.HiveTable;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.connector.ConnectorPartitionTraits;
+import io.datafibre.fibre.connector.ConnectorTableColumnStats;
+import io.datafibre.fibre.connector.PartitionInfo;
+import io.datafibre.fibre.monitor.unit.ByteSizeUnit;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.common.ErrorType;
+import io.datafibre.fibre.sql.common.StarRocksPlannerException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

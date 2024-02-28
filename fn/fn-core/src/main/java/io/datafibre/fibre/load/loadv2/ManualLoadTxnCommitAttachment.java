@@ -13,13 +13,13 @@
 // limitations under the License.
 
 
-package com.starrocks.load.loadv2;
+package io.datafibre.fibre.load.loadv2;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.common.io.Text;
-import com.starrocks.thrift.TManualLoadTxnCommitAttachment;
-import com.starrocks.transaction.TransactionState;
-import com.starrocks.transaction.TxnCommitAttachment;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.thrift.TManualLoadTxnCommitAttachment;
+import io.datafibre.fibre.transaction.TransactionState;
+import io.datafibre.fibre.transaction.TxnCommitAttachment;
 
 import java.io.DataInput;
 import java.io.DataOutput;

@@ -12,31 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.scheduler.mv;
+package io.datafibre.fibre.scheduler.mv;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.catalog.MvId;
-import com.starrocks.catalog.PartitionInfo;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.io.Text;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.persist.metablock.SRMetaBlockEOFException;
-import com.starrocks.persist.metablock.SRMetaBlockException;
-import com.starrocks.persist.metablock.SRMetaBlockID;
-import com.starrocks.persist.metablock.SRMetaBlockReader;
-import com.starrocks.persist.metablock.SRMetaBlockWriter;
-import com.starrocks.planner.OlapTableSink;
-import com.starrocks.planner.PlanFragment;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.CreateMaterializedViewStatement;
-import com.starrocks.sql.common.UnsupportedException;
-import com.starrocks.sql.plan.ExecPlan;
-import com.starrocks.thrift.TMVMaintenanceTasks;
-import com.starrocks.thrift.TMVReportEpochTask;
-import com.starrocks.transaction.TabletCommitInfo;
-import com.starrocks.transaction.TabletFailInfo;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.catalog.MvId;
+import io.datafibre.fibre.catalog.PartitionInfo;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockEOFException;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockException;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockID;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockReader;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockWriter;
+import io.datafibre.fibre.planner.OlapTableSink;
+import io.datafibre.fibre.planner.PlanFragment;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.CreateMaterializedViewStatement;
+import io.datafibre.fibre.sql.common.UnsupportedException;
+import io.datafibre.fibre.sql.plan.ExecPlan;
+import io.datafibre.fibre.thrift.TMVMaintenanceTasks;
+import io.datafibre.fibre.thrift.TMVReportEpochTask;
+import io.datafibre.fibre.transaction.TabletCommitInfo;
+import io.datafibre.fibre.transaction.TabletFailInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

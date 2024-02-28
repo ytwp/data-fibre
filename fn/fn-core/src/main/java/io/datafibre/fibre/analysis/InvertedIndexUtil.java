@@ -12,23 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.analysis;
+package io.datafibre.fibre.analysis;
 
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.KeysType;
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.common.InvertedIndexParams;
-import com.starrocks.common.InvertedIndexParams.IndexParamsKey;
-import com.starrocks.sql.analyzer.SemanticException;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.KeysType;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.common.InvertedIndexParams;
+import io.datafibre.fibre.common.InvertedIndexParams.IndexParamsKey;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.starrocks.common.InvertedIndexParams.CommonIndexParamKey.IMP_LIB;
-import static com.starrocks.common.InvertedIndexParams.InvertedIndexImpType.CLUCENE;
+import static io.datafibre.fibre.common.InvertedIndexParams.CommonIndexParamKey.IMP_LIB;
+import static io.datafibre.fibre.common.InvertedIndexParams.InvertedIndexImpType.CLUCENE;
 
 public class InvertedIndexUtil {
 

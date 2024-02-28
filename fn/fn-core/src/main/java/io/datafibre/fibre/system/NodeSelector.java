@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.system;
+package io.datafibre.fibre.system;
 
 import com.google.api.client.util.Sets;
 import com.google.common.collect.HashMultimap;
@@ -20,11 +20,11 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
-import com.starrocks.clone.TabletChecker;
-import com.starrocks.common.Pair;
-import com.starrocks.common.UserException;
-import com.starrocks.server.RunMode;
-import com.starrocks.thrift.TStorageMedium;
+import io.datafibre.fibre.clone.TabletChecker;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.server.RunMode;
+import io.datafibre.fibre.thrift.TStorageMedium;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

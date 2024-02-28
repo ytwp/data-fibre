@@ -13,22 +13,22 @@
 // limitations under the License.
 
 
-package com.starrocks.planner.stream;
+package io.datafibre.fibre.planner.stream;
 
-import com.starrocks.analysis.AggregateInfo;
-import com.starrocks.analysis.Expr;
-import com.starrocks.common.FeConstants;
-import com.starrocks.planner.FragmentNormalizer;
-import com.starrocks.planner.PlanNode;
-import com.starrocks.planner.PlanNodeId;
-import com.starrocks.sql.optimizer.operator.stream.IMTInfo;
-import com.starrocks.thrift.TExplainLevel;
-import com.starrocks.thrift.TExpr;
-import com.starrocks.thrift.TNormalPlanNode;
-import com.starrocks.thrift.TNormalSortAggregationNode;
-import com.starrocks.thrift.TPlanNode;
-import com.starrocks.thrift.TPlanNodeType;
-import com.starrocks.thrift.TStreamAggregationNode;
+import io.datafibre.fibre.analysis.AggregateInfo;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.common.FeConstants;
+import io.datafibre.fibre.planner.FragmentNormalizer;
+import io.datafibre.fibre.planner.PlanNode;
+import io.datafibre.fibre.planner.PlanNodeId;
+import io.datafibre.fibre.sql.optimizer.operator.stream.IMTInfo;
+import io.datafibre.fibre.thrift.TExplainLevel;
+import io.datafibre.fibre.thrift.TExpr;
+import io.datafibre.fibre.thrift.TNormalPlanNode;
+import io.datafibre.fibre.thrift.TNormalSortAggregationNode;
+import io.datafibre.fibre.thrift.TPlanNode;
+import io.datafibre.fibre.thrift.TPlanNodeType;
+import io.datafibre.fibre.thrift.TStreamAggregationNode;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.ArrayList;

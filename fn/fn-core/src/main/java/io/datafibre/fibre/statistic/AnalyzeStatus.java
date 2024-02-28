@@ -13,13 +13,13 @@
 // limitations under the License.
 
 
-package com.starrocks.statistic;
+package io.datafibre.fibre.statistic;
 
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.common.MetaNotFoundException;
-import com.starrocks.qe.ShowResultSet;
-import com.starrocks.qe.ShowResultSetMetaData;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.common.MetaNotFoundException;
+import io.datafibre.fibre.qe.ShowResultSet;
+import io.datafibre.fibre.qe.ShowResultSetMetaData;
 
 import java.time.LocalDateTime;
 import java.util.List;

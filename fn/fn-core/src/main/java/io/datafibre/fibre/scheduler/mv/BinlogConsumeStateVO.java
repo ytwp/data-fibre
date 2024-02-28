@@ -13,17 +13,17 @@
 // limitations under the License.
 
 
-package com.starrocks.scheduler.mv;
+package io.datafibre.fibre.scheduler.mv;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.catalog.TabletInvertedIndex;
-import com.starrocks.catalog.TabletMeta;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.thrift.TBinlogOffset;
-import com.starrocks.thrift.TBinlogScanRange;
+import io.datafibre.fibre.catalog.TabletInvertedIndex;
+import io.datafibre.fibre.catalog.TabletMeta;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.thrift.TBinlogOffset;
+import io.datafibre.fibre.thrift.TBinlogScanRange;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.DataInput;

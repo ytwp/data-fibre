@@ -15,15 +15,15 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.http.action;
+package io.datafibre.fibre.http.action;
 
-import com.starrocks.common.Config;
-import com.starrocks.http.ActionController;
-import com.starrocks.http.BaseRequest;
-import com.starrocks.http.BaseResponse;
-import com.starrocks.http.IllegalArgException;
-import com.starrocks.qe.VariableMgr;
-import com.starrocks.sql.ast.SetType;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.http.ActionController;
+import io.datafibre.fibre.http.BaseRequest;
+import io.datafibre.fibre.http.BaseResponse;
+import io.datafibre.fibre.http.IllegalArgException;
+import io.datafibre.fibre.qe.VariableMgr;
+import io.datafibre.fibre.sql.ast.SetType;
 import io.netty.handler.codec.http.HttpMethod;
 
 import java.util.HashMap;

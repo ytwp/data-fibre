@@ -15,10 +15,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.connector.elasticsearch;
+package io.datafibre.fibre.connector.elasticsearch;
 
-import com.starrocks.catalog.EsTable;
-import com.starrocks.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.catalog.EsTable;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -32,10 +32,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.journal.bdbje;
+package io.datafibre.fibre.journal.bdbje;
 
 import com.google.common.base.Strings;
-import com.starrocks.common.FeConstants;
+import io.datafibre.fibre.common.FeConstants;
 
 public class BDBToolOptions {
     private final boolean isListDbs;

@@ -15,9 +15,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.alter;
+package io.datafibre.fibre.alter;
 
-import com.starrocks.common.DdlException;
+import io.datafibre.fibre.common.DdlException;
 
 /*
  * This exception will be thrown when the alter job(v2) being cancelled due to

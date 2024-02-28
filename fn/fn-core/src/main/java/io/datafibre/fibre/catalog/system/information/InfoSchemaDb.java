@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.catalog.system.information;
+package io.datafibre.fibre.catalog.system.information;
 
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.system.SystemId;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.system.SystemId;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-import static com.starrocks.catalog.InternalCatalog.DEFAULT_INTERNAL_CATALOG_NAME;
-import static com.starrocks.server.CatalogMgr.isInternalCatalog;
+import static io.datafibre.fibre.catalog.InternalCatalog.DEFAULT_INTERNAL_CATALOG_NAME;
+import static io.datafibre.fibre.server.CatalogMgr.isInternalCatalog;
 import static java.util.Objects.requireNonNull;
 
 // Information schema used for MySQL compatible.

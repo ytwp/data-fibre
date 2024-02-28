@@ -13,11 +13,11 @@
 // limitations under the License.
 
 
-package com.starrocks.rpc;
+package io.datafibre.fibre.rpc;
 
-import com.starrocks.common.ClientPool;
-import com.starrocks.thrift.FrontendService;
-import com.starrocks.thrift.TNetworkAddress;
+import io.datafibre.fibre.common.ClientPool;
+import io.datafibre.fibre.thrift.FrontendService;
+import io.datafibre.fibre.thrift.TNetworkAddress;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.thrift.TException;

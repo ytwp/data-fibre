@@ -11,14 +11,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.starrocks.authentication;
+package io.datafibre.fibre.authentication;
 
 import com.google.common.base.Strings;
-import com.starrocks.mysql.MysqlPassword;
-import com.starrocks.mysql.privilege.AuthPlugin;
-import com.starrocks.mysql.privilege.Password;
-import com.starrocks.mysql.security.LdapSecurity;
-import com.starrocks.sql.ast.UserIdentity;
+import io.datafibre.fibre.mysql.MysqlPassword;
+import io.datafibre.fibre.mysql.privilege.AuthPlugin;
+import io.datafibre.fibre.mysql.privilege.Password;
+import io.datafibre.fibre.mysql.security.LdapSecurity;
+import io.datafibre.fibre.sql.ast.UserIdentity;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;

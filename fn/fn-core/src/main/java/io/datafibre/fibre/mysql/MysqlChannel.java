@@ -32,9 +32,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.mysql;
+package io.datafibre.fibre.mysql;
 
-import com.starrocks.mysql.ssl.SSLChannel;
+import io.datafibre.fibre.mysql.ssl.SSLChannel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

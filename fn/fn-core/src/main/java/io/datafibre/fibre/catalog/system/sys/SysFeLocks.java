@@ -12,27 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.catalog.system.sys;
+package io.datafibre.fibre.catalog.system.sys;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.system.SystemId;
-import com.starrocks.catalog.system.SystemTable;
-import com.starrocks.privilege.AccessDeniedException;
-import com.starrocks.privilege.PrivilegeType;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.analyzer.Authorizer;
-import com.starrocks.sql.ast.UserIdentity;
-import com.starrocks.thrift.TAuthInfo;
-import com.starrocks.thrift.TFeLocksItem;
-import com.starrocks.thrift.TFeLocksReq;
-import com.starrocks.thrift.TFeLocksRes;
-import com.starrocks.thrift.TSchemaTableType;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.system.SystemId;
+import io.datafibre.fibre.catalog.system.SystemTable;
+import io.datafibre.fibre.privilege.AccessDeniedException;
+import io.datafibre.fibre.privilege.PrivilegeType;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.analyzer.Authorizer;
+import io.datafibre.fibre.sql.ast.UserIdentity;
+import io.datafibre.fibre.thrift.TAuthInfo;
+import io.datafibre.fibre.thrift.TFeLocksItem;
+import io.datafibre.fibre.thrift.TFeLocksReq;
+import io.datafibre.fibre.thrift.TFeLocksRes;
+import io.datafibre.fibre.thrift.TSchemaTableType;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.ThreadUtils;

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.mysql.ssl;
+package io.datafibre.fibre.mysql.ssl;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

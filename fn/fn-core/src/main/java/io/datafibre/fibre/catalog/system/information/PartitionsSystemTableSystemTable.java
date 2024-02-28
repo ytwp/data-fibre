@@ -11,18 +11,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.starrocks.catalog.system.information;
+package io.datafibre.fibre.catalog.system.information;
 
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.system.SystemId;
-import com.starrocks.catalog.system.SystemTable;
-import com.starrocks.thrift.TSchemaTableType;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.system.SystemId;
+import io.datafibre.fibre.catalog.system.SystemTable;
+import io.datafibre.fibre.thrift.TSchemaTableType;
 
-import static com.starrocks.catalog.system.SystemTable.FN_REFLEN;
-import static com.starrocks.catalog.system.SystemTable.NAME_CHAR_LEN;
-import static com.starrocks.catalog.system.SystemTable.builder;
+import static io.datafibre.fibre.catalog.system.SystemTable.FN_REFLEN;
+import static io.datafibre.fibre.catalog.system.SystemTable.NAME_CHAR_LEN;
+import static io.datafibre.fibre.catalog.system.SystemTable.builder;
 
 public class PartitionsSystemTableSystemTable {
     public static SystemTable create(String catalogName) {

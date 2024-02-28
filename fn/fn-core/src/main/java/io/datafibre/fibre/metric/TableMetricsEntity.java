@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package com.starrocks.metric;
+package io.datafibre.fibre.metric;
 
 import com.google.common.collect.Lists;
-import com.starrocks.metric.Metric.MetricUnit;
+import io.datafibre.fibre.metric.Metric.MetricUnit;
 
 import java.util.List;
 

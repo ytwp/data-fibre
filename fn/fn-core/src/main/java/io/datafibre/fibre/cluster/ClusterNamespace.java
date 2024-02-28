@@ -32,11 +32,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.cluster;
+package io.datafibre.fibre.cluster;
 
 import com.google.common.base.Strings;
-import com.starrocks.authentication.AuthenticationMgr;
-import com.starrocks.system.SystemInfoService;
+import io.datafibre.fibre.authentication.AuthenticationMgr;
+import io.datafibre.fibre.system.SystemInfoService;
 
 /**
  * used to isolate the use for the database name and user name in the globalStateMgr,

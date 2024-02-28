@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.hive;
+package io.datafibre.fibre.connector.hive;
 
 import com.google.common.collect.Lists;
-import com.starrocks.common.Config;
-import com.starrocks.common.profile.Timer;
-import com.starrocks.common.profile.Tracers;
-import com.starrocks.connector.HdfsEnvironment;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.connector.hive.events.MetastoreNotificationFetchException;
-import com.starrocks.connector.hive.glue.AWSCatalogMetastoreClient;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.profile.Timer;
+import io.datafibre.fibre.common.profile.Tracers;
+import io.datafibre.fibre.connector.HdfsEnvironment;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.connector.hive.events.MetastoreNotificationFetchException;
+import io.datafibre.fibre.connector.hive.glue.AWSCatalogMetastoreClient;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.metastore.HiveMetaHookLoader;
 import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
@@ -45,10 +45,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import static com.starrocks.common.profile.Tracers.Module.EXTERNAL;
-import static com.starrocks.connector.hive.HiveConnector.HIVE_METASTORE_TIMEOUT;
-import static com.starrocks.connector.hive.HiveConnector.HIVE_METASTORE_TYPE;
-import static com.starrocks.connector.hive.HiveConnector.HIVE_METASTORE_URIS;
+import static io.datafibre.fibre.common.profile.Tracers.Module.EXTERNAL;
+import static io.datafibre.fibre.connector.hive.HiveConnector.HIVE_METASTORE_TIMEOUT;
+import static io.datafibre.fibre.connector.hive.HiveConnector.HIVE_METASTORE_TYPE;
+import static io.datafibre.fibre.connector.hive.HiveConnector.HIVE_METASTORE_URIS;
 
 public class HiveMetaClient {
     private static final Logger LOG = LogManager.getLogger(HiveMetaClient.class);

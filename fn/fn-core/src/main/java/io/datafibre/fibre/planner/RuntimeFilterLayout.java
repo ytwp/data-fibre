@@ -1,8 +1,8 @@
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
-import com.starrocks.thrift.TJoinDistributionMode;
-import com.starrocks.thrift.TRuntimeFilterLayout;
-import com.starrocks.thrift.TRuntimeFilterLayoutMode;
+import io.datafibre.fibre.thrift.TJoinDistributionMode;
+import io.datafibre.fibre.thrift.TRuntimeFilterLayout;
+import io.datafibre.fibre.thrift.TRuntimeFilterLayoutMode;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;

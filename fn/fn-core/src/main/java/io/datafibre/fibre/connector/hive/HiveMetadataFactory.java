@@ -12,20 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.hive;
+package io.datafibre.fibre.connector.hive;
 
-import com.starrocks.connector.CachingRemoteFileConf;
-import com.starrocks.connector.CachingRemoteFileIO;
-import com.starrocks.connector.HdfsEnvironment;
-import com.starrocks.connector.MetastoreType;
-import com.starrocks.connector.RemoteFileIO;
-import com.starrocks.connector.RemoteFileOperations;
+import io.datafibre.fibre.connector.CachingRemoteFileConf;
+import io.datafibre.fibre.connector.CachingRemoteFileIO;
+import io.datafibre.fibre.connector.HdfsEnvironment;
+import io.datafibre.fibre.connector.MetastoreType;
+import io.datafibre.fibre.connector.RemoteFileIO;
+import io.datafibre.fibre.connector.RemoteFileOperations;
 
 import java.util.Optional;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 
-import static com.starrocks.connector.hive.CachingHiveMetastore.createQueryLevelInstance;
+import static io.datafibre.fibre.connector.hive.CachingHiveMetastore.createQueryLevelInstance;
 
 public class HiveMetadataFactory {
     private final String catalogName;

@@ -12,32 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.load.streamload;
+package io.datafibre.fibre.load.streamload;
 
 import com.google.common.collect.Lists;
 import com.google.re2j.Pattern;
-import com.starrocks.analysis.Expr;
-import com.starrocks.catalog.Database;
-import com.starrocks.common.Config;
-import com.starrocks.common.UserException;
-import com.starrocks.common.util.CompressionUtils;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.load.routineload.RoutineLoadJob;
-import com.starrocks.qe.SessionVariable;
-import com.starrocks.qe.SqlModeHelper;
-import com.starrocks.sql.ast.ColumnSeparator;
-import com.starrocks.sql.ast.ImportColumnDesc;
-import com.starrocks.sql.ast.ImportColumnsStmt;
-import com.starrocks.sql.ast.ImportWhereStmt;
-import com.starrocks.sql.ast.PartitionNames;
-import com.starrocks.sql.ast.RowDelimiter;
-import com.starrocks.sql.parser.ParsingException;
-import com.starrocks.thrift.TCompressionType;
-import com.starrocks.thrift.TFileFormatType;
-import com.starrocks.thrift.TFileType;
-import com.starrocks.thrift.TPartialUpdateMode;
-import com.starrocks.thrift.TStreamLoadPutRequest;
-import com.starrocks.thrift.TUniqueId;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.util.CompressionUtils;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.load.routineload.RoutineLoadJob;
+import io.datafibre.fibre.qe.SessionVariable;
+import io.datafibre.fibre.qe.SqlModeHelper;
+import io.datafibre.fibre.sql.ast.ColumnSeparator;
+import io.datafibre.fibre.sql.ast.ImportColumnDesc;
+import io.datafibre.fibre.sql.ast.ImportColumnsStmt;
+import io.datafibre.fibre.sql.ast.ImportWhereStmt;
+import io.datafibre.fibre.sql.ast.PartitionNames;
+import io.datafibre.fibre.sql.ast.RowDelimiter;
+import io.datafibre.fibre.sql.parser.ParsingException;
+import io.datafibre.fibre.thrift.TCompressionType;
+import io.datafibre.fibre.thrift.TFileFormatType;
+import io.datafibre.fibre.thrift.TFileType;
+import io.datafibre.fibre.thrift.TPartialUpdateMode;
+import io.datafibre.fibre.thrift.TStreamLoadPutRequest;
+import io.datafibre.fibre.thrift.TUniqueId;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -490,7 +490,7 @@ public class StreamLoadInfo {
         String columnsSQL = "COLUMNS (" + columns + ")";
         ImportColumnsStmt columnsStmt;
         try {
-            columnsStmt = com.starrocks.sql.parser.SqlParser.parseImportColumns(columnsSQL, SqlModeHelper.MODE_DEFAULT);
+            columnsStmt = io.datafibre.fibre.sql.parser.SqlParser.parseImportColumns(columnsSQL, SqlModeHelper.MODE_DEFAULT);
         } catch (ParsingException e) {
             LOG.warn("parse columns' statement failed, sql={}, error={}", columnsSQL, e.getMessage(), e);
             throw e;
@@ -507,7 +507,7 @@ public class StreamLoadInfo {
     private void setWhereExpr(String whereString) throws UserException {
         ImportWhereStmt whereStmt;
         try {
-            whereStmt = new ImportWhereStmt(com.starrocks.sql.parser.SqlParser.parseSqlToExpr(whereString,
+            whereStmt = new ImportWhereStmt(io.datafibre.fibre.sql.parser.SqlParser.parseSqlToExpr(whereString,
                     SqlModeHelper.MODE_DEFAULT));
         } catch (ParsingException e) {
             LOG.warn("analyze where statement failed, sql={}, error={}", whereString, e.getMessage(), e);

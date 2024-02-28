@@ -32,32 +32,32 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.analysis;
+package io.datafibre.fibre.analysis;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
-import com.starrocks.catalog.ArrayType;
-import com.starrocks.catalog.MapType;
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.catalog.StructField;
-import com.starrocks.catalog.StructType;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.Config;
-import com.starrocks.common.UserException;
-import com.starrocks.common.util.ParseUtil;
-import com.starrocks.common.util.PrintableMap;
-import com.starrocks.fs.HdfsUtil;
-import com.starrocks.sql.analyzer.Field;
-import com.starrocks.sql.analyzer.Scope;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.parser.NodePosition;
-import com.starrocks.thrift.TCompressionType;
-import com.starrocks.thrift.TFileFormatType;
-import com.starrocks.thrift.THdfsProperties;
-import com.starrocks.thrift.TParquetOptions;
-import com.starrocks.thrift.TResultFileSinkOptions;
+import io.datafibre.fibre.catalog.ArrayType;
+import io.datafibre.fibre.catalog.MapType;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.catalog.StructField;
+import io.datafibre.fibre.catalog.StructType;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.util.ParseUtil;
+import io.datafibre.fibre.common.util.PrintableMap;
+import io.datafibre.fibre.fs.HdfsUtil;
+import io.datafibre.fibre.sql.analyzer.Field;
+import io.datafibre.fibre.sql.analyzer.Scope;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.parser.NodePosition;
+import io.datafibre.fibre.thrift.TCompressionType;
+import io.datafibre.fibre.thrift.TFileFormatType;
+import io.datafibre.fibre.thrift.THdfsProperties;
+import io.datafibre.fibre.thrift.TParquetOptions;
+import io.datafibre.fibre.thrift.TResultFileSinkOptions;
 
 import java.util.List;
 import java.util.Map;

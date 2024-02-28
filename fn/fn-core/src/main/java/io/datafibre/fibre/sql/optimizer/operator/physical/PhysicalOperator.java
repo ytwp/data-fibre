@@ -13,13 +13,13 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.operator.physical;
+package io.datafibre.fibre.sql.optimizer.operator.physical;
 
-import com.starrocks.sql.optimizer.base.ColumnRefSet;
-import com.starrocks.sql.optimizer.base.DistributionSpec;
-import com.starrocks.sql.optimizer.base.OrderSpec;
-import com.starrocks.sql.optimizer.operator.Operator;
-import com.starrocks.sql.optimizer.operator.OperatorType;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
+import io.datafibre.fibre.sql.optimizer.base.DistributionSpec;
+import io.datafibre.fibre.sql.optimizer.base.OrderSpec;
+import io.datafibre.fibre.sql.optimizer.operator.Operator;
+import io.datafibre.fibre.sql.optimizer.operator.OperatorType;
 
 import java.util.Objects;
 import java.util.Set;

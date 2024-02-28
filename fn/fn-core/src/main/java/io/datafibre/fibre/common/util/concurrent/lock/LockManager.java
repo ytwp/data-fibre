@@ -11,9 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.starrocks.common.util.concurrent.lock;
+package io.datafibre.fibre.common.util.concurrent.lock;
 
-import com.starrocks.common.Config;
+import io.datafibre.fibre.common.Config;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -31,18 +31,18 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
-package com.starrocks.http;
+package io.datafibre.fibre.http;
 
-import com.starrocks.common.UserException;
-import com.starrocks.common.profile.Tracers;
-import com.starrocks.metric.MetricRepo;
-import com.starrocks.mysql.MysqlCommand;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.ConnectProcessor;
-import com.starrocks.qe.QueryState;
-import com.starrocks.qe.StmtExecutor;
-import com.starrocks.sql.ast.KillStmt;
-import com.starrocks.sql.ast.StatementBase;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.profile.Tracers;
+import io.datafibre.fibre.metric.MetricRepo;
+import io.datafibre.fibre.mysql.MysqlCommand;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.ConnectProcessor;
+import io.datafibre.fibre.qe.QueryState;
+import io.datafibre.fibre.qe.StmtExecutor;
+import io.datafibre.fibre.sql.ast.KillStmt;
+import io.datafibre.fibre.sql.ast.StatementBase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

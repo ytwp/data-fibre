@@ -32,33 +32,33 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.consistency;
+package io.datafibre.fibre.consistency;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.LocalTablet;
-import com.starrocks.catalog.MaterializedIndex;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Partition;
-import com.starrocks.catalog.Replica;
-import com.starrocks.catalog.Replica.ReplicaState;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.TabletInvertedIndex;
-import com.starrocks.catalog.TabletMeta;
-import com.starrocks.common.Config;
-import com.starrocks.common.util.concurrent.lock.LockType;
-import com.starrocks.common.util.concurrent.lock.Locker;
-import com.starrocks.journal.JournalTask;
-import com.starrocks.persist.ConsistencyCheckInfo;
-import com.starrocks.persist.EditLog;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.task.AgentBatchTask;
-import com.starrocks.task.AgentTask;
-import com.starrocks.task.AgentTaskExecutor;
-import com.starrocks.task.AgentTaskQueue;
-import com.starrocks.task.CheckConsistencyTask;
-import com.starrocks.thrift.TTaskType;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.LocalTablet;
+import io.datafibre.fibre.catalog.MaterializedIndex;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.catalog.Replica;
+import io.datafibre.fibre.catalog.Replica.ReplicaState;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.TabletInvertedIndex;
+import io.datafibre.fibre.catalog.TabletMeta;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.journal.JournalTask;
+import io.datafibre.fibre.persist.ConsistencyCheckInfo;
+import io.datafibre.fibre.persist.EditLog;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.task.AgentBatchTask;
+import io.datafibre.fibre.task.AgentTask;
+import io.datafibre.fibre.task.AgentTaskExecutor;
+import io.datafibre.fibre.task.AgentTaskQueue;
+import io.datafibre.fibre.task.CheckConsistencyTask;
+import io.datafibre.fibre.thrift.TTaskType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -12,22 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
 import com.google.common.base.Strings;
-import com.starrocks.common.DdlException;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.server.StorageVolumeMgr;
-import com.starrocks.sql.ast.AlterStorageVolumeStmt;
-import com.starrocks.sql.ast.AstVisitor;
-import com.starrocks.sql.ast.CreateStorageVolumeStmt;
-import com.starrocks.sql.ast.DescStorageVolumeStmt;
-import com.starrocks.sql.ast.DropStorageVolumeStmt;
-import com.starrocks.sql.ast.SetDefaultStorageVolumeStmt;
-import com.starrocks.sql.ast.ShowStmt;
-import com.starrocks.sql.ast.ShowStorageVolumesStmt;
-import com.starrocks.sql.ast.StatementBase;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.server.StorageVolumeMgr;
+import io.datafibre.fibre.sql.ast.AlterStorageVolumeStmt;
+import io.datafibre.fibre.sql.ast.AstVisitor;
+import io.datafibre.fibre.sql.ast.CreateStorageVolumeStmt;
+import io.datafibre.fibre.sql.ast.DescStorageVolumeStmt;
+import io.datafibre.fibre.sql.ast.DropStorageVolumeStmt;
+import io.datafibre.fibre.sql.ast.SetDefaultStorageVolumeStmt;
+import io.datafibre.fibre.sql.ast.ShowStmt;
+import io.datafibre.fibre.sql.ast.ShowStorageVolumesStmt;
+import io.datafibre.fibre.sql.ast.StatementBase;
 
 import java.util.List;
 

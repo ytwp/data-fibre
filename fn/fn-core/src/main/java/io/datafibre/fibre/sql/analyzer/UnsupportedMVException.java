@@ -13,12 +13,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.sql.parser.NodePosition;
 import org.apache.commons.lang.StringUtils;
 
-import static com.starrocks.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
+import static io.datafibre.fibre.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
 
 public class UnsupportedMVException extends SemanticException {
 

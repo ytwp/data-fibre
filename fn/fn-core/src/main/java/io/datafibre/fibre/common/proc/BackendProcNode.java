@@ -32,18 +32,18 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.proc;
+package io.datafibre.fibre.common.proc;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.DiskInfo;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.Pair;
-import com.starrocks.common.util.DebugUtil;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.system.Backend;
-import com.starrocks.thrift.TStorageMedium;
+import io.datafibre.fibre.catalog.DiskInfo;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.util.DebugUtil;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.system.Backend;
+import io.datafibre.fibre.thrift.TStorageMedium;
 
 import java.util.List;
 import java.util.Map;

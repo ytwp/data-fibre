@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package com.starrocks.lake.backup;
+package io.datafibre.fibre.lake.backup;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.backup.SnapshotInfo;
+import io.datafibre.fibre.backup.SnapshotInfo;
 
 import java.util.Objects;
 

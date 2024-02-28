@@ -12,38 +12,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql;
+package io.datafibre.fibre.sql;
 
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.DescriptorTable;
-import com.starrocks.analysis.SlotDescriptor;
-import com.starrocks.analysis.TableName;
-import com.starrocks.analysis.TupleDescriptor;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Partition;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.UserException;
-import com.starrocks.load.Load;
-import com.starrocks.planner.DataSink;
-import com.starrocks.planner.OlapTableSink;
-import com.starrocks.planner.PlanFragment;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.ast.DeleteStmt;
-import com.starrocks.sql.ast.QueryRelation;
-import com.starrocks.sql.optimizer.OptExpression;
-import com.starrocks.sql.optimizer.Optimizer;
-import com.starrocks.sql.optimizer.base.ColumnRefFactory;
-import com.starrocks.sql.optimizer.base.ColumnRefSet;
-import com.starrocks.sql.optimizer.base.PhysicalPropertySet;
-import com.starrocks.sql.optimizer.transformer.LogicalPlan;
-import com.starrocks.sql.optimizer.transformer.RelationTransformer;
-import com.starrocks.sql.plan.ExecPlan;
-import com.starrocks.sql.plan.PlanFragmentBuilder;
-import com.starrocks.thrift.TResultSinkType;
+import io.datafibre.fibre.analysis.DescriptorTable;
+import io.datafibre.fibre.analysis.SlotDescriptor;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.analysis.TupleDescriptor;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.load.Load;
+import io.datafibre.fibre.planner.DataSink;
+import io.datafibre.fibre.planner.OlapTableSink;
+import io.datafibre.fibre.planner.PlanFragment;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.ast.DeleteStmt;
+import io.datafibre.fibre.sql.ast.QueryRelation;
+import io.datafibre.fibre.sql.optimizer.OptExpression;
+import io.datafibre.fibre.sql.optimizer.Optimizer;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefFactory;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
+import io.datafibre.fibre.sql.optimizer.base.PhysicalPropertySet;
+import io.datafibre.fibre.sql.optimizer.transformer.LogicalPlan;
+import io.datafibre.fibre.sql.optimizer.transformer.RelationTransformer;
+import io.datafibre.fibre.sql.plan.ExecPlan;
+import io.datafibre.fibre.sql.plan.PlanFragmentBuilder;
+import io.datafibre.fibre.thrift.TResultSinkType;
 
 import java.util.List;
 

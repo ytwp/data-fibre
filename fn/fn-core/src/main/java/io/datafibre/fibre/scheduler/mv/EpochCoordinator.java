@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.scheduler.mv;
+package io.datafibre.fibre.scheduler.mv;
 
 /**
  * EpochCoordinator coordinate epoch progress of executors

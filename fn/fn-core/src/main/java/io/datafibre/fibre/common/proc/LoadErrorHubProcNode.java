@@ -32,10 +32,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.proc;
+package io.datafibre.fibre.common.proc;
 
 import com.google.common.collect.ImmutableList;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.server.GlobalStateMgr;
 
 @Deprecated
 public class LoadErrorHubProcNode implements ProcNodeInterface {

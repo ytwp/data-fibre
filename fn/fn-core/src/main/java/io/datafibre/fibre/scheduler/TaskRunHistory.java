@@ -13,11 +13,11 @@
 // limitations under the License.
 
 
-package com.starrocks.scheduler;
+package io.datafibre.fibre.scheduler;
 
 import com.google.common.collect.Maps;
-import com.starrocks.common.Config;
-import com.starrocks.scheduler.persist.TaskRunStatus;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.scheduler.persist.TaskRunStatus;
 
 import java.util.ArrayList;
 import java.util.Collections;

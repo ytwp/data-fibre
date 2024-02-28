@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.lake;
+package io.datafibre.fibre.lake;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
@@ -44,12 +44,12 @@ import com.staros.proto.UpdateMetaGroupInfo;
 import com.staros.proto.WorkerGroupDetailInfo;
 import com.staros.proto.WorkerInfo;
 import com.staros.util.LockCloseable;
-import com.starrocks.common.Config;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.InternalErrorCode;
-import com.starrocks.common.UserException;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.system.ComputeNode;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.InternalErrorCode;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.system.ComputeNode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

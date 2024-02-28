@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.privilege;
+package io.datafibre.fibre.privilege;
 
 public class PrivObjNotFoundException extends PrivilegeException {
     public PrivObjNotFoundException(String msg) {

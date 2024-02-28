@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.backup.mv;
+package io.datafibre.fibre.backup.mv;
 
-import com.starrocks.analysis.TableName;
-import com.starrocks.catalog.MvId;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.catalog.MvId;
 
 public class MvBackupInfo {
     private final TableName localMvName;

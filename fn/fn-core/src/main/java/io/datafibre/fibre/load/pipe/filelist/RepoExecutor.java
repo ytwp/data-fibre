@@ -12,27 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.load.pipe.filelist;
+package io.datafibre.fibre.load.pipe.filelist;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.common.AuditLog;
-import com.starrocks.common.Pair;
-import com.starrocks.common.Status;
-import com.starrocks.common.util.DebugUtil;
-import com.starrocks.common.util.UUIDUtil;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.DDLStmtExecutor;
-import com.starrocks.qe.StmtExecutor;
-import com.starrocks.sql.StatementPlanner;
-import com.starrocks.sql.analyzer.Analyzer;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.ast.DmlStmt;
-import com.starrocks.sql.ast.StatementBase;
-import com.starrocks.sql.parser.SqlParser;
-import com.starrocks.sql.plan.ExecPlan;
-import com.starrocks.statistic.StatisticUtils;
-import com.starrocks.thrift.TResultBatch;
-import com.starrocks.thrift.TResultSinkType;
+import io.datafibre.fibre.common.AuditLog;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.Status;
+import io.datafibre.fibre.common.util.DebugUtil;
+import io.datafibre.fibre.common.util.UUIDUtil;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.DDLStmtExecutor;
+import io.datafibre.fibre.qe.StmtExecutor;
+import io.datafibre.fibre.sql.StatementPlanner;
+import io.datafibre.fibre.sql.analyzer.Analyzer;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.ast.DmlStmt;
+import io.datafibre.fibre.sql.ast.StatementBase;
+import io.datafibre.fibre.sql.parser.SqlParser;
+import io.datafibre.fibre.sql.plan.ExecPlan;
+import io.datafibre.fibre.statistic.StatisticUtils;
+import io.datafibre.fibre.thrift.TResultBatch;
+import io.datafibre.fibre.thrift.TResultSinkType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

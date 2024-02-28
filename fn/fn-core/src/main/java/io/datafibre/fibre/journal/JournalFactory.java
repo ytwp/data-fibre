@@ -13,11 +13,11 @@
 // limitations under the License.
 
 
-package com.starrocks.journal;
+package io.datafibre.fibre.journal;
 
-import com.starrocks.common.Config;
-import com.starrocks.journal.bdbje.BDBEnvironment;
-import com.starrocks.journal.bdbje.BDBJEJournal;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.journal.bdbje.BDBEnvironment;
+import io.datafibre.fibre.journal.bdbje.BDBJEJournal;
 
 public class JournalFactory {
     public enum JournalType {

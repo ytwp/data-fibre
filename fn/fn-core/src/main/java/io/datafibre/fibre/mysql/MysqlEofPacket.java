@@ -15,9 +15,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.mysql;
+package io.datafibre.fibre.mysql;
 
-import com.starrocks.qe.QueryState;
+import io.datafibre.fibre.qe.QueryState;
 
 // MySQL protocol EOF packet
 public class MysqlEofPacket extends MysqlPacket {

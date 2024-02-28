@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.dump;
+package io.datafibre.fibre.sql.optimizer.dump;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -21,17 +21,17 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.starrocks.catalog.Resource;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.View;
-import com.starrocks.common.FeConstants;
-import com.starrocks.common.Pair;
-import com.starrocks.common.Version;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.analyzer.AstToStringBuilder;
-import com.starrocks.sql.optimizer.statistics.ColumnStatistic;
-import com.starrocks.system.BackendCoreStat;
+import io.datafibre.fibre.catalog.Resource;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.View;
+import io.datafibre.fibre.common.FeConstants;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.Version;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.analyzer.AstToStringBuilder;
+import io.datafibre.fibre.sql.optimizer.statistics.ColumnStatistic;
+import io.datafibre.fibre.system.BackendCoreStat;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -110,7 +110,7 @@ public class QueryDumpSerializer implements JsonSerializer<QueryDumpInfo> {
         // table meta
         JsonObject tableMetaData = new JsonObject();
         List<Pair<String, Table>> tableMetaPairs = Lists.newArrayList(dumpInfo.getTableMap().values());
-        for (Pair<String, com.starrocks.catalog.Table> entry : tableMetaPairs) {
+        for (Pair<String, io.datafibre.fibre.catalog.Table> entry : tableMetaPairs) {
             String tableName = entry.first + "." + entry.second.getName();
             List<String> createTableStmt = Lists.newArrayList();
             AstToStringBuilder.getDdlStmt(entry.second, createTableStmt, null, null, false, true /* hide password */);
@@ -195,7 +195,7 @@ public class QueryDumpSerializer implements JsonSerializer<QueryDumpInfo> {
         // table meta
         JsonObject tableMetaData = new JsonObject();
         List<Pair<String, Table>> tableMetaPairs = Lists.newArrayList(dumpInfo.getTableMap().values());
-        for (Pair<String, com.starrocks.catalog.Table> entry : tableMetaPairs) {
+        for (Pair<String, io.datafibre.fibre.catalog.Table> entry : tableMetaPairs) {
             String tableName = DesensitizedSQLBuilder.desensitizeDbName(entry.first, dict) + "."
                     + DesensitizedSQLBuilder.desensitizeTblName(entry.second.getName(), dict);
             String createTableStmt = DesensitizedSQLBuilder.desensitizeTableDef(entry, dict);

@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.server;
+package io.datafibre.fibre.server;
 
 import com.google.common.collect.Maps;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.EsTable;
-import com.starrocks.catalog.PartitionInfo;
-import com.starrocks.catalog.SinglePartitionInfo;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.DdlException;
-import com.starrocks.sql.ast.CreateTableStmt;
-import com.starrocks.sql.ast.PartitionDesc;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.EsTable;
+import io.datafibre.fibre.catalog.PartitionInfo;
+import io.datafibre.fibre.catalog.SinglePartitionInfo;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.sql.ast.CreateTableStmt;
+import io.datafibre.fibre.sql.ast.PartitionDesc;
 
 import java.util.List;
 import java.util.Map;

@@ -32,14 +32,14 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.proc;
+package io.datafibre.fibre.common.proc;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.starrocks.clone.TabletChecker;
-import com.starrocks.clone.TabletScheduler;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.clone.TabletChecker;
+import io.datafibre.fibre.clone.TabletScheduler;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.server.GlobalStateMgr;
 
 /*
  * show proc "/cluster_balance";

@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.analysis.TableName;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 public class CancelRefreshMaterializedViewStmt extends DdlStmt {
     private final TableName mvName;

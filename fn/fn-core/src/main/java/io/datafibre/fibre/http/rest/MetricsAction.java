@@ -32,22 +32,22 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.http.rest;
+package io.datafibre.fibre.http.rest;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
-import com.starrocks.common.DdlException;
-import com.starrocks.http.ActionController;
-import com.starrocks.http.BaseRequest;
-import com.starrocks.http.BaseResponse;
-import com.starrocks.http.IllegalArgException;
-import com.starrocks.metric.JsonMetricVisitor;
-import com.starrocks.metric.MetricRepo;
-import com.starrocks.metric.MetricVisitor;
-import com.starrocks.metric.PrometheusMetricVisitor;
-import com.starrocks.metric.SimpleCoreMetricVisitor;
-import com.starrocks.privilege.AccessDeniedException;
-import com.starrocks.sql.ast.UserIdentity;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.http.ActionController;
+import io.datafibre.fibre.http.BaseRequest;
+import io.datafibre.fibre.http.BaseResponse;
+import io.datafibre.fibre.http.IllegalArgException;
+import io.datafibre.fibre.metric.JsonMetricVisitor;
+import io.datafibre.fibre.metric.MetricRepo;
+import io.datafibre.fibre.metric.MetricVisitor;
+import io.datafibre.fibre.metric.PrometheusMetricVisitor;
+import io.datafibre.fibre.metric.SimpleCoreMetricVisitor;
+import io.datafibre.fibre.privilege.AccessDeniedException;
+import io.datafibre.fibre.sql.ast.UserIdentity;
 import io.netty.handler.codec.http.HttpMethod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

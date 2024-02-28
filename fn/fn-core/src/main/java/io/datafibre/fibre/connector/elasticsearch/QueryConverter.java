@@ -13,27 +13,27 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.elasticsearch;
+package io.datafibre.fibre.connector.elasticsearch;
 
-import com.starrocks.analysis.BinaryPredicate;
-import com.starrocks.analysis.BoolLiteral;
-import com.starrocks.analysis.CastExpr;
-import com.starrocks.analysis.CompoundPredicate;
-import com.starrocks.analysis.DecimalLiteral;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.FloatLiteral;
-import com.starrocks.analysis.FunctionCallExpr;
-import com.starrocks.analysis.InPredicate;
-import com.starrocks.analysis.IntLiteral;
-import com.starrocks.analysis.IsNullPredicate;
-import com.starrocks.analysis.LargeIntLiteral;
-import com.starrocks.analysis.LikePredicate;
-import com.starrocks.analysis.LiteralExpr;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.analysis.StringLiteral;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.sql.ast.AstVisitor;
-import com.starrocks.thrift.TExprOpcode;
+import io.datafibre.fibre.analysis.BinaryPredicate;
+import io.datafibre.fibre.analysis.BoolLiteral;
+import io.datafibre.fibre.analysis.CastExpr;
+import io.datafibre.fibre.analysis.CompoundPredicate;
+import io.datafibre.fibre.analysis.DecimalLiteral;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.FloatLiteral;
+import io.datafibre.fibre.analysis.FunctionCallExpr;
+import io.datafibre.fibre.analysis.InPredicate;
+import io.datafibre.fibre.analysis.IntLiteral;
+import io.datafibre.fibre.analysis.IsNullPredicate;
+import io.datafibre.fibre.analysis.LargeIntLiteral;
+import io.datafibre.fibre.analysis.LikePredicate;
+import io.datafibre.fibre.analysis.LiteralExpr;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.analysis.StringLiteral;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.sql.ast.AstVisitor;
+import io.datafibre.fibre.thrift.TExprOpcode;
 
 import java.util.ArrayList;
 import java.util.List;

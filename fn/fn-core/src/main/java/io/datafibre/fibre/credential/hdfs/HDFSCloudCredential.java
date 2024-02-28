@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.credential.hdfs;
+package io.datafibre.fibre.credential.hdfs;
 
 import autovalue.shaded.com.google.common.common.base.Preconditions;
 import com.staros.proto.FileStoreInfo;
 import com.staros.proto.FileStoreType;
 import com.staros.proto.HDFSFileStoreInfo;
-import com.starrocks.credential.CloudCredential;
+import io.datafibre.fibre.credential.CloudCredential;
 import org.apache.hadoop.conf.Configuration;
 
 import java.util.Map;
 
-import static com.starrocks.credential.CloudConfigurationConstants.HDFS_AUTHENTICATION;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.HDFS_AUTHENTICATION;
 
 public class HDFSCloudCredential implements CloudCredential {
     public static final String SIMPLE_AUTH = "simple";

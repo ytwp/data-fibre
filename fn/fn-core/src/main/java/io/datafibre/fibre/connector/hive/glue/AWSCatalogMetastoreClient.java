@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.hive.glue;
+package io.datafibre.fibre.connector.hive.glue;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.glue.AWSGlue;
@@ -23,13 +23,13 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.starrocks.connector.hive.glue.metastore.AWSGlueClientFactory;
-import com.starrocks.connector.hive.glue.metastore.AWSGlueMetastore;
-import com.starrocks.connector.hive.glue.metastore.AWSGlueMetastoreFactory;
-import com.starrocks.connector.hive.glue.metastore.GlueMetastoreClientDelegate;
-import com.starrocks.connector.hive.glue.util.ExpressionHelper;
-import com.starrocks.connector.hive.glue.util.LoggingHelper;
-import com.starrocks.connector.hive.glue.util.MetastoreClientUtils;
+import io.datafibre.fibre.connector.hive.glue.metastore.AWSGlueClientFactory;
+import io.datafibre.fibre.connector.hive.glue.metastore.AWSGlueMetastore;
+import io.datafibre.fibre.connector.hive.glue.metastore.AWSGlueMetastoreFactory;
+import io.datafibre.fibre.connector.hive.glue.metastore.GlueMetastoreClientDelegate;
+import io.datafibre.fibre.connector.hive.glue.util.ExpressionHelper;
+import io.datafibre.fibre.connector.hive.glue.util.LoggingHelper;
+import io.datafibre.fibre.connector.hive.glue.util.MetastoreClientUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;

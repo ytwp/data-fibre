@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package com.starrocks.load;
+package io.datafibre.fibre.load;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.sql.ast.InsertStmt;
+import io.datafibre.fibre.sql.ast.InsertStmt;
 
 import java.util.List;
 

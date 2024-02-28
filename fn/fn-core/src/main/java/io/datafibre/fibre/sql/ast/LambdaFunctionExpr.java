@@ -13,16 +13,16 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.analysis.Analyzer;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.sql.parser.NodePosition;
-import com.starrocks.thrift.TExprNode;
-import com.starrocks.thrift.TExprNodeType;
+import io.datafibre.fibre.analysis.Analyzer;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.sql.parser.NodePosition;
+import io.datafibre.fibre.thrift.TExprNode;
+import io.datafibre.fibre.thrift.TExprNodeType;
 
 import java.util.List;
 import java.util.Map;

@@ -13,9 +13,9 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.base;
+package io.datafibre.fibre.sql.optimizer.base;
 
-import com.starrocks.thrift.TDistributionType;
+import io.datafibre.fibre.thrift.TDistributionType;
 
 public class DistributionSpec {
     protected final DistributionType type;

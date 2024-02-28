@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.http.common;
+package io.datafibre.fibre.http.common;
 
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.HttpContent;

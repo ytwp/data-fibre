@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.privilege;
+package io.datafibre.fibre.privilege;
 
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.TableName;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.Function;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.ast.UserIdentity;
-import com.starrocks.sql.ast.pipe.PipeName;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.Function;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.ast.UserIdentity;
+import io.datafibre.fibre.sql.ast.pipe.PipeName;
 
 import java.util.List;
 import java.util.Map;

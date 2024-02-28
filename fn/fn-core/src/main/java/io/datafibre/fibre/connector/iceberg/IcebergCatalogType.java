@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.iceberg;
+package io.datafibre.fibre.connector.iceberg;
 
 public enum IcebergCatalogType {
     HIVE_CATALOG,

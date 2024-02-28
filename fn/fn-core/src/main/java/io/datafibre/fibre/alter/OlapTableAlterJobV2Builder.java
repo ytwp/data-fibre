@@ -13,25 +13,25 @@
 // limitations under the License.
 
 
-package com.starrocks.alter;
+package io.datafibre.fibre.alter;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.LocalTablet;
-import com.starrocks.catalog.MaterializedIndex;
-import com.starrocks.catalog.MaterializedIndexMeta;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Partition;
-import com.starrocks.catalog.PhysicalPartition;
-import com.starrocks.catalog.Replica;
-import com.starrocks.catalog.Tablet;
-import com.starrocks.catalog.TabletMeta;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.UserException;
-import com.starrocks.common.util.Util;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.thrift.TStorageMedium;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.LocalTablet;
+import io.datafibre.fibre.catalog.MaterializedIndex;
+import io.datafibre.fibre.catalog.MaterializedIndexMeta;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.catalog.PhysicalPartition;
+import io.datafibre.fibre.catalog.Replica;
+import io.datafibre.fibre.catalog.Tablet;
+import io.datafibre.fibre.catalog.TabletMeta;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.util.Util;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.thrift.TStorageMedium;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

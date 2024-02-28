@@ -12,37 +12,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.statistic;
+package io.datafibre.fibre.statistic;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
-import com.starrocks.analysis.KeysDesc;
-import com.starrocks.analysis.TableName;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.KeysType;
-import com.starrocks.catalog.LocalTablet;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Partition;
-import com.starrocks.common.Config;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.Pair;
-import com.starrocks.common.UserException;
-import com.starrocks.common.util.AutoInferUtil;
-import com.starrocks.common.util.FrontendDaemon;
-import com.starrocks.common.util.PropertyAnalyzer;
-import com.starrocks.load.pipe.filelist.RepoCreator;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.server.RunMode;
-import com.starrocks.sql.analyzer.Analyzer;
-import com.starrocks.sql.ast.CreateDbStmt;
-import com.starrocks.sql.ast.CreateTableStmt;
-import com.starrocks.sql.ast.DropTableStmt;
-import com.starrocks.sql.ast.HashDistributionDesc;
-import com.starrocks.sql.common.EngineType;
-import com.starrocks.sql.common.ErrorType;
-import com.starrocks.sql.common.StarRocksPlannerException;
+import io.datafibre.fibre.analysis.KeysDesc;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.KeysType;
+import io.datafibre.fibre.catalog.LocalTablet;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.util.AutoInferUtil;
+import io.datafibre.fibre.common.util.FrontendDaemon;
+import io.datafibre.fibre.common.util.PropertyAnalyzer;
+import io.datafibre.fibre.load.pipe.filelist.RepoCreator;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.server.RunMode;
+import io.datafibre.fibre.sql.analyzer.Analyzer;
+import io.datafibre.fibre.sql.ast.CreateDbStmt;
+import io.datafibre.fibre.sql.ast.CreateTableStmt;
+import io.datafibre.fibre.sql.ast.DropTableStmt;
+import io.datafibre.fibre.sql.ast.HashDistributionDesc;
+import io.datafibre.fibre.sql.common.EngineType;
+import io.datafibre.fibre.sql.common.ErrorType;
+import io.datafibre.fibre.sql.common.StarRocksPlannerException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

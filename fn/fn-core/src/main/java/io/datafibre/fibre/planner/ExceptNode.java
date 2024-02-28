@@ -32,11 +32,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
-import com.starrocks.analysis.TupleId;
-import com.starrocks.thrift.TPlanNode;
-import com.starrocks.thrift.TPlanNodeType;
+import io.datafibre.fibre.analysis.TupleId;
+import io.datafibre.fibre.thrift.TPlanNode;
+import io.datafibre.fibre.thrift.TPlanNodeType;
 
 public class ExceptNode extends SetOperationNode {
     public ExceptNode(PlanNodeId id, TupleId tupleId) {

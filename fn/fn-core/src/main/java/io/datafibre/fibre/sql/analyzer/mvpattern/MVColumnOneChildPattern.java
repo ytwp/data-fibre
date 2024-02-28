@@ -32,10 +32,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.sql.analyzer.mvpattern;
+package io.datafibre.fibre.sql.analyzer.mvpattern;
 
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.FunctionCallExpr;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.FunctionCallExpr;
 
 public class MVColumnOneChildPattern implements MVColumnPattern {
 

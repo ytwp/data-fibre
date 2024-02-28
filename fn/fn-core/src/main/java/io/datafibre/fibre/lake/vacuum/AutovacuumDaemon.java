@@ -12,28 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.lake.vacuum;
+package io.datafibre.fibre.lake.vacuum;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.PhysicalPartition;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.Tablet;
-import com.starrocks.common.Config;
-import com.starrocks.common.util.FrontendDaemon;
-import com.starrocks.common.util.concurrent.lock.LockType;
-import com.starrocks.common.util.concurrent.lock.Locker;
-import com.starrocks.lake.LakeTablet;
-import com.starrocks.lake.Utils;
-import com.starrocks.proto.VacuumRequest;
-import com.starrocks.proto.VacuumResponse;
-import com.starrocks.rpc.BrpcProxy;
-import com.starrocks.rpc.LakeService;
-import com.starrocks.rpc.RpcException;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.system.ComputeNode;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.PhysicalPartition;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.Tablet;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.util.FrontendDaemon;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.lake.LakeTablet;
+import io.datafibre.fibre.lake.Utils;
+import io.datafibre.fibre.proto.VacuumRequest;
+import io.datafibre.fibre.proto.VacuumResponse;
+import io.datafibre.fibre.rpc.BrpcProxy;
+import io.datafibre.fibre.rpc.LakeService;
+import io.datafibre.fibre.rpc.RpcException;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.system.ComputeNode;
 import org.apache.hadoop.util.BlockingThreadPoolExecutorService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

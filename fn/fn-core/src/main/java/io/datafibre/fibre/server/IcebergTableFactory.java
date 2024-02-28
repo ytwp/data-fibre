@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.server;
+package io.datafibre.fibre.server;
 
 import com.google.common.base.Strings;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.IcebergTable;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.FeConstants;
-import com.starrocks.connector.ColumnTypeConverter;
-import com.starrocks.sql.ast.CreateTableStmt;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.IcebergTable;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.FeConstants;
+import io.datafibre.fibre.connector.ColumnTypeConverter;
+import io.datafibre.fibre.sql.ast.CreateTableStmt;
 import org.apache.iceberg.types.Types;
 
 import java.util.List;
@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 
-import static com.starrocks.catalog.Resource.ResourceType.ICEBERG;
+import static io.datafibre.fibre.catalog.Resource.ResourceType.ICEBERG;
 
 public class IcebergTableFactory extends ExternalTableFactory {
     public static final IcebergTableFactory INSTANCE = new IcebergTableFactory();

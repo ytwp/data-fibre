@@ -32,29 +32,29 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.task;
+package io.datafibre.fibre.task;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.analysis.BinaryPredicate;
-import com.starrocks.analysis.BinaryType;
-import com.starrocks.analysis.InPredicate;
-import com.starrocks.analysis.IsNullPredicate;
-import com.starrocks.analysis.LiteralExpr;
-import com.starrocks.analysis.Predicate;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.common.Status;
-import com.starrocks.common.util.concurrent.MarkedCountDownLatch;
-import com.starrocks.thrift.TBrokerScanRange;
-import com.starrocks.thrift.TColumn;
-import com.starrocks.thrift.TCondition;
-import com.starrocks.thrift.TDescriptorTable;
-import com.starrocks.thrift.TPriority;
-import com.starrocks.thrift.TPushReq;
-import com.starrocks.thrift.TPushType;
-import com.starrocks.thrift.TResourceInfo;
-import com.starrocks.thrift.TStatusCode;
-import com.starrocks.thrift.TTabletType;
-import com.starrocks.thrift.TTaskType;
+import io.datafibre.fibre.analysis.BinaryPredicate;
+import io.datafibre.fibre.analysis.BinaryType;
+import io.datafibre.fibre.analysis.InPredicate;
+import io.datafibre.fibre.analysis.IsNullPredicate;
+import io.datafibre.fibre.analysis.LiteralExpr;
+import io.datafibre.fibre.analysis.Predicate;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.common.Status;
+import io.datafibre.fibre.common.util.concurrent.MarkedCountDownLatch;
+import io.datafibre.fibre.thrift.TBrokerScanRange;
+import io.datafibre.fibre.thrift.TColumn;
+import io.datafibre.fibre.thrift.TCondition;
+import io.datafibre.fibre.thrift.TDescriptorTable;
+import io.datafibre.fibre.thrift.TPriority;
+import io.datafibre.fibre.thrift.TPushReq;
+import io.datafibre.fibre.thrift.TPushType;
+import io.datafibre.fibre.thrift.TResourceInfo;
+import io.datafibre.fibre.thrift.TStatusCode;
+import io.datafibre.fibre.thrift.TTabletType;
+import io.datafibre.fibre.thrift.TTaskType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

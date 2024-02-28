@@ -32,26 +32,26 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.alter;
+package io.datafibre.fibre.alter;
 
 import com.google.common.collect.Sets;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.MaterializedIndexMeta;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.OlapTable.OlapTableState;
-import com.starrocks.catalog.TabletInvertedIndex;
-import com.starrocks.common.Config;
-import com.starrocks.common.TraceManager;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.common.util.concurrent.lock.LockType;
-import com.starrocks.common.util.concurrent.lock.Locker;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.privilege.PrivilegeBuiltinConstants;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.UserIdentity;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.MaterializedIndexMeta;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.OlapTable.OlapTableState;
+import io.datafibre.fibre.catalog.TabletInvertedIndex;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.TraceManager;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.privilege.PrivilegeBuiltinConstants;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.UserIdentity;
 import io.opentelemetry.api.trace.Span;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

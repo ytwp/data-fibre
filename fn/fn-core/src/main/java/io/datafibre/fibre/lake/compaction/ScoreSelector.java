@@ -13,9 +13,9 @@
 // limitations under the License.
 
 
-package com.starrocks.lake.compaction;
+package io.datafibre.fibre.lake.compaction;
 
-import com.starrocks.common.Config;
+import io.datafibre.fibre.common.Config;
 
 import java.util.Collection;
 import java.util.List;

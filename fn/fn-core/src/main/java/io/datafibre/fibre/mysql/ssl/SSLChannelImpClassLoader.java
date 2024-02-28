@@ -13,9 +13,9 @@
 // limitations under the License.
 
 
-package com.starrocks.mysql.ssl;
+package io.datafibre.fibre.mysql.ssl;
 
-import com.starrocks.StarRocksFE;
+import io.datafibre.fibre.StarRocksFE;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,7 +25,7 @@ import java.net.URLClassLoader;
 
 public class SSLChannelImpClassLoader {
     private static final Logger LOG = LogManager.getLogger(SSLChannelImpClassLoader.class);
-    public static final String SSL_CHANNEL_CLASS_NAME = "com.starrocks.plugins.ssl.SSLChannelImp";
+    public static final String SSL_CHANNEL_CLASS_NAME = "io.datafibre.fibre.plugins.ssl.SSLChannelImp";
     public static final String SSL_CHANNEL_JAR_PATH = StarRocksFE.STARROCKS_HOME_DIR + "/lib/starrocks-ssl-1.0.jar";
 
     private static Class<? extends SSLChannel> clazz;

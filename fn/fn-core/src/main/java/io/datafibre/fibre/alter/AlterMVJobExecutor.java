@@ -12,55 +12,55 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.alter;
+package io.datafibre.fibre.alter;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.analysis.IntLiteral;
-import com.starrocks.analysis.StringLiteral;
-import com.starrocks.analysis.TableName;
-import com.starrocks.catalog.ForeignKeyConstraint;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.TableProperty;
-import com.starrocks.catalog.UniqueConstraint;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.MetaNotFoundException;
-import com.starrocks.common.Pair;
-import com.starrocks.common.util.DynamicPartitionUtil;
-import com.starrocks.common.util.PropertyAnalyzer;
-import com.starrocks.common.util.concurrent.lock.LockType;
-import com.starrocks.common.util.concurrent.lock.Locker;
-import com.starrocks.persist.AlterMaterializedViewStatusLog;
-import com.starrocks.persist.ChangeMaterializedViewRefreshSchemeLog;
-import com.starrocks.persist.ModifyTablePropertyOperationLog;
-import com.starrocks.persist.RenameMaterializedViewLog;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.scheduler.Constants;
-import com.starrocks.scheduler.Task;
-import com.starrocks.scheduler.TaskBuilder;
-import com.starrocks.scheduler.TaskManager;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.analyzer.SetStmtAnalyzer;
-import com.starrocks.sql.ast.AlterMaterializedViewStatusClause;
-import com.starrocks.sql.ast.AsyncRefreshSchemeDesc;
-import com.starrocks.sql.ast.IntervalLiteral;
-import com.starrocks.sql.ast.ModifyTablePropertiesClause;
-import com.starrocks.sql.ast.RefreshSchemeClause;
-import com.starrocks.sql.ast.SetListItem;
-import com.starrocks.sql.ast.SetStmt;
-import com.starrocks.sql.ast.SystemVariable;
-import com.starrocks.sql.ast.TableRenameClause;
-import com.starrocks.sql.common.DmlException;
-import com.starrocks.sql.optimizer.Utils;
+import io.datafibre.fibre.analysis.IntLiteral;
+import io.datafibre.fibre.analysis.StringLiteral;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.catalog.ForeignKeyConstraint;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.TableProperty;
+import io.datafibre.fibre.catalog.UniqueConstraint;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.MetaNotFoundException;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.util.DynamicPartitionUtil;
+import io.datafibre.fibre.common.util.PropertyAnalyzer;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.persist.AlterMaterializedViewStatusLog;
+import io.datafibre.fibre.persist.ChangeMaterializedViewRefreshSchemeLog;
+import io.datafibre.fibre.persist.ModifyTablePropertyOperationLog;
+import io.datafibre.fibre.persist.RenameMaterializedViewLog;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.scheduler.Constants;
+import io.datafibre.fibre.scheduler.Task;
+import io.datafibre.fibre.scheduler.TaskBuilder;
+import io.datafibre.fibre.scheduler.TaskManager;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.analyzer.SetStmtAnalyzer;
+import io.datafibre.fibre.sql.ast.AlterMaterializedViewStatusClause;
+import io.datafibre.fibre.sql.ast.AsyncRefreshSchemeDesc;
+import io.datafibre.fibre.sql.ast.IntervalLiteral;
+import io.datafibre.fibre.sql.ast.ModifyTablePropertiesClause;
+import io.datafibre.fibre.sql.ast.RefreshSchemeClause;
+import io.datafibre.fibre.sql.ast.SetListItem;
+import io.datafibre.fibre.sql.ast.SetStmt;
+import io.datafibre.fibre.sql.ast.SystemVariable;
+import io.datafibre.fibre.sql.ast.TableRenameClause;
+import io.datafibre.fibre.sql.common.DmlException;
+import io.datafibre.fibre.sql.optimizer.Utils;
 import org.apache.commons.lang3.StringUtils;
 import org.threeten.extra.PeriodDuration;
 
 import java.util.List;
 import java.util.Map;
 
-import static com.starrocks.catalog.TableProperty.INVALID;
+import static io.datafibre.fibre.catalog.TableProperty.INVALID;
 
 public class AlterMVJobExecutor extends AlterJobExecutor {
     @Override

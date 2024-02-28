@@ -12,45 +12,45 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.AnalyticExpr;
-import com.starrocks.analysis.ArithmeticExpr;
-import com.starrocks.analysis.ArrowExpr;
-import com.starrocks.analysis.BetweenPredicate;
-import com.starrocks.analysis.BinaryPredicate;
-import com.starrocks.analysis.CaseExpr;
-import com.starrocks.analysis.CastExpr;
-import com.starrocks.analysis.CloneExpr;
-import com.starrocks.analysis.CollectionElementExpr;
-import com.starrocks.analysis.CompoundPredicate;
-import com.starrocks.analysis.DictQueryExpr;
-import com.starrocks.analysis.ExistsPredicate;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.FunctionCallExpr;
-import com.starrocks.analysis.GroupingFunctionCallExpr;
-import com.starrocks.analysis.InPredicate;
-import com.starrocks.analysis.InformationFunction;
-import com.starrocks.analysis.IsNullPredicate;
-import com.starrocks.analysis.LikePredicate;
-import com.starrocks.analysis.LiteralExpr;
-import com.starrocks.analysis.OrderByElement;
-import com.starrocks.analysis.ParseNode;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.analysis.Subquery;
-import com.starrocks.analysis.TimestampArithmeticExpr;
-import com.starrocks.analysis.VariableExpr;
-import com.starrocks.catalog.AggregateFunction;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.SqlModeHelper;
-import com.starrocks.sql.ast.ArrayExpr;
-import com.starrocks.sql.ast.AstVisitor;
-import com.starrocks.sql.ast.DictionaryGetExpr;
-import com.starrocks.sql.ast.FieldReference;
-import com.starrocks.sql.ast.LambdaFunctionExpr;
-import com.starrocks.sql.ast.QueryStatement;
+import io.datafibre.fibre.analysis.AnalyticExpr;
+import io.datafibre.fibre.analysis.ArithmeticExpr;
+import io.datafibre.fibre.analysis.ArrowExpr;
+import io.datafibre.fibre.analysis.BetweenPredicate;
+import io.datafibre.fibre.analysis.BinaryPredicate;
+import io.datafibre.fibre.analysis.CaseExpr;
+import io.datafibre.fibre.analysis.CastExpr;
+import io.datafibre.fibre.analysis.CloneExpr;
+import io.datafibre.fibre.analysis.CollectionElementExpr;
+import io.datafibre.fibre.analysis.CompoundPredicate;
+import io.datafibre.fibre.analysis.DictQueryExpr;
+import io.datafibre.fibre.analysis.ExistsPredicate;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.FunctionCallExpr;
+import io.datafibre.fibre.analysis.GroupingFunctionCallExpr;
+import io.datafibre.fibre.analysis.InPredicate;
+import io.datafibre.fibre.analysis.InformationFunction;
+import io.datafibre.fibre.analysis.IsNullPredicate;
+import io.datafibre.fibre.analysis.LikePredicate;
+import io.datafibre.fibre.analysis.LiteralExpr;
+import io.datafibre.fibre.analysis.OrderByElement;
+import io.datafibre.fibre.analysis.ParseNode;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.analysis.Subquery;
+import io.datafibre.fibre.analysis.TimestampArithmeticExpr;
+import io.datafibre.fibre.analysis.VariableExpr;
+import io.datafibre.fibre.catalog.AggregateFunction;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.SqlModeHelper;
+import io.datafibre.fibre.sql.ast.ArrayExpr;
+import io.datafibre.fibre.sql.ast.AstVisitor;
+import io.datafibre.fibre.sql.ast.DictionaryGetExpr;
+import io.datafibre.fibre.sql.ast.FieldReference;
+import io.datafibre.fibre.sql.ast.LambdaFunctionExpr;
+import io.datafibre.fibre.sql.ast.QueryStatement;
 
 import java.util.List;
 import java.util.Map;
@@ -58,7 +58,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import static com.google.common.collect.ImmutableSet.toImmutableSet;
-import static com.starrocks.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
+import static io.datafibre.fibre.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
 
 /**
  * AggregationAnalyzer is used to analyze aggregation

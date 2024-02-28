@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.clone;
+package io.datafibre.fibre.clone;
 
 public class SchedException extends Exception {
     private static final long serialVersionUID = 4233856721704062083L;

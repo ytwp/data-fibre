@@ -12,26 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.rule.tree;
+package io.datafibre.fibre.sql.optimizer.rule.tree;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import com.starrocks.catalog.ArrayType;
-import com.starrocks.catalog.ComplexTypeAccessGroup;
-import com.starrocks.catalog.ComplexTypeAccessPath;
-import com.starrocks.catalog.ComplexTypeAccessPathType;
-import com.starrocks.catalog.ComplexTypeAccessPaths;
-import com.starrocks.catalog.FunctionSet;
-import com.starrocks.catalog.MapType;
-import com.starrocks.catalog.StructType;
-import com.starrocks.catalog.Type;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalTableFunctionOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CollectionElementOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperatorVisitor;
-import com.starrocks.sql.optimizer.operator.scalar.SubfieldOperator;
+import io.datafibre.fibre.catalog.ArrayType;
+import io.datafibre.fibre.catalog.ComplexTypeAccessGroup;
+import io.datafibre.fibre.catalog.ComplexTypeAccessPath;
+import io.datafibre.fibre.catalog.ComplexTypeAccessPathType;
+import io.datafibre.fibre.catalog.ComplexTypeAccessPaths;
+import io.datafibre.fibre.catalog.FunctionSet;
+import io.datafibre.fibre.catalog.MapType;
+import io.datafibre.fibre.catalog.StructType;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalTableFunctionOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CallOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CollectionElementOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperatorVisitor;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.SubfieldOperator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

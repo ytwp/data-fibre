@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.lake;
+package io.datafibre.fibre.lake;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.common.Config;
-import com.starrocks.lake.compaction.CompactionMgr;
-import com.starrocks.lake.compaction.PartitionIdentifier;
-import com.starrocks.lake.compaction.PartitionStatistics;
-import com.starrocks.lake.compaction.Quantiles;
-import com.starrocks.transaction.CommitRateExceededException;
-import com.starrocks.transaction.TransactionState;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.lake.compaction.CompactionMgr;
+import io.datafibre.fibre.lake.compaction.PartitionIdentifier;
+import io.datafibre.fibre.lake.compaction.PartitionStatistics;
+import io.datafibre.fibre.lake.compaction.Quantiles;
+import io.datafibre.fibre.transaction.CommitRateExceededException;
+import io.datafibre.fibre.transaction.TransactionState;
 import org.apache.iceberg.exceptions.CommitFailedException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

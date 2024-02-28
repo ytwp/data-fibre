@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.http.rest.transaction;
+package io.datafibre.fibre.http.rest.transaction;
 
-import com.starrocks.common.UserException;
-import com.starrocks.http.BaseRequest;
-import com.starrocks.http.BaseResponse;
-import com.starrocks.http.rest.TransactionResult;
-import com.starrocks.thrift.TNetworkAddress;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.http.BaseRequest;
+import io.datafibre.fibre.http.BaseResponse;
+import io.datafibre.fibre.http.rest.TransactionResult;
+import io.datafibre.fibre.thrift.TNetworkAddress;
 
 /**
  * Transaction management request handler.

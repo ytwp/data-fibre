@@ -32,26 +32,26 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.load.routineload;
+package io.datafibre.fibre.load.routineload;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.Config;
-import com.starrocks.common.MetaNotFoundException;
-import com.starrocks.common.UserException;
-import com.starrocks.common.util.KafkaUtil;
-import com.starrocks.load.streamload.StreamLoadTask;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.thrift.TExecPlanFragmentParams;
-import com.starrocks.thrift.TFileFormatType;
-import com.starrocks.thrift.TKafkaLoadInfo;
-import com.starrocks.thrift.TLoadSourceType;
-import com.starrocks.thrift.TPlanFragment;
-import com.starrocks.thrift.TRoutineLoadTask;
-import com.starrocks.thrift.TUniqueId;
-import com.starrocks.transaction.DatabaseTransactionMgr;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.MetaNotFoundException;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.util.KafkaUtil;
+import io.datafibre.fibre.load.streamload.StreamLoadTask;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.thrift.TExecPlanFragmentParams;
+import io.datafibre.fibre.thrift.TFileFormatType;
+import io.datafibre.fibre.thrift.TKafkaLoadInfo;
+import io.datafibre.fibre.thrift.TLoadSourceType;
+import io.datafibre.fibre.thrift.TPlanFragment;
+import io.datafibre.fibre.thrift.TRoutineLoadTask;
+import io.datafibre.fibre.thrift.TUniqueId;
+import io.datafibre.fibre.transaction.DatabaseTransactionMgr;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

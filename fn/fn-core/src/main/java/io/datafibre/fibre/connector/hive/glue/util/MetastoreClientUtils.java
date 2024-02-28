@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.hive.glue.util;
+package io.datafibre.fibre.connector.hive.glue.util;
 
 import com.google.common.collect.Maps;
-import com.starrocks.connector.hive.glue.metastore.GlueMetastoreClientDelegate;
+import io.datafibre.fibre.connector.hive.glue.metastore.GlueMetastoreClientDelegate;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;

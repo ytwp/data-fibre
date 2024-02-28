@@ -13,26 +13,26 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.iceberg;
+package io.datafibre.fibre.connector.iceberg;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.BoolLiteral;
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.sql.optimizer.operator.scalar.BinaryPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CastOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CompoundPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ConstantOperator;
-import com.starrocks.sql.optimizer.operator.scalar.InPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.IsNullPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.LikePredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperatorVisitor;
-import com.starrocks.sql.optimizer.operator.scalar.SubfieldOperator;
+import io.datafibre.fibre.analysis.BoolLiteral;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.BinaryPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CastOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CompoundPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.InPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.IsNullPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.LikePredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperatorVisitor;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.SubfieldOperator;
 import org.apache.iceberg.exceptions.ValidationException;
 import org.apache.iceberg.expressions.Binder;
 import org.apache.iceberg.expressions.Expression;
@@ -323,13 +323,13 @@ public class ScalarOperatorToIcebergExpr {
             Optional<ConstantOperator> res = Optional.empty();
             switch (resultTypeID) {
                 case BOOLEAN:
-                    res = operator.castTo(com.starrocks.catalog.Type.BOOLEAN);
+                    res = operator.castTo(io.datafibre.fibre.catalog.Type.BOOLEAN);
                     break;
                 case DATE:
-                    res = operator.castTo(com.starrocks.catalog.Type.DATE);
+                    res = operator.castTo(io.datafibre.fibre.catalog.Type.DATE);
                     break;
                 case TIMESTAMP:
-                    res = operator.castTo(com.starrocks.catalog.Type.DATETIME);
+                    res = operator.castTo(io.datafibre.fibre.catalog.Type.DATETIME);
                     break;
                 case STRING:
                 case UUID:
@@ -337,11 +337,11 @@ public class ScalarOperatorToIcebergExpr {
                     if (operator.getType().isNumericType()) {
                         return null;
                     } else {
-                        res = operator.castTo(com.starrocks.catalog.Type.VARCHAR);
+                        res = operator.castTo(io.datafibre.fibre.catalog.Type.VARCHAR);
                     }
                     break;
                 case BINARY:
-                    res = operator.castTo(com.starrocks.catalog.Type.VARBINARY);
+                    res = operator.castTo(io.datafibre.fibre.catalog.Type.VARBINARY);
                     break;
                     // num usually don't need cast, and num and string has different comparator
                     // cast is dangerous.

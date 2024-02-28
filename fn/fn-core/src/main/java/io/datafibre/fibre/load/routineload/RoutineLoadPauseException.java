@@ -13,9 +13,9 @@
 // limitations under the License.
 
 
-package com.starrocks.load.routineload;
+package io.datafibre.fibre.load.routineload;
 
-import com.starrocks.common.LoadException;
+import io.datafibre.fibre.common.LoadException;
 
 /**
  * Routine load job should be paused when catch this exception

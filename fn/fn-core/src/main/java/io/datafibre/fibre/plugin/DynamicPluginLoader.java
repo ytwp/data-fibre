@@ -32,10 +32,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.plugin;
+package io.datafibre.fibre.plugin;
 
-import com.starrocks.common.UserException;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.server.GlobalStateMgr;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

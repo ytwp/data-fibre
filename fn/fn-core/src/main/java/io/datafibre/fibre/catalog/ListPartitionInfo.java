@@ -13,27 +13,27 @@
 // limitations under the License.
 
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.analysis.LiteralExpr;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.Pair;
-import com.starrocks.common.io.Text;
-import com.starrocks.lake.DataCacheInfo;
-import com.starrocks.persist.ListPartitionPersistInfo;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.server.RunMode;
-import com.starrocks.sql.ast.MultiItemListPartitionDesc;
-import com.starrocks.sql.ast.PartitionDesc;
-import com.starrocks.sql.ast.PartitionValue;
-import com.starrocks.sql.ast.SingleItemListPartitionDesc;
-import com.starrocks.sql.ast.SinglePartitionDesc;
-import com.starrocks.thrift.TStorageMedium;
+import io.datafibre.fibre.analysis.LiteralExpr;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.lake.DataCacheInfo;
+import io.datafibre.fibre.persist.ListPartitionPersistInfo;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.server.RunMode;
+import io.datafibre.fibre.sql.ast.MultiItemListPartitionDesc;
+import io.datafibre.fibre.sql.ast.PartitionDesc;
+import io.datafibre.fibre.sql.ast.PartitionValue;
+import io.datafibre.fibre.sql.ast.SingleItemListPartitionDesc;
+import io.datafibre.fibre.sql.ast.SinglePartitionDesc;
+import io.datafibre.fibre.thrift.TStorageMedium;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -51,7 +51,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.starrocks.common.util.PropertyAnalyzer.PROPERTIES_REPLICATION_NUM;
+import static io.datafibre.fibre.common.util.PropertyAnalyzer.PROPERTIES_REPLICATION_NUM;
 
 public class ListPartitionInfo extends PartitionInfo {
 

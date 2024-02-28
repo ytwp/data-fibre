@@ -34,7 +34,7 @@
 
 // Copyright (C) 2011 Google Inc.
 
-package com.starrocks.persist.gson;
+package io.datafibre.fibre.persist.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;

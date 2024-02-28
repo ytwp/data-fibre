@@ -13,9 +13,9 @@
 // limitations under the License.
 
 
-package com.starrocks.connector;
+package io.datafibre.fibre.connector;
 
-import com.starrocks.connector.hive.HiveRemoteFileIO;
+import io.datafibre.fibre.connector.hive.HiveRemoteFileIO;
 
 public class RemoteFileBlockDesc {
     private long offset;

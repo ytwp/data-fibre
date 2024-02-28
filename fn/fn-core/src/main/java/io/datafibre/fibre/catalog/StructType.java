@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
@@ -27,11 +27,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.thrift.TTypeDesc;
-import com.starrocks.thrift.TTypeNode;
-import com.starrocks.thrift.TTypeNodeType;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.thrift.TTypeDesc;
+import io.datafibre.fibre.thrift.TTypeNode;
+import io.datafibre.fibre.thrift.TTypeNodeType;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

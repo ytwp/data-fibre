@@ -32,23 +32,23 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.sql.optimizer.rewrite;
+package io.datafibre.fibre.sql.optimizer.rewrite;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.re2j.Pattern;
-import com.starrocks.analysis.DecimalLiteral;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.Config;
-import com.starrocks.common.util.DateUtils;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.privilege.AuthorizationMgr;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.optimizer.operator.scalar.ConstantOperator;
+import io.datafibre.fibre.analysis.DecimalLiteral;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.util.DateUtils;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.privilege.AuthorizationMgr;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -80,26 +80,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.starrocks.catalog.PrimitiveType.BIGINT;
-import static com.starrocks.catalog.PrimitiveType.BITMAP;
-import static com.starrocks.catalog.PrimitiveType.BOOLEAN;
-import static com.starrocks.catalog.PrimitiveType.DATE;
-import static com.starrocks.catalog.PrimitiveType.DATETIME;
-import static com.starrocks.catalog.PrimitiveType.DECIMAL128;
-import static com.starrocks.catalog.PrimitiveType.DECIMAL32;
-import static com.starrocks.catalog.PrimitiveType.DECIMAL64;
-import static com.starrocks.catalog.PrimitiveType.DECIMALV2;
-import static com.starrocks.catalog.PrimitiveType.DOUBLE;
-import static com.starrocks.catalog.PrimitiveType.FLOAT;
-import static com.starrocks.catalog.PrimitiveType.HLL;
-import static com.starrocks.catalog.PrimitiveType.INT;
-import static com.starrocks.catalog.PrimitiveType.JSON;
-import static com.starrocks.catalog.PrimitiveType.LARGEINT;
-import static com.starrocks.catalog.PrimitiveType.PERCENTILE;
-import static com.starrocks.catalog.PrimitiveType.SMALLINT;
-import static com.starrocks.catalog.PrimitiveType.TIME;
-import static com.starrocks.catalog.PrimitiveType.TINYINT;
-import static com.starrocks.catalog.PrimitiveType.VARCHAR;
+import static io.datafibre.fibre.catalog.PrimitiveType.BIGINT;
+import static io.datafibre.fibre.catalog.PrimitiveType.BITMAP;
+import static io.datafibre.fibre.catalog.PrimitiveType.BOOLEAN;
+import static io.datafibre.fibre.catalog.PrimitiveType.DATE;
+import static io.datafibre.fibre.catalog.PrimitiveType.DATETIME;
+import static io.datafibre.fibre.catalog.PrimitiveType.DECIMAL128;
+import static io.datafibre.fibre.catalog.PrimitiveType.DECIMAL32;
+import static io.datafibre.fibre.catalog.PrimitiveType.DECIMAL64;
+import static io.datafibre.fibre.catalog.PrimitiveType.DECIMALV2;
+import static io.datafibre.fibre.catalog.PrimitiveType.DOUBLE;
+import static io.datafibre.fibre.catalog.PrimitiveType.FLOAT;
+import static io.datafibre.fibre.catalog.PrimitiveType.HLL;
+import static io.datafibre.fibre.catalog.PrimitiveType.INT;
+import static io.datafibre.fibre.catalog.PrimitiveType.JSON;
+import static io.datafibre.fibre.catalog.PrimitiveType.LARGEINT;
+import static io.datafibre.fibre.catalog.PrimitiveType.PERCENTILE;
+import static io.datafibre.fibre.catalog.PrimitiveType.SMALLINT;
+import static io.datafibre.fibre.catalog.PrimitiveType.TIME;
+import static io.datafibre.fibre.catalog.PrimitiveType.TINYINT;
+import static io.datafibre.fibre.catalog.PrimitiveType.VARCHAR;
 
 /**
  * Constant Functions List

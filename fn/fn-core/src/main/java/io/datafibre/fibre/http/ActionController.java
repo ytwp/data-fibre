@@ -15,10 +15,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.http;
+package io.datafibre.fibre.http;
 
 import com.google.common.base.Strings;
-import com.starrocks.common.path.PathTrie;
+import io.datafibre.fibre.common.path.PathTrie;
 import io.netty.handler.codec.http.HttpMethod;
 
 public class ActionController {

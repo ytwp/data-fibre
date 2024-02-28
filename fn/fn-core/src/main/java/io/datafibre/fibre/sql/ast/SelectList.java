@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.HintNode;
+import io.datafibre.fibre.analysis.HintNode;
 
 import java.util.List;
 

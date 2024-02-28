@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer;
+package io.datafibre.fibre.sql.optimizer;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.sql.common.ErrorType;
-import com.starrocks.sql.common.StarRocksPlannerException;
-import com.starrocks.sql.optimizer.base.OutputPropertyGroup;
-import com.starrocks.sql.optimizer.base.PhysicalPropertySet;
+import io.datafibre.fibre.sql.common.ErrorType;
+import io.datafibre.fibre.sql.common.StarRocksPlannerException;
+import io.datafibre.fibre.sql.optimizer.base.OutputPropertyGroup;
+import io.datafibre.fibre.sql.optimizer.base.PhysicalPropertySet;
 
 import java.util.Collections;
 import java.util.List;

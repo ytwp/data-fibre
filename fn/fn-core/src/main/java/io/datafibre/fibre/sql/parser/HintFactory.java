@@ -12,28 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.parser;
+package io.datafibre.fibre.sql.parser;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.analysis.BinaryPredicate;
-import com.starrocks.analysis.BinaryType;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.HintNode;
-import com.starrocks.analysis.SetVarHint;
-import com.starrocks.analysis.UserVariableHint;
-import com.starrocks.analysis.VariableExpr;
-import com.starrocks.qe.SessionVariable;
-import com.starrocks.sql.ast.UserVariable;
+import io.datafibre.fibre.analysis.BinaryPredicate;
+import io.datafibre.fibre.analysis.BinaryType;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.HintNode;
+import io.datafibre.fibre.analysis.SetVarHint;
+import io.datafibre.fibre.analysis.UserVariableHint;
+import io.datafibre.fibre.analysis.VariableExpr;
+import io.datafibre.fibre.qe.SessionVariable;
+import io.datafibre.fibre.sql.ast.UserVariable;
 import org.antlr.v4.runtime.Token;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import static com.starrocks.analysis.SetVarHint.SET_VAR;
-import static com.starrocks.analysis.UserVariableHint.SET_USER_VARIABLE;
-import static com.starrocks.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
+import static io.datafibre.fibre.analysis.SetVarHint.SET_VAR;
+import static io.datafibre.fibre.analysis.UserVariableHint.SET_USER_VARIABLE;
+import static io.datafibre.fibre.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
 
 public class HintFactory {
 

@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.http;
+package io.datafibre.fibre.http;
 
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
-import com.starrocks.analysis.Expr;
-import com.starrocks.catalog.Column;
-import com.starrocks.proto.PQueryStatistics;
-import com.starrocks.proto.QueryStatisticsItemPB;
-import com.starrocks.qe.ShowResultSet;
-import com.starrocks.qe.ShowResultSetMetaData;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.proto.PQueryStatistics;
+import io.datafibre.fibre.proto.QueryStatisticsItemPB;
+import io.datafibre.fibre.qe.ShowResultSet;
+import io.datafibre.fibre.qe.ShowResultSetMetaData;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.apache.logging.log4j.LogManager;

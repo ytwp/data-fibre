@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.config;
+package io.datafibre.fibre.connector.config;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;

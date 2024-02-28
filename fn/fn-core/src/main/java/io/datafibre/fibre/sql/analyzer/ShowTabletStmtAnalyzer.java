@@ -13,31 +13,31 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
 import com.google.common.base.Strings;
-import com.starrocks.analysis.BinaryPredicate;
-import com.starrocks.analysis.BinaryType;
-import com.starrocks.analysis.CompoundPredicate;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.IntLiteral;
-import com.starrocks.analysis.OrderByElement;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.analysis.StringLiteral;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.Replica;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.proc.LakeTabletsProcDir;
-import com.starrocks.common.proc.LocalTabletsProcDir;
-import com.starrocks.common.util.OrderByPair;
-import com.starrocks.common.util.concurrent.lock.LockType;
-import com.starrocks.common.util.concurrent.lock.Locker;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.AstVisitor;
-import com.starrocks.sql.ast.PartitionNames;
-import com.starrocks.sql.ast.ShowTabletStmt;
+import io.datafibre.fibre.analysis.BinaryPredicate;
+import io.datafibre.fibre.analysis.BinaryType;
+import io.datafibre.fibre.analysis.CompoundPredicate;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.IntLiteral;
+import io.datafibre.fibre.analysis.OrderByElement;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.analysis.StringLiteral;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.Replica;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.proc.LakeTabletsProcDir;
+import io.datafibre.fibre.common.proc.LocalTabletsProcDir;
+import io.datafibre.fibre.common.util.OrderByPair;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.AstVisitor;
+import io.datafibre.fibre.sql.ast.PartitionNames;
+import io.datafibre.fibre.sql.ast.ShowTabletStmt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +82,7 @@ public class ShowTabletStmtAnalyzer {
             if (whereClause != null) {
                 if (whereClause instanceof CompoundPredicate) {
                     CompoundPredicate cp = (CompoundPredicate) whereClause;
-                    if (cp.getOp() != com.starrocks.analysis.CompoundPredicate.Operator.AND) {
+                    if (cp.getOp() != io.datafibre.fibre.analysis.CompoundPredicate.Operator.AND) {
                         throw new SemanticException("Only allow compound predicate with operator AND");
                     }
                     analyzeSubPredicate(cp.getChild(0));
@@ -147,7 +147,7 @@ public class ShowTabletStmtAnalyzer {
             }
             if (subExpr instanceof CompoundPredicate) {
                 CompoundPredicate cp = (CompoundPredicate) subExpr;
-                if (cp.getOp() != com.starrocks.analysis.CompoundPredicate.Operator.AND) {
+                if (cp.getOp() != io.datafibre.fibre.analysis.CompoundPredicate.Operator.AND) {
                     throw new SemanticException("Only allow compound predicate with operator AND");
                 }
 

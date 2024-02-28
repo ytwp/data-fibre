@@ -13,12 +13,12 @@
 // limitations under the License.
 
 
-package com.starrocks.task;
+package io.datafibre.fibre.task;
 
 import com.google.common.collect.Maps;
-import com.starrocks.common.PriorityFutureTask;
-import com.starrocks.common.PriorityThreadPoolExecutor;
-import com.starrocks.common.ThreadPoolManager;
+import io.datafibre.fibre.common.PriorityFutureTask;
+import io.datafibre.fibre.common.PriorityThreadPoolExecutor;
+import io.datafibre.fibre.common.ThreadPoolManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

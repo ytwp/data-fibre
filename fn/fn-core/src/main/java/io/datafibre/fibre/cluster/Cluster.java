@@ -32,12 +32,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.cluster;
+package io.datafibre.fibre.cluster;
 
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.persist.LinkDbInfo;
-import com.starrocks.system.SystemInfoService;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.persist.LinkDbInfo;
+import io.datafibre.fibre.system.SystemInfoService;
 
 import java.io.DataInput;
 import java.io.DataOutput;

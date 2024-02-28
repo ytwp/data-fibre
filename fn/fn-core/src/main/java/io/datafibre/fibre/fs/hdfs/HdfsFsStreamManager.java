@@ -15,9 +15,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.fs.hdfs;
+package io.datafibre.fibre.fs.hdfs;
 
-import com.starrocks.thrift.TBrokerFD;
+import io.datafibre.fibre.thrift.TBrokerFD;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.logging.log4j.LogManager;

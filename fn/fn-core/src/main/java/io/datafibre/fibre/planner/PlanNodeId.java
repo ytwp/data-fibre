@@ -15,10 +15,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
-import com.starrocks.common.Id;
-import com.starrocks.common.IdGenerator;
+import io.datafibre.fibre.common.Id;
+import io.datafibre.fibre.common.IdGenerator;
 
 public class PlanNodeId extends Id<PlanNodeId> {
     public PlanNodeId(int id) {

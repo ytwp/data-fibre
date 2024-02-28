@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.qe.scheduler.slot;
+package io.datafibre.fibre.qe.scheduler.slot;
 
-import com.starrocks.qe.scheduler.RecoverableException;
-import com.starrocks.thrift.TNetworkAddress;
+import io.datafibre.fibre.qe.scheduler.RecoverableException;
+import io.datafibre.fibre.thrift.TNetworkAddress;
 
 import java.util.concurrent.CompletableFuture;
 

@@ -32,9 +32,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.analysis;
+package io.datafibre.fibre.analysis;
 
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 /**
  * captures info of a single WHEN expr THEN expr clause.

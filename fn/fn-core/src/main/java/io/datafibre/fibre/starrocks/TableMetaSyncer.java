@@ -13,16 +13,16 @@
 // limitations under the License.
 
 
-package com.starrocks.external.starrocks;
+package io.datafibre.fibre.external.starrocks;
 
-import com.starrocks.catalog.ExternalOlapTable;
-import com.starrocks.common.Config;
-import com.starrocks.rpc.FrontendServiceProxy;
-import com.starrocks.sql.common.MetaNotFoundException;
-import com.starrocks.thrift.TGetTableMetaRequest;
-import com.starrocks.thrift.TGetTableMetaResponse;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.thrift.TStatusCode;
+import io.datafibre.fibre.catalog.ExternalOlapTable;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.rpc.FrontendServiceProxy;
+import io.datafibre.fibre.sql.common.MetaNotFoundException;
+import io.datafibre.fibre.thrift.TGetTableMetaRequest;
+import io.datafibre.fibre.thrift.TGetTableMetaResponse;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TStatusCode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

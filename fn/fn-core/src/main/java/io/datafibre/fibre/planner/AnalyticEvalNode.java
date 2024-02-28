@@ -32,28 +32,28 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.starrocks.analysis.AnalyticWindow;
-import com.starrocks.analysis.Analyzer;
-import com.starrocks.analysis.DescriptorTable;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.FunctionCallExpr;
-import com.starrocks.analysis.OrderByElement;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.analysis.TupleDescriptor;
-import com.starrocks.common.UserException;
-import com.starrocks.thrift.TAnalyticNode;
-import com.starrocks.thrift.TExplainLevel;
-import com.starrocks.thrift.TNormalAnalyticNode;
-import com.starrocks.thrift.TNormalPlanNode;
-import com.starrocks.thrift.TPlanNode;
-import com.starrocks.thrift.TPlanNodeType;
+import io.datafibre.fibre.analysis.AnalyticWindow;
+import io.datafibre.fibre.analysis.Analyzer;
+import io.datafibre.fibre.analysis.DescriptorTable;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.FunctionCallExpr;
+import io.datafibre.fibre.analysis.OrderByElement;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.analysis.TupleDescriptor;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.thrift.TAnalyticNode;
+import io.datafibre.fibre.thrift.TExplainLevel;
+import io.datafibre.fibre.thrift.TNormalAnalyticNode;
+import io.datafibre.fibre.thrift.TNormalPlanNode;
+import io.datafibre.fibre.thrift.TPlanNode;
+import io.datafibre.fibre.thrift.TPlanNodeType;
 
 import java.util.List;
 import java.util.Optional;

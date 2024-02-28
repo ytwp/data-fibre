@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
-import com.starrocks.common.util.FrontendDaemon;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.common.util.FrontendDaemon;
+import io.datafibre.fibre.server.GlobalStateMgr;
 
 public class RefreshDictionaryCacheTaskDaemon extends FrontendDaemon {
     private static final int REFRESH_INTERVAL_MS = 10000;

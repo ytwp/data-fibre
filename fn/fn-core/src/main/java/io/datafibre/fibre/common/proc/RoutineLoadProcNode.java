@@ -32,13 +32,13 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.proc;
+package io.datafibre.fibre.common.proc;
 
-import com.starrocks.common.AnalysisException;
-import com.starrocks.load.routineload.RoutineLoadJob;
-import com.starrocks.load.routineload.RoutineLoadMgr;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.ShowRoutineLoadTaskStmt;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.load.routineload.RoutineLoadJob;
+import io.datafibre.fibre.load.routineload.RoutineLoadMgr;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.ShowRoutineLoadTaskStmt;
 
 /*
     SHOW RPOC "/routine_loads/{jobName}/{jobId}"

@@ -13,13 +13,13 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
-import com.starrocks.common.ErrorCode;
-import com.starrocks.common.ErrorReport;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.ast.CancelAlterTableStmt;
-import com.starrocks.sql.common.MetaUtils;
+import io.datafibre.fibre.common.ErrorCode;
+import io.datafibre.fibre.common.ErrorReport;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.ast.CancelAlterTableStmt;
+import io.datafibre.fibre.sql.common.MetaUtils;
 
 public class CancelAlterTableStatementAnalyzer {
 

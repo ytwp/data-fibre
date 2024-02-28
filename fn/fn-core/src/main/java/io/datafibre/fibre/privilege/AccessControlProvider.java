@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.privilege;
+package io.datafibre.fibre.privilege;
 
-import com.starrocks.catalog.InternalCatalog;
-import com.starrocks.privilege.ranger.RangerAccessController;
-import com.starrocks.sql.analyzer.AuthorizerStmtVisitor;
+import io.datafibre.fibre.catalog.InternalCatalog;
+import io.datafibre.fibre.privilege.ranger.RangerAccessController;
+import io.datafibre.fibre.sql.analyzer.AuthorizerStmtVisitor;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

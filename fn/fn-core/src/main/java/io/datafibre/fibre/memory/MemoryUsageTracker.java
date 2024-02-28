@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.memory;
+package io.datafibre.fibre.memory;
 
 import com.google.common.collect.Maps;
-import com.starrocks.common.Config;
-import com.starrocks.common.util.FrontendDaemon;
-import com.starrocks.common.util.ProfileManager;
-import com.starrocks.monitor.unit.ByteSizeValue;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.qe.QeProcessor;
-import com.starrocks.qe.QeProcessorImpl;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.optimizer.statistics.CacheDictManager;
-import com.starrocks.sql.optimizer.statistics.IDictManager;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.util.FrontendDaemon;
+import io.datafibre.fibre.common.util.ProfileManager;
+import io.datafibre.fibre.monitor.unit.ByteSizeValue;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.qe.QeProcessor;
+import io.datafibre.fibre.qe.QeProcessorImpl;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.optimizer.statistics.CacheDictManager;
+import io.datafibre.fibre.sql.optimizer.statistics.IDictManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

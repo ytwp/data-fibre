@@ -13,43 +13,43 @@
 // limitations under the License.
 
 
-package com.starrocks.load;
+package io.datafibre.fibre.load;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.LiteralExpr;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.ListPartitionInfo;
-import com.starrocks.catalog.MaterializedIndex;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Partition;
-import com.starrocks.catalog.PartitionInfo;
-import com.starrocks.catalog.PartitionType;
-import com.starrocks.catalog.SinglePartitionInfo;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.Tablet;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.util.concurrent.lock.LockType;
-import com.starrocks.common.util.concurrent.lock.Locker;
-import com.starrocks.persist.InsertOverwriteStateChangeInfo;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.QueryState;
-import com.starrocks.qe.StmtExecutor;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.StatementPlanner;
-import com.starrocks.sql.analyzer.AnalyzerUtils;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.ast.AddPartitionClause;
-import com.starrocks.sql.ast.InsertStmt;
-import com.starrocks.sql.ast.ListPartitionDesc;
-import com.starrocks.sql.ast.PartitionDesc;
-import com.starrocks.sql.ast.PartitionNames;
-import com.starrocks.sql.ast.RangePartitionDesc;
-import com.starrocks.sql.common.DmlException;
-import com.starrocks.sql.plan.ExecPlan;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.LiteralExpr;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.ListPartitionInfo;
+import io.datafibre.fibre.catalog.MaterializedIndex;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.catalog.PartitionInfo;
+import io.datafibre.fibre.catalog.PartitionType;
+import io.datafibre.fibre.catalog.SinglePartitionInfo;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.Tablet;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.persist.InsertOverwriteStateChangeInfo;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.QueryState;
+import io.datafibre.fibre.qe.StmtExecutor;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.StatementPlanner;
+import io.datafibre.fibre.sql.analyzer.AnalyzerUtils;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.ast.AddPartitionClause;
+import io.datafibre.fibre.sql.ast.InsertStmt;
+import io.datafibre.fibre.sql.ast.ListPartitionDesc;
+import io.datafibre.fibre.sql.ast.PartitionDesc;
+import io.datafibre.fibre.sql.ast.PartitionNames;
+import io.datafibre.fibre.sql.ast.RangePartitionDesc;
+import io.datafibre.fibre.sql.common.DmlException;
+import io.datafibre.fibre.sql.plan.ExecPlan;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -57,7 +57,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.starrocks.load.InsertOverwriteJobState.OVERWRITE_FAILED;
+import static io.datafibre.fibre.load.InsertOverwriteJobState.OVERWRITE_FAILED;
 
 // InsertOverwriteJobRunner will execute the insert overwrite.
 // The main idea is that:

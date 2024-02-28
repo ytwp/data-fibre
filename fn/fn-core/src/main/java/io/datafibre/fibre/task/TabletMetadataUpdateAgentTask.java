@@ -32,17 +32,17 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.task;
+package io.datafibre.fibre.task;
 
 
-import com.starrocks.common.Status;
-import com.starrocks.common.util.concurrent.MarkedCountDownLatch;
-import com.starrocks.server.RunMode;
-import com.starrocks.thrift.TStatusCode;
-import com.starrocks.thrift.TTabletMetaInfo;
-import com.starrocks.thrift.TTabletType;
-import com.starrocks.thrift.TTaskType;
-import com.starrocks.thrift.TUpdateTabletMetaInfoReq;
+import io.datafibre.fibre.common.Status;
+import io.datafibre.fibre.common.util.concurrent.MarkedCountDownLatch;
+import io.datafibre.fibre.server.RunMode;
+import io.datafibre.fibre.thrift.TStatusCode;
+import io.datafibre.fibre.thrift.TTabletMetaInfo;
+import io.datafibre.fibre.thrift.TTabletType;
+import io.datafibre.fibre.thrift.TTaskType;
+import io.datafibre.fibre.thrift.TUpdateTabletMetaInfoReq;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -15,9 +15,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common;
+package io.datafibre.fibre.common;
 
-import com.starrocks.journal.bdbje.BDBToolOptions;
+import io.datafibre.fibre.journal.bdbje.BDBToolOptions;
 
 public class CommandLineOptions {
 

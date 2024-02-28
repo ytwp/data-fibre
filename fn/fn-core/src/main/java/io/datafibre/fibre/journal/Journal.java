@@ -15,9 +15,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.journal;
+package io.datafibre.fibre.journal;
 
-import com.starrocks.common.io.DataOutputBuffer;
+import io.datafibre.fibre.common.io.DataOutputBuffer;
 
 import java.util.List;
 

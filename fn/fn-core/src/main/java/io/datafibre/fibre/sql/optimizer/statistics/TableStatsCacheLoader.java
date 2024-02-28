@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.statistics;
+package io.datafibre.fibre.sql.optimizer.statistics;
 
 import com.github.benmanes.caffeine.cache.AsyncCacheLoader;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.statistic.StatisticExecutor;
-import com.starrocks.statistic.StatisticUtils;
-import com.starrocks.thrift.TStatisticData;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.statistic.StatisticExecutor;
+import io.datafibre.fibre.statistic.StatisticUtils;
+import io.datafibre.fibre.thrift.TStatisticData;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.HashMap;

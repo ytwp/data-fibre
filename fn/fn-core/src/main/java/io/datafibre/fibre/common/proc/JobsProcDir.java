@@ -32,20 +32,20 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.proc;
+package io.datafibre.fibre.common.proc;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.starrocks.alter.MaterializedViewHandler;
-import com.starrocks.alter.SchemaChangeHandler;
-import com.starrocks.catalog.Database;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.load.ExportJob;
-import com.starrocks.load.ExportMgr;
-import com.starrocks.load.loadv2.LoadMgr;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.alter.MaterializedViewHandler;
+import io.datafibre.fibre.alter.SchemaChangeHandler;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.load.ExportJob;
+import io.datafibre.fibre.load.ExportMgr;
+import io.datafibre.fibre.load.loadv2.LoadMgr;
+import io.datafibre.fibre.server.GlobalStateMgr;
 
 /*
  * SHOW PROC '/jobs/dbId/'
@@ -112,36 +112,36 @@ public class JobsProcDir implements ProcDirInterface {
         long dbId = db.getId();
         // load
         LoadMgr loadManager = GlobalStateMgr.getCurrentState().getLoadMgr();
-        Long pendingNum = loadManager.getLoadJobNum(com.starrocks.load.loadv2.JobState.PENDING, dbId);
-        Long runningNum = loadManager.getLoadJobNum(com.starrocks.load.loadv2.JobState.LOADING, dbId);
-        Long finishedNum = loadManager.getLoadJobNum(com.starrocks.load.loadv2.JobState.FINISHED, dbId);
-        Long cancelledNum = loadManager.getLoadJobNum(com.starrocks.load.loadv2.JobState.CANCELLED, dbId);
+        Long pendingNum = loadManager.getLoadJobNum(io.datafibre.fibre.load.loadv2.JobState.PENDING, dbId);
+        Long runningNum = loadManager.getLoadJobNum(io.datafibre.fibre.load.loadv2.JobState.LOADING, dbId);
+        Long finishedNum = loadManager.getLoadJobNum(io.datafibre.fibre.load.loadv2.JobState.FINISHED, dbId);
+        Long cancelledNum = loadManager.getLoadJobNum(io.datafibre.fibre.load.loadv2.JobState.CANCELLED, dbId);
         Long totalNum = pendingNum + runningNum + finishedNum + cancelledNum;
         result.addRow(Lists.newArrayList(LOAD, pendingNum.toString(), runningNum.toString(), finishedNum.toString(),
                 cancelledNum.toString(), totalNum.toString()));
 
         // delete
         MaterializedViewHandler materializedViewHandler = GlobalStateMgr.getCurrentState().getRollupHandler();
-        pendingNum = materializedViewHandler.getAlterJobV2Num(com.starrocks.alter.AlterJobV2.JobState.PENDING, dbId);
+        pendingNum = materializedViewHandler.getAlterJobV2Num(io.datafibre.fibre.alter.AlterJobV2.JobState.PENDING, dbId);
         runningNum =
-                materializedViewHandler.getAlterJobV2Num(com.starrocks.alter.AlterJobV2.JobState.WAITING_TXN, dbId)
+                materializedViewHandler.getAlterJobV2Num(io.datafibre.fibre.alter.AlterJobV2.JobState.WAITING_TXN, dbId)
                         + materializedViewHandler
-                        .getAlterJobV2Num(com.starrocks.alter.AlterJobV2.JobState.RUNNING, dbId);
+                        .getAlterJobV2Num(io.datafibre.fibre.alter.AlterJobV2.JobState.RUNNING, dbId);
         finishedNum =
-                materializedViewHandler.getAlterJobV2Num(com.starrocks.alter.AlterJobV2.JobState.FINISHED, dbId);
+                materializedViewHandler.getAlterJobV2Num(io.datafibre.fibre.alter.AlterJobV2.JobState.FINISHED, dbId);
         cancelledNum =
-                materializedViewHandler.getAlterJobV2Num(com.starrocks.alter.AlterJobV2.JobState.CANCELLED, dbId);
+                materializedViewHandler.getAlterJobV2Num(io.datafibre.fibre.alter.AlterJobV2.JobState.CANCELLED, dbId);
         totalNum = pendingNum + runningNum + finishedNum + cancelledNum;
         result.addRow(Lists.newArrayList(ROLLUP, pendingNum.toString(), runningNum.toString(), finishedNum.toString(),
                 cancelledNum.toString(), totalNum.toString()));
 
         // schema change
         SchemaChangeHandler schemaChangeHandler = GlobalStateMgr.getCurrentState().getSchemaChangeHandler();
-        pendingNum = schemaChangeHandler.getAlterJobV2Num(com.starrocks.alter.AlterJobV2.JobState.PENDING, dbId);
-        runningNum = schemaChangeHandler.getAlterJobV2Num(com.starrocks.alter.AlterJobV2.JobState.WAITING_TXN, dbId)
-                + schemaChangeHandler.getAlterJobV2Num(com.starrocks.alter.AlterJobV2.JobState.RUNNING, dbId);
-        finishedNum = schemaChangeHandler.getAlterJobV2Num(com.starrocks.alter.AlterJobV2.JobState.FINISHED, dbId);
-        cancelledNum = schemaChangeHandler.getAlterJobV2Num(com.starrocks.alter.AlterJobV2.JobState.CANCELLED, dbId);
+        pendingNum = schemaChangeHandler.getAlterJobV2Num(io.datafibre.fibre.alter.AlterJobV2.JobState.PENDING, dbId);
+        runningNum = schemaChangeHandler.getAlterJobV2Num(io.datafibre.fibre.alter.AlterJobV2.JobState.WAITING_TXN, dbId)
+                + schemaChangeHandler.getAlterJobV2Num(io.datafibre.fibre.alter.AlterJobV2.JobState.RUNNING, dbId);
+        finishedNum = schemaChangeHandler.getAlterJobV2Num(io.datafibre.fibre.alter.AlterJobV2.JobState.FINISHED, dbId);
+        cancelledNum = schemaChangeHandler.getAlterJobV2Num(io.datafibre.fibre.alter.AlterJobV2.JobState.CANCELLED, dbId);
         totalNum = pendingNum + runningNum + finishedNum + cancelledNum;
         result.addRow(Lists.newArrayList(SCHEMA_CHANGE, pendingNum.toString(), runningNum.toString(),
                 finishedNum.toString(), cancelledNum.toString(), totalNum.toString()));

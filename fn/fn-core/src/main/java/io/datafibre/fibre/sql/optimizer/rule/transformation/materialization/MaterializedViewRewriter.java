@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.rule.transformation.materialization;
+package io.datafibre.fibre.sql.optimizer.rule.transformation.materialization;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
@@ -27,59 +27,59 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.google.common.graph.GraphBuilder;
 import com.google.common.graph.MutableGraph;
-import com.starrocks.analysis.JoinOperator;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.DistributionInfo;
-import com.starrocks.catalog.ExpressionRangePartitionInfo;
-import com.starrocks.catalog.ForeignKeyConstraint;
-import com.starrocks.catalog.HashDistributionInfo;
-import com.starrocks.catalog.KeysType;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.PartitionInfo;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.UniqueConstraint;
-import com.starrocks.common.Pair;
-import com.starrocks.common.profile.Tracers;
-import com.starrocks.common.util.StringUtils;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.SessionVariable;
-import com.starrocks.sql.common.ErrorType;
-import com.starrocks.sql.common.PermutationGenerator;
-import com.starrocks.sql.common.QueryDebugOptions;
-import com.starrocks.sql.common.StarRocksPlannerException;
-import com.starrocks.sql.optimizer.ExpressionContext;
-import com.starrocks.sql.optimizer.MaterializationContext;
-import com.starrocks.sql.optimizer.MvRewriteContext;
-import com.starrocks.sql.optimizer.OptExpression;
-import com.starrocks.sql.optimizer.OptimizerContext;
-import com.starrocks.sql.optimizer.OptimizerTraceUtil;
-import com.starrocks.sql.optimizer.QueryMaterializationContext;
-import com.starrocks.sql.optimizer.Utils;
-import com.starrocks.sql.optimizer.base.ColumnRefFactory;
-import com.starrocks.sql.optimizer.base.ColumnRefSet;
-import com.starrocks.sql.optimizer.base.EquivalenceClasses;
-import com.starrocks.sql.optimizer.operator.Operator;
-import com.starrocks.sql.optimizer.operator.OperatorBuilderFactory;
-import com.starrocks.sql.optimizer.operator.Projection;
-import com.starrocks.sql.optimizer.operator.logical.LogicalAggregationOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalJoinOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalOlapScanOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalScanOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalUnionOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalViewScanOperator;
-import com.starrocks.sql.optimizer.operator.scalar.BinaryPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CompoundPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ConstantOperator;
-import com.starrocks.sql.optimizer.operator.scalar.IsNullPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperatorVisitor;
-import com.starrocks.sql.optimizer.rewrite.JoinPredicatePushdown;
-import com.starrocks.sql.optimizer.rewrite.ReplaceColumnRefRewriter;
-import com.starrocks.sql.optimizer.rewrite.scalar.MvNormalizePredicateRule;
-import com.starrocks.sql.optimizer.rule.mv.JoinDeriveContext;
+import io.datafibre.fibre.analysis.JoinOperator;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.DistributionInfo;
+import io.datafibre.fibre.catalog.ExpressionRangePartitionInfo;
+import io.datafibre.fibre.catalog.ForeignKeyConstraint;
+import io.datafibre.fibre.catalog.HashDistributionInfo;
+import io.datafibre.fibre.catalog.KeysType;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.PartitionInfo;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.UniqueConstraint;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.profile.Tracers;
+import io.datafibre.fibre.common.util.StringUtils;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.SessionVariable;
+import io.datafibre.fibre.sql.common.ErrorType;
+import io.datafibre.fibre.sql.common.PermutationGenerator;
+import io.datafibre.fibre.sql.common.QueryDebugOptions;
+import io.datafibre.fibre.sql.common.StarRocksPlannerException;
+import io.datafibre.fibre.sql.optimizer.ExpressionContext;
+import io.datafibre.fibre.sql.optimizer.MaterializationContext;
+import io.datafibre.fibre.sql.optimizer.MvRewriteContext;
+import io.datafibre.fibre.sql.optimizer.OptExpression;
+import io.datafibre.fibre.sql.optimizer.OptimizerContext;
+import io.datafibre.fibre.sql.optimizer.OptimizerTraceUtil;
+import io.datafibre.fibre.sql.optimizer.QueryMaterializationContext;
+import io.datafibre.fibre.sql.optimizer.Utils;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefFactory;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
+import io.datafibre.fibre.sql.optimizer.base.EquivalenceClasses;
+import io.datafibre.fibre.sql.optimizer.operator.Operator;
+import io.datafibre.fibre.sql.optimizer.operator.OperatorBuilderFactory;
+import io.datafibre.fibre.sql.optimizer.operator.Projection;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalAggregationOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalJoinOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalOlapScanOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalScanOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalUnionOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalViewScanOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.BinaryPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CompoundPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.IsNullPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperatorVisitor;
+import io.datafibre.fibre.sql.optimizer.rewrite.JoinPredicatePushdown;
+import io.datafibre.fibre.sql.optimizer.rewrite.ReplaceColumnRefRewriter;
+import io.datafibre.fibre.sql.optimizer.rewrite.scalar.MvNormalizePredicateRule;
+import io.datafibre.fibre.sql.optimizer.rule.mv.JoinDeriveContext;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -95,7 +95,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.starrocks.sql.optimizer.OptimizerTraceUtil.logMVRewrite;
+import static io.datafibre.fibre.sql.optimizer.OptimizerTraceUtil.logMVRewrite;
 
 /*
  * SPJG materialized view rewriter, based on
@@ -613,7 +613,7 @@ public class MaterializedViewRewriter {
     /**
      * Only compensate mv's partition predicate when mv's freshness cannot satisfy query's need.
      * When mv's freshness is ok, return constant true because
-     * {@link com.starrocks.sql.optimizer.MaterializedViewOptimizer#optimize} disabled partition pruning and no need
+     * {@link io.datafibre.fibre.sql.optimizer.MaterializedViewOptimizer#optimize} disabled partition pruning and no need
      * compensate pruned predicates.
      * @return
      */

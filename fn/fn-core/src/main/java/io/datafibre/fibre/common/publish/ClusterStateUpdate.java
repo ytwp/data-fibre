@@ -15,11 +15,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.publish;
+package io.datafibre.fibre.common.publish;
 
 import com.google.common.collect.Lists;
-import com.starrocks.thrift.TAgentPublishRequest;
-import com.starrocks.thrift.TAgentServiceVersion;
+import io.datafibre.fibre.thrift.TAgentPublishRequest;
+import io.datafibre.fibre.thrift.TAgentServiceVersion;
 
 import java.util.List;
 

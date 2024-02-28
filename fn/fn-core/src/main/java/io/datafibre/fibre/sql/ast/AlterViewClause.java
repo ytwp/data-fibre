@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.alter.AlterOpType;
-import com.starrocks.catalog.Column;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.alter.AlterOpType;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.List;
 

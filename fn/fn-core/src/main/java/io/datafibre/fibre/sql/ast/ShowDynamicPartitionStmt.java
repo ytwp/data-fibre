@@ -15,12 +15,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.qe.ShowResultSetMetaData;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.qe.ShowResultSetMetaData;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 public class ShowDynamicPartitionStmt extends ShowStmt {
     private String db;

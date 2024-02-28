@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.backup.mv;
+package io.datafibre.fibre.backup.mv;
 
 import com.google.common.collect.Maps;
-import com.starrocks.analysis.TableName;
-import com.starrocks.backup.AbstractJob;
-import com.starrocks.backup.BackupJobInfo;
-import com.starrocks.backup.BackupMeta;
-import com.starrocks.backup.RestoreJob;
-import com.starrocks.catalog.MvId;
-import com.starrocks.catalog.Table;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.backup.AbstractJob;
+import io.datafibre.fibre.backup.BackupJobInfo;
+import io.datafibre.fibre.backup.BackupMeta;
+import io.datafibre.fibre.backup.RestoreJob;
+import io.datafibre.fibre.catalog.MvId;
+import io.datafibre.fibre.catalog.Table;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

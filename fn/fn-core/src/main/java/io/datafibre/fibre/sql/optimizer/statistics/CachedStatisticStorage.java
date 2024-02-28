@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.statistics;
+package io.datafibre.fibre.sql.optimizer.statistics;
 
 import com.github.benmanes.caffeine.cache.AsyncLoadingCache;
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -21,15 +21,15 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.starrocks.catalog.Partition;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.Config;
-import com.starrocks.common.Pair;
-import com.starrocks.connector.ConnectorColumnStatsCacheLoader;
-import com.starrocks.connector.ConnectorTableColumnKey;
-import com.starrocks.connector.ConnectorTableColumnStats;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.statistic.StatisticUtils;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.connector.ConnectorColumnStatsCacheLoader;
+import io.datafibre.fibre.connector.ConnectorTableColumnKey;
+import io.datafibre.fibre.connector.ConnectorTableColumnStats;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.statistic.StatisticUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -13,14 +13,14 @@
 // limitations under the License.
 
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
-import com.starrocks.analysis.DescriptorTable;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.planner.PaimonScanNode;
-import com.starrocks.thrift.TPaimonTable;
-import com.starrocks.thrift.TTableDescriptor;
-import com.starrocks.thrift.TTableType;
+import io.datafibre.fibre.analysis.DescriptorTable;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.planner.PaimonScanNode;
+import io.datafibre.fibre.thrift.TPaimonTable;
+import io.datafibre.fibre.thrift.TTableDescriptor;
+import io.datafibre.fibre.thrift.TTableType;
 import org.apache.paimon.table.DataTable;
 import org.apache.paimon.types.DataField;
 
@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.starrocks.connector.ConnectorTableId.CONNECTOR_ID_GENERATOR;
+import static io.datafibre.fibre.connector.ConnectorTableId.CONNECTOR_ID_GENERATOR;
 
 
 public class PaimonTable extends Table {

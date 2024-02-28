@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.rule.transformation.materialization;
+package io.datafibre.fibre.sql.optimizer.rule.transformation.materialization;
 
 import com.google.common.collect.DiscreteDomain;
-import com.starrocks.catalog.Type;
-import com.starrocks.sql.optimizer.operator.scalar.ConstantOperator;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
 import org.jetbrains.annotations.Nullable;
 
 public class ConstantOperatorDiscreteDomain extends DiscreteDomain<ConstantOperator> {

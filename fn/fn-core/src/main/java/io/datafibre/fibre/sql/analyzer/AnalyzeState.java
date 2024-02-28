@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
-import com.starrocks.analysis.AnalyticExpr;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.ExprId;
-import com.starrocks.analysis.FunctionCallExpr;
-import com.starrocks.analysis.LimitElement;
-import com.starrocks.analysis.OrderByElement;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.common.IdGenerator;
-import com.starrocks.sql.ast.Relation;
-import com.starrocks.sql.ast.SelectRelation;
+import io.datafibre.fibre.analysis.AnalyticExpr;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.ExprId;
+import io.datafibre.fibre.analysis.FunctionCallExpr;
+import io.datafibre.fibre.analysis.LimitElement;
+import io.datafibre.fibre.analysis.OrderByElement;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.common.IdGenerator;
+import io.datafibre.fibre.sql.ast.Relation;
+import io.datafibre.fibre.sql.ast.SelectRelation;
 
 import java.util.ArrayList;
 import java.util.HashMap;

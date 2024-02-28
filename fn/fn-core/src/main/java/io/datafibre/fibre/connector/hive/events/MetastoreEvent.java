@@ -13,9 +13,9 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.hive.events;
+package io.datafibre.fibre.connector.hive.events;
 
-import com.starrocks.connector.hive.CacheUpdateProcessor;
+import io.datafibre.fibre.connector.hive.CacheUpdateProcessor;
 import org.apache.hadoop.hive.metastore.api.NotificationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -109,7 +109,7 @@ public abstract class MetastoreEvent {
 
     /**
      * If the table key or partition key doesn't exist in the
-     * <code>{@link com.starrocks.connector.hive.CachingHiveMetastore}</code> of fe. that is,
+     * <code>{@link io.datafibre.fibre.connector.hive.CachingHiveMetastore}</code> of fe. that is,
      * the user has never queried the table/partition or refreshed the table/partition manually since the start of fe.
      * When processing incremental events, the event corresponding to the table/partition will not be processed.
      */

@@ -13,9 +13,9 @@
 // limitations under the License.
 
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
-import com.starrocks.analysis.TableName;
+import io.datafibre.fibre.analysis.TableName;
 
 import java.util.Map;
 

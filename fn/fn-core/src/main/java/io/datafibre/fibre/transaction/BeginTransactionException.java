@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.transaction;
+package io.datafibre.fibre.transaction;
 
 public class BeginTransactionException extends TransactionException {
     public BeginTransactionException(String msg) {

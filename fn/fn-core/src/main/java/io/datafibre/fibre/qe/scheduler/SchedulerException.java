@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.qe.scheduler;
+package io.datafibre.fibre.qe.scheduler;
 
-import com.starrocks.common.UserException;
+import io.datafibre.fibre.common.UserException;
 
 public class SchedulerException extends UserException {
     public SchedulerException(String msg) {

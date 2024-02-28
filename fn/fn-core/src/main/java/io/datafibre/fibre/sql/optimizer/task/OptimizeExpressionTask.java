@@ -13,12 +13,12 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.task;
+package io.datafibre.fibre.sql.optimizer.task;
 
 import com.google.common.collect.Lists;
-import com.starrocks.sql.optimizer.GroupExpression;
-import com.starrocks.sql.optimizer.rule.Rule;
-import com.starrocks.sql.optimizer.rule.RuleType;
+import io.datafibre.fibre.sql.optimizer.GroupExpression;
+import io.datafibre.fibre.sql.optimizer.rule.Rule;
+import io.datafibre.fibre.sql.optimizer.rule.RuleType;
 
 import java.util.Comparator;
 import java.util.List;

@@ -12,32 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.scheduler;
+package io.datafibre.fibre.scheduler;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.alter.OptimizeTask;
-import com.starrocks.analysis.IntLiteral;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.common.Config;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.FeConstants;
-import com.starrocks.common.util.DebugUtil;
-import com.starrocks.common.util.PropertyAnalyzer;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.load.pipe.PipeTaskDesc;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.SessionVariable;
-import com.starrocks.scheduler.persist.TaskSchedule;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.ast.AsyncRefreshSchemeDesc;
-import com.starrocks.sql.ast.IntervalLiteral;
-import com.starrocks.sql.ast.RefreshSchemeClause;
-import com.starrocks.sql.ast.SubmitTaskStmt;
-import com.starrocks.sql.optimizer.Utils;
-import com.starrocks.warehouse.Warehouse;
+import io.datafibre.fibre.alter.OptimizeTask;
+import io.datafibre.fibre.analysis.IntLiteral;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.FeConstants;
+import io.datafibre.fibre.common.util.DebugUtil;
+import io.datafibre.fibre.common.util.PropertyAnalyzer;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.load.pipe.PipeTaskDesc;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.SessionVariable;
+import io.datafibre.fibre.scheduler.persist.TaskSchedule;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.ast.AsyncRefreshSchemeDesc;
+import io.datafibre.fibre.sql.ast.IntervalLiteral;
+import io.datafibre.fibre.sql.ast.RefreshSchemeClause;
+import io.datafibre.fibre.sql.ast.SubmitTaskStmt;
+import io.datafibre.fibre.sql.optimizer.Utils;
+import io.datafibre.fibre.warehouse.Warehouse;
 import org.apache.commons.collections.MapUtils;
 
 import java.util.List;

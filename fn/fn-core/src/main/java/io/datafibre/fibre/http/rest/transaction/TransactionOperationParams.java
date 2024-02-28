@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.http.rest.transaction;
+package io.datafibre.fibre.http.rest.transaction;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.starrocks.transaction.TabletCommitInfo;
-import com.starrocks.transaction.TabletFailInfo;
-import com.starrocks.transaction.TransactionState.LoadJobSourceType;
+import io.datafibre.fibre.transaction.TabletCommitInfo;
+import io.datafibre.fibre.transaction.TabletFailInfo;
+import io.datafibre.fibre.transaction.TransactionState.LoadJobSourceType;
 
 import java.util.List;
 

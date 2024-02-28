@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.persist.gson;
+package io.datafibre.fibre.persist.gson;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ArrayListMultimap;
@@ -61,124 +61,124 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.starrocks.alter.AlterJobV2;
-import com.starrocks.alter.LakeTableAlterMetaJob;
-import com.starrocks.alter.LakeTableSchemaChangeJob;
-import com.starrocks.alter.OptimizeJobV2;
-import com.starrocks.alter.RollupJobV2;
-import com.starrocks.alter.SchemaChangeJobV2;
-import com.starrocks.authentication.LDAPSecurityIntegration;
-import com.starrocks.authentication.SecurityIntegration;
-import com.starrocks.backup.AbstractJob;
-import com.starrocks.backup.BackupJob;
-import com.starrocks.backup.RestoreJob;
-import com.starrocks.backup.SnapshotInfo;
-import com.starrocks.catalog.AggregateFunction;
-import com.starrocks.catalog.AnyArrayType;
-import com.starrocks.catalog.AnyElementType;
-import com.starrocks.catalog.ArrayType;
-import com.starrocks.catalog.CatalogRecycleBin;
-import com.starrocks.catalog.DistributionInfo;
-import com.starrocks.catalog.EsTable;
-import com.starrocks.catalog.ExpressionRangePartitionInfo;
-import com.starrocks.catalog.ExpressionRangePartitionInfoV2;
-import com.starrocks.catalog.ExternalOlapTable;
-import com.starrocks.catalog.FileTable;
-import com.starrocks.catalog.Function;
-import com.starrocks.catalog.HashDistributionInfo;
-import com.starrocks.catalog.HiveResource;
-import com.starrocks.catalog.HiveTable;
-import com.starrocks.catalog.HudiResource;
-import com.starrocks.catalog.HudiTable;
-import com.starrocks.catalog.IcebergResource;
-import com.starrocks.catalog.IcebergTable;
-import com.starrocks.catalog.JDBCResource;
-import com.starrocks.catalog.JDBCTable;
-import com.starrocks.catalog.ListPartitionInfo;
-import com.starrocks.catalog.LocalTablet;
-import com.starrocks.catalog.MapType;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.catalog.MysqlTable;
-import com.starrocks.catalog.OdbcCatalogResource;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.PartitionInfo;
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.catalog.PseudoType;
-import com.starrocks.catalog.RandomDistributionInfo;
-import com.starrocks.catalog.RangePartitionInfo;
-import com.starrocks.catalog.Resource;
-import com.starrocks.catalog.ScalarFunction;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.catalog.SinglePartitionInfo;
-import com.starrocks.catalog.SparkResource;
-import com.starrocks.catalog.StructType;
-import com.starrocks.catalog.TableFunction;
-import com.starrocks.catalog.Tablet;
-import com.starrocks.catalog.View;
-import com.starrocks.lake.LakeMaterializedView;
-import com.starrocks.lake.LakeTable;
-import com.starrocks.lake.LakeTablet;
-import com.starrocks.lake.backup.LakeBackupJob;
-import com.starrocks.lake.backup.LakeRestoreJob;
-import com.starrocks.lake.backup.LakeTableSnapshotInfo;
-import com.starrocks.load.loadv2.BrokerLoadJob;
-import com.starrocks.load.loadv2.InsertLoadJob;
-import com.starrocks.load.loadv2.LoadJob;
-import com.starrocks.load.loadv2.LoadJob.LoadJobStateUpdateInfo;
-import com.starrocks.load.loadv2.LoadJobFinalOperation;
-import com.starrocks.load.loadv2.ManualLoadTxnCommitAttachment;
-import com.starrocks.load.loadv2.MiniLoadTxnCommitAttachment;
-import com.starrocks.load.loadv2.SparkLoadJob;
-import com.starrocks.load.loadv2.SparkLoadJob.SparkLoadJobStateUpdateInfo;
-import com.starrocks.load.routineload.KafkaProgress;
-import com.starrocks.load.routineload.KafkaRoutineLoadJob;
-import com.starrocks.load.routineload.PulsarProgress;
-import com.starrocks.load.routineload.PulsarRoutineLoadJob;
-import com.starrocks.load.routineload.RLTaskTxnCommitAttachment;
-import com.starrocks.load.routineload.RoutineLoadJob;
-import com.starrocks.load.routineload.RoutineLoadProgress;
-import com.starrocks.load.streamload.StreamLoadTxnCommitAttachment;
-import com.starrocks.persist.ListPartitionPersistInfo;
-import com.starrocks.persist.PartitionPersistInfoV2;
-import com.starrocks.persist.RangePartitionPersistInfo;
-import com.starrocks.persist.SinglePartitionPersistInfo;
-import com.starrocks.privilege.CatalogPEntryObject;
-import com.starrocks.privilege.DbPEntryObject;
-import com.starrocks.privilege.FunctionPEntryObject;
-import com.starrocks.privilege.GlobalFunctionPEntryObject;
-import com.starrocks.privilege.MaterializedViewPEntryObject;
-import com.starrocks.privilege.PEntryObject;
-import com.starrocks.privilege.PipePEntryObject;
-import com.starrocks.privilege.PolicyFCEntryObject;
-import com.starrocks.privilege.ResourceGroupPEntryObject;
-import com.starrocks.privilege.ResourcePEntryObject;
-import com.starrocks.privilege.StorageVolumePEntryObject;
-import com.starrocks.privilege.TablePEntryObject;
-import com.starrocks.privilege.UserPEntryObject;
-import com.starrocks.privilege.ViewPEntryObject;
-import com.starrocks.privilege.WarehouseFCPEntryObject;
-import com.starrocks.replication.ReplicationTxnCommitAttachment;
-import com.starrocks.server.SharedDataStorageVolumeMgr;
-import com.starrocks.server.SharedNothingStorageVolumeMgr;
-import com.starrocks.server.StorageVolumeMgr;
-import com.starrocks.sql.optimizer.dump.HiveTableDumpInfo;
-import com.starrocks.sql.optimizer.dump.QueryDumpDeserializer;
-import com.starrocks.sql.optimizer.dump.QueryDumpInfo;
-import com.starrocks.sql.optimizer.dump.QueryDumpSerializer;
-import com.starrocks.statistic.AnalyzeJob;
-import com.starrocks.statistic.AnalyzeStatus;
-import com.starrocks.statistic.ExternalAnalyzeJob;
-import com.starrocks.statistic.ExternalAnalyzeStatus;
-import com.starrocks.statistic.NativeAnalyzeJob;
-import com.starrocks.statistic.NativeAnalyzeStatus;
-import com.starrocks.system.BackendHbResponse;
-import com.starrocks.system.BrokerHbResponse;
-import com.starrocks.system.FrontendHbResponse;
-import com.starrocks.system.HeartbeatResponse;
-import com.starrocks.transaction.InsertTxnCommitAttachment;
-import com.starrocks.transaction.TxnCommitAttachment;
-import com.starrocks.warehouse.LocalWarehouse;
-import com.starrocks.warehouse.Warehouse;
+import io.datafibre.fibre.alter.AlterJobV2;
+import io.datafibre.fibre.alter.LakeTableAlterMetaJob;
+import io.datafibre.fibre.alter.LakeTableSchemaChangeJob;
+import io.datafibre.fibre.alter.OptimizeJobV2;
+import io.datafibre.fibre.alter.RollupJobV2;
+import io.datafibre.fibre.alter.SchemaChangeJobV2;
+import io.datafibre.fibre.authentication.LDAPSecurityIntegration;
+import io.datafibre.fibre.authentication.SecurityIntegration;
+import io.datafibre.fibre.backup.AbstractJob;
+import io.datafibre.fibre.backup.BackupJob;
+import io.datafibre.fibre.backup.RestoreJob;
+import io.datafibre.fibre.backup.SnapshotInfo;
+import io.datafibre.fibre.catalog.AggregateFunction;
+import io.datafibre.fibre.catalog.AnyArrayType;
+import io.datafibre.fibre.catalog.AnyElementType;
+import io.datafibre.fibre.catalog.ArrayType;
+import io.datafibre.fibre.catalog.CatalogRecycleBin;
+import io.datafibre.fibre.catalog.DistributionInfo;
+import io.datafibre.fibre.catalog.EsTable;
+import io.datafibre.fibre.catalog.ExpressionRangePartitionInfo;
+import io.datafibre.fibre.catalog.ExpressionRangePartitionInfoV2;
+import io.datafibre.fibre.catalog.ExternalOlapTable;
+import io.datafibre.fibre.catalog.FileTable;
+import io.datafibre.fibre.catalog.Function;
+import io.datafibre.fibre.catalog.HashDistributionInfo;
+import io.datafibre.fibre.catalog.HiveResource;
+import io.datafibre.fibre.catalog.HiveTable;
+import io.datafibre.fibre.catalog.HudiResource;
+import io.datafibre.fibre.catalog.HudiTable;
+import io.datafibre.fibre.catalog.IcebergResource;
+import io.datafibre.fibre.catalog.IcebergTable;
+import io.datafibre.fibre.catalog.JDBCResource;
+import io.datafibre.fibre.catalog.JDBCTable;
+import io.datafibre.fibre.catalog.ListPartitionInfo;
+import io.datafibre.fibre.catalog.LocalTablet;
+import io.datafibre.fibre.catalog.MapType;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.catalog.MysqlTable;
+import io.datafibre.fibre.catalog.OdbcCatalogResource;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.PartitionInfo;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.catalog.PseudoType;
+import io.datafibre.fibre.catalog.RandomDistributionInfo;
+import io.datafibre.fibre.catalog.RangePartitionInfo;
+import io.datafibre.fibre.catalog.Resource;
+import io.datafibre.fibre.catalog.ScalarFunction;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.catalog.SinglePartitionInfo;
+import io.datafibre.fibre.catalog.SparkResource;
+import io.datafibre.fibre.catalog.StructType;
+import io.datafibre.fibre.catalog.TableFunction;
+import io.datafibre.fibre.catalog.Tablet;
+import io.datafibre.fibre.catalog.View;
+import io.datafibre.fibre.lake.LakeMaterializedView;
+import io.datafibre.fibre.lake.LakeTable;
+import io.datafibre.fibre.lake.LakeTablet;
+import io.datafibre.fibre.lake.backup.LakeBackupJob;
+import io.datafibre.fibre.lake.backup.LakeRestoreJob;
+import io.datafibre.fibre.lake.backup.LakeTableSnapshotInfo;
+import io.datafibre.fibre.load.loadv2.BrokerLoadJob;
+import io.datafibre.fibre.load.loadv2.InsertLoadJob;
+import io.datafibre.fibre.load.loadv2.LoadJob;
+import io.datafibre.fibre.load.loadv2.LoadJob.LoadJobStateUpdateInfo;
+import io.datafibre.fibre.load.loadv2.LoadJobFinalOperation;
+import io.datafibre.fibre.load.loadv2.ManualLoadTxnCommitAttachment;
+import io.datafibre.fibre.load.loadv2.MiniLoadTxnCommitAttachment;
+import io.datafibre.fibre.load.loadv2.SparkLoadJob;
+import io.datafibre.fibre.load.loadv2.SparkLoadJob.SparkLoadJobStateUpdateInfo;
+import io.datafibre.fibre.load.routineload.KafkaProgress;
+import io.datafibre.fibre.load.routineload.KafkaRoutineLoadJob;
+import io.datafibre.fibre.load.routineload.PulsarProgress;
+import io.datafibre.fibre.load.routineload.PulsarRoutineLoadJob;
+import io.datafibre.fibre.load.routineload.RLTaskTxnCommitAttachment;
+import io.datafibre.fibre.load.routineload.RoutineLoadJob;
+import io.datafibre.fibre.load.routineload.RoutineLoadProgress;
+import io.datafibre.fibre.load.streamload.StreamLoadTxnCommitAttachment;
+import io.datafibre.fibre.persist.ListPartitionPersistInfo;
+import io.datafibre.fibre.persist.PartitionPersistInfoV2;
+import io.datafibre.fibre.persist.RangePartitionPersistInfo;
+import io.datafibre.fibre.persist.SinglePartitionPersistInfo;
+import io.datafibre.fibre.privilege.CatalogPEntryObject;
+import io.datafibre.fibre.privilege.DbPEntryObject;
+import io.datafibre.fibre.privilege.FunctionPEntryObject;
+import io.datafibre.fibre.privilege.GlobalFunctionPEntryObject;
+import io.datafibre.fibre.privilege.MaterializedViewPEntryObject;
+import io.datafibre.fibre.privilege.PEntryObject;
+import io.datafibre.fibre.privilege.PipePEntryObject;
+import io.datafibre.fibre.privilege.PolicyFCEntryObject;
+import io.datafibre.fibre.privilege.ResourceGroupPEntryObject;
+import io.datafibre.fibre.privilege.ResourcePEntryObject;
+import io.datafibre.fibre.privilege.StorageVolumePEntryObject;
+import io.datafibre.fibre.privilege.TablePEntryObject;
+import io.datafibre.fibre.privilege.UserPEntryObject;
+import io.datafibre.fibre.privilege.ViewPEntryObject;
+import io.datafibre.fibre.privilege.WarehouseFCPEntryObject;
+import io.datafibre.fibre.replication.ReplicationTxnCommitAttachment;
+import io.datafibre.fibre.server.SharedDataStorageVolumeMgr;
+import io.datafibre.fibre.server.SharedNothingStorageVolumeMgr;
+import io.datafibre.fibre.server.StorageVolumeMgr;
+import io.datafibre.fibre.sql.optimizer.dump.HiveTableDumpInfo;
+import io.datafibre.fibre.sql.optimizer.dump.QueryDumpDeserializer;
+import io.datafibre.fibre.sql.optimizer.dump.QueryDumpInfo;
+import io.datafibre.fibre.sql.optimizer.dump.QueryDumpSerializer;
+import io.datafibre.fibre.statistic.AnalyzeJob;
+import io.datafibre.fibre.statistic.AnalyzeStatus;
+import io.datafibre.fibre.statistic.ExternalAnalyzeJob;
+import io.datafibre.fibre.statistic.ExternalAnalyzeStatus;
+import io.datafibre.fibre.statistic.NativeAnalyzeJob;
+import io.datafibre.fibre.statistic.NativeAnalyzeStatus;
+import io.datafibre.fibre.system.BackendHbResponse;
+import io.datafibre.fibre.system.BrokerHbResponse;
+import io.datafibre.fibre.system.FrontendHbResponse;
+import io.datafibre.fibre.system.HeartbeatResponse;
+import io.datafibre.fibre.transaction.InsertTxnCommitAttachment;
+import io.datafibre.fibre.transaction.TxnCommitAttachment;
+import io.datafibre.fibre.warehouse.LocalWarehouse;
+import io.datafibre.fibre.warehouse.Warehouse;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -197,9 +197,9 @@ import java.util.Map;
  *      GsonUtils.GSON.toJson(...)
  *      GsonUtils.GSON.fromJson(...)
  *
- * More example can be seen in unit test case: "com.starrocks.common.util.GsonSerializationTest.java".
+ * More example can be seen in unit test case: "io.datafibre.fibre.common.util.GsonSerializationTest.java".
  *
- * For inherited class serialization, see "com.starrocks.common.util.GsonDerivedClassSerializationTest.java"
+ * For inherited class serialization, see "io.datafibre.fibre.common.util.GsonDerivedClassSerializationTest.java"
  *
  * And developers may need to add other serialization adapters for custom complex java classes.
  * You need implement a class to implements JsonSerializer and JsonDeserializer, and register it to GSON_BUILDER.
@@ -208,9 +208,9 @@ import java.util.Map;
 public class GsonUtils {
 
     // runtime adapter for class "Type"
-    private static final RuntimeTypeAdapterFactory<com.starrocks.catalog.Type> COLUMN_TYPE_ADAPTER_FACTORY =
+    private static final RuntimeTypeAdapterFactory<io.datafibre.fibre.catalog.Type> COLUMN_TYPE_ADAPTER_FACTORY =
             RuntimeTypeAdapterFactory
-                    .of(com.starrocks.catalog.Type.class, "clazz")
+                    .of(io.datafibre.fibre.catalog.Type.class, "clazz")
                     .registerSubtype(ScalarType.class, "ScalarType")
                     .registerSubtype(ArrayType.class, "ArrayType")
                     .registerSubtype(MapType.class, "MapType")
@@ -285,8 +285,8 @@ public class GsonUtils {
             = RuntimeTypeAdapterFactory.of(CatalogRecycleBin.RecyclePartitionInfoV2.class, "clazz")
             .registerSubtype(CatalogRecycleBin.RecycleRangePartitionInfo.class, "RecycleRangePartitionInfo");
 
-    private static final RuntimeTypeAdapterFactory<com.starrocks.catalog.Table> TABLE_TYPE_ADAPTER_FACTORY
-            = RuntimeTypeAdapterFactory.of(com.starrocks.catalog.Table.class, "clazz")
+    private static final RuntimeTypeAdapterFactory<io.datafibre.fibre.catalog.Table> TABLE_TYPE_ADAPTER_FACTORY
+            = RuntimeTypeAdapterFactory.of(io.datafibre.fibre.catalog.Table.class, "clazz")
             .registerSubtype(EsTable.class, "EsTable")
             .registerSubtype(ExternalOlapTable.class, "ExternalOlapTable")
             .registerSubtype(FileTable.class, "FileTable")

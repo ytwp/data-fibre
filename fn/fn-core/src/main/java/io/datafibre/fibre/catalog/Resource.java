@@ -32,16 +32,16 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.collect.Maps;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.common.proc.BaseProcResult;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.sql.ast.CreateResourceStmt;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.common.proc.BaseProcResult;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.sql.ast.CreateResourceStmt;
 
 import java.io.DataInput;
 import java.io.DataOutput;

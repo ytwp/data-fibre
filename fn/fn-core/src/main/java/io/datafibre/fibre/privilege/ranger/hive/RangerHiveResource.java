@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.privilege.ranger.hive;
+package io.datafibre.fibre.privilege.ranger.hive;
 
-import com.starrocks.privilege.ObjectType;
-import com.starrocks.privilege.ranger.RangerAccessResourceBuilder;
+import io.datafibre.fibre.privilege.ObjectType;
+import io.datafibre.fibre.privilege.ranger.RangerAccessResourceBuilder;
 import org.apache.ranger.plugin.policyengine.RangerAccessResourceImpl;
 
 public class RangerHiveResource extends RangerAccessResourceImpl {

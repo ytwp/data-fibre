@@ -32,23 +32,23 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.alter;
+package io.datafibre.fibre.alter;
 
 import com.google.common.collect.Maps;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.common.Config;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.ThreadPoolManager;
-import com.starrocks.common.UserException;
-import com.starrocks.common.util.FrontendDaemon;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.persist.RemoveAlterJobV2OperationLog;
-import com.starrocks.qe.ShowResultSet;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.AlterClause;
-import com.starrocks.sql.ast.CancelStmt;
-import com.starrocks.task.AlterReplicaTask;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.ThreadPoolManager;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.util.FrontendDaemon;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.persist.RemoveAlterJobV2OperationLog;
+import io.datafibre.fibre.qe.ShowResultSet;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.AlterClause;
+import io.datafibre.fibre.sql.ast.CancelStmt;
+import io.datafibre.fibre.task.AlterReplicaTask;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -146,11 +146,11 @@ public abstract class AlterHandler extends FrontendDaemon {
         }
     }
 
-    public Long getAlterJobV2Num(com.starrocks.alter.AlterJobV2.JobState state, long dbId) {
+    public Long getAlterJobV2Num(io.datafibre.fibre.alter.AlterJobV2.JobState state, long dbId) {
         return alterJobsV2.values().stream().filter(e -> e.getJobState() == state && e.getDbId() == dbId).count();
     }
 
-    public Long getAlterJobV2Num(com.starrocks.alter.AlterJobV2.JobState state) {
+    public Long getAlterJobV2Num(io.datafibre.fibre.alter.AlterJobV2.JobState state) {
         return alterJobsV2.values().stream().filter(e -> e.getJobState() == state).count();
     }
 

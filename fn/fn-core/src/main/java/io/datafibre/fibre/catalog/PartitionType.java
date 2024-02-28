@@ -32,9 +32,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
-import com.starrocks.thrift.TPartitionType;
+import io.datafibre.fibre.thrift.TPartitionType;
 
 public enum PartitionType {
     UNPARTITIONED("UNPARTITIONED"),

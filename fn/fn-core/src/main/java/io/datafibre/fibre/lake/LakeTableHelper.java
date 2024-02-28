@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.lake;
+package io.datafibre.fibre.lake;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.alter.AlterJobV2Builder;
-import com.starrocks.alter.LakeTableAlterJobV2Builder;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.alter.AlterJobV2Builder;
+import io.datafibre.fibre.alter.LakeTableAlterJobV2Builder;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.server.GlobalStateMgr;
 
 public class LakeTableHelper {
     static boolean deleteTable(long dbId, OlapTable table, boolean replay) {

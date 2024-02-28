@@ -32,17 +32,17 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
 import com.google.common.base.MoreObjects;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.SlotDescriptor;
-import com.starrocks.analysis.TupleDescriptor;
-import com.starrocks.catalog.ColumnAccessPath;
-import com.starrocks.common.UserException;
-import com.starrocks.sql.optimizer.ScanOptimzeOption;
-import com.starrocks.thrift.TColumnAccessPath;
-import com.starrocks.thrift.TScanRangeLocations;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.SlotDescriptor;
+import io.datafibre.fibre.analysis.TupleDescriptor;
+import io.datafibre.fibre.catalog.ColumnAccessPath;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.sql.optimizer.ScanOptimzeOption;
+import io.datafibre.fibre.thrift.TColumnAccessPath;
+import io.datafibre.fibre.thrift.TScanRangeLocations;
 
 import java.util.Collections;
 import java.util.List;

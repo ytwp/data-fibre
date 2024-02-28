@@ -13,12 +13,12 @@
 // limitations under the License.
 
 
-package com.starrocks.common.util;
+package io.datafibre.fibre.common.util;
 
 import com.fasterxml.uuid.EthernetAddress;
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.TimeBasedGenerator;
-import com.starrocks.thrift.TUniqueId;
+import io.datafibre.fibre.thrift.TUniqueId;
 
 import java.util.UUID;
 

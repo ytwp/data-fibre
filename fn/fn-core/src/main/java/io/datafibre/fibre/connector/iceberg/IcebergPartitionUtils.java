@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.iceberg;
+package io.datafibre.fibre.connector.iceberg;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.IcebergTable;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.connector.PartitionUtil;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.statistic.StatisticUtils;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.IcebergTable;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.connector.PartitionUtil;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.statistic.StatisticUtils;
 import org.apache.iceberg.PartitionField;
 import org.apache.iceberg.Schema;
 import org.apache.iceberg.types.Types;

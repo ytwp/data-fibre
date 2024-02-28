@@ -12,25 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.replication;
+package io.datafibre.fibre.replication;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.common.AlreadyExistsException;
-import com.starrocks.common.Config;
-import com.starrocks.common.UserException;
-import com.starrocks.common.util.FrontendDaemon;
-import com.starrocks.persist.metablock.SRMetaBlockEOFException;
-import com.starrocks.persist.metablock.SRMetaBlockException;
-import com.starrocks.persist.metablock.SRMetaBlockID;
-import com.starrocks.persist.metablock.SRMetaBlockReader;
-import com.starrocks.persist.metablock.SRMetaBlockWriter;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.task.RemoteSnapshotTask;
-import com.starrocks.task.ReplicateSnapshotTask;
-import com.starrocks.thrift.TFinishTaskRequest;
-import com.starrocks.thrift.TTableReplicationRequest;
+import io.datafibre.fibre.common.AlreadyExistsException;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.util.FrontendDaemon;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockEOFException;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockException;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockID;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockReader;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockWriter;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.task.RemoteSnapshotTask;
+import io.datafibre.fibre.task.ReplicateSnapshotTask;
+import io.datafibre.fibre.thrift.TFinishTaskRequest;
+import io.datafibre.fibre.thrift.TTableReplicationRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

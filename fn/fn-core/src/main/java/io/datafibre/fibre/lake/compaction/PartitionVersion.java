@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.lake.compaction;
+package io.datafibre.fibre.lake.compaction;
 
 import com.google.gson.annotations.SerializedName;
 

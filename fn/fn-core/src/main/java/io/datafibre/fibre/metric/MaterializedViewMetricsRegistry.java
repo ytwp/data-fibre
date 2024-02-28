@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.metric;
+package io.datafibre.fibre.metric;
 
 import com.codahale.metrics.Histogram;
 import com.codahale.metrics.MetricRegistry;
 import com.google.common.collect.Maps;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.catalog.MvId;
-import com.starrocks.common.ThreadPoolManager;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.catalog.MvId;
+import io.datafibre.fibre.common.ThreadPoolManager;
+import io.datafibre.fibre.server.GlobalStateMgr;
 
 import java.util.List;
 import java.util.Map;

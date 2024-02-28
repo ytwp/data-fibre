@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.odps;
+package io.datafibre.fibre.connector.odps;
 
 import com.aliyun.odps.Partition;
-import com.starrocks.connector.PartitionInfo;
+import io.datafibre.fibre.connector.PartitionInfo;
 
 public class OdpsPartition implements PartitionInfo {
     private Partition partition;

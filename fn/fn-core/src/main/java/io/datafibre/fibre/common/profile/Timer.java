@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.profile;
+package io.datafibre.fibre.common.profile;
 
 import java.util.Collections;
 import java.util.List;

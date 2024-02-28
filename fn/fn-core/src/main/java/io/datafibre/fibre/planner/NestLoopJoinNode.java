@@ -13,23 +13,23 @@
 // limitations under the License.
 
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.analysis.BinaryPredicate;
-import com.starrocks.analysis.DescriptorTable;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.JoinOperator;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.analysis.TableRef;
-import com.starrocks.common.IdGenerator;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.SessionVariable;
-import com.starrocks.thrift.TNestLoopJoinNode;
-import com.starrocks.thrift.TNormalNestLoopJoinNode;
-import com.starrocks.thrift.TNormalPlanNode;
-import com.starrocks.thrift.TPlanNode;
-import com.starrocks.thrift.TPlanNodeType;
+import io.datafibre.fibre.analysis.BinaryPredicate;
+import io.datafibre.fibre.analysis.DescriptorTable;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.JoinOperator;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.analysis.TableRef;
+import io.datafibre.fibre.common.IdGenerator;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.SessionVariable;
+import io.datafibre.fibre.thrift.TNestLoopJoinNode;
+import io.datafibre.fibre.thrift.TNormalNestLoopJoinNode;
+import io.datafibre.fibre.thrift.TNormalPlanNode;
+import io.datafibre.fibre.thrift.TPlanNode;
+import io.datafibre.fibre.thrift.TPlanNodeType;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

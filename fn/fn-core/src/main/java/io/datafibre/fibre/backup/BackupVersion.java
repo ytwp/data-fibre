@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.backup;
+package io.datafibre.fibre.backup;
 
 public class BackupVersion {
     public static int VERSION_1 = 1;

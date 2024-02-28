@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.privilege;
+package io.datafibre.fibre.privilege;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.TableName;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.Function;
-import com.starrocks.catalog.InternalCatalog;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.UserIdentity;
-import com.starrocks.sql.ast.pipe.PipeName;
-import com.starrocks.sql.common.MetaUtils;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.Function;
+import io.datafibre.fibre.catalog.InternalCatalog;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.UserIdentity;
+import io.datafibre.fibre.sql.ast.pipe.PipeName;
+import io.datafibre.fibre.sql.common.MetaUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

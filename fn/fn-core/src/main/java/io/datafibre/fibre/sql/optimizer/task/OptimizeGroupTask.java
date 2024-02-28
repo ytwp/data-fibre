@@ -13,9 +13,9 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.task;
+package io.datafibre.fibre.sql.optimizer.task;
 
-import com.starrocks.sql.optimizer.Group;
+import io.datafibre.fibre.sql.optimizer.Group;
 
 /**
  * Optimize a group within a given context.

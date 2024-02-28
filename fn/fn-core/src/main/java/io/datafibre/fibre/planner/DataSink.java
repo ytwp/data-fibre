@@ -32,17 +32,17 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
-import com.starrocks.catalog.HiveTable;
-import com.starrocks.catalog.IcebergTable;
-import com.starrocks.catalog.MysqlTable;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.TableFunctionTable;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.thrift.TDataSink;
-import com.starrocks.thrift.TExplainLevel;
+import io.datafibre.fibre.catalog.HiveTable;
+import io.datafibre.fibre.catalog.IcebergTable;
+import io.datafibre.fibre.catalog.MysqlTable;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.TableFunctionTable;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.thrift.TDataSink;
+import io.datafibre.fibre.thrift.TExplainLevel;
 
 /**
  * A DataSink describes the destination of a plan fragment's output rows.

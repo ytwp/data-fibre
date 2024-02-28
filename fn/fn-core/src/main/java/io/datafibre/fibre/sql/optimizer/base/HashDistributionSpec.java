@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.base;
+package io.datafibre.fibre.sql.optimizer.base;
 
-import com.starrocks.catalog.ColocateTableIndex;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.catalog.ColocateTableIndex;
+import io.datafibre.fibre.server.GlobalStateMgr;
 
 import java.util.List;
 import java.util.Objects;

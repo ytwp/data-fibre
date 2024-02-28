@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.load.pipe;
+package io.datafibre.fibre.load.pipe;
 
-import com.starrocks.common.Pair;
-import com.starrocks.common.io.Text;
-import com.starrocks.persist.PipeOpEntry;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.persist.PipeOpEntry;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.server.GlobalStateMgr;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

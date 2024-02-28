@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.task;
+package io.datafibre.fibre.task;
 
 public abstract class LoadEtlTask {
     public static final String DPP_NORMAL_ALL = "dpp.norm.ALL";

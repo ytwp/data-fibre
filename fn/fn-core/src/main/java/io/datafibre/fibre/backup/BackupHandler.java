@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.backup;
+package io.datafibre.fibre.backup;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
@@ -40,47 +40,47 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.analysis.TableRef;
-import com.starrocks.backup.AbstractJob.JobType;
-import com.starrocks.backup.BackupJob.BackupJobState;
-import com.starrocks.backup.BackupJobInfo.BackupTableInfo;
-import com.starrocks.backup.mv.MvRestoreContext;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.MaterializedIndex.IndexExtState;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Partition;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.Config;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.ErrorCode;
-import com.starrocks.common.ErrorReport;
-import com.starrocks.common.Pair;
-import com.starrocks.common.io.Writable;
-import com.starrocks.common.util.FrontendDaemon;
-import com.starrocks.common.util.concurrent.lock.LockType;
-import com.starrocks.common.util.concurrent.lock.Locker;
-import com.starrocks.memory.MemoryTrackable;
-import com.starrocks.persist.metablock.SRMetaBlockEOFException;
-import com.starrocks.persist.metablock.SRMetaBlockException;
-import com.starrocks.persist.metablock.SRMetaBlockID;
-import com.starrocks.persist.metablock.SRMetaBlockReader;
-import com.starrocks.persist.metablock.SRMetaBlockWriter;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.AbstractBackupStmt;
-import com.starrocks.sql.ast.BackupStmt;
-import com.starrocks.sql.ast.BackupStmt.BackupType;
-import com.starrocks.sql.ast.CancelBackupStmt;
-import com.starrocks.sql.ast.CreateRepositoryStmt;
-import com.starrocks.sql.ast.DropRepositoryStmt;
-import com.starrocks.sql.ast.PartitionNames;
-import com.starrocks.sql.ast.RestoreStmt;
-import com.starrocks.task.DirMoveTask;
-import com.starrocks.task.DownloadTask;
-import com.starrocks.task.SnapshotTask;
-import com.starrocks.task.UploadTask;
-import com.starrocks.thrift.TFinishTaskRequest;
-import com.starrocks.thrift.TTaskType;
+import io.datafibre.fibre.analysis.TableRef;
+import io.datafibre.fibre.backup.AbstractJob.JobType;
+import io.datafibre.fibre.backup.BackupJob.BackupJobState;
+import io.datafibre.fibre.backup.BackupJobInfo.BackupTableInfo;
+import io.datafibre.fibre.backup.mv.MvRestoreContext;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.MaterializedIndex.IndexExtState;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.ErrorCode;
+import io.datafibre.fibre.common.ErrorReport;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.common.util.FrontendDaemon;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.memory.MemoryTrackable;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockEOFException;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockException;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockID;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockReader;
+import io.datafibre.fibre.persist.metablock.SRMetaBlockWriter;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.AbstractBackupStmt;
+import io.datafibre.fibre.sql.ast.BackupStmt;
+import io.datafibre.fibre.sql.ast.BackupStmt.BackupType;
+import io.datafibre.fibre.sql.ast.CancelBackupStmt;
+import io.datafibre.fibre.sql.ast.CreateRepositoryStmt;
+import io.datafibre.fibre.sql.ast.DropRepositoryStmt;
+import io.datafibre.fibre.sql.ast.PartitionNames;
+import io.datafibre.fibre.sql.ast.RestoreStmt;
+import io.datafibre.fibre.task.DirMoveTask;
+import io.datafibre.fibre.task.DownloadTask;
+import io.datafibre.fibre.task.SnapshotTask;
+import io.datafibre.fibre.task.UploadTask;
+import io.datafibre.fibre.thrift.TFinishTaskRequest;
+import io.datafibre.fibre.thrift.TTaskType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -99,7 +99,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static com.starrocks.scheduler.MVActiveChecker.MV_BACKUP_INACTIVE_REASON;
+import static io.datafibre.fibre.scheduler.MVActiveChecker.MV_BACKUP_INACTIVE_REASON;
 
 public class BackupHandler extends FrontendDaemon implements Writable, MemoryTrackable {
 

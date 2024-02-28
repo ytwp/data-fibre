@@ -12,22 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.server;
+package io.datafibre.fibre.server;
 
 import com.staros.proto.FileStoreInfo;
 import com.staros.util.LockCloseable;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.AlreadyExistsException;
-import com.starrocks.common.Config;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.InvalidConfException;
-import com.starrocks.common.util.LogUtil;
-import com.starrocks.common.util.concurrent.lock.LockType;
-import com.starrocks.common.util.concurrent.lock.Locker;
-import com.starrocks.credential.CloudConfigurationConstants;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.storagevolume.StorageVolume;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.AlreadyExistsException;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.InvalidConfException;
+import io.datafibre.fibre.common.util.LogUtil;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.credential.CloudConfigurationConstants;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.storagevolume.StorageVolume;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

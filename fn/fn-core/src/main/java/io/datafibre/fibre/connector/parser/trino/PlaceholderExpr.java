@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.parser.trino;
+package io.datafibre.fibre.connector.parser.trino;
 
-import com.starrocks.analysis.Expr;
-import com.starrocks.sql.ast.AstVisitor;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.sql.ast.AstVisitor;
 
 public class PlaceholderExpr extends Expr {
     private final int index;

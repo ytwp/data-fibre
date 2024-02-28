@@ -32,18 +32,18 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.lake.LakeTablet;
-import com.starrocks.persist.gson.GsonPostProcessable;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.thrift.TIndexState;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.lake.LakeTablet;
+import io.datafibre.fibre.persist.gson.GsonPostProcessable;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.thrift.TIndexState;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -147,12 +147,12 @@ public class MaterializedIndex extends MetaObject implements Writable, GsonPostP
      * Checks whether {@code this} {@link MaterializedIndex} is visible to a transaction.
      * <p>
      * If this {@link MaterializedIndex} is not visible to a transaction,
-     * {@link com.starrocks.transaction.PublishVersionDaemon} will not send {@link com.starrocks.proto.PublishVersionRequest}
+     * {@link io.datafibre.fibre.transaction.PublishVersionDaemon} will not send {@link io.datafibre.fibre.proto.PublishVersionRequest}
      * to tablets of this index.
      * <p>
-     * Only used for {@link com.starrocks.lake.LakeTable} now.
+     * Only used for {@link io.datafibre.fibre.lake.LakeTable} now.
      *
-     * @param txnId the id of a transaction created by {@link com.starrocks.transaction.DatabaseTransactionMgr}
+     * @param txnId the id of a transaction created by {@link io.datafibre.fibre.transaction.DatabaseTransactionMgr}
      * @return true iff this index is visible to the transaction, false otherwise.
      */
     public boolean visibleForTransaction(long txnId) {

@@ -32,36 +32,36 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.analysis.AggregateInfo;
-import com.starrocks.analysis.Analyzer;
-import com.starrocks.analysis.DescriptorTable;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.FunctionCallExpr;
-import com.starrocks.analysis.SlotDescriptor;
-import com.starrocks.analysis.SlotId;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.analysis.TupleId;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.common.FeConstants;
-import com.starrocks.common.Pair;
-import com.starrocks.common.UserException;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.statistics.ColumnStatistic;
-import com.starrocks.thrift.TAggregationNode;
-import com.starrocks.thrift.TExplainLevel;
-import com.starrocks.thrift.TExpr;
-import com.starrocks.thrift.TNormalAggregationNode;
-import com.starrocks.thrift.TNormalPlanNode;
-import com.starrocks.thrift.TPlanNode;
-import com.starrocks.thrift.TPlanNodeType;
-import com.starrocks.thrift.TStreamingPreaggregationMode;
+import io.datafibre.fibre.analysis.AggregateInfo;
+import io.datafibre.fibre.analysis.Analyzer;
+import io.datafibre.fibre.analysis.DescriptorTable;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.FunctionCallExpr;
+import io.datafibre.fibre.analysis.SlotDescriptor;
+import io.datafibre.fibre.analysis.SlotId;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.analysis.TupleId;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.common.FeConstants;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.statistics.ColumnStatistic;
+import io.datafibre.fibre.thrift.TAggregationNode;
+import io.datafibre.fibre.thrift.TExplainLevel;
+import io.datafibre.fibre.thrift.TExpr;
+import io.datafibre.fibre.thrift.TNormalAggregationNode;
+import io.datafibre.fibre.thrift.TNormalPlanNode;
+import io.datafibre.fibre.thrift.TPlanNode;
+import io.datafibre.fibre.thrift.TPlanNodeType;
+import io.datafibre.fibre.thrift.TStreamingPreaggregationMode;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.nio.ByteBuffer;
@@ -72,9 +72,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static com.starrocks.qe.SessionVariableConstants.FORCE_PREAGGREGATION;
-import static com.starrocks.qe.SessionVariableConstants.FORCE_STREAMING;
-import static com.starrocks.qe.SessionVariableConstants.LIMITED;
+import static io.datafibre.fibre.qe.SessionVariableConstants.FORCE_PREAGGREGATION;
+import static io.datafibre.fibre.qe.SessionVariableConstants.FORCE_STREAMING;
+import static io.datafibre.fibre.qe.SessionVariableConstants.LIMITED;
 
 public class AggregationNode extends PlanNode {
     private final AggregateInfo aggInfo;

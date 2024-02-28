@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.clone;
+package io.datafibre.fibre.clone;
 
 import com.google.common.collect.Lists;
 import org.apache.logging.log4j.LogManager;

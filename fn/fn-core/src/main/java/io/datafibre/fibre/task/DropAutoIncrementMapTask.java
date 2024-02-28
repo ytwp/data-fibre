@@ -15,13 +15,13 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.task;
+package io.datafibre.fibre.task;
 
-import com.starrocks.common.Status;
-import com.starrocks.common.util.concurrent.MarkedCountDownLatch;
-import com.starrocks.thrift.TDropAutoIncrementMapReq;
-import com.starrocks.thrift.TStatusCode;
-import com.starrocks.thrift.TTaskType;
+import io.datafibre.fibre.common.Status;
+import io.datafibre.fibre.common.util.concurrent.MarkedCountDownLatch;
+import io.datafibre.fibre.thrift.TDropAutoIncrementMapReq;
+import io.datafibre.fibre.thrift.TStatusCode;
+import io.datafibre.fibre.thrift.TTaskType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

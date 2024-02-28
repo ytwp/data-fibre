@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.statistic;
+package io.datafibre.fibre.statistic;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.Column;
+import io.datafibre.fibre.catalog.Column;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 
@@ -26,13 +26,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.starrocks.statistic.StatsConstants.EXTERNAL_FULL_STATISTICS_TABLE_NAME;
-import static com.starrocks.statistic.StatsConstants.FULL_STATISTICS_TABLE_NAME;
-import static com.starrocks.statistic.StatsConstants.SAMPLE_STATISTICS_TABLE_NAME;
-import static com.starrocks.statistic.StatsConstants.STATISTIC_DATA_VERSION;
-import static com.starrocks.statistic.StatsConstants.STATISTIC_EXTERNAL_QUERY_VERSION;
-import static com.starrocks.statistic.StatsConstants.STATISTIC_HISTOGRAM_VERSION;
-import static com.starrocks.statistic.StatsConstants.STATISTIC_TABLE_VERSION;
+import static io.datafibre.fibre.statistic.StatsConstants.EXTERNAL_FULL_STATISTICS_TABLE_NAME;
+import static io.datafibre.fibre.statistic.StatsConstants.FULL_STATISTICS_TABLE_NAME;
+import static io.datafibre.fibre.statistic.StatsConstants.SAMPLE_STATISTICS_TABLE_NAME;
+import static io.datafibre.fibre.statistic.StatsConstants.STATISTIC_DATA_VERSION;
+import static io.datafibre.fibre.statistic.StatsConstants.STATISTIC_EXTERNAL_QUERY_VERSION;
+import static io.datafibre.fibre.statistic.StatsConstants.STATISTIC_HISTOGRAM_VERSION;
+import static io.datafibre.fibre.statistic.StatsConstants.STATISTIC_TABLE_VERSION;
 
 public class StatisticSQLBuilder {
     private static final String QUERY_TABLE_STATISTIC_TEMPLATE =

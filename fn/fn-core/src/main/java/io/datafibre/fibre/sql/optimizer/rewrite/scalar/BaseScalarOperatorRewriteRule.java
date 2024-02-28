@@ -13,11 +13,11 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.rewrite.scalar;
+package io.datafibre.fibre.sql.optimizer.rewrite.scalar;
 
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperatorVisitor;
-import com.starrocks.sql.optimizer.rewrite.ScalarOperatorRewriteContext;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperatorVisitor;
+import io.datafibre.fibre.sql.optimizer.rewrite.ScalarOperatorRewriteContext;
 
 public class BaseScalarOperatorRewriteRule extends ScalarOperatorVisitor<ScalarOperator, ScalarOperatorRewriteContext>
         implements ScalarOperatorRewriteRule {

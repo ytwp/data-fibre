@@ -12,25 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
 import com.google.common.collect.ImmutableList;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.analysis.TableName;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.Table;
-import com.starrocks.datacache.DataCacheMgr;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.CatalogMgr;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.server.MetadataMgr;
-import com.starrocks.sql.ast.AstVisitor;
-import com.starrocks.sql.ast.ClearDataCacheRulesStmt;
-import com.starrocks.sql.ast.CreateDataCacheRuleStmt;
-import com.starrocks.sql.ast.DropDataCacheRuleStmt;
-import com.starrocks.sql.ast.StatementBase;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.datacache.DataCacheMgr;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.CatalogMgr;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.server.MetadataMgr;
+import io.datafibre.fibre.sql.ast.AstVisitor;
+import io.datafibre.fibre.sql.ast.ClearDataCacheRulesStmt;
+import io.datafibre.fibre.sql.ast.CreateDataCacheRuleStmt;
+import io.datafibre.fibre.sql.ast.DropDataCacheRuleStmt;
+import io.datafibre.fibre.sql.ast.StatementBase;
 
 import java.util.List;
 import java.util.Map;

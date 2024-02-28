@@ -13,37 +13,37 @@
 // limitations under the License.
 
 
-package com.starrocks.lake.backup;
+package io.datafibre.fibre.lake.backup;
 
 import com.google.common.collect.Maps;
-import com.starrocks.analysis.TableRef;
-import com.starrocks.backup.BackupJob;
-import com.starrocks.backup.SnapshotInfo;
-import com.starrocks.backup.Status;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.FsBroker;
-import com.starrocks.catalog.MaterializedIndex;
-import com.starrocks.catalog.Partition;
-import com.starrocks.catalog.PhysicalPartition;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.Tablet;
-import com.starrocks.common.UserException;
-import com.starrocks.common.io.Text;
-import com.starrocks.lake.LakeTable;
-import com.starrocks.lake.LakeTablet;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.proto.LockTabletMetadataRequest;
-import com.starrocks.proto.LockTabletMetadataResponse;
-import com.starrocks.proto.Snapshot;
-import com.starrocks.proto.UnlockTabletMetadataRequest;
-import com.starrocks.proto.UploadSnapshotsRequest;
-import com.starrocks.proto.UploadSnapshotsResponse;
-import com.starrocks.rpc.BrpcProxy;
-import com.starrocks.rpc.LakeService;
-import com.starrocks.rpc.RpcException;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.system.Backend;
-import com.starrocks.thrift.THdfsProperties;
+import io.datafibre.fibre.analysis.TableRef;
+import io.datafibre.fibre.backup.BackupJob;
+import io.datafibre.fibre.backup.SnapshotInfo;
+import io.datafibre.fibre.backup.Status;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.FsBroker;
+import io.datafibre.fibre.catalog.MaterializedIndex;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.catalog.PhysicalPartition;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.Tablet;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.lake.LakeTable;
+import io.datafibre.fibre.lake.LakeTablet;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.proto.LockTabletMetadataRequest;
+import io.datafibre.fibre.proto.LockTabletMetadataResponse;
+import io.datafibre.fibre.proto.Snapshot;
+import io.datafibre.fibre.proto.UnlockTabletMetadataRequest;
+import io.datafibre.fibre.proto.UploadSnapshotsRequest;
+import io.datafibre.fibre.proto.UploadSnapshotsResponse;
+import io.datafibre.fibre.rpc.BrpcProxy;
+import io.datafibre.fibre.rpc.LakeService;
+import io.datafibre.fibre.rpc.RpcException;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.system.Backend;
+import io.datafibre.fibre.thrift.THdfsProperties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

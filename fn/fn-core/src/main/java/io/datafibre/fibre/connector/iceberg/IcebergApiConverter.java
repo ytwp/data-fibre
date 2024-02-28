@@ -12,24 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.iceberg;
+package io.datafibre.fibre.connector.iceberg;
 
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.ArrayType;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.IcebergTable;
-import com.starrocks.catalog.MapType;
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.catalog.StructField;
-import com.starrocks.catalog.StructType;
-import com.starrocks.catalog.Type;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.connector.hive.RemoteFileInputFormat;
-import com.starrocks.thrift.TIcebergColumnStats;
-import com.starrocks.thrift.TIcebergDataFile;
-import com.starrocks.thrift.TIcebergSchema;
-import com.starrocks.thrift.TIcebergSchemaField;
+import io.datafibre.fibre.catalog.ArrayType;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.IcebergTable;
+import io.datafibre.fibre.catalog.MapType;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.catalog.StructField;
+import io.datafibre.fibre.catalog.StructType;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.connector.hive.RemoteFileInputFormat;
+import io.datafibre.fibre.thrift.TIcebergColumnStats;
+import io.datafibre.fibre.thrift.TIcebergDataFile;
+import io.datafibre.fibre.thrift.TIcebergSchema;
+import io.datafibre.fibre.thrift.TIcebergSchemaField;
 import org.apache.iceberg.FileFormat;
 import org.apache.iceberg.Metrics;
 import org.apache.iceberg.PartitionSpec;
@@ -50,13 +50,13 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.starrocks.analysis.OutFileClause.PARQUET_COMPRESSION_TYPE_MAP;
-import static com.starrocks.connector.ColumnTypeConverter.fromIcebergType;
-import static com.starrocks.connector.ConnectorTableId.CONNECTOR_ID_GENERATOR;
-import static com.starrocks.connector.iceberg.IcebergConnector.ICEBERG_CATALOG_TYPE;
-import static com.starrocks.connector.iceberg.IcebergMetadata.COMPRESSION_CODEC;
-import static com.starrocks.connector.iceberg.IcebergMetadata.FILE_FORMAT;
-import static com.starrocks.server.CatalogMgr.ResourceMappingCatalog.toResourceName;
+import static io.datafibre.fibre.analysis.OutFileClause.PARQUET_COMPRESSION_TYPE_MAP;
+import static io.datafibre.fibre.connector.ColumnTypeConverter.fromIcebergType;
+import static io.datafibre.fibre.connector.ConnectorTableId.CONNECTOR_ID_GENERATOR;
+import static io.datafibre.fibre.connector.iceberg.IcebergConnector.ICEBERG_CATALOG_TYPE;
+import static io.datafibre.fibre.connector.iceberg.IcebergMetadata.COMPRESSION_CODEC;
+import static io.datafibre.fibre.connector.iceberg.IcebergMetadata.FILE_FORMAT;
+import static io.datafibre.fibre.server.CatalogMgr.ResourceMappingCatalog.toResourceName;
 
 public class IcebergApiConverter {
     private static final Logger LOG = LogManager.getLogger(IcebergApiConverter.class);

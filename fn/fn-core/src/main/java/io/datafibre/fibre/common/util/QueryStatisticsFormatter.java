@@ -15,9 +15,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.util;
+package io.datafibre.fibre.common.util;
 
-import com.starrocks.common.Pair;
+import io.datafibre.fibre.common.Pair;
 
 import java.util.Formatter;
 

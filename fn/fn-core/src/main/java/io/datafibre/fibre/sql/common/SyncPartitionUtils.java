@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.common;
+package io.datafibre.fibre.sql.common;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
@@ -20,34 +20,34 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
 import com.google.common.collect.Sets;
-import com.starrocks.analysis.DateLiteral;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.FunctionCallExpr;
-import com.starrocks.analysis.LiteralExpr;
-import com.starrocks.analysis.MaxLiteral;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.analysis.StringLiteral;
-import com.starrocks.analysis.TableName;
-import com.starrocks.catalog.BaseTableInfo;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.FunctionSet;
-import com.starrocks.catalog.InternalCatalog;
-import com.starrocks.catalog.ListPartitionInfo;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.PartitionKey;
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.catalog.RangePartitionInfo;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.TableProperty;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.util.DateUtils;
-import com.starrocks.connector.PartitionUtil;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.ast.PartitionValue;
+import io.datafibre.fibre.analysis.DateLiteral;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.FunctionCallExpr;
+import io.datafibre.fibre.analysis.LiteralExpr;
+import io.datafibre.fibre.analysis.MaxLiteral;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.analysis.StringLiteral;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.catalog.BaseTableInfo;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.FunctionSet;
+import io.datafibre.fibre.catalog.InternalCatalog;
+import io.datafibre.fibre.catalog.ListPartitionInfo;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.PartitionKey;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.catalog.RangePartitionInfo;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.TableProperty;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.util.DateUtils;
+import io.datafibre.fibre.connector.PartitionUtil;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.ast.PartitionValue;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -67,12 +67,12 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.starrocks.sql.common.TimeUnitUtils.DAY;
-import static com.starrocks.sql.common.TimeUnitUtils.HOUR;
-import static com.starrocks.sql.common.TimeUnitUtils.MINUTE;
-import static com.starrocks.sql.common.TimeUnitUtils.MONTH;
-import static com.starrocks.sql.common.TimeUnitUtils.QUARTER;
-import static com.starrocks.sql.common.TimeUnitUtils.YEAR;
+import static io.datafibre.fibre.sql.common.TimeUnitUtils.DAY;
+import static io.datafibre.fibre.sql.common.TimeUnitUtils.HOUR;
+import static io.datafibre.fibre.sql.common.TimeUnitUtils.MINUTE;
+import static io.datafibre.fibre.sql.common.TimeUnitUtils.MONTH;
+import static io.datafibre.fibre.sql.common.TimeUnitUtils.QUARTER;
+import static io.datafibre.fibre.sql.common.TimeUnitUtils.YEAR;
 
 /**
  * Process lower bound and upper bound for Expression Partition,

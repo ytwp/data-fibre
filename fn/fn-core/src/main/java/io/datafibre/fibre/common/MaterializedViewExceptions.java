@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.common;
+package io.datafibre.fibre.common;
 
-import com.starrocks.catalog.BaseTableInfo;
-import com.starrocks.sql.analyzer.SemanticException;
+import io.datafibre.fibre.catalog.BaseTableInfo;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
 
 /**
  * Encapsulate error message and exceptions for materialized view

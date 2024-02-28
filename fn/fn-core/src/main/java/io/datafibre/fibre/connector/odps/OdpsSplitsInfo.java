@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.odps;
+package io.datafibre.fibre.connector.odps;
 
 import com.aliyun.odps.table.read.TableBatchReadSession;
 import com.aliyun.odps.table.read.split.InputSplit;
-import com.starrocks.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

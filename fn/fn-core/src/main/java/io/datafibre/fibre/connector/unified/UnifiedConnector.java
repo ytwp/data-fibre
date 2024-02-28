@@ -12,31 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.unified;
+package io.datafibre.fibre.connector.unified;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.starrocks.catalog.Table;
-import com.starrocks.connector.Connector;
-import com.starrocks.connector.ConnectorContext;
-import com.starrocks.connector.ConnectorMetadata;
-import com.starrocks.connector.config.ConnectorConfig;
-import com.starrocks.connector.delta.DeltaLakeConnector;
-import com.starrocks.connector.hive.HiveConnector;
-import com.starrocks.connector.hudi.HudiConnector;
-import com.starrocks.connector.iceberg.IcebergConnector;
-import com.starrocks.sql.analyzer.SemanticException;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.connector.Connector;
+import io.datafibre.fibre.connector.ConnectorContext;
+import io.datafibre.fibre.connector.ConnectorMetadata;
+import io.datafibre.fibre.connector.config.ConnectorConfig;
+import io.datafibre.fibre.connector.delta.DeltaLakeConnector;
+import io.datafibre.fibre.connector.hive.HiveConnector;
+import io.datafibre.fibre.connector.hudi.HudiConnector;
+import io.datafibre.fibre.connector.iceberg.IcebergConnector;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.starrocks.catalog.Table.TableType.DELTALAKE;
-import static com.starrocks.catalog.Table.TableType.HIVE;
-import static com.starrocks.catalog.Table.TableType.HUDI;
-import static com.starrocks.catalog.Table.TableType.ICEBERG;
-import static com.starrocks.connector.hive.HiveConnector.HIVE_METASTORE_TYPE;
-import static com.starrocks.connector.iceberg.IcebergConnector.ICEBERG_CATALOG_TYPE;
+import static io.datafibre.fibre.catalog.Table.TableType.DELTALAKE;
+import static io.datafibre.fibre.catalog.Table.TableType.HIVE;
+import static io.datafibre.fibre.catalog.Table.TableType.HUDI;
+import static io.datafibre.fibre.catalog.Table.TableType.ICEBERG;
+import static io.datafibre.fibre.connector.hive.HiveConnector.HIVE_METASTORE_TYPE;
+import static io.datafibre.fibre.connector.iceberg.IcebergConnector.ICEBERG_CATALOG_TYPE;
 
 public class UnifiedConnector implements Connector {
     public static final String UNIFIED_METASTORE_TYPE = "unified.metastore.type";

@@ -12,21 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.Type;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.ast.AstVisitor;
-import com.starrocks.sql.ast.CancelRefreshDictionaryStmt;
-import com.starrocks.sql.ast.CreateDictionaryStmt;
-import com.starrocks.sql.ast.DropDictionaryStmt;
-import com.starrocks.sql.ast.RefreshDictionaryStmt;
-import com.starrocks.sql.ast.ShowDictionaryStmt;
-import com.starrocks.sql.ast.StatementBase;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.ast.AstVisitor;
+import io.datafibre.fibre.sql.ast.CancelRefreshDictionaryStmt;
+import io.datafibre.fibre.sql.ast.CreateDictionaryStmt;
+import io.datafibre.fibre.sql.ast.DropDictionaryStmt;
+import io.datafibre.fibre.sql.ast.RefreshDictionaryStmt;
+import io.datafibre.fibre.sql.ast.ShowDictionaryStmt;
+import io.datafibre.fibre.sql.ast.StatementBase;
 
 import java.util.List;
 

@@ -15,10 +15,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common;
+package io.datafibre.fibre.common;
 
 import com.google.common.base.Strings;
-import com.starrocks.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
 
 import java.util.regex.Pattern;
 

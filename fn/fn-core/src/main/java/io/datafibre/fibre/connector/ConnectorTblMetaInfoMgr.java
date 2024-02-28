@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector;
+package io.datafibre.fibre.connector;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.Table;
 import com.google.common.collect.TreeBasedTable;
 import com.google.gson.JsonObject;
-import com.starrocks.analysis.TableName;
+import io.datafibre.fibre.analysis.TableName;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -102,7 +102,7 @@ public class ConnectorTblMetaInfoMgr {
     }
 
     public void setTableInfoForConnectorTable(String catalog, String db,
-                                              com.starrocks.catalog.Table table) {
+                                              io.datafibre.fibre.catalog.Table table) {
         Preconditions.checkState(table != null);
         String tableIdentifier = table.getTableIdentifier();
         ConnectorTableInfo tableInfo = getConnectorTableInfo(catalog, db, tableIdentifier);

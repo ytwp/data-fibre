@@ -32,15 +32,15 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.http.action;
+package io.datafibre.fibre.http.action;
 
 import com.google.common.collect.Lists;
-import com.starrocks.http.ActionController;
-import com.starrocks.http.BaseRequest;
-import com.starrocks.http.BaseResponse;
-import com.starrocks.http.IllegalArgException;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.service.ExecuteEnv;
+import io.datafibre.fibre.http.ActionController;
+import io.datafibre.fibre.http.BaseRequest;
+import io.datafibre.fibre.http.BaseResponse;
+import io.datafibre.fibre.http.IllegalArgException;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.service.ExecuteEnv;
 import io.netty.handler.codec.http.HttpMethod;
 
 import java.util.ArrayList;

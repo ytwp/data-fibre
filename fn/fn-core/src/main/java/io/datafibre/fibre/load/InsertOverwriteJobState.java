@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.load;
+package io.datafibre.fibre.load;
 
 public enum InsertOverwriteJobState {
     OVERWRITE_PENDING,

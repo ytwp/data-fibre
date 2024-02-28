@@ -32,13 +32,13 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.metric;
+package io.datafibre.fibre.metric;
 
-import com.starrocks.common.Config;
-import com.starrocks.qe.QueryDetail;
-import com.starrocks.qe.QueryDetailQueue;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.server.RunMode;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.qe.QueryDetail;
+import io.datafibre.fibre.qe.QueryDetailQueue;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.server.RunMode;
 
 import java.util.ArrayList;
 import java.util.Comparator;

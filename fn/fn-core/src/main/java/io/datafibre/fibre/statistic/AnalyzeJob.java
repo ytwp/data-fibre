@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.statistic;
+package io.datafibre.fibre.statistic;
 
-import com.starrocks.common.MetaNotFoundException;
-import com.starrocks.qe.ConnectContext;
+import io.datafibre.fibre.common.MetaNotFoundException;
+import io.datafibre.fibre.qe.ConnectContext;
 
 import java.time.LocalDateTime;
 import java.util.List;

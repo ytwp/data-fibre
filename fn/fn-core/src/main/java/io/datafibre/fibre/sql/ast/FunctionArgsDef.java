@@ -13,11 +13,11 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.analysis.TypeDef;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.AnalysisException;
+import io.datafibre.fibre.analysis.TypeDef;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.AnalysisException;
 
 import java.util.List;
 

@@ -32,13 +32,13 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.load.routineload;
+package io.datafibre.fibre.load.routineload;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.thrift.TRLTaskTxnCommitAttachment;
-import com.starrocks.thrift.TUniqueId;
-import com.starrocks.transaction.TransactionState;
-import com.starrocks.transaction.TxnCommitAttachment;
+import io.datafibre.fibre.thrift.TRLTaskTxnCommitAttachment;
+import io.datafibre.fibre.thrift.TUniqueId;
+import io.datafibre.fibre.transaction.TransactionState;
+import io.datafibre.fibre.transaction.TxnCommitAttachment;
 
 import java.io.DataInput;
 import java.io.DataOutput;

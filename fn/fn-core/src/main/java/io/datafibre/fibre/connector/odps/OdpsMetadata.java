@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.odps;
+package io.datafibre.fibre.connector.odps;
 
 import com.aliyun.odps.Odps;
 import com.aliyun.odps.OdpsException;
@@ -40,25 +40,25 @@ import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.OdpsTable;
-import com.starrocks.catalog.PartitionKey;
-import com.starrocks.catalog.Table;
-import com.starrocks.connector.ConnectorMetadata;
-import com.starrocks.connector.ConnectorTableId;
-import com.starrocks.connector.PartitionInfo;
-import com.starrocks.connector.RemoteFileDesc;
-import com.starrocks.connector.RemoteFileInfo;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.credential.CloudConfiguration;
-import com.starrocks.credential.aliyun.AliyunCloudConfiguration;
-import com.starrocks.credential.aliyun.AliyunCloudCredential;
-import com.starrocks.sql.optimizer.OptimizerContext;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.statistics.ColumnStatistic;
-import com.starrocks.sql.optimizer.statistics.Statistics;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.OdpsTable;
+import io.datafibre.fibre.catalog.PartitionKey;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.connector.ConnectorMetadata;
+import io.datafibre.fibre.connector.ConnectorTableId;
+import io.datafibre.fibre.connector.PartitionInfo;
+import io.datafibre.fibre.connector.RemoteFileDesc;
+import io.datafibre.fibre.connector.RemoteFileInfo;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.credential.CloudConfiguration;
+import io.datafibre.fibre.credential.aliyun.AliyunCloudConfiguration;
+import io.datafibre.fibre.credential.aliyun.AliyunCloudCredential;
+import io.datafibre.fibre.sql.optimizer.OptimizerContext;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.statistics.ColumnStatistic;
+import io.datafibre.fibre.sql.optimizer.statistics.Statistics;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -78,7 +78,7 @@ import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
 import static com.google.common.cache.CacheLoader.asyncReloading;
-import static com.starrocks.connector.PartitionUtil.toHivePartitionName;
+import static io.datafibre.fibre.connector.PartitionUtil.toHivePartitionName;
 import static java.util.concurrent.TimeUnit.HOURS;
 
 public class OdpsMetadata implements ConnectorMetadata {

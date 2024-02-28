@@ -33,7 +33,7 @@
  * limitations under the License.
  */
 
-package com.starrocks.credential.provider;
+package io.datafibre.fibre.credential.provider;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;
@@ -88,7 +88,7 @@ public class AssumedRoleCredentialProvider implements AWSCredentialsProvider,
     private static final Logger LOG =
             LoggerFactory.getLogger(AssumedRoleCredentialProvider.class);
     public static final String NAME
-            = "com.starrocks.credential.provider.AssumedRoleCredentialProvider";
+            = "io.datafibre.fibre.credential.provider.AssumedRoleCredentialProvider";
 
     public static final String E_NO_ROLE = "Unset property "
             + Constants.ASSUMED_ROLE_ARN;

@@ -15,20 +15,20 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.proc;
+package io.datafibre.fibre.common.proc;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.monitor.jvm.JvmInfo;
-import com.starrocks.monitor.jvm.JvmStatCollector;
-import com.starrocks.monitor.jvm.JvmStats;
-import com.starrocks.monitor.jvm.JvmStats.BufferPool;
-import com.starrocks.monitor.jvm.JvmStats.GarbageCollector;
-import com.starrocks.monitor.jvm.JvmStats.MemoryPool;
-import com.starrocks.monitor.jvm.JvmStats.Threads;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.monitor.jvm.JvmInfo;
+import io.datafibre.fibre.monitor.jvm.JvmStatCollector;
+import io.datafibre.fibre.monitor.jvm.JvmStats;
+import io.datafibre.fibre.monitor.jvm.JvmStats.BufferPool;
+import io.datafibre.fibre.monitor.jvm.JvmStats.GarbageCollector;
+import io.datafibre.fibre.monitor.jvm.JvmStats.MemoryPool;
+import io.datafibre.fibre.monitor.jvm.JvmStats.Threads;
 
 import java.util.List;
 

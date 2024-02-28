@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.validate;
+package io.datafibre.fibre.sql.optimizer.validate;
 
 import com.google.common.base.Joiner;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.common.profile.Tracers;
-import com.starrocks.metric.MaterializedViewMetricsEntity;
-import com.starrocks.metric.MaterializedViewMetricsRegistry;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.optimizer.MaterializationContext;
-import com.starrocks.sql.optimizer.OptExpression;
-import com.starrocks.sql.optimizer.OptimizerContext;
-import com.starrocks.sql.optimizer.rule.transformation.materialization.MaterializedViewRewriter;
-import com.starrocks.sql.optimizer.task.TaskContext;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.common.profile.Tracers;
+import io.datafibre.fibre.metric.MaterializedViewMetricsEntity;
+import io.datafibre.fibre.metric.MaterializedViewMetricsRegistry;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.optimizer.MaterializationContext;
+import io.datafibre.fibre.sql.optimizer.OptExpression;
+import io.datafibre.fibre.sql.optimizer.OptimizerContext;
+import io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.MaterializedViewRewriter;
+import io.datafibre.fibre.sql.optimizer.task.TaskContext;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -32,8 +32,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.starrocks.metric.MaterializedViewMetricsEntity.isUpdateMaterializedViewMetrics;
-import static com.starrocks.sql.optimizer.rule.transformation.materialization.MvUtils.collectMaterializedViews;
+import static io.datafibre.fibre.metric.MaterializedViewMetricsEntity.isUpdateMaterializedViewMetrics;
+import static io.datafibre.fibre.sql.optimizer.rule.transformation.materialization.MvUtils.collectMaterializedViews;
 
 public class MVRewriteValidator {
     private static final MVRewriteValidator INSTANCE = new MVRewriteValidator();

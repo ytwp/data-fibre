@@ -13,20 +13,20 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.rule.tree;
+package io.datafibre.fibre.sql.optimizer.rule.tree;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.analysis.BinaryType;
-import com.starrocks.sql.optimizer.ConstantOperatorUtils;
-import com.starrocks.sql.optimizer.operator.scalar.BinaryPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CompoundPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ConstantOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperatorVisitor;
-import com.starrocks.sql.optimizer.statistics.ColumnStatistic;
-import com.starrocks.sql.optimizer.statistics.ExpressionStatisticCalculator;
-import com.starrocks.sql.optimizer.statistics.PredicateStatisticsCalculator;
-import com.starrocks.sql.optimizer.statistics.Statistics;
+import io.datafibre.fibre.analysis.BinaryType;
+import io.datafibre.fibre.sql.optimizer.ConstantOperatorUtils;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.BinaryPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CompoundPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperatorVisitor;
+import io.datafibre.fibre.sql.optimizer.statistics.ColumnStatistic;
+import io.datafibre.fibre.sql.optimizer.statistics.ExpressionStatisticCalculator;
+import io.datafibre.fibre.sql.optimizer.statistics.PredicateStatisticsCalculator;
+import io.datafibre.fibre.sql.optimizer.statistics.Statistics;
 
 import java.util.Optional;
 

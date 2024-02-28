@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector;
+package io.datafibre.fibre.connector;
 
-import com.starrocks.alter.AlterOperations;
-import com.starrocks.analysis.ParseNode;
-import com.starrocks.analysis.TableName;
-import com.starrocks.common.DdlException;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.ast.AlterClause;
-import com.starrocks.sql.ast.AlterTableStmt;
-import com.starrocks.sql.ast.AstVisitor;
+import io.datafibre.fibre.alter.AlterOperations;
+import io.datafibre.fibre.analysis.ParseNode;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.ast.AlterClause;
+import io.datafibre.fibre.sql.ast.AlterTableStmt;
+import io.datafibre.fibre.sql.ast.AstVisitor;
 
 import java.util.ArrayList;
 import java.util.List;

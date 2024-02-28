@@ -32,10 +32,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.monitor.jvm;
+package io.datafibre.fibre.monitor.jvm;
 
-import com.starrocks.monitor.unit.ByteSizeValue;
-import com.starrocks.monitor.unit.TimeValue;
+import io.datafibre.fibre.monitor.unit.ByteSizeValue;
+import io.datafibre.fibre.monitor.unit.TimeValue;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.management.BufferPoolMXBean;

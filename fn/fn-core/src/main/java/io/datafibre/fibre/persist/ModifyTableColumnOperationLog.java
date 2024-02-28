@@ -13,14 +13,14 @@
 // limitations under the License.
 
 
-package com.starrocks.persist;
+package io.datafibre.fibre.persist;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.catalog.Column;
-import com.starrocks.cluster.ClusterNamespace;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.persist.gson.GsonUtils;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.cluster.ClusterNamespace;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.persist.gson.GsonUtils;
 
 import java.io.DataInput;
 import java.io.DataOutput;

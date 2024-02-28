@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.http.rest;
+package io.datafibre.fibre.http.rest;
 
 /* Usage:
    eg:
@@ -36,32 +36,32 @@ import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import com.starrocks.analysis.StringLiteral;
-import com.starrocks.common.Config;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.StarRocksHttpException;
-import com.starrocks.common.ThreadPoolManager;
-import com.starrocks.common.util.LogUtil;
-import com.starrocks.http.ActionController;
-import com.starrocks.http.BaseRequest;
-import com.starrocks.http.BaseResponse;
-import com.starrocks.http.HttpConnectContext;
-import com.starrocks.http.HttpConnectProcessor;
-import com.starrocks.http.IllegalArgException;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.ConnectScheduler;
-import com.starrocks.qe.OriginStatement;
-import com.starrocks.qe.QueryState;
-import com.starrocks.qe.SessionVariable;
-import com.starrocks.qe.VariableMgr;
-import com.starrocks.service.ExecuteEnv;
-import com.starrocks.sql.ast.KillStmt;
-import com.starrocks.sql.ast.QueryStatement;
-import com.starrocks.sql.ast.ShowStmt;
-import com.starrocks.sql.ast.StatementBase;
-import com.starrocks.sql.ast.SystemVariable;
-import com.starrocks.sql.parser.ParsingException;
-import com.starrocks.thrift.TResultSinkFormatType;
+import io.datafibre.fibre.analysis.StringLiteral;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.StarRocksHttpException;
+import io.datafibre.fibre.common.ThreadPoolManager;
+import io.datafibre.fibre.common.util.LogUtil;
+import io.datafibre.fibre.http.ActionController;
+import io.datafibre.fibre.http.BaseRequest;
+import io.datafibre.fibre.http.BaseResponse;
+import io.datafibre.fibre.http.HttpConnectContext;
+import io.datafibre.fibre.http.HttpConnectProcessor;
+import io.datafibre.fibre.http.IllegalArgException;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.ConnectScheduler;
+import io.datafibre.fibre.qe.OriginStatement;
+import io.datafibre.fibre.qe.QueryState;
+import io.datafibre.fibre.qe.SessionVariable;
+import io.datafibre.fibre.qe.VariableMgr;
+import io.datafibre.fibre.service.ExecuteEnv;
+import io.datafibre.fibre.sql.ast.KillStmt;
+import io.datafibre.fibre.sql.ast.QueryStatement;
+import io.datafibre.fibre.sql.ast.ShowStmt;
+import io.datafibre.fibre.sql.ast.StatementBase;
+import io.datafibre.fibre.sql.ast.SystemVariable;
+import io.datafibre.fibre.sql.parser.ParsingException;
+import io.datafibre.fibre.thrift.TResultSinkFormatType;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -202,7 +202,7 @@ public class ExecuteSqlAction extends RestBaseAction {
         StatementBase parsedStmt;
         List<StatementBase> stmts;
         try {
-            stmts = com.starrocks.sql.parser.SqlParser
+            stmts = io.datafibre.fibre.sql.parser.SqlParser
                     .parse(sql, sessionVariables);
         } catch (ParsingException parsingException) {
             throw new StarRocksHttpException(HttpResponseStatus.INTERNAL_SERVER_ERROR, parsingException.getMessage());

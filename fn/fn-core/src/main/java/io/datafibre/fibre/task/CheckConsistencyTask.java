@@ -32,11 +32,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.task;
+package io.datafibre.fibre.task;
 
-import com.starrocks.thrift.TCheckConsistencyReq;
-import com.starrocks.thrift.TResourceInfo;
-import com.starrocks.thrift.TTaskType;
+import io.datafibre.fibre.thrift.TCheckConsistencyReq;
+import io.datafibre.fibre.thrift.TResourceInfo;
+import io.datafibre.fibre.thrift.TTaskType;
 
 public class CheckConsistencyTask extends AgentTask {
 

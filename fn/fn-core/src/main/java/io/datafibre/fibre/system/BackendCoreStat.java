@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.system;
+package io.datafibre.fibre.system;
 
 import com.google.common.collect.ImmutableMap;
 import org.apache.logging.log4j.LogManager;

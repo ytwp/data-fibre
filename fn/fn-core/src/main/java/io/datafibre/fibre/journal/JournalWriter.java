@@ -13,12 +13,12 @@
 // limitations under the License.
 
 
-package com.starrocks.journal;
+package io.datafibre.fibre.journal;
 
-import com.starrocks.common.Config;
-import com.starrocks.common.util.Daemon;
-import com.starrocks.common.util.Util;
-import com.starrocks.metric.MetricRepo;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.util.Daemon;
+import io.datafibre.fibre.common.util.Util;
+import io.datafibre.fibre.metric.MetricRepo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

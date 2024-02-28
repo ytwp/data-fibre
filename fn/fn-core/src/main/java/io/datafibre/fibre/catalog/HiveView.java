@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
-import com.starrocks.analysis.ParseNode;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.SessionVariable;
-import com.starrocks.sql.analyzer.AnalyzerUtils;
-import com.starrocks.sql.ast.QueryStatement;
-import com.starrocks.sql.ast.TableRelation;
-import com.starrocks.sql.common.ErrorType;
-import com.starrocks.sql.common.StarRocksPlannerException;
+import io.datafibre.fibre.analysis.ParseNode;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.SessionVariable;
+import io.datafibre.fibre.sql.analyzer.AnalyzerUtils;
+import io.datafibre.fibre.sql.ast.QueryStatement;
+import io.datafibre.fibre.sql.ast.TableRelation;
+import io.datafibre.fibre.sql.common.ErrorType;
+import io.datafibre.fibre.sql.common.StarRocksPlannerException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.parquet.Strings;
@@ -69,14 +69,14 @@ public class HiveView extends Table {
     private QueryStatement getQueryStatementImpl(SessionVariable sessionVariable) {
         ParseNode node;
         try {
-            node = com.starrocks.sql.parser.SqlParser.parse(inlineViewDef, sessionVariable).get(0);
+            node = io.datafibre.fibre.sql.parser.SqlParser.parse(inlineViewDef, sessionVariable).get(0);
         } catch (Exception e) {
             LOG.warn("stmt is {}", inlineViewDef);
             LOG.warn("exception because: ", e);
             if (viewType == Type.Trino) {
                 // try to parse with starrocks sql dialect
                 sessionVariable.setSqlDialect("starrocks");
-                node = com.starrocks.sql.parser.SqlParser.parse(inlineViewDef, sessionVariable).get(0);
+                node = io.datafibre.fibre.sql.parser.SqlParser.parse(inlineViewDef, sessionVariable).get(0);
             } else {
                 throw new StarRocksPlannerException(
                         String.format("Failed to parse view-definition statement of view: %s", name),

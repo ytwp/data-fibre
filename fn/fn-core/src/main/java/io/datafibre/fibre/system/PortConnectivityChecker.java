@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.system;
+package io.datafibre.fibre.system;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.starrocks.common.Config;
-import com.starrocks.common.Pair;
-import com.starrocks.common.ThreadPoolManager;
-import com.starrocks.common.util.FrontendDaemon;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.server.NodeMgr;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.ThreadPoolManager;
+import io.datafibre.fibre.common.util.FrontendDaemon;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.server.NodeMgr;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

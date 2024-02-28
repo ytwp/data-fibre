@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.qe;
+package io.datafibre.fibre.qe;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
-import com.starrocks.common.Config;
-import com.starrocks.common.UserException;
-import com.starrocks.planner.ScanNode;
-import com.starrocks.qe.scheduler.WorkerProvider;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.thrift.TScanRangeLocation;
-import com.starrocks.thrift.TScanRangeLocations;
-import com.starrocks.thrift.TScanRangeParams;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.planner.ScanNode;
+import io.datafibre.fibre.qe.scheduler.WorkerProvider;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TScanRangeLocation;
+import io.datafibre.fibre.thrift.TScanRangeLocations;
+import io.datafibre.fibre.thrift.TScanRangeParams;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

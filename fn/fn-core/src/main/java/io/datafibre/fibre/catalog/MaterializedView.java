@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
@@ -24,63 +24,63 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
 import com.google.common.collect.Sets;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.analysis.DescriptorTable.ReferencedPartitionInfo;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.FunctionCallExpr;
-import com.starrocks.analysis.SlotDescriptor;
-import com.starrocks.analysis.SlotId;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.analysis.TableName;
-import com.starrocks.authentication.AuthenticationMgr;
-import com.starrocks.backup.Status;
-import com.starrocks.backup.mv.MvBackupInfo;
-import com.starrocks.backup.mv.MvBaseTableBackupInfo;
-import com.starrocks.backup.mv.MvRestoreContext;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.FeConstants;
-import com.starrocks.common.MaterializedViewExceptions;
-import com.starrocks.common.Pair;
-import com.starrocks.common.UserException;
-import com.starrocks.common.io.DeepCopy;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.util.DateUtils;
-import com.starrocks.common.util.PropertyAnalyzer;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.connector.ConnectorPartitionTraits;
-import com.starrocks.connector.ConnectorTableInfo;
-import com.starrocks.connector.PartitionUtil;
-import com.starrocks.persist.AlterMaterializedViewBaseTableInfosLog;
-import com.starrocks.persist.gson.GsonPostProcessable;
-import com.starrocks.persist.gson.GsonPreProcessable;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.privilege.PrivilegeBuiltinConstants;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.SqlModeHelper;
-import com.starrocks.scheduler.TableWithPartitions;
-import com.starrocks.scheduler.Task;
-import com.starrocks.scheduler.TaskBuilder;
-import com.starrocks.scheduler.TaskManager;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.server.RunMode;
-import com.starrocks.sql.analyzer.AnalyzeState;
-import com.starrocks.sql.analyzer.ExpressionAnalyzer;
-import com.starrocks.sql.analyzer.Field;
-import com.starrocks.sql.analyzer.RelationFields;
-import com.starrocks.sql.analyzer.RelationId;
-import com.starrocks.sql.analyzer.Scope;
-import com.starrocks.sql.ast.UserIdentity;
-import com.starrocks.sql.common.PartitionRange;
-import com.starrocks.sql.common.RangePartitionDiff;
-import com.starrocks.sql.common.SyncPartitionUtils;
-import com.starrocks.sql.common.UnsupportedException;
-import com.starrocks.sql.optimizer.CachingMvPlanContextBuilder;
-import com.starrocks.sql.optimizer.Utils;
-import com.starrocks.sql.parser.SqlParser;
-import com.starrocks.sql.plan.ExecPlan;
-import com.starrocks.statistic.StatsConstants;
-import com.starrocks.thrift.TTableDescriptor;
-import com.starrocks.thrift.TTableType;
+import io.datafibre.fibre.analysis.DescriptorTable.ReferencedPartitionInfo;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.FunctionCallExpr;
+import io.datafibre.fibre.analysis.SlotDescriptor;
+import io.datafibre.fibre.analysis.SlotId;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.authentication.AuthenticationMgr;
+import io.datafibre.fibre.backup.Status;
+import io.datafibre.fibre.backup.mv.MvBackupInfo;
+import io.datafibre.fibre.backup.mv.MvBaseTableBackupInfo;
+import io.datafibre.fibre.backup.mv.MvRestoreContext;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.FeConstants;
+import io.datafibre.fibre.common.MaterializedViewExceptions;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.io.DeepCopy;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.util.DateUtils;
+import io.datafibre.fibre.common.util.PropertyAnalyzer;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.connector.ConnectorPartitionTraits;
+import io.datafibre.fibre.connector.ConnectorTableInfo;
+import io.datafibre.fibre.connector.PartitionUtil;
+import io.datafibre.fibre.persist.AlterMaterializedViewBaseTableInfosLog;
+import io.datafibre.fibre.persist.gson.GsonPostProcessable;
+import io.datafibre.fibre.persist.gson.GsonPreProcessable;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.privilege.PrivilegeBuiltinConstants;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.SqlModeHelper;
+import io.datafibre.fibre.scheduler.TableWithPartitions;
+import io.datafibre.fibre.scheduler.Task;
+import io.datafibre.fibre.scheduler.TaskBuilder;
+import io.datafibre.fibre.scheduler.TaskManager;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.server.RunMode;
+import io.datafibre.fibre.sql.analyzer.AnalyzeState;
+import io.datafibre.fibre.sql.analyzer.ExpressionAnalyzer;
+import io.datafibre.fibre.sql.analyzer.Field;
+import io.datafibre.fibre.sql.analyzer.RelationFields;
+import io.datafibre.fibre.sql.analyzer.RelationId;
+import io.datafibre.fibre.sql.analyzer.Scope;
+import io.datafibre.fibre.sql.ast.UserIdentity;
+import io.datafibre.fibre.sql.common.PartitionRange;
+import io.datafibre.fibre.sql.common.RangePartitionDiff;
+import io.datafibre.fibre.sql.common.SyncPartitionUtils;
+import io.datafibre.fibre.sql.common.UnsupportedException;
+import io.datafibre.fibre.sql.optimizer.CachingMvPlanContextBuilder;
+import io.datafibre.fibre.sql.optimizer.Utils;
+import io.datafibre.fibre.sql.parser.SqlParser;
+import io.datafibre.fibre.sql.plan.ExecPlan;
+import io.datafibre.fibre.statistic.StatsConstants;
+import io.datafibre.fibre.thrift.TTableDescriptor;
+import io.datafibre.fibre.thrift.TTableType;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.collections4.MapUtils;
@@ -104,9 +104,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static com.starrocks.backup.mv.MVRestoreUpdater.checkMvDefinedQuery;
-import static com.starrocks.backup.mv.MVRestoreUpdater.restoreBaseTableInfoIfNoRestored;
-import static com.starrocks.backup.mv.MVRestoreUpdater.restoreBaseTableInfoIfRestored;
+import static io.datafibre.fibre.backup.mv.MVRestoreUpdater.checkMvDefinedQuery;
+import static io.datafibre.fibre.backup.mv.MVRestoreUpdater.restoreBaseTableInfoIfNoRestored;
+import static io.datafibre.fibre.backup.mv.MVRestoreUpdater.restoreBaseTableInfoIfRestored;
 
 /**
  * meta structure for materialized view
@@ -151,7 +151,7 @@ public class MaterializedView extends OlapTable implements GsonPreProcessable, G
             this.lastRefreshTime = lastRefreshTime;
         }
 
-        public static BasePartitionInfo fromExternalTable(com.starrocks.connector.PartitionInfo info) {
+        public static BasePartitionInfo fromExternalTable(io.datafibre.fibre.connector.PartitionInfo info) {
             // TODO: id and version
             return new BasePartitionInfo(-1, -1, info.getModifiedTime());
         }
@@ -1312,7 +1312,7 @@ public class MaterializedView extends OlapTable implements GsonPreProcessable, G
             Table table = tableInfo.getTableChecked();
             for (Map.Entry<Expr, SlotRef> entry : partitionExprMaps.entrySet()) {
                 SlotRef slotRef = entry.getValue();
-                if (com.starrocks.common.util.StringUtils.areTableNamesEqual(table,
+                if (io.datafibre.fibre.common.util.StringUtils.areTableNamesEqual(table,
                         slotRef.getTblNameWithoutAnalyzed().getTbl())) {
                     tableToJoinExprMap.put(table, entry.getKey());
                     break;
@@ -1328,7 +1328,7 @@ public class MaterializedView extends OlapTable implements GsonPreProcessable, G
             Table table = tableInfo.getTableChecked();
             for (Map.Entry<Expr, SlotRef> entry : partitionExprMaps.entrySet()) {
                 SlotRef slotRef = entry.getValue();
-                if (com.starrocks.common.util.StringUtils.areTableNamesEqual(table,
+                if (io.datafibre.fibre.common.util.StringUtils.areTableNamesEqual(table,
                         slotRef.getTblNameWithoutAnalyzed().getTbl())) {
                     tableToJoinExprMap.put(table, slotRef);
                     break;
@@ -1675,13 +1675,13 @@ public class MaterializedView extends OlapTable implements GsonPreProcessable, G
                     continue;
                 }
                 Column partitionColumn = partitionColumns.get(0);
-                if (com.starrocks.common.util.StringUtils.areColumnNamesEqual(slotRef.getColumnName(),
+                if (io.datafibre.fibre.common.util.StringUtils.areColumnNamesEqual(slotRef.getColumnName(),
                         partitionColumn.getName())) {
                     result.put(table, partitionColumn);
                 }
             } else {
                 for (Column partitionColumn : partitionColumns) {
-                    if (com.starrocks.common.util.StringUtils.areColumnNamesEqual(slotRef.getColumnName(),
+                    if (io.datafibre.fibre.common.util.StringUtils.areColumnNamesEqual(slotRef.getColumnName(),
                             partitionColumn.getName())) {
                         result.put(table, partitionColumn);
                     }

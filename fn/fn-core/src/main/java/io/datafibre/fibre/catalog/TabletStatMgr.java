@@ -32,33 +32,33 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.MaterializedIndex.IndexExtState;
-import com.starrocks.common.ClientPool;
-import com.starrocks.common.Config;
-import com.starrocks.common.util.FrontendDaemon;
-import com.starrocks.common.util.concurrent.lock.LockType;
-import com.starrocks.common.util.concurrent.lock.Locker;
-import com.starrocks.lake.LakeTablet;
-import com.starrocks.lake.Utils;
-import com.starrocks.proto.TabletStatRequest;
-import com.starrocks.proto.TabletStatRequest.TabletInfo;
-import com.starrocks.proto.TabletStatResponse;
-import com.starrocks.proto.TabletStatResponse.TabletStat;
-import com.starrocks.rpc.BrpcProxy;
-import com.starrocks.rpc.LakeService;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.server.RunMode;
-import com.starrocks.statistic.BasicStatsMeta;
-import com.starrocks.system.Backend;
-import com.starrocks.system.ComputeNode;
-import com.starrocks.thrift.BackendService;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.thrift.TTabletStat;
-import com.starrocks.thrift.TTabletStatResult;
+import io.datafibre.fibre.catalog.MaterializedIndex.IndexExtState;
+import io.datafibre.fibre.common.ClientPool;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.util.FrontendDaemon;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.lake.LakeTablet;
+import io.datafibre.fibre.lake.Utils;
+import io.datafibre.fibre.proto.TabletStatRequest;
+import io.datafibre.fibre.proto.TabletStatRequest.TabletInfo;
+import io.datafibre.fibre.proto.TabletStatResponse;
+import io.datafibre.fibre.proto.TabletStatResponse.TabletStat;
+import io.datafibre.fibre.rpc.BrpcProxy;
+import io.datafibre.fibre.rpc.LakeService;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.server.RunMode;
+import io.datafibre.fibre.statistic.BasicStatsMeta;
+import io.datafibre.fibre.system.Backend;
+import io.datafibre.fibre.system.ComputeNode;
+import io.datafibre.fibre.thrift.BackendService;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TTabletStat;
+import io.datafibre.fibre.thrift.TTabletStatResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

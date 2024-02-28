@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.analysis.Expr;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.ArrayList;
 import java.util.List;

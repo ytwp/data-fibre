@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package com.starrocks.connector;
+package io.datafibre.fibre.connector;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
 
 import java.util.ArrayList;
 import java.util.List;

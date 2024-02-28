@@ -12,20 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.hive;
+package io.datafibre.fibre.connector.hive;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.starrocks.common.Config;
-import com.starrocks.common.util.Util;
-import com.starrocks.connector.CachingRemoteFileConf;
-import com.starrocks.connector.CachingRemoteFileIO;
-import com.starrocks.connector.HdfsEnvironment;
-import com.starrocks.connector.MetastoreType;
-import com.starrocks.connector.ReentrantExecutor;
-import com.starrocks.connector.RemoteFileIO;
-import com.starrocks.sql.analyzer.SemanticException;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.util.Util;
+import io.datafibre.fibre.connector.CachingRemoteFileConf;
+import io.datafibre.fibre.connector.CachingRemoteFileIO;
+import io.datafibre.fibre.connector.HdfsEnvironment;
+import io.datafibre.fibre.connector.MetastoreType;
+import io.datafibre.fibre.connector.ReentrantExecutor;
+import io.datafibre.fibre.connector.RemoteFileIO;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
 
 import java.util.List;
 import java.util.Map;
@@ -33,9 +33,9 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.starrocks.connector.CachingRemoteFileIO.NEVER_REFRESH;
-import static com.starrocks.connector.hive.HiveConnector.HIVE_METASTORE_TYPE;
-import static com.starrocks.connector.hive.HiveConnector.HIVE_METASTORE_URIS;
+import static io.datafibre.fibre.connector.CachingRemoteFileIO.NEVER_REFRESH;
+import static io.datafibre.fibre.connector.hive.HiveConnector.HIVE_METASTORE_TYPE;
+import static io.datafibre.fibre.connector.hive.HiveConnector.HIVE_METASTORE_URIS;
 
 public class HiveConnectorInternalMgr {
     public static final List<String> SUPPORTED_METASTORE_TYPE = Lists.newArrayList("hive", "glue", "dlf");

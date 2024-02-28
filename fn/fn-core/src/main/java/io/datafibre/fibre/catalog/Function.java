@@ -32,21 +32,21 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.FunctionName;
-import com.starrocks.common.Pair;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.sql.ast.HdfsURI;
-import com.starrocks.thrift.TFunction;
-import com.starrocks.thrift.TFunctionBinaryType;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.FunctionName;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.sql.ast.HdfsURI;
+import io.datafibre.fibre.thrift.TFunction;
+import io.datafibre.fibre.thrift.TFunctionBinaryType;
 import org.apache.commons.lang.ArrayUtils;
 
 import java.io.DataInput;
@@ -58,8 +58,8 @@ import java.util.Vector;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
-import static com.starrocks.common.io.IOUtils.readOptionStringOrNull;
-import static com.starrocks.common.io.IOUtils.writeOptionString;
+import static io.datafibre.fibre.common.io.IOUtils.readOptionStringOrNull;
+import static io.datafibre.fibre.common.io.IOUtils.writeOptionString;
 
 /**
  * Base class for all functions.

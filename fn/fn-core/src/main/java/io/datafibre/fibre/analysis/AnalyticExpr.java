@@ -32,19 +32,19 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.analysis;
+package io.datafibre.fibre.analysis;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.AggregateFunction;
-import com.starrocks.catalog.Function;
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.sql.ast.AstVisitor;
-import com.starrocks.sql.parser.NodePosition;
-import com.starrocks.thrift.TExprNode;
+import io.datafibre.fibre.catalog.AggregateFunction;
+import io.datafibre.fibre.catalog.Function;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.sql.ast.AstVisitor;
+import io.datafibre.fibre.sql.parser.NodePosition;
+import io.datafibre.fibre.thrift.TExprNode;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.ArrayList;

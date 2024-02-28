@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.credential;
+package io.datafibre.fibre.credential;
 
-import com.starrocks.catalog.JDBCResource;
-import com.starrocks.connector.iceberg.rest.IcebergRESTCatalog;
-import com.starrocks.connector.odps.OdpsProperties;
-import com.starrocks.credential.azure.AzureCloudConfigurationProvider;
-import com.starrocks.credential.azure.AzureStoragePath;
+import io.datafibre.fibre.catalog.JDBCResource;
+import io.datafibre.fibre.connector.iceberg.rest.IcebergRESTCatalog;
+import io.datafibre.fibre.connector.odps.OdpsProperties;
+import io.datafibre.fibre.credential.azure.AzureCloudConfigurationProvider;
+import io.datafibre.fibre.credential.azure.AzureStoragePath;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

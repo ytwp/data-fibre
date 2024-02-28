@@ -15,18 +15,18 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.proc;
+package io.datafibre.fibre.common.proc;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.EsTable;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.util.ListComparator;
-import com.starrocks.common.util.concurrent.lock.LockType;
-import com.starrocks.common.util.concurrent.lock.Locker;
-import com.starrocks.connector.elasticsearch.EsShardPartitions;
-import com.starrocks.connector.elasticsearch.EsShardRouting;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.EsTable;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.util.ListComparator;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.connector.elasticsearch.EsShardPartitions;
+import io.datafibre.fibre.connector.elasticsearch.EsShardRouting;
 
 import java.util.ArrayList;
 import java.util.Collections;

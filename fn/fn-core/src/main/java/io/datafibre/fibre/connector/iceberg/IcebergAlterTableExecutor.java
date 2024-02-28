@@ -12,24 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.iceberg;
+package io.datafibre.fibre.connector.iceberg;
 
-import com.starrocks.analysis.ColumnPosition;
-import com.starrocks.catalog.Column;
-import com.starrocks.common.DdlException;
-import com.starrocks.connector.ConnectorAlterTableExecutor;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.ast.AddColumnClause;
-import com.starrocks.sql.ast.AddColumnsClause;
-import com.starrocks.sql.ast.AlterTableCommentClause;
-import com.starrocks.sql.ast.AlterTableStmt;
-import com.starrocks.sql.ast.ColumnDef;
-import com.starrocks.sql.ast.ColumnRenameClause;
-import com.starrocks.sql.ast.DropColumnClause;
-import com.starrocks.sql.ast.ModifyColumnClause;
-import com.starrocks.sql.ast.ModifyTablePropertiesClause;
-import com.starrocks.sql.ast.TableRenameClause;
+import io.datafibre.fibre.analysis.ColumnPosition;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.connector.ConnectorAlterTableExecutor;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.ast.AddColumnClause;
+import io.datafibre.fibre.sql.ast.AddColumnsClause;
+import io.datafibre.fibre.sql.ast.AlterTableCommentClause;
+import io.datafibre.fibre.sql.ast.AlterTableStmt;
+import io.datafibre.fibre.sql.ast.ColumnDef;
+import io.datafibre.fibre.sql.ast.ColumnRenameClause;
+import io.datafibre.fibre.sql.ast.DropColumnClause;
+import io.datafibre.fibre.sql.ast.ModifyColumnClause;
+import io.datafibre.fibre.sql.ast.ModifyTablePropertiesClause;
+import io.datafibre.fibre.sql.ast.TableRenameClause;
 import org.apache.iceberg.FileFormat;
 import org.apache.iceberg.TableProperties;
 import org.apache.iceberg.Transaction;
@@ -42,12 +42,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.starrocks.analysis.OutFileClause.PARQUET_COMPRESSION_TYPE_MAP;
-import static com.starrocks.connector.iceberg.IcebergApiConverter.toIcebergColumnType;
-import static com.starrocks.connector.iceberg.IcebergMetadata.COMMENT;
-import static com.starrocks.connector.iceberg.IcebergMetadata.COMPRESSION_CODEC;
-import static com.starrocks.connector.iceberg.IcebergMetadata.FILE_FORMAT;
-import static com.starrocks.connector.iceberg.IcebergMetadata.LOCATION_PROPERTY;
+import static io.datafibre.fibre.analysis.OutFileClause.PARQUET_COMPRESSION_TYPE_MAP;
+import static io.datafibre.fibre.connector.iceberg.IcebergApiConverter.toIcebergColumnType;
+import static io.datafibre.fibre.connector.iceberg.IcebergMetadata.COMMENT;
+import static io.datafibre.fibre.connector.iceberg.IcebergMetadata.COMPRESSION_CODEC;
+import static io.datafibre.fibre.connector.iceberg.IcebergMetadata.FILE_FORMAT;
+import static io.datafibre.fibre.connector.iceberg.IcebergMetadata.LOCATION_PROPERTY;
 
 public class IcebergAlterTableExecutor extends ConnectorAlterTableExecutor {
     private org.apache.iceberg.Table table;

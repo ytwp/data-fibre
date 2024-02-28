@@ -13,17 +13,17 @@
 // limitations under the License.
 
 
-package com.starrocks.statistic;
+package io.datafibre.fibre.statistic;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.statistic.StatsConstants.AnalyzeType;
-import com.starrocks.statistic.StatsConstants.ScheduleStatus;
-import com.starrocks.statistic.StatsConstants.ScheduleType;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.statistic.StatsConstants.AnalyzeType;
+import io.datafibre.fibre.statistic.StatsConstants.ScheduleStatus;
+import io.datafibre.fibre.statistic.StatsConstants.ScheduleType;
 
 import java.io.DataInput;
 import java.io.DataOutput;

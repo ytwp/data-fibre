@@ -32,16 +32,16 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.analysis;
+package io.datafibre.fibre.analysis;
 
 import com.google.common.base.Strings;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.KeysType;
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.parser.NodePosition;
-import com.starrocks.sql.parser.ParsingException;
-import com.starrocks.sql.parser.StarRocksParser.IndexTypeContext;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.KeysType;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.parser.NodePosition;
+import io.datafibre.fibre.sql.parser.ParsingException;
+import io.datafibre.fibre.sql.parser.StarRocksParser.IndexTypeContext;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;

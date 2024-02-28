@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.elasticsearch;
+package io.datafibre.fibre.connector.elasticsearch;
 
-import com.starrocks.connector.config.Config;
-import com.starrocks.connector.config.ConnectorConfig;
+import io.datafibre.fibre.connector.config.Config;
+import io.datafibre.fibre.connector.config.ConnectorConfig;
 
-import static com.starrocks.catalog.EsTable.KEY_DOC_VALUE_SCAN;
-import static com.starrocks.catalog.EsTable.KEY_ES_NET_SSL;
-import static com.starrocks.catalog.EsTable.KEY_HOSTS;
-import static com.starrocks.catalog.EsTable.KEY_KEYWORD_SNIFF;
-import static com.starrocks.catalog.EsTable.KEY_PASSWORD;
-import static com.starrocks.catalog.EsTable.KEY_USER;
-import static com.starrocks.catalog.EsTable.KEY_WAN_ONLY;
+import static io.datafibre.fibre.catalog.EsTable.KEY_DOC_VALUE_SCAN;
+import static io.datafibre.fibre.catalog.EsTable.KEY_ES_NET_SSL;
+import static io.datafibre.fibre.catalog.EsTable.KEY_HOSTS;
+import static io.datafibre.fibre.catalog.EsTable.KEY_KEYWORD_SNIFF;
+import static io.datafibre.fibre.catalog.EsTable.KEY_PASSWORD;
+import static io.datafibre.fibre.catalog.EsTable.KEY_USER;
+import static io.datafibre.fibre.catalog.EsTable.KEY_WAN_ONLY;
 
 public class EsConfig extends ConnectorConfig {
 

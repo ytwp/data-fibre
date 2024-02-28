@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
@@ -42,25 +42,25 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.analysis.TableName;
-import com.starrocks.binlog.BinlogConfig;
-import com.starrocks.common.Config;
-import com.starrocks.common.FeConstants;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.common.util.PropertyAnalyzer;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.common.util.WriteQuorum;
-import com.starrocks.lake.StorageInfo;
-import com.starrocks.persist.OperationType;
-import com.starrocks.persist.gson.GsonPostProcessable;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.server.RunMode;
-import com.starrocks.sql.analyzer.AnalyzerUtils;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.thrift.TCompressionType;
-import com.starrocks.thrift.TPersistentIndexType;
-import com.starrocks.thrift.TWriteQuorumType;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.binlog.BinlogConfig;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.FeConstants;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.common.util.PropertyAnalyzer;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.common.util.WriteQuorum;
+import io.datafibre.fibre.lake.StorageInfo;
+import io.datafibre.fibre.persist.OperationType;
+import io.datafibre.fibre.persist.gson.GsonPostProcessable;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.server.RunMode;
+import io.datafibre.fibre.sql.analyzer.AnalyzerUtils;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.thrift.TCompressionType;
+import io.datafibre.fibre.thrift.TPersistentIndexType;
+import io.datafibre.fibre.thrift.TWriteQuorumType;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;

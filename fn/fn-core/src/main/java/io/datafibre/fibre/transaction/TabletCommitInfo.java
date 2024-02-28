@@ -32,12 +32,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.transaction;
+package io.datafibre.fibre.transaction;
 
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
-import com.starrocks.common.io.Writable;
-import com.starrocks.thrift.TTabletCommitInfo;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.thrift.TTabletCommitInfo;
 
 import java.io.DataInput;
 import java.io.DataOutput;

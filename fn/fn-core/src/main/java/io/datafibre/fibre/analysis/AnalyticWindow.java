@@ -32,15 +32,15 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.analysis;
+package io.datafibre.fibre.analysis;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.sql.parser.NodePosition;
-import com.starrocks.thrift.TAnalyticWindow;
-import com.starrocks.thrift.TAnalyticWindowBoundary;
-import com.starrocks.thrift.TAnalyticWindowBoundaryType;
-import com.starrocks.thrift.TAnalyticWindowType;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.sql.parser.NodePosition;
+import io.datafibre.fibre.thrift.TAnalyticWindow;
+import io.datafibre.fibre.thrift.TAnalyticWindowBoundary;
+import io.datafibre.fibre.thrift.TAnalyticWindowBoundaryType;
+import io.datafibre.fibre.thrift.TAnalyticWindowType;
 
 import java.math.BigDecimal;
 import java.util.Objects;

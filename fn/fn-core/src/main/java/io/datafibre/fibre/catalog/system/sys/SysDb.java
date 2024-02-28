@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.catalog.system.sys;
+package io.datafibre.fibre.catalog.system.sys;
 
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.system.SystemId;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.system.SystemId;
 
 import java.io.DataInput;
 import java.io.DataOutput;

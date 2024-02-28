@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer;
+package io.datafibre.fibre.sql.optimizer;
 
-import com.starrocks.sql.optimizer.rule.RuleSetType;
-import com.starrocks.sql.optimizer.rule.RuleType;
+import io.datafibre.fibre.sql.optimizer.rule.RuleSetType;
+import io.datafibre.fibre.sql.optimizer.rule.RuleType;
 
 import java.util.BitSet;
 

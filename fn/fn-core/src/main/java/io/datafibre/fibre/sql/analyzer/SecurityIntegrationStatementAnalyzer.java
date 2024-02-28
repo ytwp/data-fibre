@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
-import com.starrocks.authentication.LDAPSecurityIntegration;
-import com.starrocks.authentication.SecurityIntegration;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.ast.AstVisitor;
-import com.starrocks.sql.ast.CreateSecurityIntegrationStatement;
-import com.starrocks.sql.ast.StatementBase;
+import io.datafibre.fibre.authentication.LDAPSecurityIntegration;
+import io.datafibre.fibre.authentication.SecurityIntegration;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.ast.AstVisitor;
+import io.datafibre.fibre.sql.ast.CreateSecurityIntegrationStatement;
+import io.datafibre.fibre.sql.ast.StatementBase;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,7 +27,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static com.starrocks.authentication.LDAPSecurityIntegration.LDAP_SEC_INTEGRATION_PROP_CACHE_REFRESH_INTERVAL_KEY;
+import static io.datafibre.fibre.authentication.LDAPSecurityIntegration.LDAP_SEC_INTEGRATION_PROP_CACHE_REFRESH_INTERVAL_KEY;
 
 public class SecurityIntegrationStatementAnalyzer {
 

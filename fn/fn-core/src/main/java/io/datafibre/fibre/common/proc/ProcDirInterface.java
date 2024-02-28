@@ -32,9 +32,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.proc;
+package io.datafibre.fibre.common.proc;
 
-import com.starrocks.common.AnalysisException;
+import io.datafibre.fibre.common.AnalysisException;
 
 public interface ProcDirInterface extends ProcNodeInterface {
     boolean register(String name, ProcNodeInterface node);

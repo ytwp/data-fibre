@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.task;
+package io.datafibre.fibre.task;
 
 import com.google.common.collect.Lists;
-import com.starrocks.binlog.BinlogConfig;
-import com.starrocks.catalog.TabletInvertedIndex;
-import com.starrocks.catalog.TabletMeta;
-import com.starrocks.common.Pair;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.thrift.TTabletMetaInfo;
-import com.starrocks.thrift.TTabletMetaType;
+import io.datafibre.fibre.binlog.BinlogConfig;
+import io.datafibre.fibre.catalog.TabletInvertedIndex;
+import io.datafibre.fibre.catalog.TabletMeta;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.thrift.TTabletMetaInfo;
+import io.datafibre.fibre.thrift.TTabletMetaType;
 
 import java.util.List;
 import java.util.Set;

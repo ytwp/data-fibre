@@ -13,12 +13,12 @@
 // limitations under the License.
 
 
-package com.starrocks.scheduler;
+package io.datafibre.fibre.scheduler;
 
-import com.starrocks.common.Config;
-import com.starrocks.common.ThreadPoolManager;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.scheduler.persist.TaskRunStatus;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.ThreadPoolManager;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.scheduler.persist.TaskRunStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

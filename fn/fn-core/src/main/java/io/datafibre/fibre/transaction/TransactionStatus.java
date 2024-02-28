@@ -15,9 +15,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.transaction;
+package io.datafibre.fibre.transaction;
 
-import com.starrocks.thrift.TTransactionStatus;
+import io.datafibre.fibre.thrift.TTransactionStatus;
 
 import java.util.Arrays;
 

@@ -13,18 +13,18 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.iceberg.rest;
+package io.datafibre.fibre.connector.iceberg.rest;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
-import com.starrocks.catalog.Database;
-import com.starrocks.common.MetaNotFoundException;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.connector.iceberg.IcebergCatalog;
-import com.starrocks.connector.iceberg.IcebergCatalogType;
-import com.starrocks.connector.iceberg.cost.IcebergMetricsReporter;
-import com.starrocks.connector.iceberg.io.IcebergCachingFileIO;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.common.MetaNotFoundException;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.connector.iceberg.IcebergCatalog;
+import io.datafibre.fibre.connector.iceberg.IcebergCatalogType;
+import io.datafibre.fibre.connector.iceberg.cost.IcebergMetricsReporter;
+import io.datafibre.fibre.connector.iceberg.io.IcebergCachingFileIO;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -46,9 +46,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.starrocks.connector.ConnectorTableId.CONNECTOR_ID_GENERATOR;
-import static com.starrocks.connector.iceberg.IcebergConnector.ICEBERG_CUSTOM_PROPERTIES_PREFIX;
-import static com.starrocks.connector.iceberg.IcebergMetadata.LOCATION_PROPERTY;
+import static io.datafibre.fibre.connector.ConnectorTableId.CONNECTOR_ID_GENERATOR;
+import static io.datafibre.fibre.connector.iceberg.IcebergConnector.ICEBERG_CUSTOM_PROPERTIES_PREFIX;
+import static io.datafibre.fibre.connector.iceberg.IcebergMetadata.LOCATION_PROPERTY;
 
 public class IcebergRESTCatalog implements IcebergCatalog {
 

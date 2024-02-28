@@ -13,17 +13,17 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.rule.mv;
+package io.datafibre.fibre.sql.optimizer.rule.mv;
 
-import com.starrocks.catalog.KeysType;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Table;
-import com.starrocks.sql.optimizer.OptExpression;
-import com.starrocks.sql.optimizer.OptExpressionVisitor;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalOlapScanOperator;
-import com.starrocks.sql.optimizer.operator.stream.PhysicalStreamAggOperator;
-import com.starrocks.sql.optimizer.operator.stream.PhysicalStreamJoinOperator;
-import com.starrocks.sql.optimizer.operator.stream.PhysicalStreamScanOperator;
+import io.datafibre.fibre.catalog.KeysType;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.sql.optimizer.OptExpression;
+import io.datafibre.fibre.sql.optimizer.OptExpressionVisitor;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalOlapScanOperator;
+import io.datafibre.fibre.sql.optimizer.operator.stream.PhysicalStreamAggOperator;
+import io.datafibre.fibre.sql.optimizer.operator.stream.PhysicalStreamJoinOperator;
+import io.datafibre.fibre.sql.optimizer.operator.stream.PhysicalStreamScanOperator;
 import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.EnumSet;

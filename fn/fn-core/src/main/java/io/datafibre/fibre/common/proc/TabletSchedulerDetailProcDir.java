@@ -32,15 +32,15 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.proc;
+package io.datafibre.fibre.common.proc;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.Replica;
-import com.starrocks.catalog.TabletInvertedIndex;
-import com.starrocks.clone.TabletScheduler;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.catalog.Replica;
+import io.datafibre.fibre.catalog.TabletInvertedIndex;
+import io.datafibre.fibre.clone.TabletScheduler;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.server.GlobalStateMgr;
 
 import java.util.List;
 

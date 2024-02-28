@@ -32,12 +32,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common;
+package io.datafibre.fibre.common;
 
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.common.ErrorType;
-import com.starrocks.sql.optimizer.validate.ValidateException;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.common.ErrorType;
+import io.datafibre.fibre.sql.optimizer.validate.ValidateException;
 
 // Used to report error happened when execute SQL of user
 public class ErrorReport {

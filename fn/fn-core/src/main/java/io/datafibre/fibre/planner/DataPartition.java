@@ -32,19 +32,19 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.Analyzer;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.ExprSubstitutionMap;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.thrift.TDataPartition;
-import com.starrocks.thrift.TExplainLevel;
-import com.starrocks.thrift.TPartitionType;
+import io.datafibre.fibre.analysis.Analyzer;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.ExprSubstitutionMap;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.thrift.TDataPartition;
+import io.datafibre.fibre.thrift.TExplainLevel;
+import io.datafibre.fibre.thrift.TPartitionType;
 
 import java.util.List;
 

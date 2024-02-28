@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.rule.mv;
+package io.datafibre.fibre.sql.optimizer.rule.mv;
 
 public class MVOperatorProperty {
     private KeyInference.KeyPropertySet keySet;

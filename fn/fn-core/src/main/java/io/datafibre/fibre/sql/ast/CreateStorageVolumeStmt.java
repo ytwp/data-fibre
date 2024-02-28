@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
 import com.google.common.base.Strings;
-import com.starrocks.common.util.PrintableMap;
-import com.starrocks.credential.CloudConfigurationConstants;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.common.util.PrintableMap;
+import io.datafibre.fibre.credential.CloudConfigurationConstants;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.List;
 import java.util.Map;

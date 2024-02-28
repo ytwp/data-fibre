@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
 import com.google.common.collect.ImmutableSet;
-import com.starrocks.common.util.LoadPriority;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.ast.AlterLoadStmt;
-import com.starrocks.sql.ast.LoadStmt;
+import io.datafibre.fibre.common.util.LoadPriority;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.ast.AlterLoadStmt;
+import io.datafibre.fibre.sql.ast.LoadStmt;
 
 import java.util.Map;
 import java.util.Optional;
 
-import static com.starrocks.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
+import static io.datafibre.fibre.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
 
 public class AlterLoadAnalyzer {
 

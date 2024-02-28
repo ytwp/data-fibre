@@ -32,14 +32,14 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.persist;
+package io.datafibre.fibre.persist;
 
 import com.google.common.collect.Range;
-import com.starrocks.catalog.DataProperty;
-import com.starrocks.catalog.Partition;
-import com.starrocks.catalog.PartitionKey;
-import com.starrocks.common.io.Writable;
-import com.starrocks.common.util.RangeUtils;
+import io.datafibre.fibre.catalog.DataProperty;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.catalog.PartitionKey;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.common.util.RangeUtils;
 
 import java.io.DataInput;
 import java.io.DataOutput;

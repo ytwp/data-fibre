@@ -11,16 +11,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.starrocks.sql.optimizer.operator;
+package io.datafibre.fibre.sql.optimizer.operator;
 
-import com.starrocks.analysis.Expr;
-import com.starrocks.catalog.ForeignKeyConstraint;
-import com.starrocks.catalog.UniqueConstraint;
-import com.starrocks.sql.optimizer.base.ColumnRefSet;
-import com.starrocks.sql.optimizer.operator.scalar.BinaryPredicateOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.plan.ExecPlan;
-import com.starrocks.sql.plan.ScalarOperatorToExpr;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.catalog.ForeignKeyConstraint;
+import io.datafibre.fibre.catalog.UniqueConstraint;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.BinaryPredicateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.plan.ExecPlan;
+import io.datafibre.fibre.sql.plan.ScalarOperatorToExpr;
 import org.apache.hadoop.shaded.com.google.common.collect.Maps;
 
 import java.util.Map;

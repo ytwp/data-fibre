@@ -13,37 +13,37 @@
 // limitations under the License.
 
 
-package com.starrocks.scheduler.mv;
+package io.datafibre.fibre.scheduler.mv;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
-import com.starrocks.analysis.KeysDesc;
-import com.starrocks.analysis.TableName;
-import com.starrocks.analysis.TypeDef;
-import com.starrocks.catalog.CatalogUtils;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.DistributionInfo;
-import com.starrocks.catalog.HashDistributionInfo;
-import com.starrocks.catalog.KeysType;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.catalog.PartitionInfo;
-import com.starrocks.common.DdlException;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.ColumnDef;
-import com.starrocks.sql.ast.CreateMaterializedViewStatement;
-import com.starrocks.sql.ast.CreateTableStmt;
-import com.starrocks.sql.ast.DistributionDesc;
-import com.starrocks.sql.ast.PartitionDesc;
-import com.starrocks.sql.common.EngineType;
-import com.starrocks.sql.common.UnsupportedException;
-import com.starrocks.sql.optimizer.OptExpression;
-import com.starrocks.sql.optimizer.OptExpressionVisitor;
-import com.starrocks.sql.optimizer.base.ColumnRefFactory;
-import com.starrocks.sql.optimizer.base.ColumnRefSet;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.rule.mv.KeyInference;
-import com.starrocks.sql.optimizer.rule.mv.MVOperatorProperty;
-import com.starrocks.sql.plan.ExecPlan;
+import io.datafibre.fibre.analysis.KeysDesc;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.analysis.TypeDef;
+import io.datafibre.fibre.catalog.CatalogUtils;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.DistributionInfo;
+import io.datafibre.fibre.catalog.HashDistributionInfo;
+import io.datafibre.fibre.catalog.KeysType;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.catalog.PartitionInfo;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.ColumnDef;
+import io.datafibre.fibre.sql.ast.CreateMaterializedViewStatement;
+import io.datafibre.fibre.sql.ast.CreateTableStmt;
+import io.datafibre.fibre.sql.ast.DistributionDesc;
+import io.datafibre.fibre.sql.ast.PartitionDesc;
+import io.datafibre.fibre.sql.common.EngineType;
+import io.datafibre.fibre.sql.common.UnsupportedException;
+import io.datafibre.fibre.sql.optimizer.OptExpression;
+import io.datafibre.fibre.sql.optimizer.OptExpressionVisitor;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefFactory;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.rule.mv.KeyInference;
+import io.datafibre.fibre.sql.optimizer.rule.mv.MVOperatorProperty;
+import io.datafibre.fibre.sql.plan.ExecPlan;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

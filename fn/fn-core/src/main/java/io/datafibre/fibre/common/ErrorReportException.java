@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.common;
+package io.datafibre.fibre.common;
 
-import com.starrocks.qe.ConnectContext;
+import io.datafibre.fibre.qe.ConnectContext;
 
 public class ErrorReportException extends RuntimeException {
     private final ErrorCode errorCode;

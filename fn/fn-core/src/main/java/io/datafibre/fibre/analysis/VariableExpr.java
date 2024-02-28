@@ -32,12 +32,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.analysis;
+package io.datafibre.fibre.analysis;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.starrocks.sql.ast.AstVisitor;
-import com.starrocks.sql.ast.SetType;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.sql.ast.AstVisitor;
+import io.datafibre.fibre.sql.ast.SetType;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.Objects;
 

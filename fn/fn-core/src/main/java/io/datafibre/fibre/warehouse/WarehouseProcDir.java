@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.warehouse;
+package io.datafibre.fibre.warehouse;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.proc.BaseProcResult;
-import com.starrocks.common.proc.ProcDirInterface;
-import com.starrocks.common.proc.ProcNodeInterface;
-import com.starrocks.common.proc.ProcResult;
-import com.starrocks.server.WarehouseManager;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.proc.BaseProcResult;
+import io.datafibre.fibre.common.proc.ProcDirInterface;
+import io.datafibre.fibre.common.proc.ProcNodeInterface;
+import io.datafibre.fibre.common.proc.ProcResult;
+import io.datafibre.fibre.server.WarehouseManager;
 
 import java.util.List;
 

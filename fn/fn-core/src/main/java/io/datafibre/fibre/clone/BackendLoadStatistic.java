@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.clone;
+package io.datafibre.fibre.clone;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -40,18 +40,18 @@ import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.catalog.DiskInfo;
-import com.starrocks.catalog.DiskInfo.DiskState;
-import com.starrocks.catalog.TabletInvertedIndex;
-import com.starrocks.clone.BackendsFitStatus.ErrCode;
-import com.starrocks.common.Config;
-import com.starrocks.common.Pair;
-import com.starrocks.common.util.DebugUtil;
-import com.starrocks.monitor.unit.ByteSizeValue;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.system.Backend;
-import com.starrocks.system.SystemInfoService;
-import com.starrocks.thrift.TStorageMedium;
+import io.datafibre.fibre.catalog.DiskInfo;
+import io.datafibre.fibre.catalog.DiskInfo.DiskState;
+import io.datafibre.fibre.catalog.TabletInvertedIndex;
+import io.datafibre.fibre.clone.BackendsFitStatus.ErrCode;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.util.DebugUtil;
+import io.datafibre.fibre.monitor.unit.ByteSizeValue;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.system.Backend;
+import io.datafibre.fibre.system.SystemInfoService;
+import io.datafibre.fibre.thrift.TStorageMedium;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

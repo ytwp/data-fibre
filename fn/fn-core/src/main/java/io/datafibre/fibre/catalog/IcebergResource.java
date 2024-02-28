@@ -13,22 +13,22 @@
 // limitations under the License.
 
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.proc.BaseProcResult;
-import com.starrocks.connector.iceberg.IcebergCatalogType;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.proc.BaseProcResult;
+import io.datafibre.fibre.connector.iceberg.IcebergCatalogType;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
 
-import static com.starrocks.common.util.Util.validateMetastoreUris;
+import static io.datafibre.fibre.common.util.Util.validateMetastoreUris;
 
 /**
  * Iceberg resource for external Iceberg table

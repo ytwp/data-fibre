@@ -12,25 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.common;
+package io.datafibre.fibre.sql.common;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.catalog.PartitionInfo;
-import com.starrocks.catalog.PartitionKey;
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.catalog.RangePartitionInfo;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.NotImplementedException;
-import com.starrocks.common.util.RangeUtils;
-import com.starrocks.scheduler.TaskRun;
-import com.starrocks.scheduler.TaskRunContext;
-import com.starrocks.sql.analyzer.SemanticException;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.catalog.PartitionInfo;
+import io.datafibre.fibre.catalog.PartitionKey;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.catalog.RangePartitionInfo;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.NotImplementedException;
+import io.datafibre.fibre.common.util.RangeUtils;
+import io.datafibre.fibre.scheduler.TaskRun;
+import io.datafibre.fibre.scheduler.TaskRunContext;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

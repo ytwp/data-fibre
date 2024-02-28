@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.journal.bdbje;
+package io.datafibre.fibre.journal.bdbje;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.sleepycat.bind.tuple.TupleBinding;
@@ -41,14 +41,14 @@ import com.sleepycat.je.DatabaseEntry;
 import com.sleepycat.je.DatabaseException;
 import com.sleepycat.je.OperationStatus;
 import com.sleepycat.je.Transaction;
-import com.starrocks.common.Pair;
-import com.starrocks.common.io.DataOutputBuffer;
-import com.starrocks.journal.Journal;
-import com.starrocks.journal.JournalCursor;
-import com.starrocks.journal.JournalException;
-import com.starrocks.journal.JournalInconsistentException;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.staros.StarMgrServer;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.io.DataOutputBuffer;
+import io.datafibre.fibre.journal.Journal;
+import io.datafibre.fibre.journal.JournalCursor;
+import io.datafibre.fibre.journal.JournalException;
+import io.datafibre.fibre.journal.JournalInconsistentException;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.staros.StarMgrServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

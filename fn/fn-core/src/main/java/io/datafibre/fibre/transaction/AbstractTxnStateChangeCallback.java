@@ -15,9 +15,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.transaction;
+package io.datafibre.fibre.transaction;
 
-import com.starrocks.common.UserException;
+import io.datafibre.fibre.common.UserException;
 
 public abstract class AbstractTxnStateChangeCallback implements TxnStateChangeCallback {
     @Override

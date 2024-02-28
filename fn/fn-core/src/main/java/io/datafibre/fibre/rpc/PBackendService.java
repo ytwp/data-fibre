@@ -12,30 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.rpc;
+package io.datafibre.fibre.rpc;
 
 import com.baidu.jprotobuf.pbrpc.ProtobufRPC;
-import com.starrocks.proto.ExecuteCommandRequestPB;
-import com.starrocks.proto.ExecuteCommandResultPB;
-import com.starrocks.proto.PCancelPlanFragmentRequest;
-import com.starrocks.proto.PCancelPlanFragmentResult;
-import com.starrocks.proto.PCollectQueryStatisticsResult;
-import com.starrocks.proto.PExecBatchPlanFragmentsResult;
-import com.starrocks.proto.PExecPlanFragmentResult;
-import com.starrocks.proto.PExecShortCircuitResult;
-import com.starrocks.proto.PFetchDataResult;
-import com.starrocks.proto.PGetFileSchemaResult;
-import com.starrocks.proto.PListFailPointResponse;
-import com.starrocks.proto.PMVMaintenanceTaskResult;
-import com.starrocks.proto.PProcessDictionaryCacheRequest;
-import com.starrocks.proto.PProcessDictionaryCacheResult;
-import com.starrocks.proto.PProxyRequest;
-import com.starrocks.proto.PProxyResult;
-import com.starrocks.proto.PPulsarProxyRequest;
-import com.starrocks.proto.PPulsarProxyResult;
-import com.starrocks.proto.PTriggerProfileReportResult;
-import com.starrocks.proto.PUpdateFailPointStatusRequest;
-import com.starrocks.proto.PUpdateFailPointStatusResponse;
+import io.datafibre.fibre.proto.ExecuteCommandRequestPB;
+import io.datafibre.fibre.proto.ExecuteCommandResultPB;
+import io.datafibre.fibre.proto.PCancelPlanFragmentRequest;
+import io.datafibre.fibre.proto.PCancelPlanFragmentResult;
+import io.datafibre.fibre.proto.PCollectQueryStatisticsResult;
+import io.datafibre.fibre.proto.PExecBatchPlanFragmentsResult;
+import io.datafibre.fibre.proto.PExecPlanFragmentResult;
+import io.datafibre.fibre.proto.PExecShortCircuitResult;
+import io.datafibre.fibre.proto.PFetchDataResult;
+import io.datafibre.fibre.proto.PGetFileSchemaResult;
+import io.datafibre.fibre.proto.PListFailPointResponse;
+import io.datafibre.fibre.proto.PMVMaintenanceTaskResult;
+import io.datafibre.fibre.proto.PProcessDictionaryCacheRequest;
+import io.datafibre.fibre.proto.PProcessDictionaryCacheResult;
+import io.datafibre.fibre.proto.PProxyRequest;
+import io.datafibre.fibre.proto.PProxyResult;
+import io.datafibre.fibre.proto.PPulsarProxyRequest;
+import io.datafibre.fibre.proto.PPulsarProxyResult;
+import io.datafibre.fibre.proto.PTriggerProfileReportResult;
+import io.datafibre.fibre.proto.PUpdateFailPointStatusRequest;
+import io.datafibre.fibre.proto.PUpdateFailPointStatusResponse;
 
 import java.util.concurrent.Future;
 

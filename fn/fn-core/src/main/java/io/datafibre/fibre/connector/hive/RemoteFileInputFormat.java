@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.hive;
+package io.datafibre.fibre.connector.hive;
 
 import com.google.common.collect.ImmutableMap;
-import com.starrocks.thrift.THdfsFileFormat;
+import io.datafibre.fibre.thrift.THdfsFileFormat;
 
-import static com.starrocks.connector.hive.HiveClassNames.AVRO_INPUT_FORMAT_CLASS;
-import static com.starrocks.connector.hive.HiveClassNames.HUDI_PARQUET_INPUT_FORMAT;
-import static com.starrocks.connector.hive.HiveClassNames.MAPRED_PARQUET_INPUT_FORMAT_CLASS;
-import static com.starrocks.connector.hive.HiveClassNames.ORC_INPUT_FORMAT_CLASS;
-import static com.starrocks.connector.hive.HiveClassNames.RCFILE_INPUT_FORMAT_CLASS;
-import static com.starrocks.connector.hive.HiveClassNames.SEQUENCE_INPUT_FORMAT_CLASS;
-import static com.starrocks.connector.hive.HiveClassNames.TEXT_INPUT_FORMAT_CLASS;
+import static io.datafibre.fibre.connector.hive.HiveClassNames.AVRO_INPUT_FORMAT_CLASS;
+import static io.datafibre.fibre.connector.hive.HiveClassNames.HUDI_PARQUET_INPUT_FORMAT;
+import static io.datafibre.fibre.connector.hive.HiveClassNames.MAPRED_PARQUET_INPUT_FORMAT_CLASS;
+import static io.datafibre.fibre.connector.hive.HiveClassNames.ORC_INPUT_FORMAT_CLASS;
+import static io.datafibre.fibre.connector.hive.HiveClassNames.RCFILE_INPUT_FORMAT_CLASS;
+import static io.datafibre.fibre.connector.hive.HiveClassNames.SEQUENCE_INPUT_FORMAT_CLASS;
+import static io.datafibre.fibre.connector.hive.HiveClassNames.TEXT_INPUT_FORMAT_CLASS;
 
 public enum RemoteFileInputFormat {
     PARQUET,

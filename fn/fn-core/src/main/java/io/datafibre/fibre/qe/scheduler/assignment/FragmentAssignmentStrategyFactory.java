@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.qe.scheduler.assignment;
+package io.datafibre.fibre.qe.scheduler.assignment;
 
-import com.starrocks.planner.PlanNode;
-import com.starrocks.planner.ScanNode;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.scheduler.WorkerProvider;
-import com.starrocks.qe.scheduler.dag.ExecutionDAG;
-import com.starrocks.qe.scheduler.dag.ExecutionFragment;
-import com.starrocks.qe.scheduler.dag.JobSpec;
+import io.datafibre.fibre.planner.PlanNode;
+import io.datafibre.fibre.planner.ScanNode;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.scheduler.WorkerProvider;
+import io.datafibre.fibre.qe.scheduler.dag.ExecutionDAG;
+import io.datafibre.fibre.qe.scheduler.dag.ExecutionFragment;
+import io.datafibre.fibre.qe.scheduler.dag.JobSpec;
 
 import java.util.Random;
 

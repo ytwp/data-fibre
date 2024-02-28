@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.monitor.jvm;
+package io.datafibre.fibre.monitor.jvm;
 
 /**
  * JVM heap generation name

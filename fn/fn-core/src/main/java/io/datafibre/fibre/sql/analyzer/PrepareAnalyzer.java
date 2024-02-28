@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.PrepareStmtContext;
-import com.starrocks.sql.ast.ExecuteStmt;
-import com.starrocks.sql.ast.PrepareStmt;
-import com.starrocks.sql.ast.QueryStatement;
-import com.starrocks.sql.ast.StatementBase;
-import com.starrocks.sql.common.ErrorType;
-import com.starrocks.sql.common.StarRocksPlannerException;
-import com.starrocks.sql.optimizer.validate.ValidateException;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.PrepareStmtContext;
+import io.datafibre.fibre.sql.ast.ExecuteStmt;
+import io.datafibre.fibre.sql.ast.PrepareStmt;
+import io.datafibre.fibre.sql.ast.QueryStatement;
+import io.datafibre.fibre.sql.ast.StatementBase;
+import io.datafibre.fibre.sql.common.ErrorType;
+import io.datafibre.fibre.sql.common.StarRocksPlannerException;
+import io.datafibre.fibre.sql.optimizer.validate.ValidateException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

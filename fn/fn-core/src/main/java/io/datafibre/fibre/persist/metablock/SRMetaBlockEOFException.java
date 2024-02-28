@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.persist.metablock;
+package io.datafibre.fibre.persist.metablock;
 
 /**
  * This exception indicates a permitted EOF and should be captured and ignored.

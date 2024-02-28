@@ -32,30 +32,30 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.consistency;
+package io.datafibre.fibre.consistency;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.LocalTablet;
-import com.starrocks.catalog.MaterializedIndex;
-import com.starrocks.catalog.MaterializedIndex.IndexExtState;
-import com.starrocks.catalog.MetaObject;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.OlapTable.OlapTableState;
-import com.starrocks.catalog.Partition;
-import com.starrocks.catalog.PhysicalPartition;
-import com.starrocks.catalog.PhysicalPartitionImpl;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.Config;
-import com.starrocks.common.util.FrontendDaemon;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.common.util.concurrent.lock.LockType;
-import com.starrocks.common.util.concurrent.lock.Locker;
-import com.starrocks.consistency.CheckConsistencyJob.JobState;
-import com.starrocks.persist.ConsistencyCheckInfo;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.task.CheckConsistencyTask;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.LocalTablet;
+import io.datafibre.fibre.catalog.MaterializedIndex;
+import io.datafibre.fibre.catalog.MaterializedIndex.IndexExtState;
+import io.datafibre.fibre.catalog.MetaObject;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.OlapTable.OlapTableState;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.catalog.PhysicalPartition;
+import io.datafibre.fibre.catalog.PhysicalPartitionImpl;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.util.FrontendDaemon;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.consistency.CheckConsistencyJob.JobState;
+import io.datafibre.fibre.persist.ConsistencyCheckInfo;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.task.CheckConsistencyTask;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

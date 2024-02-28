@@ -32,19 +32,19 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.analysis.Analyzer;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.ExprSubstitutionMap;
-import com.starrocks.analysis.SlotDescriptor;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.analysis.TupleDescriptor;
-import com.starrocks.catalog.AggregateType;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.UserException;
+import io.datafibre.fibre.analysis.Analyzer;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.ExprSubstitutionMap;
+import io.datafibre.fibre.analysis.SlotDescriptor;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.analysis.TupleDescriptor;
+import io.datafibre.fibre.catalog.AggregateType;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.UserException;
 
 import java.util.List;
 import java.util.Map;

@@ -32,22 +32,22 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.analysis.BrokerDesc;
-import com.starrocks.common.Config;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.LoadException;
-import com.starrocks.common.Pair;
-import com.starrocks.common.proc.BaseProcResult;
-import com.starrocks.load.loadv2.SparkRepository;
-import com.starrocks.load.loadv2.SparkYarnConfigFiles;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.ResourceDesc;
+import io.datafibre.fibre.analysis.BrokerDesc;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.LoadException;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.proc.BaseProcResult;
+import io.datafibre.fibre.load.loadv2.SparkRepository;
+import io.datafibre.fibre.load.loadv2.SparkYarnConfigFiles;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.ResourceDesc;
 
 import java.io.File;
 import java.util.Map;

@@ -12,26 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.http.rest.transaction;
+package io.datafibre.fibre.http.rest.transaction;
 
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.UserException;
-import com.starrocks.http.BaseRequest;
-import com.starrocks.http.BaseResponse;
-import com.starrocks.http.rest.TransactionResult;
-import com.starrocks.http.rest.transaction.TransactionOperationParams.Body;
-import com.starrocks.load.loadv2.MiniLoadTxnCommitAttachment;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.transaction.GlobalTransactionMgr;
-import com.starrocks.transaction.TabletCommitInfo;
-import com.starrocks.transaction.TabletFailInfo;
-import com.starrocks.transaction.TransactionState;
-import com.starrocks.transaction.TransactionState.LoadJobSourceType;
-import com.starrocks.transaction.TransactionState.TxnCoordinator;
-import com.starrocks.transaction.TransactionState.TxnSourceType;
-import com.starrocks.transaction.TransactionStatus;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.http.BaseRequest;
+import io.datafibre.fibre.http.BaseResponse;
+import io.datafibre.fibre.http.rest.TransactionResult;
+import io.datafibre.fibre.http.rest.transaction.TransactionOperationParams.Body;
+import io.datafibre.fibre.load.loadv2.MiniLoadTxnCommitAttachment;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.transaction.GlobalTransactionMgr;
+import io.datafibre.fibre.transaction.TabletCommitInfo;
+import io.datafibre.fibre.transaction.TabletFailInfo;
+import io.datafibre.fibre.transaction.TransactionState;
+import io.datafibre.fibre.transaction.TransactionState.LoadJobSourceType;
+import io.datafibre.fibre.transaction.TransactionState.TxnCoordinator;
+import io.datafibre.fibre.transaction.TransactionState.TxnSourceType;
+import io.datafibre.fibre.transaction.TransactionStatus;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,8 +40,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.starrocks.catalog.FunctionSet.HOST_NAME;
-import static com.starrocks.transaction.TransactionState.LoadJobSourceType.BYPASS_WRITE;
+import static io.datafibre.fibre.catalog.FunctionSet.HOST_NAME;
+import static io.datafibre.fibre.transaction.TransactionState.LoadJobSourceType.BYPASS_WRITE;
 
 /**
  * Transaction management request handler for bypass writing scenario.

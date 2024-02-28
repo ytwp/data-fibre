@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector;
+package io.datafibre.fibre.connector;
 
-import com.starrocks.connector.config.ConnectorConfig;
-import com.starrocks.connector.delta.DeltaLakeConnector;
-import com.starrocks.connector.elasticsearch.ElasticsearchConnector;
-import com.starrocks.connector.elasticsearch.EsConfig;
-import com.starrocks.connector.hive.HiveConnector;
-import com.starrocks.connector.hudi.HudiConnector;
-import com.starrocks.connector.iceberg.IcebergConnector;
-import com.starrocks.connector.jdbc.JDBCConnector;
-import com.starrocks.connector.odps.OdpsConnector;
-import com.starrocks.connector.paimon.PaimonConnector;
-import com.starrocks.connector.unified.UnifiedConnector;
+import io.datafibre.fibre.connector.config.ConnectorConfig;
+import io.datafibre.fibre.connector.delta.DeltaLakeConnector;
+import io.datafibre.fibre.connector.elasticsearch.ElasticsearchConnector;
+import io.datafibre.fibre.connector.elasticsearch.EsConfig;
+import io.datafibre.fibre.connector.hive.HiveConnector;
+import io.datafibre.fibre.connector.hudi.HudiConnector;
+import io.datafibre.fibre.connector.iceberg.IcebergConnector;
+import io.datafibre.fibre.connector.jdbc.JDBCConnector;
+import io.datafibre.fibre.connector.odps.OdpsConnector;
+import io.datafibre.fibre.connector.paimon.PaimonConnector;
+import io.datafibre.fibre.connector.unified.UnifiedConnector;
 import org.apache.commons.lang3.EnumUtils;
 
 import java.util.EnumSet;

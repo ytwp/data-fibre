@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.analysis;
+package io.datafibre.fibre.analysis;
 
-import com.starrocks.sql.ast.AstVisitor;
+import io.datafibre.fibre.sql.ast.AstVisitor;
 
 public class NamedArgument extends Expr {
     private final String name;

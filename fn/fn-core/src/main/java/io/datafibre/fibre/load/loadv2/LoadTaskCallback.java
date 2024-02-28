@@ -15,9 +15,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.load.loadv2;
+package io.datafibre.fibre.load.loadv2;
 
-import com.starrocks.load.FailMsg;
+import io.datafibre.fibre.load.FailMsg;
 
 public interface LoadTaskCallback {
     long getCallbackId();

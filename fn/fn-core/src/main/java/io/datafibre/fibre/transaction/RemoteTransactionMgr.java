@@ -11,23 +11,23 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.starrocks.transaction;
+package io.datafibre.fibre.transaction;
 
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.Config;
-import com.starrocks.rpc.FrontendServiceProxy;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.thrift.TAbortRemoteTxnRequest;
-import com.starrocks.thrift.TAbortRemoteTxnResponse;
-import com.starrocks.thrift.TAuthenticateParams;
-import com.starrocks.thrift.TBeginRemoteTxnRequest;
-import com.starrocks.thrift.TBeginRemoteTxnResponse;
-import com.starrocks.thrift.TCommitRemoteTxnRequest;
-import com.starrocks.thrift.TCommitRemoteTxnResponse;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.thrift.TStatusCode;
-import com.starrocks.thrift.TTabletCommitInfo;
-import com.starrocks.thrift.TTabletFailInfo;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.rpc.FrontendServiceProxy;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.thrift.TAbortRemoteTxnRequest;
+import io.datafibre.fibre.thrift.TAbortRemoteTxnResponse;
+import io.datafibre.fibre.thrift.TAuthenticateParams;
+import io.datafibre.fibre.thrift.TBeginRemoteTxnRequest;
+import io.datafibre.fibre.thrift.TBeginRemoteTxnResponse;
+import io.datafibre.fibre.thrift.TCommitRemoteTxnRequest;
+import io.datafibre.fibre.thrift.TCommitRemoteTxnResponse;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TStatusCode;
+import io.datafibre.fibre.thrift.TTabletCommitInfo;
+import io.datafibre.fibre.thrift.TTabletFailInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

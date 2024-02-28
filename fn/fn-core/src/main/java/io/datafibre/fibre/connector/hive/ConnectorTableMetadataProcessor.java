@@ -12,21 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.hive;
+package io.datafibre.fibre.connector.hive;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.starrocks.catalog.BaseTableInfo;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.HiveTable;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.Config;
-import com.starrocks.common.util.FrontendDaemon;
-import com.starrocks.connector.iceberg.CachingIcebergCatalog;
-import com.starrocks.connector.iceberg.IcebergCatalog;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.server.MetadataMgr;
+import io.datafibre.fibre.catalog.BaseTableInfo;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.HiveTable;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.util.FrontendDaemon;
+import io.datafibre.fibre.connector.iceberg.CachingIcebergCatalog;
+import io.datafibre.fibre.connector.iceberg.IcebergCatalog;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.server.MetadataMgr;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

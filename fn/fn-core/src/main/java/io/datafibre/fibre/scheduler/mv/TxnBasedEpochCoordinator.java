@@ -12,21 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.scheduler.mv;
+package io.datafibre.fibre.scheduler.mv;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.common.UserException;
-import com.starrocks.planner.OlapTableSink;
-import com.starrocks.proto.PMVMaintenanceTaskResult;
-import com.starrocks.rpc.BackendServiceClient;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.thrift.MVTaskType;
-import com.starrocks.thrift.TMVMaintenanceTasks;
-import com.starrocks.thrift.TMVStartEpochTask;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.transaction.TransactionState;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.planner.OlapTableSink;
+import io.datafibre.fibre.proto.PMVMaintenanceTaskResult;
+import io.datafibre.fibre.rpc.BackendServiceClient;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.thrift.MVTaskType;
+import io.datafibre.fibre.thrift.TMVMaintenanceTasks;
+import io.datafibre.fibre.thrift.TMVStartEpochTask;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.transaction.TransactionState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

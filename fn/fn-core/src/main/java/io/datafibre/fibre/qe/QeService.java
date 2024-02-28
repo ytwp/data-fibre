@@ -32,13 +32,13 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.qe;
+package io.datafibre.fibre.qe;
 
 import com.google.common.base.Strings;
-import com.starrocks.common.Config;
-import com.starrocks.mysql.MysqlServer;
-import com.starrocks.mysql.nio.NMysqlServer;
-import com.starrocks.mysql.ssl.SSLChannelImpClassLoader;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.mysql.MysqlServer;
+import io.datafibre.fibre.mysql.nio.NMysqlServer;
+import io.datafibre.fibre.mysql.ssl.SSLChannelImpClassLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

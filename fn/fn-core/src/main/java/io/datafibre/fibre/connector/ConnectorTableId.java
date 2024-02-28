@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector;
+package io.datafibre.fibre.connector;
 
-import com.starrocks.common.Id;
-import com.starrocks.common.IdGenerator;
+import io.datafibre.fibre.common.Id;
+import io.datafibre.fibre.common.IdGenerator;
 
 public class ConnectorTableId extends Id<ConnectorTableId> {
 

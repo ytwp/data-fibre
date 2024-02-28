@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
 import com.google.common.base.Strings;
-import com.starrocks.analysis.LabelName;
-import com.starrocks.common.ErrorCode;
-import com.starrocks.common.ErrorReport;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.ast.StopRoutineLoadStmt;
+import io.datafibre.fibre.analysis.LabelName;
+import io.datafibre.fibre.common.ErrorCode;
+import io.datafibre.fibre.common.ErrorReport;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.ast.StopRoutineLoadStmt;
 
 public class StopRoutineLoadAnalyzer {
     public static void analyze(StopRoutineLoadStmt statement, ConnectContext context) {

@@ -13,11 +13,11 @@
 // limitations under the License.
 
 
-package com.starrocks.common.util;
+package io.datafibre.fibre.common.util;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSortedMap;
-import com.starrocks.thrift.TWriteQuorumType;
+import io.datafibre.fibre.thrift.TWriteQuorumType;
 
 public class WriteQuorum {
     public static final String MAJORITY = "MAJORITY";

@@ -13,16 +13,16 @@
 // limitations under the License.
 
 
-package com.starrocks.scheduler;
+package io.datafibre.fibre.scheduler;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.authentication.AuthenticationMgr;
-import com.starrocks.cluster.ClusterNamespace;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.common.util.PropertyAnalyzer;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.scheduler.persist.TaskSchedule;
+import io.datafibre.fibre.authentication.AuthenticationMgr;
+import io.datafibre.fibre.cluster.ClusterNamespace;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.common.util.PropertyAnalyzer;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.scheduler.persist.TaskSchedule;
 
 import java.io.DataInput;
 import java.io.DataOutput;

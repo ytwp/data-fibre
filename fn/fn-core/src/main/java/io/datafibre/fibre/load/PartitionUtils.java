@@ -12,33 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.load;
+package io.datafibre.fibre.load;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
-import com.starrocks.analysis.LiteralExpr;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.ListPartitionInfo;
-import com.starrocks.catalog.MaterializedIndex;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Partition;
-import com.starrocks.catalog.PartitionInfo;
-import com.starrocks.catalog.PartitionKey;
-import com.starrocks.catalog.RangePartitionInfo;
-import com.starrocks.catalog.SinglePartitionInfo;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.Tablet;
-import com.starrocks.catalog.TabletInvertedIndex;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.util.concurrent.lock.LockType;
-import com.starrocks.common.util.concurrent.lock.Locker;
-import com.starrocks.persist.AddPartitionsInfoV2;
-import com.starrocks.persist.ListPartitionPersistInfo;
-import com.starrocks.persist.PartitionPersistInfoV2;
-import com.starrocks.persist.RangePartitionPersistInfo;
-import com.starrocks.persist.SinglePartitionPersistInfo;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.DistributionDesc;
+import io.datafibre.fibre.analysis.LiteralExpr;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.ListPartitionInfo;
+import io.datafibre.fibre.catalog.MaterializedIndex;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.catalog.PartitionInfo;
+import io.datafibre.fibre.catalog.PartitionKey;
+import io.datafibre.fibre.catalog.RangePartitionInfo;
+import io.datafibre.fibre.catalog.SinglePartitionInfo;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.Tablet;
+import io.datafibre.fibre.catalog.TabletInvertedIndex;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.persist.AddPartitionsInfoV2;
+import io.datafibre.fibre.persist.ListPartitionPersistInfo;
+import io.datafibre.fibre.persist.PartitionPersistInfoV2;
+import io.datafibre.fibre.persist.RangePartitionPersistInfo;
+import io.datafibre.fibre.persist.SinglePartitionPersistInfo;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.DistributionDesc;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

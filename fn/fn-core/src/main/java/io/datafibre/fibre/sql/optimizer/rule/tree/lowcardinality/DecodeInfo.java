@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.rule.tree.lowcardinality;
+package io.datafibre.fibre.sql.optimizer.rule.tree.lowcardinality;
 
-import com.starrocks.sql.optimizer.OptExpression;
-import com.starrocks.sql.optimizer.base.ColumnRefSet;
+import io.datafibre.fibre.sql.optimizer.OptExpression;
+import io.datafibre.fibre.sql.optimizer.base.ColumnRefSet;
 
 /*
  * For record the string columns on operator

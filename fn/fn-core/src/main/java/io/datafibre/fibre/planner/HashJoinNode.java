@@ -32,22 +32,22 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
-import com.starrocks.analysis.BinaryPredicate;
-import com.starrocks.analysis.BinaryType;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.JoinOperator;
-import com.starrocks.analysis.SlotId;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.analysis.TableRef;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.thrift.TEqJoinCondition;
-import com.starrocks.thrift.THashJoinNode;
-import com.starrocks.thrift.TNormalHashJoinNode;
-import com.starrocks.thrift.TNormalPlanNode;
-import com.starrocks.thrift.TPlanNode;
-import com.starrocks.thrift.TPlanNodeType;
+import io.datafibre.fibre.analysis.BinaryPredicate;
+import io.datafibre.fibre.analysis.BinaryType;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.JoinOperator;
+import io.datafibre.fibre.analysis.SlotId;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.analysis.TableRef;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.thrift.TEqJoinCondition;
+import io.datafibre.fibre.thrift.THashJoinNode;
+import io.datafibre.fibre.thrift.TNormalHashJoinNode;
+import io.datafibre.fibre.thrift.TNormalPlanNode;
+import io.datafibre.fibre.thrift.TPlanNode;
+import io.datafibre.fibre.thrift.TPlanNodeType;
 
 import java.util.ArrayList;
 import java.util.List;

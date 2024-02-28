@@ -13,16 +13,16 @@
 // limitations under the License.
 
 
-package com.starrocks.privilege;
+package io.datafibre.fibre.privilege;
 
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.server.GlobalStateMgr;
 
 /**
  * This class is existed for forward compatibility so that when we add a new type of {@link PEntryObject}
  * in newer version and rollback to older version, the older version can still read the image file and edit log.
  * <p>
  * We achieve this by registering the new type as {@link ForwardCompatiblePEntryObject} in
- * {@link com.starrocks.persist.gson.GsonUtils} and remove the privilege entry in corresponding
+ * {@link io.datafibre.fibre.persist.gson.GsonUtils} and remove the privilege entry in corresponding
  * {@link PrivilegeCollectionV2} when deserializing.
  */
 public class ForwardCompatiblePEntryObject implements PEntryObject {

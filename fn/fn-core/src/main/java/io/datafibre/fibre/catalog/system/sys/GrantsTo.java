@@ -11,48 +11,48 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.starrocks.catalog.system.sys;
+package io.datafibre.fibre.catalog.system.sys;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.Catalog;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.ExternalCatalog;
-import com.starrocks.catalog.Function;
-import com.starrocks.catalog.GlobalFunctionMgr;
-import com.starrocks.catalog.InternalCatalog;
-import com.starrocks.catalog.ResourceGroup;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.system.SystemId;
-import com.starrocks.catalog.system.SystemTable;
-import com.starrocks.common.Config;
-import com.starrocks.common.DdlException;
-import com.starrocks.privilege.ActionSet;
-import com.starrocks.privilege.AuthorizationMgr;
-import com.starrocks.privilege.CatalogPEntryObject;
-import com.starrocks.privilege.DbPEntryObject;
-import com.starrocks.privilege.FunctionPEntryObject;
-import com.starrocks.privilege.ObjectType;
-import com.starrocks.privilege.PipePEntryObject;
-import com.starrocks.privilege.PrivilegeBuiltinConstants;
-import com.starrocks.privilege.PrivilegeEntry;
-import com.starrocks.privilege.PrivilegeType;
-import com.starrocks.privilege.ResourceGroupPEntryObject;
-import com.starrocks.privilege.ResourcePEntryObject;
-import com.starrocks.privilege.StorageVolumePEntryObject;
-import com.starrocks.privilege.TablePEntryObject;
-import com.starrocks.privilege.UserPEntryObject;
-import com.starrocks.server.CatalogMgr;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.server.MetadataMgr;
-import com.starrocks.server.StorageVolumeMgr;
-import com.starrocks.sql.ast.UserIdentity;
-import com.starrocks.thrift.TGetGrantsToRolesOrUserItem;
-import com.starrocks.thrift.TGetGrantsToRolesOrUserRequest;
-import com.starrocks.thrift.TGetGrantsToRolesOrUserResponse;
-import com.starrocks.thrift.TGrantsToType;
-import com.starrocks.thrift.TSchemaTableType;
+import io.datafibre.fibre.catalog.Catalog;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.ExternalCatalog;
+import io.datafibre.fibre.catalog.Function;
+import io.datafibre.fibre.catalog.GlobalFunctionMgr;
+import io.datafibre.fibre.catalog.InternalCatalog;
+import io.datafibre.fibre.catalog.ResourceGroup;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.system.SystemId;
+import io.datafibre.fibre.catalog.system.SystemTable;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.privilege.ActionSet;
+import io.datafibre.fibre.privilege.AuthorizationMgr;
+import io.datafibre.fibre.privilege.CatalogPEntryObject;
+import io.datafibre.fibre.privilege.DbPEntryObject;
+import io.datafibre.fibre.privilege.FunctionPEntryObject;
+import io.datafibre.fibre.privilege.ObjectType;
+import io.datafibre.fibre.privilege.PipePEntryObject;
+import io.datafibre.fibre.privilege.PrivilegeBuiltinConstants;
+import io.datafibre.fibre.privilege.PrivilegeEntry;
+import io.datafibre.fibre.privilege.PrivilegeType;
+import io.datafibre.fibre.privilege.ResourceGroupPEntryObject;
+import io.datafibre.fibre.privilege.ResourcePEntryObject;
+import io.datafibre.fibre.privilege.StorageVolumePEntryObject;
+import io.datafibre.fibre.privilege.TablePEntryObject;
+import io.datafibre.fibre.privilege.UserPEntryObject;
+import io.datafibre.fibre.server.CatalogMgr;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.server.MetadataMgr;
+import io.datafibre.fibre.server.StorageVolumeMgr;
+import io.datafibre.fibre.sql.ast.UserIdentity;
+import io.datafibre.fibre.thrift.TGetGrantsToRolesOrUserItem;
+import io.datafibre.fibre.thrift.TGetGrantsToRolesOrUserRequest;
+import io.datafibre.fibre.thrift.TGetGrantsToRolesOrUserResponse;
+import io.datafibre.fibre.thrift.TGrantsToType;
+import io.datafibre.fibre.thrift.TSchemaTableType;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -62,8 +62,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.starrocks.catalog.system.SystemTable.NAME_CHAR_LEN;
-import static com.starrocks.catalog.system.SystemTable.builder;
+import static io.datafibre.fibre.catalog.system.SystemTable.NAME_CHAR_LEN;
+import static io.datafibre.fibre.catalog.system.SystemTable.builder;
 
 public class GrantsTo {
     public static SystemTable createGrantsToRoles() {

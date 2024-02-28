@@ -15,9 +15,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.load;
+package io.datafibre.fibre.load;
 
-import com.starrocks.thrift.TStatus;
+import io.datafibre.fibre.thrift.TStatus;
 
 public class EtlSubmitResult {
     private TStatus status;

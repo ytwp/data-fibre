@@ -32,37 +32,37 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.task;
+package io.datafibre.fibre.task;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.alter.AlterJobV2;
-import com.starrocks.analysis.DescriptorTable;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.LocalTablet;
-import com.starrocks.catalog.MaterializedIndex;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.PhysicalPartition;
-import com.starrocks.catalog.Replica;
-import com.starrocks.catalog.Tablet;
-import com.starrocks.common.MetaNotFoundException;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.common.util.concurrent.lock.LockType;
-import com.starrocks.common.util.concurrent.lock.Locker;
-import com.starrocks.persist.ReplicaPersistInfo;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.thrift.TAlterJobType;
-import com.starrocks.thrift.TAlterMaterializedViewParam;
-import com.starrocks.thrift.TAlterTabletMaterializedColumnReq;
-import com.starrocks.thrift.TAlterTabletReqV2;
-import com.starrocks.thrift.TColumn;
-import com.starrocks.thrift.TQueryGlobals;
-import com.starrocks.thrift.TQueryOptions;
-import com.starrocks.thrift.TTabletType;
-import com.starrocks.thrift.TTaskType;
+import io.datafibre.fibre.alter.AlterJobV2;
+import io.datafibre.fibre.analysis.DescriptorTable;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.LocalTablet;
+import io.datafibre.fibre.catalog.MaterializedIndex;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.PhysicalPartition;
+import io.datafibre.fibre.catalog.Replica;
+import io.datafibre.fibre.catalog.Tablet;
+import io.datafibre.fibre.common.MetaNotFoundException;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.persist.ReplicaPersistInfo;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.thrift.TAlterJobType;
+import io.datafibre.fibre.thrift.TAlterMaterializedViewParam;
+import io.datafibre.fibre.thrift.TAlterTabletMaterializedColumnReq;
+import io.datafibre.fibre.thrift.TAlterTabletReqV2;
+import io.datafibre.fibre.thrift.TColumn;
+import io.datafibre.fibre.thrift.TQueryGlobals;
+import io.datafibre.fibre.thrift.TQueryOptions;
+import io.datafibre.fibre.thrift.TTabletType;
+import io.datafibre.fibre.thrift.TTaskType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

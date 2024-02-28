@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.journal.bdbje;
+package io.datafibre.fibre.journal.bdbje;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
@@ -46,8 +46,8 @@ import com.sleepycat.je.Environment;
 import com.sleepycat.je.EnvironmentConfig;
 import com.sleepycat.je.LockMode;
 import com.sleepycat.je.OperationStatus;
-import com.starrocks.journal.JournalEntity;
-import com.starrocks.meta.MetaContext;
+import io.datafibre.fibre.journal.JournalEntity;
+import io.datafibre.fibre.meta.MetaContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;

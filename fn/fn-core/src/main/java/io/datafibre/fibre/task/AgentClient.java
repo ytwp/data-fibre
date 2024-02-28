@@ -15,23 +15,23 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.task;
+package io.datafibre.fibre.task;
 
-import com.starrocks.common.ClientPool;
-import com.starrocks.common.Status;
-import com.starrocks.thrift.BackendService;
-import com.starrocks.thrift.TAgentResult;
-import com.starrocks.thrift.TAgentServiceVersion;
-import com.starrocks.thrift.TDeleteEtlFilesRequest;
-import com.starrocks.thrift.TExportStatusResult;
-import com.starrocks.thrift.TExportTaskRequest;
-import com.starrocks.thrift.TMiniLoadEtlStatusRequest;
-import com.starrocks.thrift.TMiniLoadEtlStatusResult;
-import com.starrocks.thrift.TMiniLoadEtlTaskRequest;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.thrift.TSnapshotRequest;
-import com.starrocks.thrift.TStatus;
-import com.starrocks.thrift.TUniqueId;
+import io.datafibre.fibre.common.ClientPool;
+import io.datafibre.fibre.common.Status;
+import io.datafibre.fibre.thrift.BackendService;
+import io.datafibre.fibre.thrift.TAgentResult;
+import io.datafibre.fibre.thrift.TAgentServiceVersion;
+import io.datafibre.fibre.thrift.TDeleteEtlFilesRequest;
+import io.datafibre.fibre.thrift.TExportStatusResult;
+import io.datafibre.fibre.thrift.TExportTaskRequest;
+import io.datafibre.fibre.thrift.TMiniLoadEtlStatusRequest;
+import io.datafibre.fibre.thrift.TMiniLoadEtlStatusResult;
+import io.datafibre.fibre.thrift.TMiniLoadEtlTaskRequest;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TSnapshotRequest;
+import io.datafibre.fibre.thrift.TStatus;
+import io.datafibre.fibre.thrift.TUniqueId;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

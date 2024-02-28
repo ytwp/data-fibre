@@ -13,13 +13,13 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.rewrite.scalar;
+package io.datafibre.fibre.sql.optimizer.rewrite.scalar;
 
-import com.starrocks.sql.optimizer.operator.logical.LogicalApplyOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.operator.scalar.SubqueryOperator;
-import com.starrocks.sql.optimizer.rewrite.ScalarOperatorRewriteContext;
-import com.starrocks.sql.optimizer.transformer.OptExprBuilder;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalApplyOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.SubqueryOperator;
+import io.datafibre.fibre.sql.optimizer.rewrite.ScalarOperatorRewriteContext;
+import io.datafibre.fibre.sql.optimizer.transformer.OptExprBuilder;
 
 import java.util.Arrays;
 import java.util.Map;

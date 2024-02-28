@@ -13,13 +13,13 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
 import com.google.common.collect.Lists;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.alter.AlterOpType;
-import com.starrocks.analysis.KeysDesc;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.alter.AlterOpType;
+import io.datafibre.fibre.analysis.KeysDesc;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.io.DataInput;
 import java.io.IOException;

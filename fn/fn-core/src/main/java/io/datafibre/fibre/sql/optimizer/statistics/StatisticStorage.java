@@ -13,11 +13,11 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.statistics;
+package io.datafibre.fibre.sql.optimizer.statistics;
 
 import com.google.common.collect.Maps;
-import com.starrocks.catalog.Table;
-import com.starrocks.connector.ConnectorTableColumnStats;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.connector.ConnectorTableColumnStats;
 
 import java.util.List;
 import java.util.Map;

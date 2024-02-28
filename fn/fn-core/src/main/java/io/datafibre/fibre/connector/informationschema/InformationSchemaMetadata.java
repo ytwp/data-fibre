@@ -13,20 +13,20 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.informationschema;
+package io.datafibre.fibre.connector.informationschema;
 
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.system.information.InfoSchemaDb;
-import com.starrocks.connector.ConnectorMetadata;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.system.information.InfoSchemaDb;
+import io.datafibre.fibre.connector.ConnectorMetadata;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.starrocks.catalog.system.information.InfoSchemaDb.isInfoSchemaDb;
-import static com.starrocks.server.CatalogMgr.isInternalCatalog;
+import static io.datafibre.fibre.catalog.system.information.InfoSchemaDb.isInfoSchemaDb;
+import static io.datafibre.fibre.server.CatalogMgr.isInternalCatalog;
 import static java.util.Objects.requireNonNull;
 
 public class InformationSchemaMetadata implements ConnectorMetadata {

@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.hive;
+package io.datafibre.fibre.connector.hive;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.catalog.HiveTable;
-import com.starrocks.common.DdlException;
-import com.starrocks.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.catalog.HiveTable;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -29,8 +29,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.starrocks.connector.hive.HiveMetastoreOperations.EXTERNAL_LOCATION_PROPERTY;
-import static com.starrocks.connector.hive.HiveMetastoreOperations.LOCATION_PROPERTY;
+import static io.datafibre.fibre.connector.hive.HiveMetastoreOperations.EXTERNAL_LOCATION_PROPERTY;
+import static io.datafibre.fibre.connector.hive.HiveMetastoreOperations.LOCATION_PROPERTY;
 
 public class HiveWriteUtils {
     private static final Logger LOG = LogManager.getLogger(HiveWriteUtils.class);

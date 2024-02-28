@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.http.rest;
+package io.datafibre.fibre.http.rest;
 
-import com.starrocks.common.Version;
-import com.starrocks.feature.ProductFeature;
-import com.starrocks.http.ActionController;
-import com.starrocks.http.BaseRequest;
-import com.starrocks.http.BaseResponse;
-import com.starrocks.http.IllegalArgException;
+import io.datafibre.fibre.common.Version;
+import io.datafibre.fibre.feature.ProductFeature;
+import io.datafibre.fibre.http.ActionController;
+import io.datafibre.fibre.http.BaseRequest;
+import io.datafibre.fibre.http.BaseResponse;
+import io.datafibre.fibre.http.IllegalArgException;
 import io.netty.handler.codec.http.HttpMethod;
 
 public class FeatureAction extends RestBaseAction {

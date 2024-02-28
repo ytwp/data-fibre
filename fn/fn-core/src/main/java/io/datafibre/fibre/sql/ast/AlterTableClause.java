@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.alter.AlterOpType;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.alter.AlterOpType;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 // alter table clause
 public abstract class AlterTableClause extends AlterClause {

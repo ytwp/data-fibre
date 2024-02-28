@@ -15,10 +15,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.rpc;
+package io.datafibre.fibre.rpc;
 
-import com.starrocks.common.profile.Timer;
-import com.starrocks.common.profile.Tracers;
+import io.datafibre.fibre.common.profile.Timer;
+import io.datafibre.fibre.common.profile.Tracers;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.thrift.TBase;
 import org.apache.thrift.TDeserializer;

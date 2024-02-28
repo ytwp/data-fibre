@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.load.streamload;
+package io.datafibre.fibre.load.streamload;
 
-import com.starrocks.common.Config;
-import com.starrocks.common.UserException;
-import com.starrocks.thrift.TFileFormatType;
-import com.starrocks.thrift.TFileType;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.thrift.TFileFormatType;
+import io.datafibre.fibre.thrift.TFileType;
 import io.netty.handler.codec.http.HttpHeaders;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

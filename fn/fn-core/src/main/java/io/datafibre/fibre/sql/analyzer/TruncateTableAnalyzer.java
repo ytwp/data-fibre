@@ -13,13 +13,13 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
 import com.google.common.base.Strings;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.ast.PartitionNames;
-import com.starrocks.sql.ast.TruncateTableStmt;
-import com.starrocks.sql.common.MetaUtils;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.ast.PartitionNames;
+import io.datafibre.fibre.sql.ast.TruncateTableStmt;
+import io.datafibre.fibre.sql.common.MetaUtils;
 
 public class TruncateTableAnalyzer {
 

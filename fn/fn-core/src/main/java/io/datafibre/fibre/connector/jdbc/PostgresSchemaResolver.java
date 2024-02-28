@@ -13,17 +13,17 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.jdbc;
+package io.datafibre.fibre.connector.jdbc;
 
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.JDBCTable;
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.util.TimeUtils;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.JDBCTable;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.util.TimeUtils;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

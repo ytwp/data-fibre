@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.credential;
+package io.datafibre.fibre.credential;
 
 import com.google.common.collect.ImmutableList;
-import com.starrocks.credential.aliyun.AliyunCloudConfigurationProvider;
-import com.starrocks.credential.aws.AWSCloudConfigurationProvider;
-import com.starrocks.credential.aws.AWSCloudCredential;
-import com.starrocks.credential.azure.AzureCloudConfigurationProvider;
-import com.starrocks.credential.gcp.GCPCloudConfigurationProvoder;
-import com.starrocks.credential.hdfs.HDFSCloudConfigurationProvider;
-import com.starrocks.credential.hdfs.StrictHDFSCloudConfigurationProvider;
-import com.starrocks.credential.tencent.TencentCloudConfigurationProvider;
+import io.datafibre.fibre.credential.aliyun.AliyunCloudConfigurationProvider;
+import io.datafibre.fibre.credential.aws.AWSCloudConfigurationProvider;
+import io.datafibre.fibre.credential.aws.AWSCloudCredential;
+import io.datafibre.fibre.credential.azure.AzureCloudConfigurationProvider;
+import io.datafibre.fibre.credential.gcp.GCPCloudConfigurationProvoder;
+import io.datafibre.fibre.credential.hdfs.HDFSCloudConfigurationProvider;
+import io.datafibre.fibre.credential.hdfs.StrictHDFSCloudConfigurationProvider;
+import io.datafibre.fibre.credential.tencent.TencentCloudConfigurationProvider;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.iceberg.aws.AwsClientProperties;
 import org.apache.iceberg.aws.s3.S3FileIOProperties;

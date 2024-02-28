@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector;
+package io.datafibre.fibre.connector;
 
 import com.google.common.collect.Sets;
 import com.google.gson.JsonElement;
-import com.starrocks.catalog.MvId;
-import com.starrocks.catalog.Table;
-import com.starrocks.persist.gson.GsonUtils;
+import io.datafibre.fibre.catalog.MvId;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.persist.gson.GsonUtils;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.Set;

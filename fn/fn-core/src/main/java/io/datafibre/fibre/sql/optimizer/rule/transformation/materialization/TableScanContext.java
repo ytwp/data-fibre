@@ -13,11 +13,11 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.rule.transformation.materialization;
+package io.datafibre.fibre.sql.optimizer.rule.transformation.materialization;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.catalog.Table;
+import io.datafibre.fibre.catalog.Table;
 
 import java.util.List;
 import java.util.Map;

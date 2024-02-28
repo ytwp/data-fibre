@@ -13,10 +13,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
 import com.amazonaws.services.s3.model.AmazonS3Exception;
-import com.starrocks.common.DdlException;
+import io.datafibre.fibre.common.DdlException;
 import org.apache.commons.lang.exception.ExceptionUtils;
 
 /**

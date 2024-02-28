@@ -32,22 +32,22 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.Config;
-import com.starrocks.proto.PScalarType;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.SessionVariableConstants;
-import com.starrocks.thrift.TColumnType;
-import com.starrocks.thrift.TPrimitiveType;
-import com.starrocks.thrift.TScalarType;
-import com.starrocks.thrift.TTypeDesc;
-import com.starrocks.thrift.TTypeNode;
-import com.starrocks.thrift.TTypeNodeType;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.proto.PScalarType;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.SessionVariableConstants;
+import io.datafibre.fibre.thrift.TColumnType;
+import io.datafibre.fibre.thrift.TPrimitiveType;
+import io.datafibre.fibre.thrift.TScalarType;
+import io.datafibre.fibre.thrift.TTypeDesc;
+import io.datafibre.fibre.thrift.TTypeNode;
+import io.datafibre.fibre.thrift.TTypeNodeType;
 
 import java.util.Objects;
 

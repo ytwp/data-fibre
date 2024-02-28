@@ -12,47 +12,47 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.validate;
+package io.datafibre.fibre.sql.optimizer.validate;
 
-import com.starrocks.catalog.Type;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.optimizer.OptExpression;
-import com.starrocks.sql.optimizer.OptExpressionVisitor;
-import com.starrocks.sql.optimizer.operator.AggType;
-import com.starrocks.sql.optimizer.operator.Operator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalAggregationOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalWindowOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalHashAggregateOperator;
-import com.starrocks.sql.optimizer.operator.physical.PhysicalWindowOperator;
-import com.starrocks.sql.optimizer.operator.scalar.CallOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ColumnRefOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ConstantOperator;
-import com.starrocks.sql.optimizer.operator.scalar.ScalarOperator;
-import com.starrocks.sql.optimizer.operator.stream.PhysicalStreamAggOperator;
-import com.starrocks.sql.optimizer.task.TaskContext;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.optimizer.OptExpression;
+import io.datafibre.fibre.sql.optimizer.OptExpressionVisitor;
+import io.datafibre.fibre.sql.optimizer.operator.AggType;
+import io.datafibre.fibre.sql.optimizer.operator.Operator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalAggregationOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalWindowOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalHashAggregateOperator;
+import io.datafibre.fibre.sql.optimizer.operator.physical.PhysicalWindowOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.CallOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ColumnRefOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ConstantOperator;
+import io.datafibre.fibre.sql.optimizer.operator.scalar.ScalarOperator;
+import io.datafibre.fibre.sql.optimizer.operator.stream.PhysicalStreamAggOperator;
+import io.datafibre.fibre.sql.optimizer.task.TaskContext;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.starrocks.catalog.FunctionSet.ANY_VALUE;
-import static com.starrocks.catalog.FunctionSet.APPROX_COUNT_DISTINCT;
-import static com.starrocks.catalog.FunctionSet.AVG;
-import static com.starrocks.catalog.FunctionSet.BITMAP_UNION_INT;
-import static com.starrocks.catalog.FunctionSet.COUNT;
-import static com.starrocks.catalog.FunctionSet.HLL_RAW;
-import static com.starrocks.catalog.FunctionSet.INTERSECT_COUNT;
-import static com.starrocks.catalog.FunctionSet.MAX;
-import static com.starrocks.catalog.FunctionSet.MAX_BY;
-import static com.starrocks.catalog.FunctionSet.MIN;
-import static com.starrocks.catalog.FunctionSet.MIN_BY;
-import static com.starrocks.catalog.FunctionSet.NDV;
-import static com.starrocks.catalog.FunctionSet.PERCENTILE_APPROX;
-import static com.starrocks.catalog.FunctionSet.PERCENTILE_CONT;
-import static com.starrocks.catalog.FunctionSet.PERCENTILE_UNION;
-import static com.starrocks.catalog.FunctionSet.STDDEV;
-import static com.starrocks.catalog.FunctionSet.SUM;
+import static io.datafibre.fibre.catalog.FunctionSet.ANY_VALUE;
+import static io.datafibre.fibre.catalog.FunctionSet.APPROX_COUNT_DISTINCT;
+import static io.datafibre.fibre.catalog.FunctionSet.AVG;
+import static io.datafibre.fibre.catalog.FunctionSet.BITMAP_UNION_INT;
+import static io.datafibre.fibre.catalog.FunctionSet.COUNT;
+import static io.datafibre.fibre.catalog.FunctionSet.HLL_RAW;
+import static io.datafibre.fibre.catalog.FunctionSet.INTERSECT_COUNT;
+import static io.datafibre.fibre.catalog.FunctionSet.MAX;
+import static io.datafibre.fibre.catalog.FunctionSet.MAX_BY;
+import static io.datafibre.fibre.catalog.FunctionSet.MIN;
+import static io.datafibre.fibre.catalog.FunctionSet.MIN_BY;
+import static io.datafibre.fibre.catalog.FunctionSet.NDV;
+import static io.datafibre.fibre.catalog.FunctionSet.PERCENTILE_APPROX;
+import static io.datafibre.fibre.catalog.FunctionSet.PERCENTILE_CONT;
+import static io.datafibre.fibre.catalog.FunctionSet.PERCENTILE_UNION;
+import static io.datafibre.fibre.catalog.FunctionSet.STDDEV;
+import static io.datafibre.fibre.catalog.FunctionSet.SUM;
 
 public class TypeChecker implements PlanValidator.Checker {
 

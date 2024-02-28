@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.clone;
+package io.datafibre.fibre.clone;
 
 import com.google.api.client.util.Preconditions;
 import com.google.common.annotations.VisibleForTesting;
@@ -40,43 +40,43 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
 import com.google.common.collect.Sets;
-import com.starrocks.analysis.TimestampArithmeticExpr;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.DistributionInfo;
-import com.starrocks.catalog.DynamicPartitionProperty;
-import com.starrocks.catalog.HashDistributionInfo;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Partition;
-import com.starrocks.catalog.PartitionInfo;
-import com.starrocks.catalog.PartitionKey;
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.catalog.RandomDistributionInfo;
-import com.starrocks.catalog.RangePartitionInfo;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.Config;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.FeConstants;
-import com.starrocks.common.Pair;
-import com.starrocks.common.util.DynamicPartitionUtil;
-import com.starrocks.common.util.FrontendDaemon;
-import com.starrocks.common.util.RangeUtils;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.common.util.concurrent.lock.LockType;
-import com.starrocks.common.util.concurrent.lock.Locker;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.ast.AddPartitionClause;
-import com.starrocks.sql.ast.DistributionDesc;
-import com.starrocks.sql.ast.DropPartitionClause;
-import com.starrocks.sql.ast.HashDistributionDesc;
-import com.starrocks.sql.ast.PartitionKeyDesc;
-import com.starrocks.sql.ast.PartitionValue;
-import com.starrocks.sql.ast.RandomDistributionDesc;
-import com.starrocks.sql.ast.SingleRangePartitionDesc;
-import com.starrocks.statistic.StatsConstants;
+import io.datafibre.fibre.analysis.TimestampArithmeticExpr;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.DistributionInfo;
+import io.datafibre.fibre.catalog.DynamicPartitionProperty;
+import io.datafibre.fibre.catalog.HashDistributionInfo;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.catalog.PartitionInfo;
+import io.datafibre.fibre.catalog.PartitionKey;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.catalog.RandomDistributionInfo;
+import io.datafibre.fibre.catalog.RangePartitionInfo;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.FeConstants;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.util.DynamicPartitionUtil;
+import io.datafibre.fibre.common.util.FrontendDaemon;
+import io.datafibre.fibre.common.util.RangeUtils;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.ast.AddPartitionClause;
+import io.datafibre.fibre.sql.ast.DistributionDesc;
+import io.datafibre.fibre.sql.ast.DropPartitionClause;
+import io.datafibre.fibre.sql.ast.HashDistributionDesc;
+import io.datafibre.fibre.sql.ast.PartitionKeyDesc;
+import io.datafibre.fibre.sql.ast.PartitionValue;
+import io.datafibre.fibre.sql.ast.RandomDistributionDesc;
+import io.datafibre.fibre.sql.ast.SingleRangePartitionDesc;
+import io.datafibre.fibre.statistic.StatsConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.threeten.extra.PeriodDuration;
@@ -94,7 +94,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import static com.starrocks.catalog.TableProperty.INVALID;
+import static io.datafibre.fibre.catalog.TableProperty.INVALID;
 
 /**
  * This class is used to periodically add or drop partition on an olapTable which specify dynamic partition properties

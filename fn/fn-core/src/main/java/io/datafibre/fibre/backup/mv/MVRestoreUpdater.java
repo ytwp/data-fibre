@@ -12,29 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.backup.mv;
+package io.datafibre.fibre.backup.mv;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
-import com.starrocks.analysis.TableName;
-import com.starrocks.authentication.AuthenticationMgr;
-import com.starrocks.backup.BackupJobInfo;
-import com.starrocks.backup.Status;
-import com.starrocks.catalog.BaseTableInfo;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.catalog.MvId;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.Pair;
-import com.starrocks.privilege.PrivilegeBuiltinConstants;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.ast.QueryStatement;
-import com.starrocks.sql.ast.StatementBase;
-import com.starrocks.sql.ast.UserIdentity;
-import com.starrocks.sql.parser.SqlParser;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.authentication.AuthenticationMgr;
+import io.datafibre.fibre.backup.BackupJobInfo;
+import io.datafibre.fibre.backup.Status;
+import io.datafibre.fibre.catalog.BaseTableInfo;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.catalog.MvId;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.privilege.PrivilegeBuiltinConstants;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.ast.QueryStatement;
+import io.datafibre.fibre.sql.ast.StatementBase;
+import io.datafibre.fibre.sql.ast.UserIdentity;
+import io.datafibre.fibre.sql.parser.SqlParser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -86,7 +86,7 @@ public class MVRestoreUpdater {
         // Try to parse and analyze the creation sql
         List<StatementBase> statementBaseList = SqlParser.parse(defineSql, connectContext.getSessionVariable());
         StatementBase createStmt = statementBaseList.get(0);
-        com.starrocks.sql.analyzer.Analyzer.analyze(createStmt, connectContext);
+        io.datafibre.fibre.sql.analyzer.Analyzer.analyze(createStmt, connectContext);
         return (QueryStatement) createStmt;
     }
 

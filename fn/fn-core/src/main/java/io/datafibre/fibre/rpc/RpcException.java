@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.rpc;
+package io.datafibre.fibre.rpc;
 import java.io.IOException;
 
 public class RpcException extends IOException {

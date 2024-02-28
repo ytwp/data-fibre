@@ -13,21 +13,21 @@
 // limitations under the License.
 
 
-package com.starrocks.planner.stream;
+package io.datafibre.fibre.planner.stream;
 
-import com.starrocks.analysis.BinaryPredicate;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.JoinOperator;
-import com.starrocks.analysis.TableRef;
-import com.starrocks.planner.JoinNode;
-import com.starrocks.planner.PlanNode;
-import com.starrocks.planner.PlanNodeId;
-import com.starrocks.sql.optimizer.operator.stream.IMTInfo;
-import com.starrocks.thrift.TEqJoinCondition;
-import com.starrocks.thrift.TExplainLevel;
-import com.starrocks.thrift.TPlanNode;
-import com.starrocks.thrift.TPlanNodeType;
-import com.starrocks.thrift.TStreamJoinNode;
+import io.datafibre.fibre.analysis.BinaryPredicate;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.JoinOperator;
+import io.datafibre.fibre.analysis.TableRef;
+import io.datafibre.fibre.planner.JoinNode;
+import io.datafibre.fibre.planner.PlanNode;
+import io.datafibre.fibre.planner.PlanNodeId;
+import io.datafibre.fibre.sql.optimizer.operator.stream.IMTInfo;
+import io.datafibre.fibre.thrift.TEqJoinCondition;
+import io.datafibre.fibre.thrift.TExplainLevel;
+import io.datafibre.fibre.thrift.TPlanNode;
+import io.datafibre.fibre.thrift.TPlanNodeType;
+import io.datafibre.fibre.thrift.TStreamJoinNode;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;

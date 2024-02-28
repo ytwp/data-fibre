@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package com.starrocks.persist.metablock;
+package io.datafibre.fibre.persist.metablock;
 
-import com.starrocks.common.io.Text;
-import com.starrocks.persist.gson.GsonUtils;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.persist.gson.GsonUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -43,7 +43,7 @@ import java.util.zip.CheckedInputStream;
  * |      footer      | {"checksum": xxx}
  * +------------------+
  * <p>
- * Usage see com.starrocks.persist.metablock.SRMetaBlockTest#testSimple()
+ * Usage see io.datafibre.fibre.persist.metablock.SRMetaBlockTest#testSimple()
  */
 public class SRMetaBlockReader {
     private static final Logger LOG = LogManager.getLogger(SRMetaBlockReader.class);
@@ -51,7 +51,7 @@ public class SRMetaBlockReader {
     private SRMetaBlockHeader header;
     private int numJsonRead;
     // For backward compatibility reason
-    private final String oldManagerClassName = "com.starrocks.privilege.PrivilegeManager";
+    private final String oldManagerClassName = "io.datafibre.fibre.privilege.PrivilegeManager";
 
     public SRMetaBlockReader(DataInputStream dis) throws IOException {
         this.checkedInputStream = new CheckedInputStream(dis, new CRC32());

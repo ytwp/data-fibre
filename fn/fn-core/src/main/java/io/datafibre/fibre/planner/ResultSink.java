@@ -32,20 +32,20 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.OutFileClause;
-import com.starrocks.http.HttpConnectContext;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.thrift.TDataSink;
-import com.starrocks.thrift.TDataSinkType;
-import com.starrocks.thrift.TExplainLevel;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.thrift.TResultFileSinkOptions;
-import com.starrocks.thrift.TResultSink;
-import com.starrocks.thrift.TResultSinkType;
+import io.datafibre.fibre.analysis.OutFileClause;
+import io.datafibre.fibre.http.HttpConnectContext;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.thrift.TDataSink;
+import io.datafibre.fibre.thrift.TDataSinkType;
+import io.datafibre.fibre.thrift.TExplainLevel;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TResultFileSinkOptions;
+import io.datafibre.fibre.thrift.TResultSink;
+import io.datafibre.fibre.thrift.TResultSinkType;
 
 import java.util.List;
 

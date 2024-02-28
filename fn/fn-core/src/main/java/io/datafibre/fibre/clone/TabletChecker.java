@@ -32,7 +32,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.clone;
+package io.datafibre.fibre.clone;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.HashBasedTable;
@@ -40,35 +40,35 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Table.Cell;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.LocalTablet;
-import com.starrocks.catalog.LocalTablet.TabletHealthStatus;
-import com.starrocks.catalog.MaterializedIndex;
-import com.starrocks.catalog.MaterializedIndex.IndexExtState;
-import com.starrocks.catalog.OlapTable;
-import com.starrocks.catalog.Partition;
-import com.starrocks.catalog.Partition.PartitionState;
-import com.starrocks.catalog.PhysicalPartition;
-import com.starrocks.catalog.Replica;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.Table.TableType;
-import com.starrocks.catalog.Tablet;
-import com.starrocks.common.CloseableLock;
-import com.starrocks.common.Config;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.Pair;
-import com.starrocks.common.util.FrontendDaemon;
-import com.starrocks.common.util.concurrent.lock.LockType;
-import com.starrocks.common.util.concurrent.lock.Locker;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.server.RunMode;
-import com.starrocks.sql.analyzer.AdminStmtAnalyzer;
-import com.starrocks.sql.ast.AdminCancelRepairTableStmt;
-import com.starrocks.sql.ast.AdminRepairTableStmt;
-import com.starrocks.system.Backend;
-import com.starrocks.system.ComputeNode;
-import com.starrocks.system.NodeSelector;
-import com.starrocks.system.SystemInfoService;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.LocalTablet;
+import io.datafibre.fibre.catalog.LocalTablet.TabletHealthStatus;
+import io.datafibre.fibre.catalog.MaterializedIndex;
+import io.datafibre.fibre.catalog.MaterializedIndex.IndexExtState;
+import io.datafibre.fibre.catalog.OlapTable;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.catalog.Partition.PartitionState;
+import io.datafibre.fibre.catalog.PhysicalPartition;
+import io.datafibre.fibre.catalog.Replica;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.Table.TableType;
+import io.datafibre.fibre.catalog.Tablet;
+import io.datafibre.fibre.common.CloseableLock;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.util.FrontendDaemon;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.server.RunMode;
+import io.datafibre.fibre.sql.analyzer.AdminStmtAnalyzer;
+import io.datafibre.fibre.sql.ast.AdminCancelRepairTableStmt;
+import io.datafibre.fibre.sql.ast.AdminRepairTableStmt;
+import io.datafibre.fibre.system.Backend;
+import io.datafibre.fibre.system.ComputeNode;
+import io.datafibre.fibre.system.NodeSelector;
+import io.datafibre.fibre.system.SystemInfoService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -744,9 +744,9 @@ public class TabletChecker extends FrontendDaemon {
      * on a pvc which is backed by a remote storage service, such as AWS EBS. And later,
      * k8s control place will schedule a new pod and attach the pvc to it which will
      * restore the replica to a {@link Replica.ReplicaState#NORMAL} state immediately. But normally
-     * the {@link com.starrocks.clone.TabletScheduler} of Starrocks will start to schedule
+     * the {@link io.datafibre.fibre.clone.TabletScheduler} of Starrocks will start to schedule
      * {@link TabletHealthStatus#REPLICA_MISSING} tasks and create new replicas in a short time.
-     * After new pod scheduling is completed, {@link com.starrocks.clone.TabletScheduler} has
+     * After new pod scheduling is completed, {@link io.datafibre.fibre.clone.TabletScheduler} has
      * to delete the redundant healthy replica which cause resource waste and may also affect
      * the loading process.
      *

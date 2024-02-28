@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.persist;
+package io.datafibre.fibre.persist;
 
-import com.starrocks.catalog.DataProperty;
-import com.starrocks.catalog.Partition;
-import com.starrocks.lake.DataCacheInfo;
+import io.datafibre.fibre.catalog.DataProperty;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.lake.DataCacheInfo;
 
 // UNPARTITIONED type
 public class SinglePartitionPersistInfo extends PartitionPersistInfoV2 {

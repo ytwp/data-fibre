@@ -12,32 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.Pair;
-import com.starrocks.common.util.PropertyAnalyzer;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.service.FrontendOptions;
-import com.starrocks.sql.ast.AddBackendClause;
-import com.starrocks.sql.ast.AddComputeNodeClause;
-import com.starrocks.sql.ast.AddFollowerClause;
-import com.starrocks.sql.ast.AddObserverClause;
-import com.starrocks.sql.ast.AlterSystemStmt;
-import com.starrocks.sql.ast.AstVisitor;
-import com.starrocks.sql.ast.BackendClause;
-import com.starrocks.sql.ast.CancelAlterSystemStmt;
-import com.starrocks.sql.ast.CleanTabletSchedQClause;
-import com.starrocks.sql.ast.ComputeNodeClause;
-import com.starrocks.sql.ast.CreateImageClause;
-import com.starrocks.sql.ast.DdlStmt;
-import com.starrocks.sql.ast.FrontendClause;
-import com.starrocks.sql.ast.ModifyBackendClause;
-import com.starrocks.sql.ast.ModifyBrokerClause;
-import com.starrocks.sql.ast.ModifyFrontendAddressClause;
-import com.starrocks.system.SystemInfoService;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.util.PropertyAnalyzer;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.service.FrontendOptions;
+import io.datafibre.fibre.sql.ast.AddBackendClause;
+import io.datafibre.fibre.sql.ast.AddComputeNodeClause;
+import io.datafibre.fibre.sql.ast.AddFollowerClause;
+import io.datafibre.fibre.sql.ast.AddObserverClause;
+import io.datafibre.fibre.sql.ast.AlterSystemStmt;
+import io.datafibre.fibre.sql.ast.AstVisitor;
+import io.datafibre.fibre.sql.ast.BackendClause;
+import io.datafibre.fibre.sql.ast.CancelAlterSystemStmt;
+import io.datafibre.fibre.sql.ast.CleanTabletSchedQClause;
+import io.datafibre.fibre.sql.ast.ComputeNodeClause;
+import io.datafibre.fibre.sql.ast.CreateImageClause;
+import io.datafibre.fibre.sql.ast.DdlStmt;
+import io.datafibre.fibre.sql.ast.FrontendClause;
+import io.datafibre.fibre.sql.ast.ModifyBackendClause;
+import io.datafibre.fibre.sql.ast.ModifyBrokerClause;
+import io.datafibre.fibre.sql.ast.ModifyFrontendAddressClause;
+import io.datafibre.fibre.system.SystemInfoService;
 import org.apache.commons.validator.routines.InetAddressValidator;
 
 import java.net.InetAddress;
@@ -47,7 +47,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import static com.starrocks.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
+import static io.datafibre.fibre.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
 
 public class AlterSystemStmtAnalyzer extends AstVisitor<Void, ConnectContext> {
     public static final String PROP_KEY_LOCATION = PropertyAnalyzer.PROPERTIES_LABELS_LOCATION;

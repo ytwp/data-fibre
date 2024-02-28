@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.hive.glue.metastore;
+package io.datafibre.fibre.connector.hive.glue.metastore;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.glue.AWSGlue;
@@ -73,8 +73,8 @@ import com.amazonaws.services.glue.model.UserDefinedFunctionInput;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.connector.PartitionUtil;
-import com.starrocks.connector.hive.glue.util.MetastoreClientUtils;
+import io.datafibre.fibre.connector.PartitionUtil;
+import io.datafibre.fibre.connector.hive.glue.util.MetastoreClientUtils;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.metastore.api.BinaryColumnStatsData;
 import org.apache.hadoop.hive.metastore.api.BooleanColumnStatsData;
@@ -105,8 +105,8 @@ import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.starrocks.connector.hive.glue.util.AWSGlueConfig.CUSTOM_EXECUTOR_FACTORY_CONF;
-import static com.starrocks.connector.hive.glue.util.AWSGlueConfig.NUM_PARTITION_SEGMENTS_CONF;
+import static io.datafibre.fibre.connector.hive.glue.util.AWSGlueConfig.CUSTOM_EXECUTOR_FACTORY_CONF;
+import static io.datafibre.fibre.connector.hive.glue.util.AWSGlueConfig.NUM_PARTITION_SEGMENTS_CONF;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 public class DefaultAWSGlueMetastore implements AWSGlueMetastore {

@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.server;
+package io.datafibre.fibre.server;
 
 import com.google.common.collect.ImmutableMap;
 import com.staros.util.LockCloseable;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.system.ComputeNode;
-import com.starrocks.warehouse.LocalWarehouse;
-import com.starrocks.warehouse.Warehouse;
-import com.starrocks.warehouse.WarehouseProcDir;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.system.ComputeNode;
+import io.datafibre.fibre.warehouse.LocalWarehouse;
+import io.datafibre.fibre.warehouse.Warehouse;
+import io.datafibre.fibre.warehouse.WarehouseProcDir;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

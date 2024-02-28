@@ -12,26 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.DecimalLiteral;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.FunctionCallExpr;
-import com.starrocks.analysis.FunctionName;
-import com.starrocks.analysis.FunctionParams;
-import com.starrocks.analysis.IntLiteral;
-import com.starrocks.analysis.LiteralExpr;
-import com.starrocks.analysis.NullLiteral;
-import com.starrocks.analysis.StringLiteral;
-import com.starrocks.catalog.AggregateFunction;
-import com.starrocks.catalog.ArrayType;
-import com.starrocks.catalog.FunctionSet;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.FeConstants;
-import com.starrocks.common.util.ExprUtil;
-import com.starrocks.qe.ConnectContext;
+import io.datafibre.fibre.analysis.DecimalLiteral;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.FunctionCallExpr;
+import io.datafibre.fibre.analysis.FunctionName;
+import io.datafibre.fibre.analysis.FunctionParams;
+import io.datafibre.fibre.analysis.IntLiteral;
+import io.datafibre.fibre.analysis.LiteralExpr;
+import io.datafibre.fibre.analysis.NullLiteral;
+import io.datafibre.fibre.analysis.StringLiteral;
+import io.datafibre.fibre.catalog.AggregateFunction;
+import io.datafibre.fibre.catalog.ArrayType;
+import io.datafibre.fibre.catalog.FunctionSet;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.FeConstants;
+import io.datafibre.fibre.common.util.ExprUtil;
+import io.datafibre.fibre.qe.ConnectContext;
 
 public class FunctionAnalyzer {
 

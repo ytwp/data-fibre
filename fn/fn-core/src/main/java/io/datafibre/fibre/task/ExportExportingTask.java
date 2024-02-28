@@ -32,28 +32,28 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.task;
+package io.datafibre.fibre.task;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.starrocks.common.Status;
-import com.starrocks.common.UserException;
-import com.starrocks.common.Version;
-import com.starrocks.common.util.BrokerUtil;
-import com.starrocks.common.util.DebugUtil;
-import com.starrocks.common.util.ProfileManager;
-import com.starrocks.common.util.RuntimeProfile;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.common.util.concurrent.MarkedCountDownLatch;
-import com.starrocks.fs.HdfsUtil;
-import com.starrocks.load.ExportChecker;
-import com.starrocks.load.ExportFailMsg;
-import com.starrocks.load.ExportJob;
-import com.starrocks.qe.QeProcessorImpl;
-import com.starrocks.qe.scheduler.Coordinator;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.thrift.TStatusCode;
-import com.starrocks.thrift.TUniqueId;
+import io.datafibre.fibre.common.Status;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.Version;
+import io.datafibre.fibre.common.util.BrokerUtil;
+import io.datafibre.fibre.common.util.DebugUtil;
+import io.datafibre.fibre.common.util.ProfileManager;
+import io.datafibre.fibre.common.util.RuntimeProfile;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.common.util.concurrent.MarkedCountDownLatch;
+import io.datafibre.fibre.fs.HdfsUtil;
+import io.datafibre.fibre.load.ExportChecker;
+import io.datafibre.fibre.load.ExportFailMsg;
+import io.datafibre.fibre.load.ExportJob;
+import io.datafibre.fibre.qe.QeProcessorImpl;
+import io.datafibre.fibre.qe.scheduler.Coordinator;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.thrift.TStatusCode;
+import io.datafibre.fibre.thrift.TUniqueId;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

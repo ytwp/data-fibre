@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.common.util;
+package io.datafibre.fibre.common.util;
 
 import java.time.Period;
 import java.time.format.DateTimeParseException;

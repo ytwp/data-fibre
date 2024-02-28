@@ -13,12 +13,12 @@
 // limitations under the License.
 
 
-package com.starrocks.persist;
+package io.datafibre.fibre.persist;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.catalog.DataProperty;
-import com.starrocks.catalog.Partition;
-import com.starrocks.lake.DataCacheInfo;
+import io.datafibre.fibre.catalog.DataProperty;
+import io.datafibre.fibre.catalog.Partition;
+import io.datafibre.fibre.lake.DataCacheInfo;
 
 import java.util.List;
 

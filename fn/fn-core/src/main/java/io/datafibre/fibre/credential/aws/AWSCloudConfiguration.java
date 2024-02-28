@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.credential.aws;
+package io.datafibre.fibre.credential.aws;
 
 import com.staros.proto.FileStoreInfo;
-import com.starrocks.credential.CloudConfiguration;
-import com.starrocks.credential.CloudConfigurationConstants;
-import com.starrocks.credential.CloudType;
-import com.starrocks.thrift.TCloudConfiguration;
-import com.starrocks.thrift.TCloudType;
+import io.datafibre.fibre.credential.CloudConfiguration;
+import io.datafibre.fibre.credential.CloudConfigurationConstants;
+import io.datafibre.fibre.credential.CloudType;
+import io.datafibre.fibre.thrift.TCloudConfiguration;
+import io.datafibre.fibre.thrift.TCloudType;
 import org.apache.hadoop.conf.Configuration;
 
 import java.util.Map;

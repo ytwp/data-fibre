@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package com.starrocks.scheduler.persist;
+package io.datafibre.fibre.scheduler.persist;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.sql.optimizer.Utils;
+import io.datafibre.fibre.sql.optimizer.Utils;
 
 import java.util.concurrent.TimeUnit;
 

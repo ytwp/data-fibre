@@ -32,12 +32,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common;
+package io.datafibre.fibre.common;
 
-import com.starrocks.thrift.BackendService;
-import com.starrocks.thrift.FrontendService;
-import com.starrocks.thrift.HeartbeatService;
-import com.starrocks.thrift.TFileBrokerService;
+import io.datafibre.fibre.thrift.BackendService;
+import io.datafibre.fibre.thrift.FrontendService;
+import io.datafibre.fibre.thrift.HeartbeatService;
+import io.datafibre.fibre.thrift.TFileBrokerService;
 import org.apache.commons.pool2.impl.GenericKeyedObjectPoolConfig;
 
 public class ClientPool {

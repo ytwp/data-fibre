@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.http;
+package io.datafibre.fibre.http;
 
 import com.codahale.metrics.Histogram;
 import com.codahale.metrics.MetricRegistry;
-import com.starrocks.metric.CounterMetric;
-import com.starrocks.metric.GaugeMetric;
-import com.starrocks.metric.MetricVisitor;
+import io.datafibre.fibre.metric.CounterMetric;
+import io.datafibre.fibre.metric.GaugeMetric;
+import io.datafibre.fibre.metric.MetricVisitor;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

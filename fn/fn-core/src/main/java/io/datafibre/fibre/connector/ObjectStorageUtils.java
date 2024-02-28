@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.connector;
+package io.datafibre.fibre.connector;
 
 @Deprecated
 public class ObjectStorageUtils {

@@ -12,40 +12,40 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
 import com.google.common.base.Strings;
-import com.starrocks.analysis.FunctionName;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.Function;
-import com.starrocks.catalog.FunctionSearchDesc;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.View;
-import com.starrocks.catalog.system.SystemId;
-import com.starrocks.catalog.system.information.InfoSchemaDb;
-import com.starrocks.catalog.system.sys.SysDb;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.ErrorCode;
-import com.starrocks.common.ErrorReport;
-import com.starrocks.common.util.concurrent.lock.LockType;
-import com.starrocks.common.util.concurrent.lock.Locker;
-import com.starrocks.privilege.AccessDeniedException;
-import com.starrocks.privilege.ObjectType;
-import com.starrocks.privilege.PrivilegeType;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.AstVisitor;
-import com.starrocks.sql.ast.DdlStmt;
-import com.starrocks.sql.ast.DropDbStmt;
-import com.starrocks.sql.ast.DropFunctionStmt;
-import com.starrocks.sql.ast.DropTableStmt;
-import com.starrocks.sql.ast.FunctionArgsDef;
-import com.starrocks.sql.common.MetaUtils;
+import io.datafibre.fibre.analysis.FunctionName;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.Function;
+import io.datafibre.fibre.catalog.FunctionSearchDesc;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.View;
+import io.datafibre.fibre.catalog.system.SystemId;
+import io.datafibre.fibre.catalog.system.information.InfoSchemaDb;
+import io.datafibre.fibre.catalog.system.sys.SysDb;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.ErrorCode;
+import io.datafibre.fibre.common.ErrorReport;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.privilege.AccessDeniedException;
+import io.datafibre.fibre.privilege.ObjectType;
+import io.datafibre.fibre.privilege.PrivilegeType;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.AstVisitor;
+import io.datafibre.fibre.sql.ast.DdlStmt;
+import io.datafibre.fibre.sql.ast.DropDbStmt;
+import io.datafibre.fibre.sql.ast.DropFunctionStmt;
+import io.datafibre.fibre.sql.ast.DropTableStmt;
+import io.datafibre.fibre.sql.ast.FunctionArgsDef;
+import io.datafibre.fibre.sql.common.MetaUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static com.starrocks.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
+import static io.datafibre.fibre.sql.common.ErrorMsgProxy.PARSER_ERROR_MSG;
 
 public class DropStmtAnalyzer {
     private static final Logger LOG = LogManager.getLogger(DropStmtAnalyzer.class);

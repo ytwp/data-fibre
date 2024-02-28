@@ -32,15 +32,15 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.leader;
+package io.datafibre.fibre.leader;
 
 import com.sleepycat.je.config.EnvironmentParams;
-import com.starrocks.common.Config;
-import com.starrocks.common.InvalidMetaDirException;
-import com.starrocks.common.io.IOUtils;
-import com.starrocks.journal.bdbje.BDBEnvironment;
-import com.starrocks.monitor.unit.ByteSizeValue;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.InvalidMetaDirException;
+import io.datafibre.fibre.common.io.IOUtils;
+import io.datafibre.fibre.journal.bdbje.BDBEnvironment;
+import io.datafibre.fibre.monitor.unit.ByteSizeValue;
+import io.datafibre.fibre.server.GlobalStateMgr;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

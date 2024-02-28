@@ -13,13 +13,13 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.hive;
+package io.datafibre.fibre.connector.hive;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.starrocks.connector.PartitionUtil.toPartitionValues;
+import static io.datafibre.fibre.connector.PartitionUtil.toPartitionValues;
 
 public class HivePartitionName {
     private final String databaseName;

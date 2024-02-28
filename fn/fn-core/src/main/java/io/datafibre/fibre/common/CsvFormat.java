@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.common;
+package io.datafibre.fibre.common;
 
 public class CsvFormat {
     public CsvFormat(byte enclose, byte escape, long skipheader, boolean trimspace) {

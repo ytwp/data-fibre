@@ -12,26 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
 import com.google.common.base.Strings;
-import com.starrocks.catalog.InternalCatalog;
-import com.starrocks.connector.ConnectorType;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.ast.AlterCatalogStmt;
-import com.starrocks.sql.ast.AstVisitor;
-import com.starrocks.sql.ast.CreateCatalogStmt;
-import com.starrocks.sql.ast.DropCatalogStmt;
-import com.starrocks.sql.ast.ModifyTablePropertiesClause;
-import com.starrocks.sql.ast.SetCatalogStmt;
-import com.starrocks.sql.ast.ShowStmt;
-import com.starrocks.sql.ast.StatementBase;
-import com.starrocks.sql.ast.UseCatalogStmt;
+import io.datafibre.fibre.catalog.InternalCatalog;
+import io.datafibre.fibre.connector.ConnectorType;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.ast.AlterCatalogStmt;
+import io.datafibre.fibre.sql.ast.AstVisitor;
+import io.datafibre.fibre.sql.ast.CreateCatalogStmt;
+import io.datafibre.fibre.sql.ast.DropCatalogStmt;
+import io.datafibre.fibre.sql.ast.ModifyTablePropertiesClause;
+import io.datafibre.fibre.sql.ast.SetCatalogStmt;
+import io.datafibre.fibre.sql.ast.ShowStmt;
+import io.datafibre.fibre.sql.ast.StatementBase;
+import io.datafibre.fibre.sql.ast.UseCatalogStmt;
 
 import java.util.Map;
 
-import static com.starrocks.server.CatalogMgr.ResourceMappingCatalog.isResourceMappingCatalog;
-import static com.starrocks.sql.ast.CreateCatalogStmt.TYPE;
+import static io.datafibre.fibre.server.CatalogMgr.ResourceMappingCatalog.isResourceMappingCatalog;
+import static io.datafibre.fibre.sql.ast.CreateCatalogStmt.TYPE;
 
 public class CatalogAnalyzer {
     private static final String CATALOG = "CATALOG";

@@ -13,15 +13,15 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
-import com.starrocks.analysis.Expr;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.qe.ShowResultSetMetaData;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.qe.ShowResultSetMetaData;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
-import static com.starrocks.sql.ast.SetType.SESSION;
+import static io.datafibre.fibre.sql.ast.SetType.SESSION;
 
 /**
  * Show Status statement

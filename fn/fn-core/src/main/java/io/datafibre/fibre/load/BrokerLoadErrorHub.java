@@ -32,16 +32,16 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.load;
+package io.datafibre.fibre.load;
 
 import com.google.common.collect.Maps;
-import com.starrocks.catalog.FsBroker;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.common.util.PrintableMap;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.thrift.TBrokerErrorHubInfo;
-import com.starrocks.thrift.TNetworkAddress;
+import io.datafibre.fibre.catalog.FsBroker;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.common.util.PrintableMap;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.thrift.TBrokerErrorHubInfo;
+import io.datafibre.fibre.thrift.TNetworkAddress;
 
 import java.io.DataInput;
 import java.io.DataOutput;

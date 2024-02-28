@@ -12,29 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.collect.Lists;
-import com.starrocks.analysis.FunctionName;
-import com.starrocks.analysis.RedirectStatus;
-import com.starrocks.analysis.TypeDef;
-import com.starrocks.catalog.AggregateFunction;
-import com.starrocks.catalog.Function;
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.catalog.ScalarFunction;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.catalog.TableFunction;
-import com.starrocks.catalog.Type;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.Config;
-import com.starrocks.common.FeConstants;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.parser.NodePosition;
-import com.starrocks.thrift.TFunctionBinaryType;
+import io.datafibre.fibre.analysis.FunctionName;
+import io.datafibre.fibre.analysis.RedirectStatus;
+import io.datafibre.fibre.analysis.TypeDef;
+import io.datafibre.fibre.catalog.AggregateFunction;
+import io.datafibre.fibre.catalog.Function;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.catalog.ScalarFunction;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.catalog.TableFunction;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.FeConstants;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.parser.NodePosition;
+import io.datafibre.fibre.thrift.TFunctionBinaryType;
 import org.apache.commons.codec.binary.Hex;
 
 import java.io.IOException;

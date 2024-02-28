@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.journal;
+package io.datafibre.fibre.journal;
 
 // This class is like JDBC ResultSet.
 public interface JournalCursor {

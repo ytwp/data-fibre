@@ -32,15 +32,15 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.analysis;
+package io.datafibre.fibre.analysis;
 
-import com.starrocks.cluster.ClusterNamespace;
-import com.starrocks.sql.analyzer.FeNameFormat;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.analyzer.AnalyzerUtils;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.cluster.ClusterNamespace;
+import io.datafibre.fibre.sql.analyzer.FeNameFormat;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.analyzer.AnalyzerUtils;
+import io.datafibre.fibre.sql.parser.NodePosition;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.io.DataInput;

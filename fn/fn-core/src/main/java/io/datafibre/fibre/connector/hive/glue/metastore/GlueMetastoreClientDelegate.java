@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.hive.glue.metastore;
+package io.datafibre.fibre.connector.hive.glue.metastore;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.glue.model.Column;
@@ -29,13 +29,13 @@ import com.amazonaws.services.glue.model.UserDefinedFunction;
 import com.amazonaws.services.glue.model.UserDefinedFunctionInput;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.connector.hive.glue.converters.CatalogToHiveConverter;
-import com.starrocks.connector.hive.glue.converters.GlueInputConverter;
-import com.starrocks.connector.hive.glue.converters.HiveToCatalogConverter;
-import com.starrocks.connector.hive.glue.util.BatchCreatePartitionsHelper;
-import com.starrocks.connector.hive.glue.util.ExpressionHelper;
-import com.starrocks.connector.hive.glue.util.MetastoreClientUtils;
-import com.starrocks.connector.hive.glue.util.PartitionKey;
+import io.datafibre.fibre.connector.hive.glue.converters.CatalogToHiveConverter;
+import io.datafibre.fibre.connector.hive.glue.converters.GlueInputConverter;
+import io.datafibre.fibre.connector.hive.glue.converters.HiveToCatalogConverter;
+import io.datafibre.fibre.connector.hive.glue.util.BatchCreatePartitionsHelper;
+import io.datafibre.fibre.connector.hive.glue.util.ExpressionHelper;
+import io.datafibre.fibre.connector.hive.glue.util.MetastoreClientUtils;
+import io.datafibre.fibre.connector.hive.glue.util.PartitionKey;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hive.common.StatsSetupConst;
@@ -100,7 +100,7 @@ import java.util.regex.Pattern;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.starrocks.connector.hive.glue.util.AWSGlueConfig.CUSTOM_EXECUTOR_FACTORY_CONF;
+import static io.datafibre.fibre.connector.hive.glue.util.AWSGlueConfig.CUSTOM_EXECUTOR_FACTORY_CONF;
 import static org.apache.hadoop.hive.metastore.HiveMetaStore.PUBLIC;
 import static org.apache.hadoop.hive.metastore.TableType.EXTERNAL_TABLE;
 import static org.apache.hadoop.hive.metastore.TableType.MANAGED_TABLE;

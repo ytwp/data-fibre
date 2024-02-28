@@ -15,10 +15,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.analysis;
+package io.datafibre.fibre.analysis;
 
-import com.starrocks.common.Id;
-import com.starrocks.common.IdGenerator;
+import io.datafibre.fibre.common.Id;
+import io.datafibre.fibre.common.IdGenerator;
 
 public class ExprId extends Id<ExprId> {
 

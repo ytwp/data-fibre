@@ -46,12 +46,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.connector.iceberg.io;
+package io.datafibre.fibre.connector.iceberg.io;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.Weigher;
-import com.starrocks.common.Config;
+import io.datafibre.fibre.common.Config;
 import org.apache.hadoop.conf.Configurable;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;

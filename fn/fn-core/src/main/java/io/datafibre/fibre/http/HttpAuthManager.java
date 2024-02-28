@@ -15,11 +15,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.http;
+package io.datafibre.fibre.http;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.starrocks.sql.ast.UserIdentity;
+import io.datafibre.fibre.sql.ast.UserIdentity;
 
 import java.util.concurrent.TimeUnit;
 

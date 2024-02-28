@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.qe;
+package io.datafibre.fibre.qe;
 
 import autovalue.shaded.com.google.common.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
@@ -23,28 +23,28 @@ import com.google.common.collect.Multimap;
 import com.google.common.hash.Funnel;
 import com.google.common.hash.Hashing;
 import com.google.common.hash.PrimitiveSink;
-import com.starrocks.catalog.PartitionKey;
-import com.starrocks.common.UserException;
-import com.starrocks.common.profile.Tracers;
-import com.starrocks.common.util.ConsistentHashRing;
-import com.starrocks.common.util.HashRing;
-import com.starrocks.common.util.RendezvousHashRing;
-import com.starrocks.planner.DeltaLakeScanNode;
-import com.starrocks.planner.FileTableScanNode;
-import com.starrocks.planner.HdfsScanNode;
-import com.starrocks.planner.HudiScanNode;
-import com.starrocks.planner.IcebergScanNode;
-import com.starrocks.planner.OdpsScanNode;
-import com.starrocks.planner.PaimonScanNode;
-import com.starrocks.planner.ScanNode;
-import com.starrocks.qe.scheduler.NonRecoverableException;
-import com.starrocks.qe.scheduler.WorkerProvider;
-import com.starrocks.sql.plan.HDFSScanNodePredicates;
-import com.starrocks.system.ComputeNode;
-import com.starrocks.thrift.THdfsScanRange;
-import com.starrocks.thrift.TScanRangeLocation;
-import com.starrocks.thrift.TScanRangeLocations;
-import com.starrocks.thrift.TScanRangeParams;
+import io.datafibre.fibre.catalog.PartitionKey;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.profile.Tracers;
+import io.datafibre.fibre.common.util.ConsistentHashRing;
+import io.datafibre.fibre.common.util.HashRing;
+import io.datafibre.fibre.common.util.RendezvousHashRing;
+import io.datafibre.fibre.planner.DeltaLakeScanNode;
+import io.datafibre.fibre.planner.FileTableScanNode;
+import io.datafibre.fibre.planner.HdfsScanNode;
+import io.datafibre.fibre.planner.HudiScanNode;
+import io.datafibre.fibre.planner.IcebergScanNode;
+import io.datafibre.fibre.planner.OdpsScanNode;
+import io.datafibre.fibre.planner.PaimonScanNode;
+import io.datafibre.fibre.planner.ScanNode;
+import io.datafibre.fibre.qe.scheduler.NonRecoverableException;
+import io.datafibre.fibre.qe.scheduler.WorkerProvider;
+import io.datafibre.fibre.sql.plan.HDFSScanNodePredicates;
+import io.datafibre.fibre.system.ComputeNode;
+import io.datafibre.fibre.thrift.THdfsScanRange;
+import io.datafibre.fibre.thrift.TScanRangeLocation;
+import io.datafibre.fibre.thrift.TScanRangeLocations;
+import io.datafibre.fibre.thrift.TScanRangeParams;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

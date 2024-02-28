@@ -32,23 +32,23 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.load.routineload;
+package io.datafibre.fibre.load.routineload;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
-import com.starrocks.common.UserException;
-import com.starrocks.common.util.DebugUtil;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.load.streamload.StreamLoadTask;
-import com.starrocks.metric.MetricRepo;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.service.FrontendOptions;
-import com.starrocks.thrift.TRoutineLoadTask;
-import com.starrocks.transaction.TransactionState;
-import com.starrocks.transaction.TransactionState.TxnCoordinator;
-import com.starrocks.transaction.TransactionState.TxnSourceType;
-import com.starrocks.transaction.TransactionStatus;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.util.DebugUtil;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.load.streamload.StreamLoadTask;
+import io.datafibre.fibre.metric.MetricRepo;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.service.FrontendOptions;
+import io.datafibre.fibre.thrift.TRoutineLoadTask;
+import io.datafibre.fibre.transaction.TransactionState;
+import io.datafibre.fibre.transaction.TransactionState.TxnCoordinator;
+import io.datafibre.fibre.transaction.TransactionState.TxnSourceType;
+import io.datafibre.fibre.transaction.TransactionStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

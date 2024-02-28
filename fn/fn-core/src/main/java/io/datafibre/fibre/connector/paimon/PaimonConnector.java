@@ -12,21 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.paimon;
+package io.datafibre.fibre.connector.paimon;
 
 import com.google.common.base.Strings;
-import com.starrocks.connector.Connector;
-import com.starrocks.connector.ConnectorContext;
-import com.starrocks.connector.ConnectorMetadata;
-import com.starrocks.connector.HdfsEnvironment;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.credential.CloudConfiguration;
-import com.starrocks.credential.CloudConfigurationFactory;
-import com.starrocks.credential.CloudType;
-import com.starrocks.credential.aliyun.AliyunCloudConfiguration;
-import com.starrocks.credential.aliyun.AliyunCloudCredential;
-import com.starrocks.credential.aws.AWSCloudConfiguration;
-import com.starrocks.credential.aws.AWSCloudCredential;
+import io.datafibre.fibre.connector.Connector;
+import io.datafibre.fibre.connector.ConnectorContext;
+import io.datafibre.fibre.connector.ConnectorMetadata;
+import io.datafibre.fibre.connector.HdfsEnvironment;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.credential.CloudConfiguration;
+import io.datafibre.fibre.credential.CloudConfigurationFactory;
+import io.datafibre.fibre.credential.CloudType;
+import io.datafibre.fibre.credential.aliyun.AliyunCloudConfiguration;
+import io.datafibre.fibre.credential.aliyun.AliyunCloudCredential;
+import io.datafibre.fibre.credential.aws.AWSCloudConfiguration;
+import io.datafibre.fibre.credential.aws.AWSCloudCredential;
 import org.apache.paimon.catalog.Catalog;
 import org.apache.paimon.catalog.CatalogContext;
 import org.apache.paimon.catalog.CatalogFactory;

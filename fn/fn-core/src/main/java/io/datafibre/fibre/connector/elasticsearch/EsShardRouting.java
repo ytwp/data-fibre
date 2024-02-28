@@ -15,9 +15,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.connector.elasticsearch;
+package io.datafibre.fibre.connector.elasticsearch;
 
-import com.starrocks.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TNetworkAddress;
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
 

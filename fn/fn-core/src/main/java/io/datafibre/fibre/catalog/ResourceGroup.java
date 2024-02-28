@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.qe.ShowResultSetMetaData;
-import com.starrocks.thrift.TWorkGroup;
-import com.starrocks.thrift.TWorkGroupType;
+import io.datafibre.fibre.qe.ShowResultSetMetaData;
+import io.datafibre.fibre.thrift.TWorkGroup;
+import io.datafibre.fibre.thrift.TWorkGroupType;
 
 import java.util.ArrayList;
 import java.util.Collections;

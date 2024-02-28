@@ -13,18 +13,18 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
 import com.google.common.collect.ImmutableSet;
-import com.starrocks.analysis.RedirectStatus;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.proc.ProcNodeInterface;
-import com.starrocks.common.proc.ProcResult;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.ShowResultSetMetaData;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.analysis.RedirectStatus;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.proc.ProcNodeInterface;
+import io.datafibre.fibre.common.proc.ProcResult;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.ShowResultSetMetaData;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 // SHOW PROC statement. Used to show proc information, only admin can use.
 public class ShowProcStmt extends ShowStmt {

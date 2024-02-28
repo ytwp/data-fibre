@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
@@ -22,24 +22,24 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.analysis.DescriptorTable;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.connector.ColumnTypeConverter;
-import com.starrocks.connector.HdfsEnvironment;
-import com.starrocks.connector.RemoteFileDesc;
-import com.starrocks.connector.RemotePathKey;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.connector.hive.HiveRemoteFileIO;
-import com.starrocks.connector.hive.HiveStorageFormat;
-import com.starrocks.connector.hive.RemoteFileInputFormat;
-import com.starrocks.connector.hive.TextFileFormatDesc;
-import com.starrocks.credential.azure.AzureCloudConfigurationProvider;
-import com.starrocks.thrift.TColumn;
-import com.starrocks.thrift.TFileTable;
-import com.starrocks.thrift.TTableDescriptor;
-import com.starrocks.thrift.TTableType;
+import io.datafibre.fibre.analysis.DescriptorTable;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.connector.ColumnTypeConverter;
+import io.datafibre.fibre.connector.HdfsEnvironment;
+import io.datafibre.fibre.connector.RemoteFileDesc;
+import io.datafibre.fibre.connector.RemotePathKey;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.connector.hive.HiveRemoteFileIO;
+import io.datafibre.fibre.connector.hive.HiveStorageFormat;
+import io.datafibre.fibre.connector.hive.RemoteFileInputFormat;
+import io.datafibre.fibre.connector.hive.TextFileFormatDesc;
+import io.datafibre.fibre.credential.azure.AzureCloudConfigurationProvider;
+import io.datafibre.fibre.thrift.TColumn;
+import io.datafibre.fibre.thrift.TFileTable;
+import io.datafibre.fibre.thrift.TTableDescriptor;
+import io.datafibre.fibre.thrift.TTableType;
 import org.apache.hadoop.conf.Configuration;
 
 import java.io.DataInput;

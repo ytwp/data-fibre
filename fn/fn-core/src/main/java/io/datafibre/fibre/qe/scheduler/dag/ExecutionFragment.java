@@ -12,31 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.qe.scheduler.dag;
+package io.datafibre.fibre.qe.scheduler.dag;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.common.util.DebugUtil;
-import com.starrocks.planner.ExchangeNode;
-import com.starrocks.planner.JoinNode;
-import com.starrocks.planner.OlapScanNode;
-import com.starrocks.planner.PlanFragment;
-import com.starrocks.planner.PlanFragmentId;
-import com.starrocks.planner.PlanNode;
-import com.starrocks.planner.PlanNodeId;
-import com.starrocks.planner.RuntimeFilterDescription;
-import com.starrocks.planner.ScanNode;
-import com.starrocks.qe.ColocatedBackendSelector;
-import com.starrocks.qe.CoordinatorPreprocessor;
-import com.starrocks.qe.FragmentScanRangeAssignment;
-import com.starrocks.qe.scheduler.ExplainBuilder;
-import com.starrocks.thrift.TEsScanRange;
-import com.starrocks.thrift.THdfsScanRange;
-import com.starrocks.thrift.TInternalScanRange;
-import com.starrocks.thrift.TPlanFragmentDestination;
-import com.starrocks.thrift.TRuntimeFilterParams;
-import com.starrocks.thrift.TScanRangeParams;
+import io.datafibre.fibre.common.util.DebugUtil;
+import io.datafibre.fibre.planner.ExchangeNode;
+import io.datafibre.fibre.planner.JoinNode;
+import io.datafibre.fibre.planner.OlapScanNode;
+import io.datafibre.fibre.planner.PlanFragment;
+import io.datafibre.fibre.planner.PlanFragmentId;
+import io.datafibre.fibre.planner.PlanNode;
+import io.datafibre.fibre.planner.PlanNodeId;
+import io.datafibre.fibre.planner.RuntimeFilterDescription;
+import io.datafibre.fibre.planner.ScanNode;
+import io.datafibre.fibre.qe.ColocatedBackendSelector;
+import io.datafibre.fibre.qe.CoordinatorPreprocessor;
+import io.datafibre.fibre.qe.FragmentScanRangeAssignment;
+import io.datafibre.fibre.qe.scheduler.ExplainBuilder;
+import io.datafibre.fibre.thrift.TEsScanRange;
+import io.datafibre.fibre.thrift.THdfsScanRange;
+import io.datafibre.fibre.thrift.TInternalScanRange;
+import io.datafibre.fibre.thrift.TPlanFragmentDestination;
+import io.datafibre.fibre.thrift.TRuntimeFilterParams;
+import io.datafibre.fibre.thrift.TScanRangeParams;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -47,7 +47,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import static com.starrocks.qe.scheduler.dag.FragmentInstance.ABSENT_DRIVER_SEQUENCE;
+import static io.datafibre.fibre.qe.scheduler.dag.FragmentInstance.ABSENT_DRIVER_SEQUENCE;
 
 /**
  * An {@code ExecutionFragment} is a part of the {@link ExecutionDAG}, and it corresponds one-to-one with a {@link PlanFragment}.

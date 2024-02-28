@@ -32,18 +32,18 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.analysis.FunctionName;
-import com.starrocks.common.io.Text;
-import com.starrocks.sql.ast.CreateFunctionStmt;
-import com.starrocks.sql.ast.HdfsURI;
-import com.starrocks.thrift.TFunction;
-import com.starrocks.thrift.TFunctionBinaryType;
-import com.starrocks.thrift.TScalarFunction;
+import io.datafibre.fibre.analysis.FunctionName;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.sql.ast.CreateFunctionStmt;
+import io.datafibre.fibre.sql.ast.HdfsURI;
+import io.datafibre.fibre.thrift.TFunction;
+import io.datafibre.fibre.thrift.TFunctionBinaryType;
+import io.datafibre.fibre.thrift.TScalarFunction;
 import org.apache.logging.log4j.util.Strings;
 
 import java.io.DataInput;
@@ -53,7 +53,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.starrocks.common.io.IOUtils.writeOptionString;
+import static io.datafibre.fibre.common.io.IOUtils.writeOptionString;
 
 /**
  * Internal representation of a scalar function.

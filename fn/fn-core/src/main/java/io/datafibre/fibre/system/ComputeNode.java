@@ -12,25 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.system;
+package io.datafibre.fibre.system;
 
 import com.google.common.base.Objects;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.alter.DecommissionType;
-import com.starrocks.catalog.ResourceGroup;
-import com.starrocks.common.Config;
-import com.starrocks.common.Pair;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.common.util.DnsCache;
-import com.starrocks.datacache.DataCacheMetrics;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.qe.CoordinatorMonitor;
-import com.starrocks.qe.GlobalVariable;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.server.RunMode;
-import com.starrocks.thrift.TNetworkAddress;
-import com.starrocks.thrift.TResourceGroupUsage;
+import io.datafibre.fibre.alter.DecommissionType;
+import io.datafibre.fibre.catalog.ResourceGroup;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.common.util.DnsCache;
+import io.datafibre.fibre.datacache.DataCacheMetrics;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.qe.CoordinatorMonitor;
+import io.datafibre.fibre.qe.GlobalVariable;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.server.RunMode;
+import io.datafibre.fibre.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TResourceGroupUsage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

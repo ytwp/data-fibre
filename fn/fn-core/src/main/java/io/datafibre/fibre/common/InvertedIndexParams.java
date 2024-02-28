@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.common;
+package io.datafibre.fibre.common;
 
-import com.starrocks.common.io.ParamsKey;
+import io.datafibre.fibre.common.io.ParamsKey;
 
 import java.util.Arrays;
 import java.util.Locale;

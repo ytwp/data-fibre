@@ -13,15 +13,15 @@
 // limitations under the License.
 
 
-package com.starrocks.connector;
+package io.datafibre.fibre.connector;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.starrocks.common.profile.Timer;
-import com.starrocks.common.profile.Tracers;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.connector.hive.HiveWriteUtils;
-import com.starrocks.connector.hive.Partition;
+import io.datafibre.fibre.common.profile.Timer;
+import io.datafibre.fibre.common.profile.Tracers;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.connector.hive.HiveWriteUtils;
+import io.datafibre.fibre.connector.hive.Partition;
 import jline.internal.Log;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileStatus;
@@ -46,9 +46,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.starrocks.connector.hive.HiveWriteUtils.checkedDelete;
-import static com.starrocks.connector.hive.HiveWriteUtils.createDirectory;
-import static com.starrocks.connector.hive.HiveWriteUtils.fileCreatedByQuery;
+import static io.datafibre.fibre.connector.hive.HiveWriteUtils.checkedDelete;
+import static io.datafibre.fibre.connector.hive.HiveWriteUtils.createDirectory;
+import static io.datafibre.fibre.connector.hive.HiveWriteUtils.fileCreatedByQuery;
 
 public class RemoteFileOperations {
     private static final Logger LOG = LogManager.getLogger(RemoteFileOperations.class);

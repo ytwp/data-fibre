@@ -32,30 +32,30 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.load.loadv2;
+package io.datafibre.fibre.load.loadv2;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.catalog.AuthorizationInfo;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.ExternalOlapTable;
-import com.starrocks.catalog.HiveTable;
-import com.starrocks.catalog.IcebergTable;
-import com.starrocks.catalog.Table;
-import com.starrocks.catalog.system.SystemTable;
-import com.starrocks.common.Config;
-import com.starrocks.common.MetaNotFoundException;
-import com.starrocks.common.NotImplementedException;
-import com.starrocks.common.UserException;
-import com.starrocks.load.EtlJobType;
-import com.starrocks.load.FailMsg;
-import com.starrocks.load.FailMsg.CancelType;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.thrift.TLoadJobType;
-import com.starrocks.thrift.TReportExecStatusParams;
-import com.starrocks.transaction.TabletCommitInfo;
-import com.starrocks.transaction.TabletFailInfo;
+import io.datafibre.fibre.catalog.AuthorizationInfo;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.ExternalOlapTable;
+import io.datafibre.fibre.catalog.HiveTable;
+import io.datafibre.fibre.catalog.IcebergTable;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.catalog.system.SystemTable;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.MetaNotFoundException;
+import io.datafibre.fibre.common.NotImplementedException;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.load.EtlJobType;
+import io.datafibre.fibre.load.FailMsg;
+import io.datafibre.fibre.load.FailMsg.CancelType;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.thrift.TLoadJobType;
+import io.datafibre.fibre.thrift.TReportExecStatusParams;
+import io.datafibre.fibre.transaction.TabletCommitInfo;
+import io.datafibre.fibre.transaction.TabletFailInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

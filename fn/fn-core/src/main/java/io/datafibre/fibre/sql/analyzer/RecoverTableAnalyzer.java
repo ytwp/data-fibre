@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
-import com.starrocks.analysis.TableName;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.ast.RecoverTableStmt;
-import com.starrocks.sql.common.MetaUtils;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.ast.RecoverTableStmt;
+import io.datafibre.fibre.sql.common.MetaUtils;
 
 public class RecoverTableAnalyzer {
 

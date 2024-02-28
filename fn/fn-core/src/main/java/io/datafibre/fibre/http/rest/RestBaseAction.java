@@ -32,21 +32,21 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.http.rest;
+package io.datafibre.fibre.http.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.Pair;
-import com.starrocks.common.util.UUIDUtil;
-import com.starrocks.http.ActionController;
-import com.starrocks.http.BaseAction;
-import com.starrocks.http.BaseRequest;
-import com.starrocks.http.BaseResponse;
-import com.starrocks.http.HttpConnectContext;
-import com.starrocks.privilege.AccessDeniedException;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.UserIdentity;
-import com.starrocks.thrift.TNetworkAddress;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.util.UUIDUtil;
+import io.datafibre.fibre.http.ActionController;
+import io.datafibre.fibre.http.BaseAction;
+import io.datafibre.fibre.http.BaseRequest;
+import io.datafibre.fibre.http.BaseResponse;
+import io.datafibre.fibre.http.HttpConnectContext;
+import io.datafibre.fibre.privilege.AccessDeniedException;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.UserIdentity;
+import io.datafibre.fibre.thrift.TNetworkAddress;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.logging.log4j.LogManager;

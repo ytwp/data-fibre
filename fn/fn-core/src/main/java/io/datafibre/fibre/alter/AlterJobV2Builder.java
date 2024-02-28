@@ -13,11 +13,11 @@
 // limitations under the License.
 
 
-package com.starrocks.alter;
+package io.datafibre.fibre.alter;
 
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.Index;
-import com.starrocks.common.UserException;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.Index;
+import io.datafibre.fibre.common.UserException;
 
 import java.util.HashMap;
 import java.util.List;

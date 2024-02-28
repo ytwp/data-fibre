@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector.hive;
+package io.datafibre.fibre.connector.hive;
 
 import com.google.common.collect.ImmutableMap;
-import com.starrocks.catalog.Column;
+import io.datafibre.fibre.catalog.Column;
 
 import java.util.List;
 import java.util.Map;

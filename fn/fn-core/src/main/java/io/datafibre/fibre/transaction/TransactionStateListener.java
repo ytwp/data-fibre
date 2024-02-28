@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.transaction;
+package io.datafibre.fibre.transaction;
 
 import java.util.List;
 

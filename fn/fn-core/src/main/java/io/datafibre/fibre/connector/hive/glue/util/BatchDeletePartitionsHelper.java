@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.hive.glue.util;
+package io.datafibre.fibre.connector.hive.glue.util;
 
 import com.amazonaws.services.glue.AWSGlue;
 import com.amazonaws.services.glue.model.BatchDeletePartitionRequest;
@@ -24,7 +24,7 @@ import com.amazonaws.services.glue.model.GetPartitionRequest;
 import com.amazonaws.services.glue.model.GetPartitionResult;
 import com.amazonaws.services.glue.model.Partition;
 import com.amazonaws.services.glue.model.PartitionError;
-import com.starrocks.connector.hive.glue.converters.CatalogToHiveConverter;
+import io.datafibre.fibre.connector.hive.glue.converters.CatalogToHiveConverter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.thrift.TException;

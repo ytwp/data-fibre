@@ -13,16 +13,16 @@
 // limitations under the License.
 
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.thrift.TColumnType;
-import com.starrocks.thrift.TTypeDesc;
-import com.starrocks.thrift.TTypeNode;
-import com.starrocks.thrift.TTypeNodeType;
+import io.datafibre.fibre.thrift.TColumnType;
+import io.datafibre.fibre.thrift.TTypeDesc;
+import io.datafibre.fibre.thrift.TTypeNode;
+import io.datafibre.fibre.thrift.TTypeNodeType;
 
 /**
  * Describes an ARRAY type.

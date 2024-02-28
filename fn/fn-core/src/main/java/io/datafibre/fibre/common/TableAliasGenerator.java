@@ -15,10 +15,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common;
+package io.datafibre.fibre.common;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.analysis.Analyzer;
+import io.datafibre.fibre.analysis.Analyzer;
 
 public class TableAliasGenerator extends AliasGenerator {
     private static final String DEFAULT_TBL_ALIAS_PREFIX = "$a$";

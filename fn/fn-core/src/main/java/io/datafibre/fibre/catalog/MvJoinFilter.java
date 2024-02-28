@@ -12,27 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.starrocks.analysis.BinaryPredicate;
-import com.starrocks.analysis.CompoundPredicate;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.FunctionCallExpr;
-import com.starrocks.analysis.SlotRef;
-import com.starrocks.analysis.TableName;
-import com.starrocks.common.Pair;
-import com.starrocks.sql.analyzer.AnalyzerUtils;
-import com.starrocks.sql.analyzer.PartitionExprAnalyzer;
-import com.starrocks.sql.analyzer.SlotRefResolver;
-import com.starrocks.sql.ast.QueryRelation;
-import com.starrocks.sql.ast.QueryStatement;
-import com.starrocks.sql.ast.Relation;
-import com.starrocks.sql.ast.TableRelation;
-import com.starrocks.sql.ast.UnionRelation;
+import io.datafibre.fibre.analysis.BinaryPredicate;
+import io.datafibre.fibre.analysis.CompoundPredicate;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.FunctionCallExpr;
+import io.datafibre.fibre.analysis.SlotRef;
+import io.datafibre.fibre.analysis.TableName;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.sql.analyzer.AnalyzerUtils;
+import io.datafibre.fibre.sql.analyzer.PartitionExprAnalyzer;
+import io.datafibre.fibre.sql.analyzer.SlotRefResolver;
+import io.datafibre.fibre.sql.ast.QueryRelation;
+import io.datafibre.fibre.sql.ast.QueryStatement;
+import io.datafibre.fibre.sql.ast.Relation;
+import io.datafibre.fibre.sql.ast.TableRelation;
+import io.datafibre.fibre.sql.ast.UnionRelation;
 
 import java.util.List;
 import java.util.Map;
@@ -152,7 +152,7 @@ public class MvJoinFilter {
             Integer slotIndex = null;
             for (int i = 0; i < relations.getOutputExpression().size(); i++) {
                 String column = relations.getRelations().get(0).getColumnOutputNames().get(i);
-                if (com.starrocks.common.util.StringUtils.areColumnNamesEqual(slot.getColumnName(), column)) {
+                if (io.datafibre.fibre.common.util.StringUtils.areColumnNamesEqual(slot.getColumnName(), column)) {
                     slotIndex = i;
                     break;
                 }

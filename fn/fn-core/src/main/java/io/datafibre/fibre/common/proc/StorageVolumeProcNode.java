@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.common.proc;
+package io.datafibre.fibre.common.proc;
 
 import com.google.common.collect.ImmutableList;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.server.StorageVolumeMgr;
-import com.starrocks.storagevolume.StorageVolume;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.server.StorageVolumeMgr;
+import io.datafibre.fibre.storagevolume.StorageVolume;
 
 public class StorageVolumeProcNode implements ProcNodeInterface {
     public static final ImmutableList<String> STORAGE_VOLUME_PROC_NODE_TITLE_NAMES = new ImmutableList.Builder<String>()

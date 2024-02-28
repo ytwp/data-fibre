@@ -15,11 +15,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.task;
+package io.datafibre.fibre.task;
 
-import com.starrocks.thrift.TReleaseSnapshotRequest;
-import com.starrocks.thrift.TResourceInfo;
-import com.starrocks.thrift.TTaskType;
+import io.datafibre.fibre.thrift.TReleaseSnapshotRequest;
+import io.datafibre.fibre.thrift.TResourceInfo;
+import io.datafibre.fibre.thrift.TTaskType;
 
 public class ReleaseSnapshotTask extends AgentTask {
 

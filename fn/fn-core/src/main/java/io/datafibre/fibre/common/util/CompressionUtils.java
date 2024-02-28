@@ -13,12 +13,12 @@
 // limitations under the License.
 
 
-package com.starrocks.common.util;
+package io.datafibre.fibre.common.util;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSortedMap;
-import com.starrocks.thrift.TCompressionType;
+import io.datafibre.fibre.thrift.TCompressionType;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;

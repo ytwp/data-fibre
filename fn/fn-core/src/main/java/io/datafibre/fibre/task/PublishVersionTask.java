@@ -32,22 +32,22 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.task;
+package io.datafibre.fibre.task;
 
 import com.google.common.collect.Sets;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.Replica;
-import com.starrocks.catalog.TabletInvertedIndex;
-import com.starrocks.common.TraceManager;
-import com.starrocks.common.util.concurrent.lock.LockType;
-import com.starrocks.common.util.concurrent.lock.Locker;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.thrift.TPartitionVersionInfo;
-import com.starrocks.thrift.TPublishVersionRequest;
-import com.starrocks.thrift.TTabletVersionPair;
-import com.starrocks.thrift.TTaskType;
-import com.starrocks.thrift.TTxnType;
-import com.starrocks.transaction.TransactionState;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.Replica;
+import io.datafibre.fibre.catalog.TabletInvertedIndex;
+import io.datafibre.fibre.common.TraceManager;
+import io.datafibre.fibre.common.util.concurrent.lock.LockType;
+import io.datafibre.fibre.common.util.concurrent.lock.Locker;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.thrift.TPartitionVersionInfo;
+import io.datafibre.fibre.thrift.TPublishVersionRequest;
+import io.datafibre.fibre.thrift.TTabletVersionPair;
+import io.datafibre.fibre.thrift.TTaskType;
+import io.datafibre.fibre.thrift.TTxnType;
+import io.datafibre.fibre.transaction.TransactionState;
 import io.opentelemetry.api.trace.Span;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.credential.tencent;
+package io.datafibre.fibre.credential.tencent;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.credential.CloudConfiguration;
-import com.starrocks.credential.CloudConfigurationProvider;
+import io.datafibre.fibre.credential.CloudConfiguration;
+import io.datafibre.fibre.credential.CloudConfigurationProvider;
 
 import java.util.Map;
 
-import static com.starrocks.credential.CloudConfigurationConstants.TENCENT_COS_ACCESS_KEY;
-import static com.starrocks.credential.CloudConfigurationConstants.TENCENT_COS_ENDPOINT;
-import static com.starrocks.credential.CloudConfigurationConstants.TENCENT_COS_SECRET_KEY;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.TENCENT_COS_ACCESS_KEY;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.TENCENT_COS_ENDPOINT;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.TENCENT_COS_SECRET_KEY;
 
 public class TencentCloudConfigurationProvider implements CloudConfigurationProvider {
     @Override

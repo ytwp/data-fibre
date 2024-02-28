@@ -13,16 +13,16 @@
 // limitations under the License.
 
 
-package com.starrocks.connector.hive.events;
+package io.datafibre.fibre.connector.hive.events;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.HiveTable;
-import com.starrocks.connector.hive.CacheUpdateProcessor;
-import com.starrocks.connector.hive.HiveCommonStats;
-import com.starrocks.connector.hive.HiveMetastoreApiConverter;
-import com.starrocks.connector.hive.HiveTableName;
-import com.starrocks.connector.hive.Partition;
+import io.datafibre.fibre.catalog.HiveTable;
+import io.datafibre.fibre.connector.hive.CacheUpdateProcessor;
+import io.datafibre.fibre.connector.hive.HiveCommonStats;
+import io.datafibre.fibre.connector.hive.HiveMetastoreApiConverter;
+import io.datafibre.fibre.connector.hive.HiveTableName;
+import io.datafibre.fibre.connector.hive.Partition;
 import org.apache.hadoop.hive.metastore.api.FieldSchema;
 import org.apache.hadoop.hive.metastore.api.NotificationEvent;
 import org.apache.hadoop.hive.metastore.api.Table;
@@ -32,8 +32,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
-import static com.starrocks.connector.hive.HiveMetastoreApiConverter.toHiveCommonStats;
-import static com.starrocks.server.CatalogMgr.ResourceMappingCatalog.isResourceMappingCatalog;
+import static io.datafibre.fibre.connector.hive.HiveMetastoreApiConverter.toHiveCommonStats;
+import static io.datafibre.fibre.server.CatalogMgr.ResourceMappingCatalog.isResourceMappingCatalog;
 
 /**
  * MetastoreEvent for ALTER_TABLE event type

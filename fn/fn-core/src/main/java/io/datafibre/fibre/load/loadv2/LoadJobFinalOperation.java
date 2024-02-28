@@ -15,15 +15,15 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.load.loadv2;
+package io.datafibre.fibre.load.loadv2;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.load.EtlStatus;
-import com.starrocks.load.FailMsg;
-import com.starrocks.transaction.TransactionState;
-import com.starrocks.transaction.TxnCommitAttachment;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.load.EtlStatus;
+import io.datafibre.fibre.load.FailMsg;
+import io.datafibre.fibre.transaction.TransactionState;
+import io.datafibre.fibre.transaction.TxnCommitAttachment;
 
 import java.io.DataInput;
 import java.io.DataOutput;

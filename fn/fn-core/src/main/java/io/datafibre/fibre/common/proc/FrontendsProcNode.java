@@ -32,16 +32,16 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common.proc;
+package io.datafibre.fibre.common.proc;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.starrocks.common.Config;
-import com.starrocks.common.Pair;
-import com.starrocks.common.util.TimeUtils;
-import com.starrocks.ha.FrontendNodeType;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.system.Frontend;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.util.TimeUtils;
+import io.datafibre.fibre.ha.FrontendNodeType;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.system.Frontend;
 import org.apache.commons.validator.routines.InetAddressValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

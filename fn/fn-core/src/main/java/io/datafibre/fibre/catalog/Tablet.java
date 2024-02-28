@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.common.io.Writable;
+import io.datafibre.fibre.common.io.Writable;
 
 import java.util.List;
 import java.util.Set;

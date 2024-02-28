@@ -15,11 +15,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.analysis;
+package io.datafibre.fibre.analysis;
 
 import com.google.common.base.Strings;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 // Column position used when add column
 public class ColumnPosition implements ParseNode {

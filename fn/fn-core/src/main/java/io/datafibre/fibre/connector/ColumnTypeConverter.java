@@ -12,20 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.connector;
+package io.datafibre.fibre.connector;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import com.starrocks.catalog.ArrayType;
-import com.starrocks.catalog.Column;
-import com.starrocks.catalog.MapType;
-import com.starrocks.catalog.PrimitiveType;
-import com.starrocks.catalog.ScalarType;
-import com.starrocks.catalog.StructField;
-import com.starrocks.catalog.StructType;
-import com.starrocks.catalog.Type;
-import com.starrocks.connector.delta.DeltaDataType;
-import com.starrocks.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.catalog.ArrayType;
+import io.datafibre.fibre.catalog.Column;
+import io.datafibre.fibre.catalog.MapType;
+import io.datafibre.fibre.catalog.PrimitiveType;
+import io.datafibre.fibre.catalog.ScalarType;
+import io.datafibre.fibre.catalog.StructField;
+import io.datafibre.fibre.catalog.StructType;
+import io.datafibre.fibre.catalog.Type;
+import io.datafibre.fibre.connector.delta.DeltaDataType;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
 import io.delta.standalone.types.DataType;
 import org.apache.avro.LogicalType;
 import org.apache.avro.LogicalTypes;
@@ -63,16 +63,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static com.starrocks.catalog.Type.BIGINT;
-import static com.starrocks.catalog.Type.BOOLEAN;
-import static com.starrocks.catalog.Type.DATE;
-import static com.starrocks.catalog.Type.DATETIME;
-import static com.starrocks.catalog.Type.DOUBLE;
-import static com.starrocks.catalog.Type.FLOAT;
-import static com.starrocks.catalog.Type.INT;
-import static com.starrocks.catalog.Type.SMALLINT;
-import static com.starrocks.catalog.Type.TINYINT;
-import static com.starrocks.catalog.Type.VARBINARY;
+import static io.datafibre.fibre.catalog.Type.BIGINT;
+import static io.datafibre.fibre.catalog.Type.BOOLEAN;
+import static io.datafibre.fibre.catalog.Type.DATE;
+import static io.datafibre.fibre.catalog.Type.DATETIME;
+import static io.datafibre.fibre.catalog.Type.DOUBLE;
+import static io.datafibre.fibre.catalog.Type.FLOAT;
+import static io.datafibre.fibre.catalog.Type.INT;
+import static io.datafibre.fibre.catalog.Type.SMALLINT;
+import static io.datafibre.fibre.catalog.Type.TINYINT;
+import static io.datafibre.fibre.catalog.Type.VARBINARY;
 import static java.util.Objects.requireNonNull;
 import static org.apache.hadoop.hive.serde2.typeinfo.TypeInfoFactory.binaryTypeInfo;
 import static org.apache.hadoop.hive.serde2.typeinfo.TypeInfoFactory.booleanTypeInfo;

@@ -11,11 +11,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.starrocks.authentication;
+package io.datafibre.fibre.authentication;
 
-import com.starrocks.mysql.privilege.AuthPlugin;
-import com.starrocks.mysql.privilege.Password;
-import com.starrocks.sql.ast.UserIdentity;
+import io.datafibre.fibre.mysql.privilege.AuthPlugin;
+import io.datafibre.fibre.mysql.privilege.Password;
+import io.datafibre.fibre.sql.ast.UserIdentity;
 import org.apache.commons.lang3.StringUtils;
 
 public class LDAPAuthProviderForExternal implements AuthenticationProvider {

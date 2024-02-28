@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.analysis;
+package io.datafibre.fibre.analysis;
 
-import com.starrocks.sql.ast.AstVisitor;
-import com.starrocks.sql.ast.UserVariable;
-import com.starrocks.sql.parser.NodePosition;
+import io.datafibre.fibre.sql.ast.AstVisitor;
+import io.datafibre.fibre.sql.ast.UserVariable;
+import io.datafibre.fibre.sql.parser.NodePosition;
 
 import java.util.Map;
 import java.util.stream.Collectors;

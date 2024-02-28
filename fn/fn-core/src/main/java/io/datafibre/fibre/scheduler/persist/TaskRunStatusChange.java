@@ -13,13 +13,13 @@
 // limitations under the License.
 
 
-package com.starrocks.scheduler.persist;
+package io.datafibre.fibre.scheduler.persist;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.persist.gson.GsonUtils;
-import com.starrocks.scheduler.Constants;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.persist.gson.GsonUtils;
+import io.datafibre.fibre.scheduler.Constants;
 
 import java.io.DataInput;
 import java.io.DataOutput;

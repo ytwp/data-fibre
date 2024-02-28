@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.rewrite.scalar;
+package io.datafibre.fibre.sql.optimizer.rewrite.scalar;
 
 public class BottomUpScalarOperatorRewriteRule extends BaseScalarOperatorRewriteRule {
     @Override

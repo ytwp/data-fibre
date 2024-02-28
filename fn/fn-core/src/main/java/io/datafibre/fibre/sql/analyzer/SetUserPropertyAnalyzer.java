@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.analyzer;
+package io.datafibre.fibre.sql.analyzer;
 
 import com.google.common.base.Strings;
-import com.starrocks.authentication.AuthenticationMgr;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.sql.ast.SetUserPropertyStmt;
+import io.datafibre.fibre.authentication.AuthenticationMgr;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.sql.ast.SetUserPropertyStmt;
 
 public class SetUserPropertyAnalyzer {
 

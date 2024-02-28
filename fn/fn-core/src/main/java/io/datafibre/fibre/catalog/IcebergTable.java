@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
@@ -25,23 +25,23 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.analysis.DescriptorTable;
-import com.starrocks.analysis.Expr;
-import com.starrocks.analysis.LiteralExpr;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.util.Util;
-import com.starrocks.connector.exception.StarRocksConnectorException;
-import com.starrocks.connector.iceberg.IcebergApiConverter;
-import com.starrocks.connector.iceberg.IcebergCatalogType;
-import com.starrocks.server.CatalogMgr;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.thrift.TColumn;
-import com.starrocks.thrift.TCompressedPartitionMap;
-import com.starrocks.thrift.THdfsPartition;
-import com.starrocks.thrift.TIcebergTable;
-import com.starrocks.thrift.TPartitionMap;
-import com.starrocks.thrift.TTableDescriptor;
-import com.starrocks.thrift.TTableType;
+import io.datafibre.fibre.analysis.DescriptorTable;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.analysis.LiteralExpr;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.util.Util;
+import io.datafibre.fibre.connector.exception.StarRocksConnectorException;
+import io.datafibre.fibre.connector.iceberg.IcebergApiConverter;
+import io.datafibre.fibre.connector.iceberg.IcebergCatalogType;
+import io.datafibre.fibre.server.CatalogMgr;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.thrift.TColumn;
+import io.datafibre.fibre.thrift.TCompressedPartitionMap;
+import io.datafibre.fibre.thrift.THdfsPartition;
+import io.datafibre.fibre.thrift.TIcebergTable;
+import io.datafibre.fibre.thrift.TPartitionMap;
+import io.datafibre.fibre.thrift.TTableDescriptor;
+import io.datafibre.fibre.thrift.TTableType;
 import org.apache.iceberg.BaseTable;
 import org.apache.iceberg.PartitionField;
 import org.apache.iceberg.Schema;
@@ -65,8 +65,8 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
-import static com.starrocks.connector.iceberg.IcebergConnector.ICEBERG_CATALOG_TYPE;
-import static com.starrocks.server.CatalogMgr.ResourceMappingCatalog.getResourceMappingCatalogName;
+import static io.datafibre.fibre.connector.iceberg.IcebergConnector.ICEBERG_CATALOG_TYPE;
+import static io.datafibre.fibre.server.CatalogMgr.ResourceMappingCatalog.getResourceMappingCatalogName;
 import static org.apache.iceberg.TableProperties.DEFAULT_FILE_FORMAT;
 import static org.apache.iceberg.TableProperties.DEFAULT_FILE_FORMAT_DEFAULT;
 

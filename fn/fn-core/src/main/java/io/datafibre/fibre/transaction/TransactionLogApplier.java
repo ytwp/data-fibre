@@ -13,9 +13,9 @@
 // limitations under the License.
 
 
-package com.starrocks.transaction;
+package io.datafibre.fibre.transaction;
 
-import com.starrocks.catalog.Database;
+import io.datafibre.fibre.catalog.Database;
 
 // Used to apply changes saved in the transaction edit logs to a table.
 public interface TransactionLogApplier {

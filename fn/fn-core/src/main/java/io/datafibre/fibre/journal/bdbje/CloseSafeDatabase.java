@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.journal.bdbje;
+package io.datafibre.fibre.journal.bdbje;
 
 import com.sleepycat.je.Database;
 import com.sleepycat.je.DatabaseEntry;

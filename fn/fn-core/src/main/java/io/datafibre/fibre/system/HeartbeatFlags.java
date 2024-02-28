@@ -15,10 +15,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.system;
+package io.datafibre.fibre.system;
 
-import com.starrocks.qe.GlobalVariable;
-import com.starrocks.thrift.HeartbeatServiceConstants;
+import io.datafibre.fibre.qe.GlobalVariable;
+import io.datafibre.fibre.thrift.HeartbeatServiceConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -13,13 +13,13 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.rule.transformation.materialization;
+package io.datafibre.fibre.sql.optimizer.rule.transformation.materialization;
 
-import com.starrocks.analysis.JoinOperator;
-import com.starrocks.catalog.Table;
-import com.starrocks.sql.optimizer.OptExpression;
-import com.starrocks.sql.optimizer.operator.logical.LogicalJoinOperator;
-import com.starrocks.sql.optimizer.operator.logical.LogicalScanOperator;
+import io.datafibre.fibre.analysis.JoinOperator;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.sql.optimizer.OptExpression;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalJoinOperator;
+import io.datafibre.fibre.sql.optimizer.operator.logical.LogicalScanOperator;
 
 import java.util.Objects;
 

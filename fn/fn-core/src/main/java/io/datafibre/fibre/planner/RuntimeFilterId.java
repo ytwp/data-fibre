@@ -13,10 +13,10 @@
 // limitations under the License.
 
 
-package com.starrocks.planner;
+package io.datafibre.fibre.planner;
 
-import com.starrocks.common.Id;
-import com.starrocks.common.IdGenerator;
+import io.datafibre.fibre.common.Id;
+import io.datafibre.fibre.common.IdGenerator;
 
 // The unique id for join runtime filter
 public class RuntimeFilterId extends Id<RuntimeFilterId> {

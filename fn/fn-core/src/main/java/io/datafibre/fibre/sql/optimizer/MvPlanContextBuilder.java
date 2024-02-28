@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer;
+package io.datafibre.fibre.sql.optimizer;
 
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.catalog.MvPlanContext;
-import com.starrocks.catalog.Table.TableType;
-import com.starrocks.qe.ConnectContext;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.catalog.MvPlanContext;
+import io.datafibre.fibre.catalog.Table.TableType;
+import io.datafibre.fibre.qe.ConnectContext;
 
 import java.util.List;
 

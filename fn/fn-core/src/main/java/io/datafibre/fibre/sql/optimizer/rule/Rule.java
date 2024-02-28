@@ -13,11 +13,11 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.rule;
+package io.datafibre.fibre.sql.optimizer.rule;
 
-import com.starrocks.sql.optimizer.OptExpression;
-import com.starrocks.sql.optimizer.OptimizerContext;
-import com.starrocks.sql.optimizer.operator.pattern.Pattern;
+import io.datafibre.fibre.sql.optimizer.OptExpression;
+import io.datafibre.fibre.sql.optimizer.OptimizerContext;
+import io.datafibre.fibre.sql.optimizer.operator.pattern.Pattern;
 
 import java.util.List;
 

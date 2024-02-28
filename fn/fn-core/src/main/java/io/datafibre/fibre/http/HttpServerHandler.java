@@ -32,10 +32,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.http;
+package io.datafibre.fibre.http;
 
-import com.starrocks.http.action.IndexAction;
-import com.starrocks.http.action.NotFoundAction;
+import io.datafibre.fibre.http.action.IndexAction;
+import io.datafibre.fibre.http.action.NotFoundAction;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;

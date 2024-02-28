@@ -32,14 +32,14 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common;
+package io.datafibre.fibre.common;
 
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.starrocks.metric.GaugeMetric;
-import com.starrocks.metric.Metric.MetricUnit;
-import com.starrocks.metric.MetricLabel;
-import com.starrocks.metric.MetricRepo;
+import io.datafibre.fibre.metric.GaugeMetric;
+import io.datafibre.fibre.metric.Metric.MetricUnit;
+import io.datafibre.fibre.metric.MetricLabel;
+import io.datafibre.fibre.metric.MetricRepo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -12,31 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.credential.azure;
+package io.datafibre.fibre.credential.azure;
 
 import com.google.common.base.Preconditions;
-import com.starrocks.credential.CloudConfiguration;
-import com.starrocks.credential.CloudConfigurationProvider;
-import com.starrocks.credential.CredentialUtil;
+import io.datafibre.fibre.credential.CloudConfiguration;
+import io.datafibre.fibre.credential.CloudConfigurationProvider;
+import io.datafibre.fibre.credential.CredentialUtil;
 
 import java.util.Map;
 
-import static com.starrocks.credential.CloudConfigurationConstants.AZURE_ADLS1_OAUTH2_CLIENT_ID;
-import static com.starrocks.credential.CloudConfigurationConstants.AZURE_ADLS1_OAUTH2_CREDENTIAL;
-import static com.starrocks.credential.CloudConfigurationConstants.AZURE_ADLS1_OAUTH2_ENDPOINT;
-import static com.starrocks.credential.CloudConfigurationConstants.AZURE_ADLS1_USE_MANAGED_SERVICE_IDENTITY;
-import static com.starrocks.credential.CloudConfigurationConstants.AZURE_ADLS2_OAUTH2_CLIENT_ENDPOINT;
-import static com.starrocks.credential.CloudConfigurationConstants.AZURE_ADLS2_OAUTH2_CLIENT_ID;
-import static com.starrocks.credential.CloudConfigurationConstants.AZURE_ADLS2_OAUTH2_CLIENT_SECRET;
-import static com.starrocks.credential.CloudConfigurationConstants.AZURE_ADLS2_OAUTH2_TENANT_ID;
-import static com.starrocks.credential.CloudConfigurationConstants.AZURE_ADLS2_OAUTH2_USE_MANAGED_IDENTITY;
-import static com.starrocks.credential.CloudConfigurationConstants.AZURE_ADLS2_SHARED_KEY;
-import static com.starrocks.credential.CloudConfigurationConstants.AZURE_ADLS2_STORAGE_ACCOUNT;
-import static com.starrocks.credential.CloudConfigurationConstants.AZURE_BLOB_CONTAINER;
-import static com.starrocks.credential.CloudConfigurationConstants.AZURE_BLOB_ENDPOINT;
-import static com.starrocks.credential.CloudConfigurationConstants.AZURE_BLOB_SAS_TOKEN;
-import static com.starrocks.credential.CloudConfigurationConstants.AZURE_BLOB_SHARED_KEY;
-import static com.starrocks.credential.CloudConfigurationConstants.AZURE_BLOB_STORAGE_ACCOUNT;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AZURE_ADLS1_OAUTH2_CLIENT_ID;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AZURE_ADLS1_OAUTH2_CREDENTIAL;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AZURE_ADLS1_OAUTH2_ENDPOINT;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AZURE_ADLS1_USE_MANAGED_SERVICE_IDENTITY;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AZURE_ADLS2_OAUTH2_CLIENT_ENDPOINT;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AZURE_ADLS2_OAUTH2_CLIENT_ID;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AZURE_ADLS2_OAUTH2_CLIENT_SECRET;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AZURE_ADLS2_OAUTH2_TENANT_ID;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AZURE_ADLS2_OAUTH2_USE_MANAGED_IDENTITY;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AZURE_ADLS2_SHARED_KEY;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AZURE_ADLS2_STORAGE_ACCOUNT;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AZURE_BLOB_CONTAINER;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AZURE_BLOB_ENDPOINT;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AZURE_BLOB_SAS_TOKEN;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AZURE_BLOB_SHARED_KEY;
+import static io.datafibre.fibre.credential.CloudConfigurationConstants.AZURE_BLOB_STORAGE_ACCOUNT;
 
 public class AzureCloudConfigurationProvider implements CloudConfigurationProvider {
 

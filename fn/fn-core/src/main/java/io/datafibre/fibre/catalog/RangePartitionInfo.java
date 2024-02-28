@@ -32,25 +32,25 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.catalog;
+package io.datafibre.fibre.catalog;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.analysis.Expr;
-import com.starrocks.common.AnalysisException;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.Pair;
-import com.starrocks.common.util.RangeUtils;
-import com.starrocks.lake.DataCacheInfo;
-import com.starrocks.persist.RangePartitionPersistInfo;
-import com.starrocks.server.RunMode;
-import com.starrocks.sql.ast.PartitionDesc;
-import com.starrocks.sql.ast.PartitionKeyDesc;
-import com.starrocks.sql.ast.SingleRangePartitionDesc;
-import com.starrocks.thrift.TStorageMedium;
+import io.datafibre.fibre.analysis.Expr;
+import io.datafibre.fibre.common.AnalysisException;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.util.RangeUtils;
+import io.datafibre.fibre.lake.DataCacheInfo;
+import io.datafibre.fibre.persist.RangePartitionPersistInfo;
+import io.datafibre.fibre.server.RunMode;
+import io.datafibre.fibre.sql.ast.PartitionDesc;
+import io.datafibre.fibre.sql.ast.PartitionKeyDesc;
+import io.datafibre.fibre.sql.ast.SingleRangePartitionDesc;
+import io.datafibre.fibre.thrift.TStorageMedium;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.monitor.unit;
+package io.datafibre.fibre.monitor.unit;
 
 /**
  * A <tt>SizeUnit</tt> represents size at a given unit of

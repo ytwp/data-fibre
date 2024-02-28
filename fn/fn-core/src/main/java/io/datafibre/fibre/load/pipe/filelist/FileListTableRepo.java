@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.load.pipe.filelist;
+package io.datafibre.fibre.load.pipe.filelist;
 
-import com.starrocks.catalog.CatalogUtils;
-import com.starrocks.common.UserException;
-import com.starrocks.common.util.AutoInferUtil;
-import com.starrocks.load.pipe.PipeFileRecord;
-import com.starrocks.statistic.StatsConstants;
+import io.datafibre.fibre.catalog.CatalogUtils;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.common.util.AutoInferUtil;
+import io.datafibre.fibre.load.pipe.PipeFileRecord;
+import io.datafibre.fibre.statistic.StatsConstants;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.logging.log4j.LogManager;

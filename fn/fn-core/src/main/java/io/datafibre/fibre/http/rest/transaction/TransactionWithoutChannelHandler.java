@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.http.rest.transaction;
+package io.datafibre.fibre.http.rest.transaction;
 
-import com.starrocks.catalog.Database;
-import com.starrocks.common.UserException;
-import com.starrocks.http.BaseRequest;
-import com.starrocks.http.BaseResponse;
-import com.starrocks.http.rest.TransactionResult;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.transaction.TransactionState;
-import com.starrocks.transaction.TransactionStatus;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.http.BaseRequest;
+import io.datafibre.fibre.http.BaseResponse;
+import io.datafibre.fibre.http.rest.TransactionResult;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.transaction.TransactionState;
+import io.datafibre.fibre.transaction.TransactionStatus;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

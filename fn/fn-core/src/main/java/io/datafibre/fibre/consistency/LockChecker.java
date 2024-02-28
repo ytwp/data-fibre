@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.consistency;
+package io.datafibre.fibre.consistency;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.starrocks.catalog.Database;
-import com.starrocks.common.Config;
-import com.starrocks.common.util.FrontendDaemon;
-import com.starrocks.common.util.Util;
-import com.starrocks.common.util.concurrent.QueryableReentrantReadWriteLock;
-import com.starrocks.server.GlobalStateMgr;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.util.FrontendDaemon;
+import io.datafibre.fibre.common.util.Util;
+import io.datafibre.fibre.common.util.concurrent.QueryableReentrantReadWriteLock;
+import io.datafibre.fibre.server.GlobalStateMgr;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

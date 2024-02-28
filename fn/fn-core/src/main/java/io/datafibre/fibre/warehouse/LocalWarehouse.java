@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.warehouse;
+package io.datafibre.fibre.warehouse;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.proc.BaseProcResult;
-import com.starrocks.common.proc.ProcResult;
-import com.starrocks.sql.analyzer.SemanticException;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.proc.BaseProcResult;
+import io.datafibre.fibre.common.proc.ProcResult;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
 
 import java.util.Map;
 

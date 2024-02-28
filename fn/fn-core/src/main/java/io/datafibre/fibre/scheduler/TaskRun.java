@@ -12,26 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.scheduler;
+package io.datafibre.fibre.scheduler;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
-import com.starrocks.analysis.StringLiteral;
-import com.starrocks.catalog.Database;
-import com.starrocks.catalog.MaterializedView;
-import com.starrocks.catalog.Table;
-import com.starrocks.common.Config;
-import com.starrocks.common.DdlException;
-import com.starrocks.common.util.PropertyAnalyzer;
-import com.starrocks.common.util.UUIDUtil;
-import com.starrocks.load.loadv2.InsertLoadJob;
-import com.starrocks.qe.ConnectContext;
-import com.starrocks.qe.QueryState;
-import com.starrocks.qe.StmtExecutor;
-import com.starrocks.scheduler.persist.TaskRunStatus;
-import com.starrocks.server.GlobalStateMgr;
-import com.starrocks.sql.ast.SystemVariable;
-import com.starrocks.sql.ast.UserIdentity;
+import io.datafibre.fibre.analysis.StringLiteral;
+import io.datafibre.fibre.catalog.Database;
+import io.datafibre.fibre.catalog.MaterializedView;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.common.Config;
+import io.datafibre.fibre.common.DdlException;
+import io.datafibre.fibre.common.util.PropertyAnalyzer;
+import io.datafibre.fibre.common.util.UUIDUtil;
+import io.datafibre.fibre.load.loadv2.InsertLoadJob;
+import io.datafibre.fibre.qe.ConnectContext;
+import io.datafibre.fibre.qe.QueryState;
+import io.datafibre.fibre.qe.StmtExecutor;
+import io.datafibre.fibre.scheduler.persist.TaskRunStatus;
+import io.datafibre.fibre.server.GlobalStateMgr;
+import io.datafibre.fibre.sql.ast.SystemVariable;
+import io.datafibre.fibre.sql.ast.UserIdentity;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

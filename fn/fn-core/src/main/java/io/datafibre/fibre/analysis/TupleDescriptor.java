@@ -32,13 +32,13 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.analysis;
+package io.datafibre.fibre.analysis;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
-import com.starrocks.catalog.Table;
-import com.starrocks.thrift.TTupleDescriptor;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.thrift.TTupleDescriptor;
 
 import java.util.ArrayList;
 import java.util.List;

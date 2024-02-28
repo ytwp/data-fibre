@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.starrocks.sql.optimizer.rule.join;
+package io.datafibre.fibre.sql.optimizer.rule.join;
 
-import com.starrocks.analysis.JoinOperator;
+import io.datafibre.fibre.analysis.JoinOperator;
 
 /**
  * ref: On the Correct and Complete Enumeration of the Core Search Space

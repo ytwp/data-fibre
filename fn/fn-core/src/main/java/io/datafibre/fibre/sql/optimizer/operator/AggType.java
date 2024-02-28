@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-package com.starrocks.sql.optimizer.operator;
+package io.datafibre.fibre.sql.optimizer.operator;
 
 /**
  * The default agg type is GLOBAL.

@@ -32,14 +32,14 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.persist;
+package io.datafibre.fibre.persist;
 
 import com.google.common.base.Objects;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.catalog.Table;
-import com.starrocks.cluster.ClusterNamespace;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
+import io.datafibre.fibre.catalog.Table;
+import io.datafibre.fibre.cluster.ClusterNamespace;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

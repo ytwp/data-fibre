@@ -32,22 +32,22 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.sql.ast;
+package io.datafibre.fibre.sql.ast;
 
 import com.google.common.base.Strings;
 import com.google.gson.annotations.SerializedName;
-import com.starrocks.analysis.ParseNode;
-import com.starrocks.authentication.AuthenticationMgr;
-import com.starrocks.cluster.ClusterNamespace;
-import com.starrocks.common.CaseSensibility;
-import com.starrocks.common.PatternMatcher;
-import com.starrocks.common.io.Text;
-import com.starrocks.common.io.Writable;
-import com.starrocks.persist.gson.GsonPostProcessable;
-import com.starrocks.sql.analyzer.FeNameFormat;
-import com.starrocks.sql.analyzer.SemanticException;
-import com.starrocks.sql.parser.NodePosition;
-import com.starrocks.thrift.TUserIdentity;
+import io.datafibre.fibre.analysis.ParseNode;
+import io.datafibre.fibre.authentication.AuthenticationMgr;
+import io.datafibre.fibre.cluster.ClusterNamespace;
+import io.datafibre.fibre.common.CaseSensibility;
+import io.datafibre.fibre.common.PatternMatcher;
+import io.datafibre.fibre.common.io.Text;
+import io.datafibre.fibre.common.io.Writable;
+import io.datafibre.fibre.persist.gson.GsonPostProcessable;
+import io.datafibre.fibre.sql.analyzer.FeNameFormat;
+import io.datafibre.fibre.sql.analyzer.SemanticException;
+import io.datafibre.fibre.sql.parser.NodePosition;
+import io.datafibre.fibre.thrift.TUserIdentity;
 
 import java.io.DataInput;
 import java.io.DataOutput;

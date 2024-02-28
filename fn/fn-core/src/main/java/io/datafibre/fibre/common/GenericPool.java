@@ -32,9 +32,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package com.starrocks.common;
+package io.datafibre.fibre.common;
 
-import com.starrocks.thrift.TNetworkAddress;
+import io.datafibre.fibre.thrift.TNetworkAddress;
 import org.apache.commons.pool2.BaseKeyedPooledObjectFactory;
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
@@ -57,7 +57,7 @@ public class GenericPool<VALUE extends org.apache.thrift.TServiceClient> {
     private int timeoutMs;
 
     public GenericPool(String className, GenericKeyedObjectPoolConfig config, int timeoutMs) {
-        this.className = "com.starrocks.thrift." + className + "$Client";
+        this.className = "io.datafibre.fibre.thrift." + className + "$Client";
         ThriftClientFactory factory = new ThriftClientFactory();
         pool = new GenericKeyedObjectPool<TNetworkAddress, VALUE>(factory, config);
         this.timeoutMs = timeoutMs;
