@@ -528,6 +528,7 @@ public class GlobalStateMgr {
         return refreshDictionaryCacheTaskDaemon;
     }
 
+    // 单利的GlobalStateMgr
     private static class SingletonHolder {
         private static final GlobalStateMgr INSTANCE = new GlobalStateMgr();
     }
@@ -719,9 +720,12 @@ public class GlobalStateMgr {
     }
 
     public static GlobalStateMgr getCurrentState() {
+        // 是否检查点线程，分别返回不同的 GlobalStateMgr，但都是单例的
+        // 每个 GlobalStateMgr 都会创建一个 NodeMgr
         if (isCheckpointThread()) {
             // only checkpoint thread itself will go here.
             // so no need to care about the thread safe.
+            // 只有检查点线程本身会转到这里，所以不需要关心线程的安全性。
             if (CHECKPOINT == null) {
                 CHECKPOINT = new GlobalStateMgr(true);
             }

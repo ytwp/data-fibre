@@ -150,10 +150,13 @@ public class NodeMgr {
     private final Map<Integer, Consumer<LeaderInfo>> leaderChangeListeners = new ConcurrentHashMap<>();
 
     public NodeMgr() {
+        // 当前节点的角色
+        // 和几个默认值
         this.role = FrontendNodeType.UNKNOWN;
         this.leaderRpcPort = 0;
         this.leaderHttpPort = 0;
         this.leaderIp = "";
+        // 创建一些集群节点的映射，就是就是管理节点
         this.systemInfo = new SystemInfoService();
 
         this.brokerMgr = new BrokerMgr();

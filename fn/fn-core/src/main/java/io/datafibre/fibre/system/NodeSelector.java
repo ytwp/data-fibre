@@ -42,6 +42,7 @@ import java.util.stream.Collectors;
 
 /**
  * Select nodes when creating table or loading data.
+ * 创建表或加载数据时选择节点。
  */
 public class NodeSelector {
     private static final Logger LOG = LogManager.getLogger(NodeSelector.class);

@@ -116,12 +116,15 @@ public class SystemInfoService implements GsonPostProcessable {
     private final NodeSelector nodeSelector;
 
     public SystemInfoService() {
+        // 后端节点 的映射马屁、
         idToBackendRef = new ConcurrentHashMap<>();
+        // 计算节点 的映射马屁、
         idToComputeNodeRef = new ConcurrentHashMap<>();
-
+        // ？？？？？
+        // ImmutableMap是不可变Map，这里只是创建一个默认值
         idToReportVersionRef = ImmutableMap.of();
         pathHashToDishInfoRef = ImmutableMap.of();
-
+        // 创建 创建表或加载数据时选择节点 的选择器
         nodeSelector = new NodeSelector(this);
     }
 
