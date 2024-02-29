@@ -124,8 +124,9 @@ public class StarRocksFE {
             MetaHelper.checkMetaDir();
 
             LOG.info("StarRocks FE starting, version: {}-{}", Version.STARROCKS_VERSION, Version.STARROCKS_COMMIT_HASH);
-
+            // 主要初始化IP
             FrontendOptions.init(args);
+            // 初始化 连接数配置 和 检查连接是否超时的线程池
             ExecuteEnv.setup();
 
             // init globalStateMgr

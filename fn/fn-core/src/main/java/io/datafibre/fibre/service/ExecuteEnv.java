@@ -51,6 +51,7 @@ public class ExecuteEnv {
 
     public static void setup() {
         ExecuteEnv env = getInstance();
+        //初始化 连接数配置和 检查连接是否超时的线程池
         env.scheduler = new ConnectScheduler(Config.qe_max_connection);
     }
 

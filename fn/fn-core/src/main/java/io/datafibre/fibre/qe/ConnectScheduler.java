@@ -69,13 +69,22 @@ public class ConnectScheduler {
             .newDaemonCacheThreadPool(Config.max_connection_scheduler_threads_num, "connect-scheduler-pool", true);
 
     public ConnectScheduler(int maxConnections) {
+        //最大连接数
         this.maxConnections = new AtomicInteger(maxConnections);
+        //当前连接数？
         numberConnection = new AtomicInteger(0);
+        //下一个连接ID？
         nextConnectionId = new AtomicInteger(0);
         // Use a thread to check whether connection is timeout. Because
         // 1. If use a scheduler, the task maybe a huge number when query is messy.
         //    Let timeout is 10m, and 5000 qps, then there are up to 3000000 tasks in scheduler.
         // 2. Use a thread to poll maybe lose some accurate, but is enough to us.
+        // 使用线程检查连接是否超时。因为
+        // 1.如果使用调度程序，当查询混乱时，任务可能是一个巨大的数字。
+        //   如果超时为10m，qp为5000，那么调度器中最多有3000000个任务。
+        // 2.使用线程进行轮询可能会丢失一些准确信息，但对我们来说已经足够了。
+
+        // 创建一个定时的线程吃，用来扫描，每10分钟执行一次检查连接是否超时。
         ScheduledExecutorService checkTimer = ThreadPoolManager.newDaemonScheduledThreadPool(1,
                 "Connect-Scheduler-Check-Timer", true);
         checkTimer.scheduleAtFixedRate(new TimeoutChecker(), 0, 1000L, TimeUnit.MILLISECONDS);

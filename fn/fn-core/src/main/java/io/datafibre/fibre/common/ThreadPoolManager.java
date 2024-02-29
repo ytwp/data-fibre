@@ -170,7 +170,9 @@ public class ThreadPoolManager {
     // Please use this api only for scheduling short task at fix rate.
     public static ScheduledThreadPoolExecutor newDaemonScheduledThreadPool(int corePoolSize, String poolName,
                                                                            boolean needRegisterMetric) {
+        // 创建守护线程线程工厂，（守护线程：为其它对象和线程提供服务。当只剩下守护线程运行时，Java虚拟机会自动退出）
         ThreadFactory threadFactory = namedThreadFactory(poolName);
+        //这个是定时的线程池
         ScheduledThreadPoolExecutor scheduledThreadPoolExecutor =
                 new ScheduledThreadPoolExecutor(corePoolSize, threadFactory);
         if (needRegisterMetric) {
