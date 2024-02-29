@@ -56,7 +56,7 @@ import java.util.List;
 import java.util.Properties;
 
 public class FrontendOptions {
-    
+
     public enum HostType {
         FQDN,
         IP,
@@ -115,8 +115,8 @@ public class FrontendOptions {
                     System.out.println("-host_type need parameter FQDN or IP");
                     System.exit(-1);
                 }
-            }   
-        } 
+            }
+        }
 
         if (specifiedHostType == HostType.FQDN) {
             // 指定域名
@@ -137,7 +137,7 @@ public class FrontendOptions {
             initAddrUseIp(hosts);
             return;
         }
-        
+        //不是新集群
         Properties prop = new Properties();
         String fileStoredHostType;
         try (FileInputStream in = new FileInputStream(roleFile)) {
@@ -146,11 +146,15 @@ public class FrontendOptions {
             LOG.error("failed to read role file");
             System.exit(-1);
         }
+        // role干嘛的代看？？？？？？
         fileStoredHostType = prop.getProperty(HOST_TYPE, null);
-        
+
         // Check if the ROLE file has property 'hostType'
         // If it not has property 'hostType', start with IP
         // If it has property 'hostType' & hostType = IP, start with IP
+        //检查ROLE文件是否具有属性“hostType”
+        //如果它没有“hostType”属性，请从IP开始
+        //如果其属性为“hostType”&hostType=IP，则以IP开头
         if (Strings.isNullOrEmpty(fileStoredHostType) || fileStoredHostType.equals(HostType.IP.toString())) {
             initAddrUseIp(hosts);
             return;
@@ -174,7 +178,7 @@ public class FrontendOptions {
             LOG.error("Got a UnknownHostException when try to get FQDN");
             System.exit(-1);
         }
-        
+
         if (null == fqdnString) {
             LOG.error("Got a null when try to read FQDN");
             System.exit(-1);
@@ -187,7 +191,7 @@ public class FrontendOptions {
             uncheckedInetAddress = InetAddress.getByName(fqdnString);
         } catch (UnknownHostException e) {
             LOG.error("Got a UnknownHostException when try to parse FQDN, "
-                    + "FQDN: {}, message: {}", fqdnString, e.getMessage());
+                      + "FQDN: {}, message: {}", fqdnString, e.getMessage());
             System.exit(-1);
         }
         // 没有拿到ip，退出
@@ -197,19 +201,19 @@ public class FrontendOptions {
         }
 
         if (!uncheckedInetAddress.getCanonicalHostName().equals(fqdnString)) {
-            LOG.error("The FQDN of the parsed address [{}] is not the same as " + 
-                    "the FQDN obtained from the host [{}]", 
+            LOG.error("The FQDN of the parsed address [{}] is not the same as " +
+                      "the FQDN obtained from the host [{}]",
                     uncheckedInetAddress.getCanonicalHostName(), fqdnString);
             // 域名不同退出？
             System.exit(-1);
         }
-        
+
         // Check the InetAddress obtained via FQDN 
         boolean hasInetAddr = false;
         LOG.debug("fqdnString is {}", fqdnString);
         for (InetAddress addr : hosts) {
             // 所以ip中匹配解析到的ip
-            LOG.debug("Try to match addr, ip: {}, FQDN: {}", 
+            LOG.debug("Try to match addr, ip: {}, FQDN: {}",
                     addr.getHostAddress(), addr.getCanonicalHostName());
             if (addr.getCanonicalHostName().equals(uncheckedInetAddress.getCanonicalHostName())) {
                 hasInetAddr = true;
@@ -225,7 +229,7 @@ public class FrontendOptions {
             LOG.error("Fail to find right address to start fe by using fqdn");
             System.exit(-1);
         }
-        LOG.info("Use FQDN init local addr, FQDN: {}, IP: {}", 
+        LOG.info("Use FQDN init local addr, FQDN: {}, IP: {}",
                 localAddr.getCanonicalHostName(), localAddr.getHostAddress());
     }
 
