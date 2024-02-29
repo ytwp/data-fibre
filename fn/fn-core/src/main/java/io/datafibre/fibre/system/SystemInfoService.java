@@ -1035,16 +1035,16 @@ public class SystemInfoService implements GsonPostProcessable {
     }
 
     public static Pair<String, Integer> validateHostAndPort(String hostPort, boolean resolveHost) throws AnalysisException {
+        // 替换任何空白字符
         hostPort = hostPort.replaceAll("\\s+", "");
         if (hostPort.isEmpty()) {
             throw new AnalysisException("Invalid host port: " + hostPort);
         }
-
         String[] pair = hostPort.split(":");
         if (pair.length != 2) {
             throw new AnalysisException("Invalid host port: " + hostPort);
         }
-
+        // validate host
         String host = pair[0];
         if (Strings.isNullOrEmpty(host)) {
             throw new AnalysisException("Host is null");
@@ -1053,18 +1053,19 @@ public class SystemInfoService implements GsonPostProcessable {
         int heartbeatPort;
         try {
             // validate host
+            // 指定resolveHost，或者并且不是ip才会转
             if (resolveHost && !InetAddressValidator.getInstance().isValid(host)) {
                 // maybe this is a hostname
                 // if no IP address for the host could be found, 'getByName'
                 // will throw
                 // UnknownHostException
+                // 简单理解就是 域名换成ip
                 InetAddress inetAddress = InetAddress.getByName(host);
                 host = inetAddress.getHostAddress();
             }
 
             // validate port
             heartbeatPort = Integer.parseInt(pair[1]);
-
             if (heartbeatPort <= 0 || heartbeatPort >= 65536) {
                 throw new AnalysisException("Port is out of range: " + heartbeatPort);
             }

@@ -130,6 +130,8 @@ public class StarRocksFE {
             ExecuteEnv.setup();
 
             // init globalStateMgr
+            // 创建 全局状态 和 创建 节点管理器
+            // 然后初始化
             GlobalStateMgr.getCurrentState().initialize(args);
 
             StateChangeExecutor.getInstance().setMetaContext(

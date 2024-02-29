@@ -41,13 +41,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.annotations.SerializedName;
 import io.datafibre.fibre.catalog.BrokerMgr;
 import io.datafibre.fibre.catalog.FsBroker;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.common.Config;
-import io.datafibre.fibre.common.ConfigBase;
-import io.datafibre.fibre.common.DdlException;
-import io.datafibre.fibre.common.ErrorCode;
-import io.datafibre.fibre.common.ErrorReport;
-import io.datafibre.fibre.common.Pair;
+import io.datafibre.fibre.common.*;
 import io.datafibre.fibre.common.io.Text;
 import io.datafibre.fibre.common.util.NetUtils;
 import io.datafibre.fibre.ha.BDBHA;
@@ -57,11 +51,7 @@ import io.datafibre.fibre.http.meta.MetaBaseAction;
 import io.datafibre.fibre.leader.MetaHelper;
 import io.datafibre.fibre.persist.Storage;
 import io.datafibre.fibre.persist.StorageInfo;
-import io.datafibre.fibre.persist.metablock.SRMetaBlockEOFException;
-import io.datafibre.fibre.persist.metablock.SRMetaBlockException;
-import io.datafibre.fibre.persist.metablock.SRMetaBlockID;
-import io.datafibre.fibre.persist.metablock.SRMetaBlockReader;
-import io.datafibre.fibre.persist.metablock.SRMetaBlockWriter;
+import io.datafibre.fibre.persist.metablock.*;
 import io.datafibre.fibre.qe.ConnectContext;
 import io.datafibre.fibre.rpc.FrontendServiceProxy;
 import io.datafibre.fibre.service.FrontendOptions;
@@ -70,11 +60,7 @@ import io.datafibre.fibre.sql.ast.ModifyFrontendAddressClause;
 import io.datafibre.fibre.staros.StarMgrServer;
 import io.datafibre.fibre.system.Frontend;
 import io.datafibre.fibre.system.SystemInfoService;
-import io.datafibre.fibre.thrift.TNetworkAddress;
-import io.datafibre.fibre.thrift.TSetConfigRequest;
-import io.datafibre.fibre.thrift.TSetConfigResponse;
-import io.datafibre.fibre.thrift.TStatus;
-import io.datafibre.fibre.thrift.TStatusCode;
+import io.datafibre.fibre.thrift.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -158,12 +144,14 @@ public class NodeMgr {
         this.leaderIp = "";
         // 创建一些集群节点的映射，就是就是管理节点
         this.systemInfo = new SystemInfoService();
-
+        // 查询和存储功能扩展到外部存储系统的一个组件，创建一个管理器
         this.brokerMgr = new BrokerMgr();
     }
 
     public void initialize(String[] args) throws Exception {
+        // 检测 edit_log_port，并给selfNode赋值
         getCheckedSelfHostPort();
+        //给HelperNode赋值，如果配置了走配置，没配置默认自身（自身？？）
         getHelperNodes(args);
     }
 
@@ -265,9 +253,9 @@ public class NodeMgr {
 
             // check file integrity, if has.
             if ((roleFile.exists() && !versionFile.exists())
-                    || (!roleFile.exists() && versionFile.exists())) {
+                || (!roleFile.exists() && versionFile.exists())) {
                 LOG.error("role file and version file must both exist or both not exist. "
-                        + "please specific one helper node to recover. will exit.");
+                          + "please specific one helper node to recover. will exit.");
                 System.exit(-1);
             }
 
@@ -338,7 +326,7 @@ public class NodeMgr {
             while (true) {
                 if (!getFeNodeTypeAndNameFromHelpers()) {
                     LOG.warn("current node is not added to the group. please add it first. "
-                            + "sleep 5 seconds and retry, current helper nodes: {}", helperNodes);
+                             + "sleep 5 seconds and retry, current helper nodes: {}", helperNodes);
                     try {
                         Thread.sleep(5000);
                         continue;
@@ -359,7 +347,7 @@ public class NodeMgr {
 
             storage = new Storage(this.imageDir);
             if (roleFile.exists() && (role != storage.getRole() || !nodeName.equals(storage.getNodeName()))
-                    || !roleFile.exists()) {
+                || !roleFile.exists()) {
                 storage.writeFrontendRoleAndNodeName(role, nodeName);
             }
             if (!versionFile.exists()) {
@@ -471,7 +459,7 @@ public class NodeMgr {
                 isVersionFileChanged = true;
             } else if (RunMode.isSharedDataMode()) {
                 LOG.error("Upgrading from a cluster with version less than 3.0 to a cluster with run mode {} of " +
-                        "version 3.0 or above is disallowed. will exit", RunMode.name());
+                          "version 3.0 or above is disallowed. will exit", RunMode.name());
                 System.exit(-1);
             }
         } else if (!runMode.equalsIgnoreCase(RunMode.name())) {
@@ -505,7 +493,7 @@ public class NodeMgr {
         for (Pair<String, Integer> helperNode : helperNodes) {
             try {
                 URL url = new URL("http://" + helperNode.first + ":" + Config.http_port
-                        + "/role?host=" + selfNode.first + "&port=" + selfNode.second);
+                                  + "/role?host=" + selfNode.first + "&port=" + selfNode.second);
                 HttpURLConnection conn = null;
                 conn = (HttpURLConnection) url.openConnection();
                 if (conn.getResponseCode() != 200) {
@@ -642,15 +630,18 @@ public class NodeMgr {
     }
 
     private void getHelperNodes(String[] args) throws AnalysisException {
+        //找的 helpers参数 host:port,host:port
         String helpers = null;
         for (int i = 0; i < args.length; i++) {
             if (args[i].equalsIgnoreCase("-helper")) {
                 if (i + 1 >= args.length) {
+                    //指定了helper但是没指定值，退出
                     System.out.println("-helper need parameter host:port,host:port");
                     System.exit(-1);
                 }
                 helpers = args[i + 1];
                 if (!helpers.contains(":")) {
+                    //指定了错误的值，退出
                     System.out.print("helper's format seems was wrong [" + helpers + "]");
                     System.out.println(", eg. host:port,host:port");
                     System.exit(-1);
@@ -662,7 +653,9 @@ public class NodeMgr {
         if (helpers != null) {
             String[] splittedHelpers = helpers.split(",");
             for (String helper : splittedHelpers) {
+                // 只是校验一些ip 和 host是否合法，并返回HostPort 的Pair对象
                 Pair<String, Integer> helperHostPort = SystemInfoService.validateHostAndPort(helper, false);
+                // 帮助节点指定当前FE本身，不行！！
                 if (helperHostPort.equals(selfNode)) {
                     /*
                      * If user specified the helper node to this FE itself,
@@ -675,19 +668,27 @@ public class NodeMgr {
                      */
                     throw new AnalysisException(
                             "Do not specify the helper node to FE itself. "
-                                    + "Please specify it to the existing running Leader or Follower FE");
+                            + "Please specify it to the existing running Leader or Follower FE");
                 }
+                // 不是自身，添加
                 helperNodes.add(helperHostPort);
             }
         } else {
             // If helper node is not designated, use local node as helper node.
+            // 如果未指定辅助节点，请使用本地节点作为辅助节点。
+            // ？？？？？ 为什么上面自身不行，这默认自身
             helperNodes.add(Pair.create(selfNode.first, Config.edit_log_port));
         }
-
         LOG.info("get helper nodes: {}", helperNodes);
     }
 
+    /**
+     * edit_log_port 是 FE 所在 StarRocks 集群中各 Leader FE、Follower FE、Observer FE 之间通信用的端口
+     */
     private void getCheckedSelfHostPort() {
+        // Pair 就是类似 tuple2
+        // 是C++的，这里自己实现了一个
+        // selfNode 是自身节点
         selfNode = new Pair<>(FrontendOptions.getLocalHostAddress(), Config.edit_log_port);
         /*
          * For the first time, if the master start up failed, it will also fail to restart.
@@ -766,7 +767,7 @@ public class NodeMgr {
         long version = info.getImageJournalId();
         if (version > localImageVersion) {
             String url = "http://" + helperNode.first + ":" + Config.http_port
-                    + "/image?version=" + version + "&subdir=" + subDir;
+                         + "/image?version=" + version + "&subdir=" + subDir;
             LOG.info("start to download image.{} from {}", version, url);
             String filename = Storage.IMAGE + "." + version;
             File dir = new File(dirStr);
@@ -866,7 +867,7 @@ public class NodeMgr {
 
     public void dropFrontend(FrontendNodeType role, String host, int port) throws DdlException {
         if (host.equals(selfNode.first) && port == selfNode.second &&
-                GlobalStateMgr.getCurrentState().getFeType() == FrontendNodeType.LEADER) {
+            GlobalStateMgr.getCurrentState().getFeType() == FrontendNodeType.LEADER) {
             throw new DdlException("can not drop current master node.");
         }
         if (!tryLock(false)) {
@@ -1010,7 +1011,7 @@ public class NodeMgr {
             } catch (UnknownHostException e) {
                 LOG.warn("failed to get right ip by fqdn {}", fe.getHost(), e);
                 if (targetIpAndFqdn.second.equals(fe.getHost())
-                        && !Strings.isNullOrEmpty(targetIpAndFqdn.second)) {
+                    && !Strings.isNullOrEmpty(targetIpAndFqdn.second)) {
                     return true;
                 }
                 continue;
@@ -1021,7 +1022,7 @@ public class NodeMgr {
             }
             // target, cur has same fqdn and both of them are not equal ""
             if (targetIpAndFqdn.second.equals(curIpAndFqdn.second)
-                    && !Strings.isNullOrEmpty(targetIpAndFqdn.second)) {
+                && !Strings.isNullOrEmpty(targetIpAndFqdn.second)) {
                 return true;
             }
         }
@@ -1147,7 +1148,7 @@ public class NodeMgr {
 
         List<Frontend> allFrontends = getFrontends(null);
         int timeout = ConnectContext.get().getSessionVariable().getQueryTimeoutS() * 1000
-                + Config.thrift_rpc_timeout_ms;
+                      + Config.thrift_rpc_timeout_ms;
         StringBuilder errMsg = new StringBuilder();
         for (Frontend fe : allFrontends) {
             if (fe.getHost().equals(getSelfNode().first)) {

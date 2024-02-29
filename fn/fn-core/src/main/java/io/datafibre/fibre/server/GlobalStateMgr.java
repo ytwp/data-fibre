@@ -48,55 +48,11 @@ import io.datafibre.fibre.analysis.TableName;
 import io.datafibre.fibre.authentication.AuthenticationMgr;
 import io.datafibre.fibre.backup.BackupHandler;
 import io.datafibre.fibre.binlog.BinlogManager;
-import io.datafibre.fibre.catalog.BrokerMgr;
-import io.datafibre.fibre.catalog.CatalogIdGenerator;
-import io.datafibre.fibre.catalog.CatalogRecycleBin;
-import io.datafibre.fibre.catalog.ColocateTableIndex;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.Database;
-import io.datafibre.fibre.catalog.DictionaryMgr;
-import io.datafibre.fibre.catalog.DomainResolver;
-import io.datafibre.fibre.catalog.Function;
-import io.datafibre.fibre.catalog.FunctionSet;
-import io.datafibre.fibre.catalog.GlobalFunctionMgr;
-import io.datafibre.fibre.catalog.HiveMetaStoreTable;
-import io.datafibre.fibre.catalog.HiveView;
-import io.datafibre.fibre.catalog.IcebergTable;
-import io.datafibre.fibre.catalog.InternalCatalog;
-import io.datafibre.fibre.catalog.JDBCTable;
-import io.datafibre.fibre.catalog.MaterializedView;
-import io.datafibre.fibre.catalog.MetaReplayState;
-import io.datafibre.fibre.catalog.MetaVersion;
-import io.datafibre.fibre.catalog.PrimitiveType;
-import io.datafibre.fibre.catalog.RefreshDictionaryCacheTaskDaemon;
-import io.datafibre.fibre.catalog.ResourceGroupMgr;
-import io.datafibre.fibre.catalog.ResourceMgr;
-import io.datafibre.fibre.catalog.Table;
-import io.datafibre.fibre.catalog.TabletInvertedIndex;
-import io.datafibre.fibre.catalog.TabletStatMgr;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.clone.ColocateTableBalancer;
-import io.datafibre.fibre.clone.DynamicPartitionScheduler;
-import io.datafibre.fibre.clone.TabletChecker;
-import io.datafibre.fibre.clone.TabletScheduler;
-import io.datafibre.fibre.clone.TabletSchedulerStat;
-import io.datafibre.fibre.common.AlreadyExistsException;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.common.Config;
-import io.datafibre.fibre.common.ConfigRefreshDaemon;
-import io.datafibre.fibre.common.DdlException;
-import io.datafibre.fibre.common.ErrorCode;
-import io.datafibre.fibre.common.ErrorReport;
-import io.datafibre.fibre.common.FeConstants;
-import io.datafibre.fibre.common.InvalidConfException;
-import io.datafibre.fibre.common.ThreadPoolManager;
-import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.catalog.*;
+import io.datafibre.fibre.clone.*;
+import io.datafibre.fibre.common.*;
 import io.datafibre.fibre.common.io.Text;
-import io.datafibre.fibre.common.util.Daemon;
-import io.datafibre.fibre.common.util.FrontendDaemon;
-import io.datafibre.fibre.common.util.PropertyAnalyzer;
-import io.datafibre.fibre.common.util.SmallFileMgr;
-import io.datafibre.fibre.common.util.Util;
+import io.datafibre.fibre.common.util.*;
 import io.datafibre.fibre.common.util.concurrent.QueryableReentrantLock;
 import io.datafibre.fibre.common.util.concurrent.lock.LockManager;
 import io.datafibre.fibre.common.util.concurrent.lock.LockType;
@@ -115,14 +71,7 @@ import io.datafibre.fibre.ha.HAProtocol;
 import io.datafibre.fibre.ha.LeaderInfo;
 import io.datafibre.fibre.ha.StateChangeExecution;
 import io.datafibre.fibre.healthchecker.SafeModeChecker;
-import io.datafibre.fibre.journal.Journal;
-import io.datafibre.fibre.journal.JournalCursor;
-import io.datafibre.fibre.journal.JournalEntity;
-import io.datafibre.fibre.journal.JournalException;
-import io.datafibre.fibre.journal.JournalFactory;
-import io.datafibre.fibre.journal.JournalInconsistentException;
-import io.datafibre.fibre.journal.JournalTask;
-import io.datafibre.fibre.journal.JournalWriter;
+import io.datafibre.fibre.journal.*;
 import io.datafibre.fibre.journal.bdbje.Timestamp;
 import io.datafibre.fibre.lake.ShardManager;
 import io.datafibre.fibre.lake.StarMgrMetaSyncer;
@@ -131,16 +80,8 @@ import io.datafibre.fibre.lake.compaction.CompactionMgr;
 import io.datafibre.fibre.lake.vacuum.AutovacuumDaemon;
 import io.datafibre.fibre.leader.Checkpoint;
 import io.datafibre.fibre.leader.TaskRunStateSynchronizer;
-import io.datafibre.fibre.load.DeleteMgr;
-import io.datafibre.fibre.load.ExportChecker;
-import io.datafibre.fibre.load.ExportMgr;
-import io.datafibre.fibre.load.InsertOverwriteJobMgr;
-import io.datafibre.fibre.load.Load;
-import io.datafibre.fibre.load.loadv2.LoadEtlChecker;
-import io.datafibre.fibre.load.loadv2.LoadJobScheduler;
-import io.datafibre.fibre.load.loadv2.LoadLoadingChecker;
-import io.datafibre.fibre.load.loadv2.LoadMgr;
-import io.datafibre.fibre.load.loadv2.LoadTimeoutChecker;
+import io.datafibre.fibre.load.*;
+import io.datafibre.fibre.load.loadv2.*;
 import io.datafibre.fibre.load.pipe.PipeListener;
 import io.datafibre.fibre.load.pipe.PipeManager;
 import io.datafibre.fibre.load.pipe.PipeScheduler;
@@ -151,25 +92,13 @@ import io.datafibre.fibre.load.streamload.StreamLoadMgr;
 import io.datafibre.fibre.memory.MemoryUsageTracker;
 import io.datafibre.fibre.meta.MetaContext;
 import io.datafibre.fibre.metric.MetricRepo;
-import io.datafibre.fibre.persist.BackendIdsUpdateInfo;
-import io.datafibre.fibre.persist.EditLog;
-import io.datafibre.fibre.persist.ImageHeader;
-import io.datafibre.fibre.persist.OperationType;
-import io.datafibre.fibre.persist.Storage;
+import io.datafibre.fibre.persist.*;
 import io.datafibre.fibre.persist.gson.GsonUtils;
-import io.datafibre.fibre.persist.metablock.SRMetaBlockEOFException;
-import io.datafibre.fibre.persist.metablock.SRMetaBlockException;
-import io.datafibre.fibre.persist.metablock.SRMetaBlockID;
-import io.datafibre.fibre.persist.metablock.SRMetaBlockLoader;
-import io.datafibre.fibre.persist.metablock.SRMetaBlockReader;
+import io.datafibre.fibre.persist.metablock.*;
 import io.datafibre.fibre.plugin.PluginMgr;
 import io.datafibre.fibre.privilege.AuthorizationMgr;
 import io.datafibre.fibre.privilege.PrivilegeException;
-import io.datafibre.fibre.qe.AuditEventProcessor;
-import io.datafibre.fibre.qe.ConnectContext;
-import io.datafibre.fibre.qe.JournalObservable;
-import io.datafibre.fibre.qe.SessionVariable;
-import io.datafibre.fibre.qe.VariableMgr;
+import io.datafibre.fibre.qe.*;
 import io.datafibre.fibre.qe.scheduler.slot.ResourceUsageMonitor;
 import io.datafibre.fibre.qe.scheduler.slot.SlotManager;
 import io.datafibre.fibre.qe.scheduler.slot.SlotProvider;
@@ -187,21 +116,10 @@ import io.datafibre.fibre.sql.optimizer.statistics.StatisticStorage;
 import io.datafibre.fibre.statistic.AnalyzeMgr;
 import io.datafibre.fibre.statistic.StatisticAutoCollector;
 import io.datafibre.fibre.statistic.StatisticsMetaManager;
-import io.datafibre.fibre.system.Backend;
-import io.datafibre.fibre.system.ComputeNode;
-import io.datafibre.fibre.system.Frontend;
-import io.datafibre.fibre.system.HeartbeatMgr;
-import io.datafibre.fibre.system.PortConnectivityChecker;
-import io.datafibre.fibre.system.SystemInfoService;
+import io.datafibre.fibre.system.*;
 import io.datafibre.fibre.task.LeaderTaskExecutor;
 import io.datafibre.fibre.task.PriorityLeaderTaskExecutor;
-import io.datafibre.fibre.thrift.TNetworkAddress;
-import io.datafibre.fibre.thrift.TNodeInfo;
-import io.datafibre.fibre.thrift.TNodesInfo;
-import io.datafibre.fibre.thrift.TRefreshTableRequest;
-import io.datafibre.fibre.thrift.TRefreshTableResponse;
-import io.datafibre.fibre.thrift.TStatus;
-import io.datafibre.fibre.thrift.TStatusCode;
+import io.datafibre.fibre.thrift.*;
 import io.datafibre.fibre.transaction.GlobalTransactionMgr;
 import io.datafibre.fibre.transaction.PublishVersionDaemon;
 import io.datafibre.fibre.transaction.UpdateDbUsedDataQuotaDaemon;
@@ -210,25 +128,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.EOFException;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -965,13 +868,20 @@ public class GlobalStateMgr {
         // we already set these variables in constructor. but GlobalStateMgr is a singleton class.
         // so they may be set before Config is initialized.
         // set them here again to make sure these variables use values in fe.conf.
+        //首先设置meta Image目录。
+        //我们已经在构造函数中设置了这些变量。但是GlobalStateMgr是一个单例类。
+        //因此它们可以在Config被初始化之前被设置。
+        //再次在此处设置它们，以确保这些变量使用fe.conf中的值。
         setMetaDir();
 
         // must judge whether it is first time start here before initializing GlobalStateMgr.
         // Possibly remove clusterId and role to ensure that the system is not left in a half-initialized state.
+        //在初始化GlobalStateMgr之前，必须判断是否是第一次在此处启动。
+        //可能会删除clusterId和role，以确保系统不会处于半初始化状态。
         boolean isFirstTimeStart = nodeMgr.isVersionAndRoleFilesNotExist();
         try {
             // 0. get local node and helper node info
+            // 主要就是检测一些 host port，给 self 和 helper Node赋值
             nodeMgr.initialize(args);
 
             // 1. create dirs and files
@@ -1049,17 +959,17 @@ public class GlobalStateMgr {
             if (System.currentTimeMillis() - lastLoggingTimeMs > 60000L) {
                 lastLoggingTimeMs = System.currentTimeMillis();
                 LOG.warn("It took too much time for FE to transfer to a stable state(LEADER/FOLLOWER), " +
-                        "it maybe caused by one of the following reasons: " +
-                        "1. There are too many BDB logs to replay, because of previous failure of checkpoint" +
-                        "(you can check the create time of image file under meta/image dir). " +
-                        "2. Majority voting members(LEADER or FOLLOWER) of the FE cluster haven't started completely. " +
-                        "3. FE node has multiple IPs, you should configure the priority_networks in fe.conf " +
-                        "to match the ip record in meta/image/ROLE. And we don't support change the ip of FE node. " +
-                        "Ignore this reason if you are using FQDN. " +
-                        "4. The time deviation between FE nodes is greater than 5s, " +
-                        "please use ntp or other tools to keep clock synchronized. " +
-                        "5. The configuration of edit_log_port has changed, please reset to the original value. " +
-                        "6. The replayer thread may get stuck, please use jstack to find the details.");
+                         "it maybe caused by one of the following reasons: " +
+                         "1. There are too many BDB logs to replay, because of previous failure of checkpoint" +
+                         "(you can check the create time of image file under meta/image dir). " +
+                         "2. Majority voting members(LEADER or FOLLOWER) of the FE cluster haven't started completely. " +
+                         "3. FE node has multiple IPs, you should configure the priority_networks in fe.conf " +
+                         "to match the ip record in meta/image/ROLE. And we don't support change the ip of FE node. " +
+                         "Ignore this reason if you are using FQDN. " +
+                         "4. The time deviation between FE nodes is greater than 5s, " +
+                         "please use ntp or other tools to keep clock synchronized. " +
+                         "5. The configuration of edit_log_port has changed, please reset to the original value. " +
+                         "6. The replayer thread may get stuck, please use jstack to find the details.");
             }
         }
     }
@@ -1401,7 +1311,7 @@ public class GlobalStateMgr {
                          *    the old version ignores the functions of the new version
                          */
                         LOG.warn(String.format("Ignore this invalid meta block, sr meta block id mismatch" +
-                                "(expect sr meta block id %s)", srMetaBlockID));
+                                               "(expect sr meta block id %s)", srMetaBlockID));
                         continue;
                     }
 
@@ -1421,8 +1331,8 @@ public class GlobalStateMgr {
         } catch (EOFException exception) {
             if (!metaMgrMustExists.isEmpty()) {
                 LOG.warn("Miss meta block [" + Joiner.on(",").join(new ArrayList<>(metaMgrMustExists)) + "], " +
-                        "This may not be a fatal error. It may be because there are new features in the version " +
-                        "you upgraded this time, but there is no relevant metadata.");
+                         "This may not be a fatal error. It may be because there are new features in the version " +
+                         "you upgraded this time, but there is no relevant metadata.");
             } else {
                 LOG.info("Load meta-image EOF, successful loading all requires meta module");
             }
@@ -1842,13 +1752,13 @@ public class GlobalStateMgr {
         }
 
         if (opCode != OperationType.OP_INVALID
-                && OperationType.IGNORABLE_OPERATIONS.contains(opCode)) {
+            && OperationType.IGNORABLE_OPERATIONS.contains(opCode)) {
             if (Config.metadata_journal_ignore_replay_failure) {
                 LOG.error("skip ignorable journal load failure, opCode: {}", opCode);
                 return true;
             } else {
                 LOG.error("the failure of opCode: {} is ignorable, " +
-                        "you can set metadata_journal_ignore_replay_failure to true to ignore this failure", opCode);
+                          "you can set metadata_journal_ignore_replay_failure to true to ignore this failure", opCode);
                 return false;
             }
         }
@@ -2061,7 +1971,7 @@ public class GlobalStateMgr {
             }
             for (int pos = 0; pos < shortKeyColumnCount; pos++) {
                 if (indexColumns.get(sortKeyIdxes.get(pos)).getPrimitiveType() == PrimitiveType.VARCHAR &&
-                        pos != shortKeyColumnCount - 1) {
+                    pos != shortKeyColumnCount - 1) {
                     throw new DdlException("Varchar should not in the middle of short keys.");
                 }
             }
@@ -2235,7 +2145,7 @@ public class GlobalStateMgr {
         try {
             table = metadataMgr.getTable(catalogName, dbName, tblName);
             if (!(table instanceof HiveMetaStoreTable) && !(table instanceof HiveView)
-                    && !(table instanceof IcebergTable) && !(table instanceof JDBCTable)) {
+                && !(table instanceof IcebergTable) && !(table instanceof JDBCTable)) {
                 throw new StarRocksConnectorException(
                         "table : " + tableName + " not exists, or is not hive/hudi/iceberg/odps/jdbc external table/view");
             }

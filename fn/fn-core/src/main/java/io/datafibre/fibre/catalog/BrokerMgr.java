@@ -63,6 +63,9 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Broker manager
+ * Broker 查询和存储功能扩展到外部存储系统的一个组件。
+ * Broker 负责管理和协调  访问不同类型的外部文件系统，
+ * 例如 Hadoop 的 HDFS、Amazon 的 S3或其他支持的分布式存储系统，进行数据的读写和交换。
  */
 public class BrokerMgr implements GsonPostProcessable {
     public static final ImmutableList<String> BROKER_PROC_NODE_TITLE_NAMES = new ImmutableList.Builder<String>()
@@ -214,7 +217,7 @@ public class BrokerMgr implements GsonPostProcessable {
                 for (FsBroker addr : addressList) {
                     if (addr.port == pair.second) {
                         throw new DdlException("Broker(" + pair.first + ":" + pair.second
-                                + ") has already in brokers.");
+                                               + ") has already in brokers.");
                     }
                 }
                 addedBrokerAddress.add(new FsBroker(pair.first, pair.second));
