@@ -36,6 +36,7 @@ import java.util.concurrent.Future;
 
 /**
  * Check the connectivity of a port, currently for edit log port and rpc_port
+ * 检查当前用于编辑日志端口和rpc_port的端口的连接
  */
 public class PortConnectivityChecker extends FrontendDaemon {
     private static final Logger LOG = LogManager.getLogger(PortConnectivityChecker.class);

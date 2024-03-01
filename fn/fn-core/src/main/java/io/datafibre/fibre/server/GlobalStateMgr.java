@@ -453,16 +453,26 @@ public class GlobalStateMgr {
     // if isCkptGlobalState is true, it means that we should not collect thread pool metric
     private GlobalStateMgr(boolean isCkptGlobalState, NodeMgr nodeMgr) {
         if (!isCkptGlobalState) {
+            // 不是检查点线程
+            // 根据配置文件 run_mode 决定当前是 存算分离 或者 存算一体，两者不可兼得
             RunMode.detectRunMode();
         }
 
         if (RunMode.isSharedDataMode()) {
+            // shared_data 表示在存算分离模式
+            // 封装了 StarClient，和 StarOS worker 和 BE 的关系
             this.starOSAgent = new StarOSAgent();
         }
 
         // System Manager
+        // nodeMgr 正常不会null，这个构造器不直接调用
         this.nodeMgr = Objects.requireNonNullElseGet(nodeMgr, NodeMgr::new);
+
+        // isCkptGlobalState == needRegisterMetric 是否注册到 Metrics 监控系统
+        // 检测信号管理器，向所有前端、后端和经纪人发送心跳
         this.heartbeatMgr = new HeartbeatMgr(!isCkptGlobalState);
+
+        // 检测 rpc_port 和 edit_log_port 是否存在
         this.portConnectivityChecker = new PortConnectivityChecker();
 
         // Alter Job Manager
@@ -885,6 +895,7 @@ public class GlobalStateMgr {
             nodeMgr.initialize(args);
 
             // 1. create dirs and files
+            // edit_log_type 编辑日志的类型。取值只能为 BDB
             if (Config.edit_log_type.equalsIgnoreCase("bdb")) {
                 File imageDir = new File(this.imageDir);
                 if (!imageDir.exists()) {

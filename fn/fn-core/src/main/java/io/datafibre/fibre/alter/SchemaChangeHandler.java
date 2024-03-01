@@ -184,6 +184,7 @@ public class SchemaChangeHandler extends AlterHandler {
         checkIndexExists(olapTable, targetIndexName);
 
         String baseIndexName = olapTable.getName();
+        // 用户无法分配基本索引以进行架构更改
         checkAssignedTargetIndexName(baseIndexName, targetIndexName);
 
         long baseIndexId = olapTable.getBaseIndexId();
@@ -193,7 +194,9 @@ public class SchemaChangeHandler extends AlterHandler {
         }
 
         Set<String> newColNameSet = Sets.newHashSet(column.getName());
+
         // only new table generate ColUniqueId, exist table do not.
+        // 只有新表生成ColUniqueId，现有表不生成。
         if (olapTable.getMaxColUniqueId() > Column.COLUMN_UNIQUE_ID_INIT_VALUE) {
             column.setUniqueId(colUniqueIdSupplier.getAsInt());
         }
@@ -773,21 +776,28 @@ public class SchemaChangeHandler extends AlterHandler {
                                       Set<String> newColNameSet) throws DdlException {
 
         Column.DefaultValueType defaultValueType = newColumn.getDefaultValueType();
+
+        //这里相当于不支持 VARY // variable expr e.g. uuid() function
+        //？？？？？为什么不支持尼
         if (defaultValueType != Column.DefaultValueType.CONST && defaultValueType != Column.DefaultValueType.NULL) {
+            // expr = 小块的表达式
             throw new DdlException("unsupported default expr:" + newColumn.getDefaultExpr().getExpr());
         }
-
+        //拿到是否开启，增删列时提高 schema change 速度并降低资源使用
         boolean fastSchemaEvolution = olapTable.getUseFastSchemaEvolution();
         // if column is generated column, need to rewrite table data, so we can not use light schema change
+        // 如果列是生成列｜自增列，则需要重写表数据，因此不能使用
         if (newColumn.isAutoIncrement() || newColumn.isGeneratedColumn()) {
             fastSchemaEvolution = false;
         }
-
+        // 如果列设置了默认值，则需要写表数据，也不能使用
         if (newColumn.getDefaultValue() != null && newColumn.getDefaultExpr() != null) {
             fastSchemaEvolution = false;
         }
+
         if (newColumn.getDefaultExpr() != null && newColumn.getDefaultValueType() == Column.DefaultValueType.CONST) {
             long startTime = ConnectContext.get().getStartTime();
+            // 如果是 now() 或者 常量值（1，'xxx', 等等），设置上对应值，其他则设置null
             newColumn.setDefaultValue(newColumn.calculatedDefaultValueWithTime(startTime));
         }
 
@@ -1053,6 +1063,7 @@ public class SchemaChangeHandler extends AlterHandler {
 
     private void checkAssignedTargetIndexName(String baseIndexName, String targetIndexName) throws DdlException {
         // user cannot assign base index to do schema change
+        // 用户无法分配基本索引以进行架构更改
         if (targetIndexName != null) {
             if (targetIndexName.equals(baseIndexName)) {
                 throw new DdlException("Do not need to assign base index[" + baseIndexName + "] to do schema change");

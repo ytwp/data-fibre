@@ -78,6 +78,8 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Heartbeat manager run as a daemon at a fix interval.
  * For now, it will send heartbeat to all Frontends, Backends and Brokers
+ * *检测信号管理器以固定间隔作为守护进程运行。
+ * *目前，它将向所有前端、后端和经纪人发送心跳
  */
 public class HeartbeatMgr extends FrontendDaemon {
     private static final Logger LOG = LogManager.getLogger(HeartbeatMgr.class);
@@ -87,6 +89,8 @@ public class HeartbeatMgr extends FrontendDaemon {
 
     public HeartbeatMgr(boolean needRegisterMetric) {
         super("heartbeat mgr", Config.heartbeat_timeout_second * 1000L);
+        //创建守护线程线程池
+        //needRegisterMetric 是否注册到 Metrics 监控系统
         this.executor = ThreadPoolManager.newDaemonFixedThreadPool(Config.heartbeat_mgr_threads_num,
                 Config.heartbeat_mgr_blocking_queue_size, "heartbeat-mgr-pool", needRegisterMetric);
     }

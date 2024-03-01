@@ -22,27 +22,7 @@ import com.google.common.collect.Sets;
 import com.staros.client.StarClient;
 import com.staros.client.StarClientException;
 import com.staros.manager.StarManagerServer;
-import com.staros.proto.CreateMetaGroupInfo;
-import com.staros.proto.CreateShardGroupInfo;
-import com.staros.proto.CreateShardInfo;
-import com.staros.proto.FileCacheInfo;
-import com.staros.proto.FilePathInfo;
-import com.staros.proto.FileStoreInfo;
-import com.staros.proto.FileStoreType;
-import com.staros.proto.JoinMetaGroupInfo;
-import com.staros.proto.PlacementPolicy;
-import com.staros.proto.PlacementPreference;
-import com.staros.proto.PlacementRelationship;
-import com.staros.proto.QuitMetaGroupInfo;
-import com.staros.proto.ReplicaInfo;
-import com.staros.proto.ReplicaRole;
-import com.staros.proto.ServiceInfo;
-import com.staros.proto.ShardGroupInfo;
-import com.staros.proto.ShardInfo;
-import com.staros.proto.StatusCode;
-import com.staros.proto.UpdateMetaGroupInfo;
-import com.staros.proto.WorkerGroupDetailInfo;
-import com.staros.proto.WorkerInfo;
+import com.staros.proto.*;
 import com.staros.util.LockCloseable;
 import io.datafibre.fibre.common.Config;
 import io.datafibre.fibre.common.DdlException;
@@ -53,22 +33,19 @@ import io.datafibre.fibre.system.ComputeNode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
+import java.util.*;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.stream.Collectors;
 
 /**
  * StarOSAgent is responsible for
  * 1. Encapsulation of StarClient api.
  * 2. Maintenance of StarOS worker to StarRocks backend map.
+ * <p>
+ * StarClient api的封装
+ * 维护StarOS worker到StarRocks的后端地图
  */
 public class StarOSAgent {
     private static final Logger LOG = LogManager.getLogger(StarOSAgent.class);
@@ -91,7 +68,9 @@ public class StarOSAgent {
     }
 
     public boolean init(StarManagerServer server) {
+        // StarClient 应该就是操作远处文件的，一个抽象？？？？？
         client = new StarClient(server);
+        // cloud_native_meta_port 云原生元数据服务监听端口
         client.connectServer(String.format("127.0.0.1:%d", Config.cloud_native_meta_port));
         return true;
     }
@@ -269,7 +248,7 @@ public class StarOSAgent {
                 } catch (StarClientException e) {
                     if (e.getCode() != StatusCode.NOT_EXIST) {
                         throw new DdlException("Failed to get worker id from starMgr. error: "
-                                + e.getMessage());
+                                               + e.getMessage());
                     }
 
                     LOG.info("worker {} not exist.", workerIpPort);
@@ -430,7 +409,7 @@ public class StarOSAgent {
     }
 
     public List<Long> createShards(int numShards, FilePathInfo pathInfo, FileCacheInfo cacheInfo, long groupId)
-        throws DdlException {
+            throws DdlException {
         return createShards(numShards, pathInfo, cacheInfo, groupId, null, Collections.EMPTY_MAP);
     }
 
@@ -442,7 +421,7 @@ public class StarOSAgent {
 
     public List<Long> createShards(int numShards, FilePathInfo pathInfo, FileCacheInfo cacheInfo, long groupId,
                                    @Nullable List<Long> matchShardIds, @NotNull Map<String, String> properties)
-        throws DdlException {
+            throws DdlException {
         if (matchShardIds != null) {
             Preconditions.checkState(numShards == matchShardIds.size());
         }

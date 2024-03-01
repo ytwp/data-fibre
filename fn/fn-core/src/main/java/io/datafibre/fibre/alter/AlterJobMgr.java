@@ -155,7 +155,9 @@ public class AlterJobMgr {
     private CompactionHandler compactionHandler;
 
     public AlterJobMgr() {
+        // 创建一个表的变更处理器
         schemaChangeHandler = new SchemaChangeHandler();
+
         materializedViewHandler = new MaterializedViewHandler();
         clusterHandler = new SystemHandler();
         compactionHandler = new CompactionHandler();

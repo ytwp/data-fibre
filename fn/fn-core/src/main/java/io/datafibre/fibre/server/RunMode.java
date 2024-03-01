@@ -33,6 +33,10 @@ public abstract class RunMode {
     }
 
     public static void detectRunMode() {
+        // StarRocks 集群的运行模式。
+        // 有效值：shared_data 和 shared_nothing (默认)。s
+        // hared_data 表示在存算分离模式下运行 StarRocks。
+        // shared_nothing 表示在存算一体模式下运行 StarRocks。
         String runMode = Config.run_mode;
         if (SHARED_NOTHING.getName().equalsIgnoreCase(runMode)) {
             currentRunMode = SHARED_NOTHING;
