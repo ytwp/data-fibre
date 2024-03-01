@@ -27,11 +27,7 @@ import io.datafibre.fibre.server.GlobalStateMgr;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class Locker {
@@ -97,27 +93,38 @@ public class Locker {
 
     /**
      * Before the new version of LockManager is fully enabled, it is used to be compatible with the original db lock logic.
+     * 在新版本的LockManager完全启用之前，它用于与原始数据库锁定逻辑兼容。
      */
     public void lockDatabase(Database database, LockType lockType) {
+        //是否使用LockManager来管理锁的使用情况
         if (Config.lock_manager_enabled) {
             Preconditions.checkNotNull(database);
             try {
+                //新的锁管理器，锁管理器后续在看
                 lock(database.getId(), lockType, 0);
             } catch (IllegalLockStateException e) {
                 ErrorReportException.report(ErrorCode.ERR_LOCK_ERROR, e.getMessage());
             }
         } else {
+            //相当于之前的旧锁
             if (lockType.isWriteLock()) {
+                //写锁
+                // 继承了java的 ReentrantReadWriteLock,包含两个锁：一个读锁和一写锁
                 QueryableReentrantReadWriteLock rwLock = database.getRwLock();
                 long startMs = TimeUnit.MILLISECONDS.convert(System.nanoTime(), TimeUnit.NANOSECONDS);
                 String threadDump = getOwnerInfo(rwLock.getOwner());
+                //写锁是独占的，其他线程不能获得读锁或写锁，直到写锁释放
                 rwLock.exclusiveLock();
+                //记录慢锁的时间
                 logSlowLockEventIfNeeded(startMs, "writeLock", threadDump, database.getId(), database.getFullName());
             } else {
+                //读锁
                 QueryableReentrantReadWriteLock rwLock = database.getRwLock();
                 long startMs = TimeUnit.MILLISECONDS.convert(System.nanoTime(), TimeUnit.NANOSECONDS);
                 String threadDump = getOwnerInfo(rwLock.getOwner());
+                //读锁是共享的，多个线程可以并发地持有读锁，只要没有其他线程持有写锁
                 rwLock.sharedLock();
+                //记录慢锁的时间
                 logSlowLockEventIfNeeded(startMs, "readLock", threadDump, database.getId(), database.getFullName());
             }
         }
@@ -217,12 +224,13 @@ public class Locker {
                                           String fullQualifiedName) {
         long endMs = TimeUnit.MILLISECONDS.convert(System.nanoTime(), TimeUnit.NANOSECONDS);
         Long lastSlowLockLogTime = lastSlowLockLogTimeMap.getOrDefault(databaseId, 0L);
+        //判断是否打印 慢锁的时间
         if (endMs - startMs > Config.slow_lock_threshold_ms &&
-                endMs > lastSlowLockLogTime + Config.slow_lock_log_every_ms) {
+            endMs > lastSlowLockLogTime + Config.slow_lock_log_every_ms) {
             lastSlowLockLogTime = endMs;
             lastSlowLockLogTimeMap.put(databaseId, lastSlowLockLogTime);
             LOG.warn("slow db lock. type: {}, db id: {}, db name: {}, wait time: {}ms, " +
-                            "former {}, current stack trace: {}", type, databaseId, fullQualifiedName, endMs - startMs,
+                     "former {}, current stack trace: {}", type, databaseId, fullQualifiedName, endMs - startMs,
                     threadDump, LogUtil.getCurrentStackTrace());
         }
     }

@@ -155,11 +155,13 @@ public class AlterJobMgr {
     private CompactionHandler compactionHandler;
 
     public AlterJobMgr() {
-        // 创建一个表的变更处理器
+        // 创建表的 变更 处理器
         schemaChangeHandler = new SchemaChangeHandler();
-
+        // 创建物化视图的 ADD/DROP 处理器
         materializedViewHandler = new MaterializedViewHandler();
+        // frontends、backends、brokers 的增删停
         clusterHandler = new SystemHandler();
+        // 创建表（分区）的 手动压缩 处理器
         compactionHandler = new CompactionHandler();
     }
 

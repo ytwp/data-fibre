@@ -476,6 +476,7 @@ public class GlobalStateMgr {
         this.portConnectivityChecker = new PortConnectivityChecker();
 
         // Alter Job Manager
+        // 创建 [表变更，物化视图增删，前后端，压缩] 的处理器
         this.alterJobMgr = new AlterJobMgr();
 
         this.load = new Load();

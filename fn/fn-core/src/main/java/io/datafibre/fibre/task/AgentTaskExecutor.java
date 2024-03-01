@@ -22,6 +22,10 @@ import io.datafibre.fibre.common.ThreadPoolManager;
 
 import java.util.concurrent.ExecutorService;
 
+/**
+ * 代理任务线程池
+ * 负责在集群中协调和执行各种任务
+ */
 public class AgentTaskExecutor {
 
     private static final ExecutorService EXECUTOR =

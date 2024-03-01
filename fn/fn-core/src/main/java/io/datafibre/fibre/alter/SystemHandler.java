@@ -36,11 +36,7 @@ package io.datafibre.fibre.alter;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import io.datafibre.fibre.catalog.Database;
-import io.datafibre.fibre.catalog.OlapTable;
-import io.datafibre.fibre.catalog.PartitionInfo;
-import io.datafibre.fibre.catalog.Table;
-import io.datafibre.fibre.catalog.TabletInvertedIndex;
+import io.datafibre.fibre.catalog.*;
 import io.datafibre.fibre.common.Config;
 import io.datafibre.fibre.common.DdlException;
 import io.datafibre.fibre.common.Pair;
@@ -52,24 +48,7 @@ import io.datafibre.fibre.qe.ShowResultSet;
 import io.datafibre.fibre.server.GlobalStateMgr;
 import io.datafibre.fibre.server.LocalMetastore;
 import io.datafibre.fibre.server.RunMode;
-import io.datafibre.fibre.sql.ast.AddBackendClause;
-import io.datafibre.fibre.sql.ast.AddComputeNodeClause;
-import io.datafibre.fibre.sql.ast.AddFollowerClause;
-import io.datafibre.fibre.sql.ast.AddObserverClause;
-import io.datafibre.fibre.sql.ast.AlterClause;
-import io.datafibre.fibre.sql.ast.AlterLoadErrorUrlClause;
-import io.datafibre.fibre.sql.ast.CancelAlterSystemStmt;
-import io.datafibre.fibre.sql.ast.CancelStmt;
-import io.datafibre.fibre.sql.ast.CleanTabletSchedQClause;
-import io.datafibre.fibre.sql.ast.CreateImageClause;
-import io.datafibre.fibre.sql.ast.DecommissionBackendClause;
-import io.datafibre.fibre.sql.ast.DropBackendClause;
-import io.datafibre.fibre.sql.ast.DropComputeNodeClause;
-import io.datafibre.fibre.sql.ast.DropFollowerClause;
-import io.datafibre.fibre.sql.ast.DropObserverClause;
-import io.datafibre.fibre.sql.ast.ModifyBackendClause;
-import io.datafibre.fibre.sql.ast.ModifyBrokerClause;
-import io.datafibre.fibre.sql.ast.ModifyFrontendAddressClause;
+import io.datafibre.fibre.sql.ast.*;
 import io.datafibre.fibre.system.Backend;
 import io.datafibre.fibre.system.SystemInfoService;
 import org.apache.commons.lang.NotImplementedException;
@@ -81,11 +60,15 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/*
+/**
  * SystemHandler is for
  * 1. add/drop/decommission backends
  * 2. add/drop frontends
  * 3. add/drop/modify brokers
+ * <p>
+ * 1.添加/删除/停用 后端
+ * 2.添加/删除 前端
+ * 3.添加/删除/修改 代理
  */
 public class SystemHandler extends AlterHandler {
     private static final Logger LOG = LogManager.getLogger(SystemHandler.class);
@@ -295,8 +278,8 @@ public class SystemHandler extends AlterHandler {
                                     decommissionBackends.clear();
                                     throw new DdlException(
                                             "It will cause insufficient BE number if these BEs are decommissioned " +
-                                                    "because the table " + db.getFullName() + "." + olapTable.getName() +
-                                                    " requires " + maxReplicationNum + " replicas.");
+                                            "because the table " + db.getFullName() + "." + olapTable.getName() +
+                                            " requires " + maxReplicationNum + " replicas.");
 
                                 }
                             }

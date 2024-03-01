@@ -105,6 +105,8 @@ import java.util.stream.Collectors;
  * For compatible with older version, it is also responsible for ADD/DROP rollup.
  * In function level, the mv completely covers the rollup in the future.
  * In grammar level, there is some difference between mv and rollup.
+ *
+ * 物化视图 的 ADD/DROP 处理器
  */
 public class MaterializedViewHandler extends AlterHandler {
     private static final Logger LOG = LogManager.getLogger(MaterializedViewHandler.class);

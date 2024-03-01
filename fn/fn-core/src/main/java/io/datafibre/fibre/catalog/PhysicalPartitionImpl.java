@@ -32,6 +32,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Physical Partition implementation
+ * 物理分区实现
  */
 public class PhysicalPartitionImpl extends MetaObject implements PhysicalPartition {
     private static final Logger LOG = LogManager.getLogger(PhysicalPartitionImpl.class);
