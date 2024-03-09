@@ -15,7 +15,9 @@ public class StartFn {
     public static void main(String[] args) {
         System.out.println("Hello DataFiber!");
 
-        //初始化DataFiber 环境
+        //初始化DataFiber 环境 init and start
+
+        //1. 初始化 MySQLServer 向外部暴露出
 
 
 
