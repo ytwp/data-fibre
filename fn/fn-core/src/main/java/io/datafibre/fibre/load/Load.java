@@ -41,49 +41,17 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import io.datafibre.fibre.alter.SchemaChangeHandler;
 import io.datafibre.fibre.analysis.Analyzer;
-import io.datafibre.fibre.analysis.BinaryPredicate;
-import io.datafibre.fibre.analysis.BinaryType;
-import io.datafibre.fibre.analysis.CastExpr;
-import io.datafibre.fibre.analysis.DictQueryExpr;
-import io.datafibre.fibre.analysis.Expr;
-import io.datafibre.fibre.analysis.ExprSubstitutionMap;
-import io.datafibre.fibre.analysis.FunctionCallExpr;
-import io.datafibre.fibre.analysis.FunctionName;
-import io.datafibre.fibre.analysis.FunctionParams;
-import io.datafibre.fibre.analysis.IntLiteral;
-import io.datafibre.fibre.analysis.IsNullPredicate;
-import io.datafibre.fibre.analysis.LiteralExpr;
-import io.datafibre.fibre.analysis.NullLiteral;
-import io.datafibre.fibre.analysis.SlotDescriptor;
-import io.datafibre.fibre.analysis.SlotRef;
-import io.datafibre.fibre.analysis.StringLiteral;
-import io.datafibre.fibre.analysis.TableName;
-import io.datafibre.fibre.analysis.TupleDescriptor;
+import io.datafibre.fibre.analysis.*;
 import io.datafibre.fibre.authentication.AuthenticationMgr;
 import io.datafibre.fibre.backup.BlobStorage;
 import io.datafibre.fibre.backup.Status;
-import io.datafibre.fibre.catalog.Column;
-import io.datafibre.fibre.catalog.Database;
-import io.datafibre.fibre.catalog.FunctionSet;
-import io.datafibre.fibre.catalog.KeysType;
-import io.datafibre.fibre.catalog.OlapTable;
-import io.datafibre.fibre.catalog.Table;
-import io.datafibre.fibre.catalog.Type;
-import io.datafibre.fibre.common.AnalysisException;
-import io.datafibre.fibre.common.DdlException;
-import io.datafibre.fibre.common.Pair;
-import io.datafibre.fibre.common.StarRocksFEMetaVersion;
-import io.datafibre.fibre.common.UserException;
+import io.datafibre.fibre.catalog.*;
+import io.datafibre.fibre.common.*;
 import io.datafibre.fibre.load.loadv2.JobState;
 import io.datafibre.fibre.privilege.PrivilegeBuiltinConstants;
 import io.datafibre.fibre.qe.ConnectContext;
 import io.datafibre.fibre.server.GlobalStateMgr;
-import io.datafibre.fibre.sql.analyzer.AnalyzeState;
-import io.datafibre.fibre.sql.analyzer.ExpressionAnalyzer;
-import io.datafibre.fibre.sql.analyzer.Field;
-import io.datafibre.fibre.sql.analyzer.RelationFields;
-import io.datafibre.fibre.sql.analyzer.RelationId;
-import io.datafibre.fibre.sql.analyzer.Scope;
+import io.datafibre.fibre.sql.analyzer.*;
 import io.datafibre.fibre.sql.ast.DataDescription;
 import io.datafibre.fibre.sql.ast.ImportColumnDesc;
 import io.datafibre.fibre.sql.ast.UserIdentity;
@@ -96,12 +64,8 @@ import org.apache.logging.log4j.Logger;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static io.datafibre.fibre.catalog.DefaultExpr.SUPPORTED_DEFAULT_FNS;
@@ -123,35 +87,40 @@ public class Load {
      * 2. should not be bitmap/hll/percentile/json/varchar column
      * 3. should not be primary key
      * 4. table should be primary key model
+     * 检测是否满足合并条件
+     *
      * @param mergeCondition
      * @param table
      * @return
      * @throws UserException
      */
     public static void checkMergeCondition(String mergeCondition, OlapTable table, List<Column> columns,
-            boolean missAutoIncrementColumn) throws DdlException {
+                                           boolean missAutoIncrementColumn) throws DdlException {
         if (mergeCondition == null || mergeCondition.isEmpty()) {
             return;
         }
-
+        // 不能是主键表
         if (table.getKeysType() != KeysType.PRIMARY_KEYS) {
             throw new DdlException("Conditional update only support primary key table " + table.getName());
         }
-
+        //找到需要合并的条件
         Optional<Column> conditionCol = columns.stream().filter(c -> c.getName().equalsIgnoreCase(mergeCondition)).findFirst();
         if (!conditionCol.isPresent()) {
-            throw new DdlException("Merge condition column " + mergeCondition + 
-                    " does not exist. If you are doing partial update with condition update, please check condition column" +
-                    " is in the given update columns. Otherwise please check condition column is in table " + table.getName());
+            throw new DdlException("Merge condition column " + mergeCondition +
+                                   " does not exist. If you are doing partial update with condition update, please check condition column" +
+                                   " is in the given update columns. Otherwise please check condition column is in table " + table.getName());
         } else {
+            // 不能是key
             if (conditionCol.get().isKey()) {
                 throw new DdlException("Merge condition column " + mergeCondition
-                        + " should not be primary key!");
+                                       + " should not be primary key!");
             }
+            // 不能是自增
             if (missAutoIncrementColumn && conditionCol.get().isAutoIncrement()) {
                 throw new DdlException("Merge condition column can not be auto increment column in partial update");
             }
             switch (conditionCol.get().getPrimitiveType()) {
+                //不能是下面这个几个类型
                 case CHAR:
                 case VARCHAR:
                 case PERCENTILE:
@@ -165,7 +134,7 @@ public class Load {
                 case INVALID_TYPE:
                 case NULL_TYPE:
                     throw new DdlException("Merge condition column has invalid type maybe" +
-                            " bitmap/hll/percentile/json/varchar!");
+                                           " bitmap/hll/percentile/json/varchar!");
                 default:
                     return;
             }
@@ -179,23 +148,27 @@ public class Load {
      * eg1:
      * base schema is (A, B, C), and B is under schema change, so there will be a shadow column: '__starrocks_shadow_B'
      * So the final column mapping should looks like: (A, B, C, __starrocks_shadow_B = substitute(B));
+     * <p>
+     * 获取字段的影子列
      */
     public static List<ImportColumnDesc> getSchemaChangeShadowColumnDesc(Table tbl, Map<String, Expr> columnExprMap) {
         List<ImportColumnDesc> shadowColumnDescs = Lists.newArrayList();
         for (Column column : tbl.getFullSchema()) {
+            // SHADOW_NAME_PRFIX 和 SHADOW_NAME_PRFIX_V1 都是影子列 的前缀
             if (!column.isNameWithPrefix(SchemaChangeHandler.SHADOW_NAME_PRFIX) &&
-                    !column.isNameWithPrefix(SchemaChangeHandler.SHADOW_NAME_PRFIX_V1)) {
+                !column.isNameWithPrefix(SchemaChangeHandler.SHADOW_NAME_PRFIX_V1)) {
                 continue;
             }
-
+            // 不能是生成列
             if (column.isGeneratedColumn()) {
                 continue;
             }
-
+            // 拿到原始字段名
             String originCol = Column.removeNamePrefix(column.getName());
             if (columnExprMap.containsKey(originCol)) {
                 Expr mappingExpr = columnExprMap.get(originCol);
                 if (mappingExpr != null) {
+                    // 原始列是表达式
                     /*
                      * eg:
                      * (A, C) SET (B = func(xx))
@@ -205,6 +178,7 @@ public class Load {
                     ImportColumnDesc importColumnDesc = new ImportColumnDesc(column.getName(), mappingExpr);
                     shadowColumnDescs.add(importColumnDesc);
                 } else {
+                    // 原始列是普通类型
                     /*
                      * eg:
                      * (A, B, C)
@@ -225,11 +199,21 @@ public class Load {
                  * In this case, __starrocks_shadow_B can use its default value, so no need to add it to column mapping
                  */
                 // do nothing
+                // (A, C) SET (__starrocks_shadow_B = B)
+                // 这个影子列 对应的原始列不存在名，不管他
             }
         }
         return shadowColumnDescs;
     }
 
+    /**
+     * 获取物化视图的影子列
+     *
+     * @param tbl
+     * @param dbName
+     * @param analyze
+     * @return
+     */
     public static List<ImportColumnDesc> getMaterializedShadowColumnDesc(Table tbl, String dbName, boolean analyze) {
         List<ImportColumnDesc> shadowColumnDescs = Lists.newArrayList();
         for (Column column : tbl.getFullSchema()) {
@@ -249,10 +233,10 @@ public class Load {
             // In case of spark load, we should get the unanalyzed expression
             if (analyze) {
                 ExpressionAnalyzer.analyzeExpression(expr, new AnalyzeState(),
-                    new Scope(RelationId.anonymous(), new RelationFields(
-                            tbl.getBaseSchema().stream().map(col -> new Field(col.getName(),
-                                    col.getType(), tableName, null))
-                                .collect(Collectors.toList()))), connectContext);
+                        new Scope(RelationId.anonymous(), new RelationFields(
+                                tbl.getBaseSchema().stream().map(col -> new Field(col.getName(),
+                                                col.getType(), tableName, null))
+                                        .collect(Collectors.toList()))), connectContext);
             }
 
             ImportColumnDesc importColumnDesc = new ImportColumnDesc(column.getName(), expr);
@@ -332,7 +316,7 @@ public class Load {
             String columnName = importColumnDesc.getColumnName();
 
             if (tbl.getColumns().size() != 0 && tbl.getColumn(columnName) != null
-                    && tbl.getColumn(columnName).isGeneratedColumn()) {
+                && tbl.getColumn(columnName).isGeneratedColumn()) {
                 throw new DdlException("generated column: " + columnName + " can not be specified");
             }
 
@@ -458,7 +442,7 @@ public class Load {
                 }
                 Column.DefaultValueType defaultValueType = column.getDefaultValueType();
                 if (defaultValueType == Column.DefaultValueType.NULL && !column.isAllowNull() && !column.isAutoIncrement()
-                        && !column.isGeneratedColumn()) {
+                    && !column.isGeneratedColumn()) {
                     throw new DdlException("Column has no default value. column: " + columnName);
                 }
             }
@@ -473,7 +457,7 @@ public class Load {
                 }
             }
         }
-    
+
         copiedColumnExprs.addAll(getMaterializedShadowColumnDesc(tbl, dbName, true));
         // get shadow column desc when table schema change
         copiedColumnExprs.addAll(getSchemaChangeShadowColumnDesc(tbl, columnExprMap));
@@ -680,7 +664,7 @@ public class Load {
     }
 
     public static List<Column> getPartialUpateColumns(Table tbl, List<ImportColumnDesc> columnExprs,
-             List<Boolean> missAutoIncrementColumn) throws UserException {
+                                                      List<Boolean> missAutoIncrementColumn) throws UserException {
         Set<String> specified = columnExprs.stream().map(desc -> desc.getColumnName()).collect(Collectors.toSet());
         List<Column> ret = new ArrayList<>();
         for (Column col : tbl.getBaseSchema()) {
@@ -795,7 +779,7 @@ public class Load {
                 SlotDescriptor slotDesc = slotDescByName.get(slot.getColumnName());
                 if (slotDesc == null) {
                     throw new UserException("unknown reference column, column=" + entry.getKey()
-                            + ", reference=" + slot.getColumnName());
+                                            + ", reference=" + slot.getColumnName());
                 }
                 if (useVectorizedLoad) {
                     slotDesc.setIsMaterialized(true);
@@ -842,7 +826,7 @@ public class Load {
                     smap.getLhs().add(slot);
                     Expr replaceExpr = exprsByName.get(slot.getColumnName());
                     if (replaceExpr.getType().matchesType(Type.VARCHAR) &&
-                            !replaceExpr.getType().matchesType(slot.getType())) {
+                        !replaceExpr.getType().matchesType(slot.getType())) {
                         replaceExpr = replaceExpr.castTo(slot.getType());
                     }
                     smap.getRhs().add(replaceExpr);
@@ -852,7 +836,7 @@ public class Load {
                     slotRef.setColumnName(slot.getColumnName());
                     Expr replaceExpr = slotRef;
                     if (replaceExpr.getType().matchesType(Type.VARCHAR) &&
-                            !replaceExpr.getType().matchesType(slot.getType())) {
+                        !replaceExpr.getType().matchesType(slot.getType())) {
                         replaceExpr = replaceExpr.castTo(slot.getType());
                     }
                     smap.getRhs().add(replaceExpr);
@@ -894,7 +878,7 @@ public class Load {
                             exprsByName.get(slot.getColumnName())));
                 } else {
                     throw new UserException("unknown reference column, column=" + entry.getKey()
-                            + ", reference=" + slot.getColumnName());
+                                            + ", reference=" + slot.getColumnName());
                 }
             }
             Expr expr = entry.getValue().clone(smap);
@@ -957,7 +941,7 @@ public class Load {
                                 exprs.add(column.getDefaultExpr().obtainExpr());
                             } else {
                                 throw new UserException("Column(" + columnName + ") has unsupported default value:"
-                                        + column.getDefaultExpr().getExpr());
+                                                        + column.getDefaultExpr().getExpr());
                             }
                         } else if (defaultValueType == Column.DefaultValueType.NULL) {
                             if (column.isAllowNull()) {
@@ -984,7 +968,7 @@ public class Load {
                                 innerIfExprs.add(column.getDefaultExpr().obtainExpr());
                             } else {
                                 throw new UserException("Column(" + columnName + ") has unsupported default value:"
-                                        + column.getDefaultExpr().getExpr());
+                                                        + column.getDefaultExpr().getExpr());
                             }
                         } else if (defaultValueType == Column.DefaultValueType.NULL) {
                             if (column.isAllowNull()) {
@@ -1071,8 +1055,8 @@ public class Load {
             } else if (funcName.equalsIgnoreCase(FunctionSet.SUBSTITUTE)) {
                 return funcExpr.getChild(0);
             } else if (funcName.equalsIgnoreCase(FunctionSet.GET_JSON_INT) ||
-                    funcName.equalsIgnoreCase(FunctionSet.GET_JSON_STRING) ||
-                    funcName.equalsIgnoreCase(FunctionSet.GET_JSON_DOUBLE)) {
+                       funcName.equalsIgnoreCase(FunctionSet.GET_JSON_STRING) ||
+                       funcName.equalsIgnoreCase(FunctionSet.GET_JSON_DOUBLE)) {
                 FunctionName jsonFunctionName = new FunctionName(funcName.toLowerCase());
                 List<Expr> getJsonArgs = Lists.newArrayList(funcExpr.getChild(0), funcExpr.getChild(1));
                 return new FunctionCallExpr(
@@ -1230,6 +1214,7 @@ public class Load {
 
         return checksum;
     }
+
     public static class CSVOptions {
         public String columnSeparator = "\t";
         public String rowDelimiter = "\n";
